@@ -1,10 +1,9 @@
-import { CoastalPageShell } from "@/components/coastal/page-shell";
-import styles from "@/components/coastal/interior.module.css";
-import { CoastalPageIntro } from "@/components/coastal/page-intro";
-import BrowserTabs from "./BrowserTabs";
-import { getPageSEO } from "@/lib/seo";
 import { preloadQuery } from "convex/nextjs";
 import { api } from "../../../convex/_generated/api";
+import { getPageSEO } from "@/lib/seo";
+import { BeachmagShell } from "@/components/beachmag/shell";
+import { BrowserTabsArchive } from "@/components/beachmag/browser-tabs-archive";
+import "@/components/beachmag/browser-tabs.css";
 
 export const revalidate = 60;
 
@@ -15,13 +14,9 @@ export async function generateMetadata() {
 export default async function BrowserTabsPage() {
   // Include the collection in the HTML, then subscribe to live updates on hydration.
   const preloadedLinks = await preloadQuery(api.browserLinks.getAll, {});
-
   return (
-    <CoastalPageShell>
-      <CoastalPageIntro path="/browser-tabs" />
-      <div className={styles.content}>
-        <BrowserTabs preloadedLinks={preloadedLinks} />
-      </div>
-    </CoastalPageShell>
+    <BeachmagShell>
+      <BrowserTabsArchive preloadedLinks={preloadedLinks} />
+    </BeachmagShell>
   );
 }
