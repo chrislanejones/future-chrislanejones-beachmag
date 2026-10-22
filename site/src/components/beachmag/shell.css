@@ -1,0 +1,27 @@
+/* Page frame for the coastal-magazine skin: the teal margin and the 1240px column. */
+body:has([data-beachmag]) {
+  margin: 0;
+  background: #172f32;
+}
+
+/* The edition. Next's CSS compiler lowers light-dark() to variables that only
+   flip when color-scheme is set by a stylesheet rule, never an inline style,
+   so the dark scheme lives here, keyed off the theme store's html.dark. */
+html.dark:has([data-beachmag]),
+#coastal-art[data-palette="dark"] {
+  color-scheme: dark;
+}
+
+.site-shell:has(> [data-beachmag]) {
+  max-width: 1240px;
+  padding: 0;
+}
+
+[data-beachmag] button {
+  cursor: pointer;
+}
+
+[data-beachmag] :focus-visible {
+  outline: 3px solid #d47a40;
+  outline-offset: 4px;
+}

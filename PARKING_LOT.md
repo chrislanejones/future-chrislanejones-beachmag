@@ -7,3 +7,4 @@
 - `sandbox.js` is 1.1 MB (mostly three.js). Code-splitting would need ES modules, which don't load from `file://`.
 - Not a git repo yet.
 - **Projects and browser tabs from Convex** (10-22-2026): the homepage projects (`work/home-projects.html`) and the tabs list (`work/browser-tabs-data.json`) are hand-written snapshots. Later, mount them from the Convex data in `future-chrislanejones-beach` (`convex/projects.ts`, `src/data/projects-data.ts`). Design first, data later.
+- **PGA Golf Game isn't in Convex** (10-22-2026): the homepage falls back to the static snapshot for it. Add it through the live site's admin, then the fallback goes unused.
