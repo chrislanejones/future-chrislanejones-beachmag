@@ -1,0 +1,21 @@
+{
+  "name": "future-chrislanejones-beachmag",
+  "private": true,
+  "packageManager": "pnpm@10.26.0",
+  "scripts": {
+    "build": "pnpm run build:tabs && pnpm run build:home && pnpm run build:sandbox && pnpm run check",
+    "build:tabs": "python3 work/build_browser_tabs.py",
+    "build:home": "python3 work/build_radio_home.py",
+    "build:sandbox": "pnpm --filter coastal-sandbox build",
+    "build:audio": "python3 work/generate_radio_demo.py",
+    "check": "python3 work/check_preview.py",
+    "typecheck": "pnpm --filter coastal-sandbox typecheck",
+    "test": "pnpm --filter coastal-sandbox test",
+    "dev": "sirv outputs --port 4173 --host 0.0.0.0 --dev",
+    "build:tracks": "node work/render_tracks.mjs"
+  },
+  "devDependencies": {
+    "bckgrnd-msc-mcp": "0.2.0",
+    "sirv-cli": "^3.0.1"
+  }
+}

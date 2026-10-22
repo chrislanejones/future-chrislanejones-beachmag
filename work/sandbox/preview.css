@@ -1,0 +1,30 @@
+#sandbox{padding:42px 30px;background:light-dark(#e9dfc9,#142224);color:light-dark(#173e42,#f1e7d4);border-top:5px solid currentColor;font-family:'DM Sans',Arial,sans-serif;scroll-margin-top:20px}
+#sandbox *{box-sizing:border-box}
+#sandbox .sandbox-heading{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:end;margin-bottom:25px}
+#sandbox .game-kicker{font-size:10px;letter-spacing:.13em;font-weight:bold;margin-bottom:14px}
+#sandbox h2{font:900 60px/.95 'Bodoni Moda',Georgia,serif;letter-spacing:-3px;margin:0}
+#sandbox h2 em{color:light-dark(#a6321c,#ffab80)}
+#sandbox .sandbox-heading>p{font-size:13px;line-height:1.7;max-width:32ch}
+#sandbox .game-toolbar{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:15px}
+#sandbox button{font:700 10px 'DM Sans',Arial,sans-serif;min-height:44px;border:1px solid currentColor;background:transparent;color:inherit;padding:8px;cursor:pointer}
+#sandbox button[aria-pressed=true]{background:light-dark(#173e42,#f1e7d4);color:light-dark(#f1e7d4,#173e42);box-shadow:2px 3px 0 #af6246}
+#sandbox button:disabled{opacity:.4;cursor:default}
+#sandbox .game-toolbar button{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;padding:9px 5px;min-height:92px}
+#sandbox .game-tool-art{display:block;width:46px;height:46px;max-width:100%;flex-shrink:0}
+#sandbox .tool-sand-fill{fill:light-dark(#d7bd88,#9d855b)}
+#sandbox .tool-accent-fill{fill:light-dark(#d47c56,#b86648)}
+#sandbox .tool-shadow-fill{fill:light-dark(#b19562,#776647)}
+#sandbox .tool-shell-fill{fill:light-dark(#f4ddbd,#bba28b)}
+#sandbox .tool-water{stroke:light-dark(#377f87,#8bc7c8);stroke-width:2.5}
+#sandbox .game-toolbar button[aria-pressed=true] .tool-sand-fill{fill:#ba9b63}
+#sandbox .game-toolbar button[aria-pressed=true] .tool-shadow-fill{fill:#887344}
+#sandbox .game-toolbar button[aria-pressed=true] .tool-shell-fill{fill:#bc9c7b}
+#sandbox .game-toolbar button[aria-pressed=true] .tool-water{stroke:light-dark(#8bc7c8,#377f87)}
+#sandbox .game-toolbar small{display:block;font-size:7px;margin-top:3px}
+#sandbox .game-stage{height:470px;position:relative;border:2px solid currentColor;overflow:hidden;background:light-dark(#ddc397,#756448)}
+#sandbox .supply-caption{position:absolute;bottom:10px;left:12px;font-size:8px;letter-spacing:1px;background:light-dark(#eee5d2dd,#142224dd);padding:7px;pointer-events:none}
+#sandbox .game-bottom{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-top:15px;font-size:10px}
+#sandbox .game-bottom>div{display:flex;gap:5px;flex-wrap:wrap}
+#sandbox .game-status{font-size:12px;min-height:36px;line-height:1.5;padding-top:14px;border-top:1px solid}
+#sandbox #game-help{font-size:11px;line-height:1.7;max-width:80ch}
+@media(max-width:640px){#sandbox{padding:30px 18px}#sandbox .sandbox-heading{grid-template-columns:1fr;gap:12px}#sandbox h2{font-size:48px}#sandbox .game-toolbar{grid-template-columns:repeat(4,1fr)}#sandbox .game-stage{height:390px}#sandbox .game-bottom{flex-direction:column;align-items:start}}
