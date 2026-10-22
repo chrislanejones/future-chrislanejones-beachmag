@@ -18,6 +18,7 @@ RENAME = {
     'value': 'defaultValue', 'checked': 'defaultChecked', 'datetime': 'dateTime',
 }
 BOOLEAN = {'hidden', 'disabled', 'controls', 'open', 'multiple', 'required', 'defaultChecked', 'autoPlay', 'playsInline', 'loop', 'muted', 'readOnly'}
+NUMERIC = {'aria-valuemin', 'aria-valuemax', 'aria-valuenow', 'tabIndex'}  # React types these as numbers
 DROP = re.compile(r'^on[a-z]+$')  # inline handlers get ported by hand
 
 
@@ -63,6 +64,8 @@ class Converter(HTMLParser):
             jsx = RENAME.get(name, camel(name))
             if jsx == 'style':
                 parts.append(f'style={style_object(value or "")}')
+            elif jsx in NUMERIC and re.fullmatch(r'-?[0-9.]+', value or ''):
+                parts.append(f'{jsx}={{{value}}}')
             elif value is None or (jsx in BOOLEAN and value in ('', jsx.lower())):
                 parts.append(jsx)
             else:

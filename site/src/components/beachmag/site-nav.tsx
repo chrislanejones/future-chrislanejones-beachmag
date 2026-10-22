@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { Waves } from "lucide-react";
 import { setTheme, useTheme } from "@/lib/theme-store";
 
 const DESKTOP_LINKS = [
@@ -86,12 +86,9 @@ export function SiteNav() {
     <>
       <header id="site-nav">
         <Link className="nav-brand" href="/" aria-label="Chris Lane Jones — home" inert={open}>
+          {/* The waves mark from the beach site's header. */}
           <span className="brand-marks" aria-hidden="true">
-            <Image className="brand-wave" src="/site-icons/Waves-Logo.webp" alt="" width={38} height={38} />
-            <svg className="brand-stamp" viewBox="0 0 40 40" width="32" height="32">
-              <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" strokeWidth="1.5" />
-              <text x="20" y="24" textAnchor="middle" fill="currentColor" fontFamily="Georgia,serif" fontSize="14" fontWeight="bold" fontStyle="italic">CLJ</text>
-            </svg>
+            <Waves className="brand-wave" size={38} strokeWidth={1.5} />
           </span>
           <span className="brand-wordmark">CHRIS LANE JONES <span>THE COASTAL EDITION</span></span>
         </Link>

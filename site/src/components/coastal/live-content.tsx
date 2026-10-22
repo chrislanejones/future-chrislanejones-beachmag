@@ -183,7 +183,7 @@ export function CoastalLatestPosts() {
   );
 }
 
-const photos: GalleryPhoto[] = [
+export const photos: GalleryPhoto[] = [
   {
     src: "/gallery/fan-gallery/Theo-and-I-at-RenderATL.webp",
     alt: "Chris and Theo Browne at RenderATL",

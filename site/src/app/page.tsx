@@ -4,6 +4,7 @@ import { SiteNav } from "@/components/beachmag/site-nav";
 import { CoastalArt } from "@/components/beachmag/coastal-art";
 import { JournalHero } from "@/components/beachmag/journal-hero";
 import { FeaturedProjects } from "@/components/beachmag/featured-projects";
+import { BeachOffline } from "@/components/beachmag/beach-offline";
 import "@/components/beachmag/beachmag.css";
 import "@/components/beachmag/shell.css";
 
@@ -20,6 +21,7 @@ export default function Home() {
         <CoastalArt>
           <JournalHero />
           <FeaturedProjects />
+          <BeachOffline />
         </CoastalArt>
       </div>
     </main>
