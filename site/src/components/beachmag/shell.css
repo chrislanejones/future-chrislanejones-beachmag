@@ -25,3 +25,17 @@ html.dark:has([data-beachmag]),
   outline: 3px solid #d47a40;
   outline-offset: 4px;
 }
+
+/* Tech binder icons are inline simple-icons SVGs, not the design's CDN masks. */
+#tool-gallery .brand-icon {
+  background: none;
+  -webkit-mask: none;
+  mask: none;
+  color: var(--ink);
+}
+
+#tool-gallery .brand-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

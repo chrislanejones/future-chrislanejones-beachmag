@@ -5,6 +5,8 @@ import { CoastalArt } from "@/components/beachmag/coastal-art";
 import { JournalHero } from "@/components/beachmag/journal-hero";
 import { FeaturedProjects } from "@/components/beachmag/featured-projects";
 import { BeachOffline } from "@/components/beachmag/beach-offline";
+import { ToolGallery } from "@/components/beachmag/tool-gallery";
+import { Sandbox } from "@/components/beachmag/sandbox/sandbox";
 import "@/components/beachmag/beachmag.css";
 import "@/components/beachmag/shell.css";
 
@@ -22,7 +24,9 @@ export default function Home() {
           <JournalHero />
           <FeaturedProjects />
           <BeachOffline />
+          <ToolGallery />
         </CoastalArt>
+        <Sandbox />
       </div>
     </main>
   );

@@ -27,7 +27,7 @@ import {
 import { Reveal } from "./reveal";
 import styles from "./coastal.module.css";
 
-const stack = [
+export const stack = [
   ["React", siReact],
   ["Rust", siRust],
   ["TypeScript", siTypescript],
@@ -46,7 +46,7 @@ const stack = [
   ["Stripe", siStripe],
   ["Docker", siDocker],
 ] as const;
-const learning = [
+export const learning = [
   ["Roku App Dev", siRoku],
   ["Go", siGo],
   ["NixOS", siNixos],
