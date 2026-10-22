@@ -31,6 +31,8 @@ const eslintConfig = [
       "build/**",
       "convex/_generated/**",
       "next-env.d.ts",
+      // The static design the skin was ported from; reference only.
+      "design/**",
     ],
   },
 ];

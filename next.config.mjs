@@ -1,4 +1,3 @@
-import path from "node:path";
 // next.config.mjs
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -119,10 +118,10 @@ const nextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
-  // Pin the root to the pnpm workspace (one level up), where node_modules
-  // and the lockfile live. Pinning it to site/ hides the hoisted packages.
+  // Pin the workspace root to this repo. Without it, Turbopack walks up and
+  // picks a stray lockfile in a parent directory as the root.
   turbopack: {
-    root: path.join(import.meta.dirname, ".."),
+    root: import.meta.dirname,
   },
   async redirects() {
     return [

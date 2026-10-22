@@ -1,15 +1,32 @@
+<!-- convex-ai-start -->
+
+This project uses [Convex](https://convex.dev) as its backend.
+
+When working on Convex code, **always read
+`convex/_generated/ai/guidelines.md` first** for important guidelines on
+how to correctly use Convex APIs and patterns. The file contains rules that
+override what you may have learned about Convex from training data.
+
+Convex agent skills for common tasks can be installed by running
+`npx convex ai-files install`.
+
+<!-- convex-ai-end -->
+
 # future-chrislanejones-beachmag
 
-A new skin for chrislanejones.com. Not the live site.
+The coastal-magazine skin for chrislanejones.com, on the live site's Next.js + Convex app. Not the live site.
 
-| Folder | What it is |
+| Path | What it is |
 |---|---|
-| `outputs/`, `work/` | The static coastal-magazine design (radio, projects, browser tabs). The visual reference. Build with `pnpm run build`, view with `pnpm run dev` (port 4173). |
-| `site/` | The live site's Next.js + Convex app, copied from `~/repo/future-chrislanejones-beach` at `08f5780` plus its uncommitted edits on 10-22-2026. The design gets ported onto this. Run with `pnpm run site:dev` (port 3100). |
+| repo root | **The app.** Next.js + Convex, copied from `~/repo/future-chrislanejones-beach` at `08f5780` on 10-22-2026. `pnpm dev` serves it on port 3100. |
+| `src/components/beachmag/` | The skin: `BeachmagShell`, the homepage sections, the radio, the sandbox and the browser-tabs archive. |
+| `design/` | **Reference only, not built or deployed.** The static design the skin was ported from (`design/outputs/*.html`) and its Python builders. |
+
+`src/components/beachmag/beachmag.css` and `browser-tabs.css` are generated from the design: `pnpm design:css`. Station audio is rendered with `pnpm audio:render` into `public/audio/`.
 
 ## Hard rules
 
 - **`future-chrislanejones-beach` is the live site.** This repo must never deploy, link or push to anything it uses.
-- **Never run `convex dev`, `convex deploy`, `convex run` with mutations, or `convex import`** from `site/`. The Convex deployment belongs to the live site; `site/convex/` here is a read-only copy so the types and queries compile. Reads through the Next.js app are fine.
+- **Never run `convex dev`, `convex deploy`, `convex run` with mutations, or `convex import`** here. The Convex deployment belongs to the live site; `convex/` here is a copy so the types and queries compile. Reads through the app are fine.
 - **Never run `vercel`, `vercel link` or `vercel deploy`** here, and never connect this repo to the live Vercel project.
-- `site/.env.local` is Chris's to copy in. Never read, create or edit it.
+- `.env.local` is Chris's to copy in. Never read, create or edit it.

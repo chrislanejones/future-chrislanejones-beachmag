@@ -1,5 +1,5 @@
 // Render the radio's stations with the bckgrnd-msc engine, then encode each to MP3.
-// Run from the repo root: pnpm run build:tracks
+// Run from the repo root: pnpm audio:render
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, mkdirSync, rmdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -9,7 +9,7 @@ import { renderTrack } from 'bckgrnd-msc-mcp/dist/render.js';
 
 const STATIONS = ['lowtide', 'basement', 'southside', 'study'];
 const SECONDS = 90;
-const OUT = 'outputs/audio';
+const OUT = 'public/audio';
 
 mkdirSync(OUT, { recursive: true });
 const scratch = mkdtempSync(join(tmpdir(), 'radio-tracks-'));
