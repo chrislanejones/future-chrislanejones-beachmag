@@ -1,0 +1,633 @@
+"use client";
+
+import React, { useState } from "react";
+import {
+  Plus,
+  Edit2,
+  Trash2,
+  Save,
+  GripVertical,
+  ExternalLink,
+} from "lucide-react";
+import { useQuery, useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import { Id, Doc } from "../../../../convex/_generated/dataModel";
+import { ErrorDisplay } from "../components/ErrorDisplay";
+import { SuccessDisplay } from "../components/SuccessDisplay";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { ConfirmDialog, Modal } from "@/components/ui/dialog";
+
+// Derived from the Convex schema (SSOT). The hand-rolled copy was missing the
+// schema's screenshotUrl / screenshotUpdatedAt fields.
+type BrowserLink = Doc<"browserLinks">;
+
+interface Category {
+  category: string;
+  color: string;
+  count: number;
+}
+
+const LinksManagerTabEnhanced = () => {
+  const allLinks = (useQuery(api.browserLinks.getAll) ?? []) as BrowserLink[];
+  const categories = (useQuery(api.browserLinks.getCategories) ??
+    []) as Category[];
+
+  const createLink = useMutation(api.browserLinks.create);
+  const updateLink = useMutation(api.browserLinks.update);
+  const deleteLink = useMutation(api.browserLinks.deleteLink);
+  const deleteCategory = useMutation(api.browserLinks.deleteCategory);
+
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [showModal, setShowModal] = useState(false);
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingLinkId, setEditingLinkId] = useState<string | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [deleteCategoryConfirm, setDeleteCategoryConfirm] = useState<
+    string | null
+  >(null);
+
+  const [formData, setFormData] = useState({
+    href: "",
+    label: "",
+    domain: "",
+    favicon: "",
+    category: "",
+    color: "blue",
+  });
+
+  const [categoryFormData, setCategoryFormData] = useState({
+    name: "",
+    color: "blue",
+  });
+
+  // Auto-select during render instead of in an effect: setting the selection
+  // makes the condition false on the very next pass, so this converges without
+  // the extra render (and the flash of nothing selected) an effect would cost.
+  if (categories.length > 0 && !selectedCategory) {
+    setSelectedCategory(categories[0].category);
+    setFormData((prev) => ({ ...prev, category: categories[0].category }));
+  }
+
+  const CHROME_COLORS = [
+    { id: "blue", name: "Blue", class: "bg-blue-500" },
+    { id: "red", name: "Red", class: "bg-red-500" },
+    { id: "yellow", name: "Yellow", class: "bg-yellow-500" },
+    { id: "green", name: "Green", class: "bg-green-500" },
+    { id: "pink", name: "Pink", class: "bg-pink-500" },
+    { id: "purple", name: "Purple", class: "bg-purple-500" },
+    { id: "cyan", name: "Cyan", class: "bg-cyan-500" },
+    { id: "orange", name: "Orange", class: "bg-orange-500" },
+  ];
+
+  const getLinksInCategory = (category: string) => {
+    return allLinks.filter((link) => link.category === category);
+  };
+
+  const handleOpenModal = (linkId?: Id<"browserLinks">) => {
+    if (linkId) {
+      const link = allLinks.find((l) => l._id === linkId);
+      if (link) {
+        setFormData({
+          href: link.href,
+          label: link.label,
+          domain: link.domain,
+          favicon: link.favicon || "",
+          category: link.category,
+          color: link.color,
+        });
+        setEditingLinkId(linkId);
+        setIsEditing(true);
+      }
+    } else {
+      setFormData({
+        href: "",
+        label: "",
+        domain: "",
+        favicon: "",
+        category: selectedCategory,
+        color: "blue",
+      });
+      setEditingLinkId(null);
+      setIsEditing(false);
+    }
+    setShowModal(true);
+  };
+
+  const handleSaveLink = async () => {
+    try {
+      setError(null);
+
+      if (!formData.href.trim() || !formData.label.trim()) {
+        setError(new Error("URL and Label are required"));
+        return;
+      }
+
+      const url = new URL(formData.href);
+      const domain = url.hostname;
+
+      if (isEditing && editingLinkId) {
+        // NB: don't send `order` here — updateLink patches provided fields, so
+        // passing order:0 reset every edited link's position to the top.
+        await updateLink({
+          id: editingLinkId as Id<"browserLinks">,
+          href: formData.href,
+          label: formData.label,
+          domain,
+          favicon: formData.favicon || undefined,
+          category: formData.category,
+          color: formData.color,
+        });
+        setSuccess("Link updated successfully!");
+      } else {
+        await createLink({
+          href: formData.href,
+          label: formData.label,
+          domain,
+          favicon: formData.favicon || undefined,
+          category: formData.category,
+          color: formData.color,
+          order: getLinksInCategory(formData.category).length,
+        });
+        setSuccess("Link created successfully!");
+      }
+
+      setShowModal(false);
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error("Failed to save link"));
+    }
+  };
+
+  const handleDeleteLink = async (linkId: string) => {
+    try {
+      await deleteLink({ id: linkId as Id<"browserLinks"> });
+      setSuccess("Link deleted successfully!");
+      setDeleteConfirm(null);
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error("Failed to delete link"));
+    }
+  };
+
+  const handleDeleteCategory = async (category: string) => {
+    try {
+      await deleteCategory({ category });
+      setDeleteCategoryConfirm(null);
+      setSelectedCategory(
+        categories.find((c) => c.category !== category)?.category || ""
+      );
+      setSuccess(`Category "${category}" deleted!`);
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err : new Error("Failed to delete category")
+      );
+    }
+  };
+
+  const handleToggleFeatured = async (link: BrowserLink) => {
+    try {
+      await updateLink({
+        id: link._id,
+        featured: !link.featured,
+      });
+      setSuccess(
+        link.featured
+          ? `"${link.label}" removed from featured`
+          : `"${link.label}" added to featured`
+      );
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err
+          : new Error("Failed to update featured status")
+      );
+    }
+  };
+
+  const handleOpenCategoryModal = () => {
+    setCategoryFormData({ name: "", color: "blue" });
+    setShowCategoryModal(true);
+  };
+
+  const handleSaveCategory = async () => {
+    try {
+      setError(null);
+
+      if (!categoryFormData.name.trim()) {
+        setError(new Error("Category name is required"));
+        return;
+      }
+
+      // Check if category already exists
+      if (categories.some((c) => c.category.toLowerCase() === categoryFormData.name.toLowerCase())) {
+        setError(new Error("A category with this name already exists"));
+        return;
+      }
+
+      // Create a placeholder link for the new category
+      await createLink({
+        href: "https://example.com",
+        label: "New Link",
+        domain: "example.com",
+        category: categoryFormData.name,
+        color: categoryFormData.color,
+        order: 0,
+      });
+
+      setSelectedCategory(categoryFormData.name);
+      setShowCategoryModal(false);
+      setSuccess(`Category "${categoryFormData.name}" created!`);
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error("Failed to create category"));
+    }
+  };
+
+  const currentCategoryLinks = getLinksInCategory(selectedCategory);
+
+  return (
+    <div className="space-y-6 h-full flex flex-col">
+      {/* Status Messages */}
+      {error && <ErrorDisplay error={error} onDismiss={() => setError(null)} />}
+      {success && (
+        <SuccessDisplay message={success} onDismiss={() => setSuccess(null)} />
+      )}
+
+      {/* Modal */}
+      <Modal
+        open={showModal}
+        onOpenChange={setShowModal}
+        title={isEditing ? "Edit Link" : "Add Link"}
+        className="max-w-md"
+      >
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-ink mb-2">
+              URL *
+            </label>
+            <input
+              type="url"
+              value={formData.href}
+              onChange={(e) =>
+                setFormData({ ...formData, href: e.target.value })
+              }
+              placeholder="https://example.com"
+              className="w-full px-3 py-2 rounded-lg bg-base border border-border text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-ink mb-2">
+              Label *
+            </label>
+            <input
+              type="text"
+              value={formData.label}
+              onChange={(e) =>
+                setFormData({ ...formData, label: e.target.value })
+              }
+              placeholder="My Link"
+              className="w-full px-3 py-2 rounded-lg bg-base border border-border text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-ink mb-2">
+              Favicon URL
+            </label>
+            <input
+              type="url"
+              value={formData.favicon}
+              onChange={(e) =>
+                setFormData({ ...formData, favicon: e.target.value })
+              }
+              placeholder="https://example.com/favicon.ico"
+              className="w-full px-3 py-2 rounded-lg bg-base border border-border text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-ink mb-2">
+              Category
+            </label>
+            <select
+              value={formData.category}
+              onChange={(e) =>
+                setFormData({ ...formData, category: e.target.value })
+              }
+              className="w-full px-3 py-2 rounded-lg bg-base border border-border text-ink focus:outline-none focus:ring-2 focus:ring-accent"
+            >
+              {categories.map((cat) => (
+                <option key={cat.category} value={cat.category}>
+                  {cat.category}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-ink mb-2">
+              Color
+            </label>
+            <div className="grid grid-cols-4 gap-2">
+              {CHROME_COLORS.map((color) => (
+                <button
+                  key={color.id}
+                  type="button"
+                  aria-label={color.name}
+                  onClick={() =>
+                    setFormData({ ...formData, color: color.id })
+                  }
+                  className={`${color.class} px-3 py-2 rounded-lg transition ${
+                    formData.color === color.id
+                      ? "ring-2 ring-accent"
+                      : "opacity-70 hover:opacity-100"
+                  }`}
+                  title={color.name}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="flex gap-2 pt-4">
+            <Button
+              onClick={handleSaveLink}
+              variant="primary"
+              className="flex-1 gap-2"
+            >
+              <Save className="w-4 h-4" />
+              Save
+            </Button>
+            <Button
+              onClick={() => setShowModal(false)}
+              variant="secondary"
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <ConfirmDialog
+          open
+          onOpenChange={(open) => !open && setDeleteConfirm(null)}
+          title="Delete Link?"
+          onConfirm={() => handleDeleteLink(deleteConfirm)}
+        />
+      )}
+
+      {deleteCategoryConfirm && (
+        <ConfirmDialog
+          open
+          onOpenChange={(open) => !open && setDeleteCategoryConfirm(null)}
+          title="Delete Category?"
+          description={`Delete "${deleteCategoryConfirm}" and all ${
+            getLinksInCategory(deleteCategoryConfirm).length
+          } link(s)? This cannot be undone.`}
+          onConfirm={() => handleDeleteCategory(deleteCategoryConfirm)}
+        />
+      )}
+
+      {/* Add Category Modal */}
+      <Modal
+        open={showCategoryModal}
+        onOpenChange={setShowCategoryModal}
+        title="Add Category"
+        className="max-w-md"
+      >
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-ink mb-2">
+              Category Name *
+            </label>
+            <input
+              type="text"
+              value={categoryFormData.name}
+              onChange={(e) =>
+                setCategoryFormData({ ...categoryFormData, name: e.target.value })
+              }
+              placeholder="My Category"
+              className="w-full px-3 py-2 rounded-lg bg-base border border-border text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-ink mb-2">
+              Color
+            </label>
+            <div className="grid grid-cols-4 gap-2">
+              {CHROME_COLORS.map((color) => (
+                <button
+                  key={color.id}
+                  type="button"
+                  aria-label={color.name}
+                  onClick={() =>
+                    setCategoryFormData({ ...categoryFormData, color: color.id })
+                  }
+                  className={`${color.class} px-3 py-2 rounded-lg transition ${
+                    categoryFormData.color === color.id
+                      ? "ring-2 ring-accent"
+                      : "opacity-70 hover:opacity-100"
+                  }`}
+                  title={color.name}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="flex gap-2 pt-4">
+            <Button
+              onClick={handleSaveCategory}
+              variant="primary"
+              className="flex-1 gap-2"
+            >
+              <Save className="w-4 h-4" />
+              Create Category
+            </Button>
+            <Button
+              onClick={() => setShowCategoryModal(false)}
+              variant="secondary"
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Main Grid */}
+      <div className="grid grid-cols-3 gap-6 flex-1 min-h-0">
+        {/* Categories Panel */}
+        <div className="bg-(--color-panel) border border-(--color-border) rounded-2xl p-4 flex flex-col">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold text-(--color-ink)">Categories</h3>
+            <Button
+              onClick={handleOpenCategoryModal}
+              variant="secondary"
+              size="sm"
+              className="gap-1 text-xs"
+            >
+              <Plus className="w-3 h-3" />
+              Add Category
+            </Button>
+          </div>
+          <div className="flex-1 overflow-y-auto space-y-2">
+            {categories.map((cat) => (
+              <button
+                key={cat.category}
+                onClick={() => setSelectedCategory(cat.category)}
+                className={`w-full text-left px-3 py-2 rounded-lg transition text-sm flex items-center justify-between ${
+                  selectedCategory === cat.category
+                    ? "bg-(--color-foreground) text-(--color-panel)"
+                    : "bg-(--color-muted-accent) hover:bg-(--color-surface-hover) text-(--color-ink)"
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <div
+                    className={`w-3 h-3 rounded-full chrome-group-${cat.color}`}
+                  />
+                  <span>{cat.category}</span>
+                </div>
+                <span
+                  className={`text-xs ${
+                    selectedCategory === cat.category
+                      ? "text-(--color-panel)/70"
+                      : "text-muted"
+                  }`}
+                >
+                  {cat.count}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Links Panel */}
+        <div className="col-span-2 bg-(--color-panel) border border-(--color-border) rounded-2xl p-4 flex flex-col">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold text-(--color-ink)">
+              {selectedCategory || "Select a category"}
+            </h3>
+            <div className="flex items-center gap-2">
+              {selectedCategory && (
+                <Button
+                  onClick={() => setDeleteCategoryConfirm(selectedCategory)}
+                  variant="ghost"
+                  size="icon"
+                  className="text-(--color-danger) hover:bg-(--color-danger)/10"
+                  aria-label="Delete category"
+                  title="Delete category"
+                >
+                  <Trash2 className="w-4 h-4" aria-hidden="true" />
+                </Button>
+              )}
+              <Button
+                onClick={() => handleOpenModal()}
+                variant="secondary"
+                className="gap-2"
+                disabled={!selectedCategory}
+              >
+                <Plus className="w-4 h-4" />
+                Add Link
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex-1 overflow-y-auto space-y-2">
+            {currentCategoryLinks.length === 0 ? (
+              <p className="text-sm text-muted text-center py-8">
+                No links in this category
+              </p>
+            ) : (
+              currentCategoryLinks.map((link) => (
+                <div
+                  key={link._id}
+                  className="p-3 bg-(--color-base) border border-(--color-border) rounded-lg group hover:border-accent transition"
+                >
+                  <div className="flex items-center gap-3">
+                    <GripVertical className="w-4 h-4 text-muted shrink-0 cursor-move" />
+
+                    {link.favicon && (
+                      // Favicons come from whatever site each link points at, so they
+                      // can't go through next/image's fixed remote-host allowlist.
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={link.favicon}
+                        alt=""
+                        className="w-4 h-4 shrink-0"
+                      />
+                    )}
+
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-(--color-ink) truncate">
+                        {link.label}
+                      </p>
+                      <p className="text-xs text-muted truncate">
+                        {link.domain}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-4 pr-3 mr-1 border-r border-border/50">
+                        <Switch
+                          checked={!!link.featured}
+                          onCheckedChange={() => handleToggleFeatured(link)}
+                          id={`featured-${link._id}`}
+                        />
+                        <label
+                          htmlFor={`featured-${link._id}`}
+                          className={`text-xs font-medium cursor-pointer select-none whitespace-nowrap ${
+                            link.featured ? "text-ink" : "text-muted"
+                          }`}
+                        >
+                          Featured On Other Pages
+                        </label>
+                      </div>
+
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 text-muted hover:text-ink transition"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                      <Button
+                        onClick={() => handleOpenModal(link._id)}
+                        variant="ghost"
+                        size="sm"
+                        className="p-2"
+                        aria-label={`Edit ${link.label}`}
+                      >
+                        <Edit2 className="w-4 h-4" aria-hidden="true" />
+                      </Button>
+                      <Button
+                        onClick={() => setDeleteConfirm(link._id)}
+                        variant="ghost"
+                        size="sm"
+                        className="p-2 text-(--color-danger) hover:bg-(--color-danger)/10"
+                        aria-label={`Delete ${link.label}`}
+                      >
+                        <Trash2 className="w-4 h-4" aria-hidden="true" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LinksManagerTabEnhanced;

@@ -1,5 +1,18 @@
 packages:
   - work/sandbox
+  - site
 
 onlyBuiltDependencies:
   - esbuild
+  - sharp
+  - '@tailwindcss/oxide'
+  - unrs-resolver
+
+# Carried over from the live site's package.json; pnpm only reads overrides at the workspace root.
+overrides:
+  ws@<8.21.0: '>=8.21.0'
+  effect@<3.20.0: ^3.22.2
+  postcss@<8.5.23: '>=8.5.23'
+  sharp: '>=0.35.5'
+  source-map-js@<1.2.2: '>=1.2.2'
+  postcss-selector-parser@<7.1.6: '>=7.1.6'

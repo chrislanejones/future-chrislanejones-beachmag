@@ -1,0 +1,91 @@
+/* eslint-disable */
+/**
+ * Generated `api` utility.
+ *
+ * THIS CODE IS AUTOMATICALLY GENERATED.
+ *
+ * To regenerate, run `npx convex dev`.
+ * @module
+ */
+
+import type * as authz from "../authz.js";
+import type * as blogPosts from "../blogPosts.js";
+import type * as browserLinks from "../browserLinks.js";
+import type * as careerTimeline from "../careerTimeline.js";
+import type * as clients from "../clients.js";
+import type * as conferences from "../conferences.js";
+import type * as contactMessages from "../contactMessages.js";
+import type * as crons from "../crons.js";
+import type * as homeGallery from "../homeGallery.js";
+import type * as http from "../http.js";
+import type * as media from "../media.js";
+import type * as navigation from "../navigation.js";
+import type * as ownerPolicy from "../ownerPolicy.js";
+import type * as pageHeaders from "../pageHeaders.js";
+import type * as projects from "../projects.js";
+import type * as rateLimits from "../rateLimits.js";
+import type * as redirects from "../redirects.js";
+import type * as resume from "../resume.js";
+import type * as seo from "../seo.js";
+import type * as siteSettings from "../siteSettings.js";
+import type * as socialLinks from "../socialLinks.js";
+
+import type {
+  ApiFromModules,
+  FilterApi,
+  FunctionReference,
+} from "convex/server";
+
+declare const fullApi: ApiFromModules<{
+  authz: typeof authz;
+  blogPosts: typeof blogPosts;
+  browserLinks: typeof browserLinks;
+  careerTimeline: typeof careerTimeline;
+  clients: typeof clients;
+  conferences: typeof conferences;
+  contactMessages: typeof contactMessages;
+  crons: typeof crons;
+  homeGallery: typeof homeGallery;
+  http: typeof http;
+  media: typeof media;
+  navigation: typeof navigation;
+  ownerPolicy: typeof ownerPolicy;
+  pageHeaders: typeof pageHeaders;
+  projects: typeof projects;
+  rateLimits: typeof rateLimits;
+  redirects: typeof redirects;
+  resume: typeof resume;
+  seo: typeof seo;
+  siteSettings: typeof siteSettings;
+  socialLinks: typeof socialLinks;
+}>;
+
+/**
+ * A utility for referencing Convex functions in your app's public API.
+ *
+ * Usage:
+ * ```js
+ * const myFunctionReference = api.myModule.myFunction;
+ * ```
+ */
+export declare const api: FilterApi<
+  typeof fullApi,
+  FunctionReference<any, "public">
+>;
+
+/**
+ * A utility for referencing Convex functions in your app's internal API.
+ *
+ * Usage:
+ * ```js
+ * const myFunctionReference = internal.myModule.myFunction;
+ * ```
+ */
+export declare const internal: FilterApi<
+  typeof fullApi,
+  FunctionReference<any, "internal">
+>;
+
+export declare const components: {
+  rateLimiter: import("@convex-dev/rate-limiter/_generated/component.js").ComponentApi<"rateLimiter">;
+};

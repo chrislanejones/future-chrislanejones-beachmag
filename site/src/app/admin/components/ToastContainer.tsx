@@ -1,0 +1,60 @@
+"use client";
+
+import { CheckCircle, AlertCircle, Info, X, Loader2 } from "lucide-react";
+
+type ToastType = "success" | "error" | "info" | "loading";
+
+interface Toast {
+  id: string;
+  message: string;
+  type: ToastType;
+}
+
+interface ToastContainerProps {
+  toasts: Toast[];
+  onRemove: (id: string) => void;
+}
+
+export const ToastContainer = ({ toasts, onRemove }: ToastContainerProps) => {
+  if (toasts.length === 0) return null;
+
+  return (
+    <div className="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm">
+      {toasts.map((toast) => (
+        <div
+          key={toast.id}
+          className={`px-4 py-3 rounded-lg shadow-lg border flex items-center gap-3 animate-in slide-in-from-right-5 fade-in duration-200 ${
+            toast.type === "success"
+              ? "bg-(--color-success)/10 border-(--color-success)/40 text-(--color-success)"
+              : toast.type === "error"
+                ? "bg-red-500/10 border-red-500/30 text-(--color-danger)"
+                : toast.type === "loading"
+                  ? "bg-blue-500/10 border-blue-500/30 text-blue-600 dark:text-blue-400"
+                  : "bg-(--color-muted)/10 border-(--color-muted)/40 text-ink"
+          }`}
+        >
+          {toast.type === "success" && (
+            <CheckCircle className="w-4 h-4 shrink-0" />
+          )}
+          {toast.type === "error" && (
+            <AlertCircle className="w-4 h-4 shrink-0" />
+          )}
+          {toast.type === "info" && <Info className="w-4 h-4 shrink-0" />}
+          {toast.type === "loading" && (
+            <Loader2 className="w-4 h-4 shrink-0 animate-spin" />
+          )}
+          <span className="text-sm flex-1">{toast.message}</span>
+          {toast.type !== "loading" && (
+            <button
+              onClick={() => onRemove(toast.id)}
+              className="p-1 hover:bg-black/10 dark:hover:bg-white/10 rounded transition shrink-0"
+              aria-label="Close notification"
+            >
+              <X className="w-3 h-3" aria-hidden="true" />
+            </button>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};

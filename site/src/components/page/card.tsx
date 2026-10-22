@@ -1,0 +1,121 @@
+// src/components/page/card.tsx
+"use client";
+import { motion } from "framer-motion";
+import { ReactNode } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cardVariants as motionCardVariants } from "@/lib/animations";
+
+const cardVariants = cva(
+  "card rounded-3xl bg-panel border border-(--color-border)",
+  {
+    variants: {
+      size: {
+        small: "col-span-1 row-span-1",
+        medium: "col-span-1 md:col-span-2 row-span-1",
+        large: "col-span-1 md:col-span-2",
+        wide: "col-span-1 md:col-span-4 row-span-1",
+        hero: "col-span-1 md:col-span-4 row-span-1",
+        full: "col-span-1 md:col-span-6 row-span-1",
+      },
+      height: {
+        small: "min-h-[25px] md:min-h-[25px]",
+        medium: "min-h-[200px] md:min-h-[210px]",
+        large: "md:row-span-2 min-h-[400px] md:min-h-[420px]",
+        xl: "min-h-[300px] sm:min-h-[350px] lg:min-h-[400px]",
+      },
+      layout: {
+        default: "p-4",
+        "media-top": "overflow-hidden flex flex-col",
+        "media-bottom": "overflow-hidden flex flex-col-reverse",
+        "media-left": "overflow-hidden flex flex-row",
+        "media-right": "overflow-hidden flex flex-row-reverse",
+        split: "grid md:grid-cols-2 gap-6 p-4",
+        stacked: "flex flex-col gap-4 p-4",
+      },
+      mediaRadius: {
+        none: "",
+        sm: "[&>*:first-child]:rounded-sm",
+        md: "[&>*:first-child]:rounded-md",
+        lg: "[&>*:first-child]:rounded-lg",
+        xl: "[&>*:first-child]:rounded-xl",
+        "2xl": "[&>*:first-child]:rounded-2xl",
+        top: "[&>*:first-child]:rounded-t-2xl",
+        bottom: "[&>*:first-child]:rounded-b-2xl",
+        inset:
+          "[&>*:first-child]:rounded-2xl [&>*:first-child]:m-4 [&>*:first-child]:overflow-hidden",
+      },
+    },
+    defaultVariants: {
+      size: "medium",
+      height: "medium",
+      layout: "default",
+      mediaRadius: "none",
+    },
+  }
+);
+
+interface UnifiedCardProps extends VariantProps<typeof cardVariants> {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  id?: string;
+  style?: React.CSSProperties;
+}
+
+export function Card({
+  children,
+  size,
+  height,
+  layout,
+  mediaRadius,
+  className = "",
+  delay = 0,
+  id,
+  style,
+}: UnifiedCardProps) {
+  return (
+    <motion.article
+      id={id}
+      className={`${cardVariants({
+        size,
+        height,
+        layout,
+        mediaRadius,
+      })} ${className} pointer-events-auto`}
+      style={{
+        ...style,
+        willChange: "transform, opacity",
+      }}
+      variants={motionCardVariants}
+      initial="hidden"
+      animate="visible"
+      custom={delay}
+    >
+      {children}
+    </motion.article>
+  );
+}
+
+export function CardMedia({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={`relative flex-1 min-h-0 ${className}`}>{children}</div>
+  );
+}
+
+export function CardFooter({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return <div className={`p-4 shrink-0 ${className}`}>{children}</div>;
+}
+
+export default Card;

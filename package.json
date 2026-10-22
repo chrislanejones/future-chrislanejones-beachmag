@@ -12,7 +12,11 @@
     "typecheck": "pnpm --filter coastal-sandbox typecheck",
     "test": "pnpm --filter coastal-sandbox test",
     "dev": "sirv outputs --port 4173 --host 0.0.0.0 --dev",
-    "build:tracks": "node work/render_tracks.mjs"
+    "build:tracks": "node work/render_tracks.mjs",
+    "site:dev": "pnpm --filter nextjs-portfolio exec next dev --port 3100",
+    "site:build": "pnpm --filter nextjs-portfolio build",
+    "site:test": "pnpm --filter nextjs-portfolio test",
+    "site:typecheck": "pnpm --filter nextjs-portfolio exec tsc --noEmit"
   },
   "devDependencies": {
     "bckgrnd-msc-mcp": "0.2.0",

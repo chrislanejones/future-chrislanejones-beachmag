@@ -1,0 +1,299 @@
+"use client";
+
+import { AnimatePresence, motion, wrap } from "framer-motion";
+import { useState, SVGProps, forwardRef, useEffect } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import styles from "./icon-slider.module.css";
+
+export type SliderItem = {
+  name: string;
+  logo: string;
+  url: string;
+  alt?: string;
+  year?: string;
+  location?: string;
+};
+
+type ItemGroupProps = {
+  items: SliderItem[];
+  direction: number;
+  isMobile: boolean;
+  variant: "large-block" | "small-block" | "no-filter";
+};
+
+interface IconSliderProps {
+  items: SliderItem[];
+  title?: string;
+  showNavigation?: boolean;
+  showPagination?: boolean;
+  variant?: "large-block" | "small-block" | "no-filter";
+  className?: string;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                Item  Group                                */
+/* -------------------------------------------------------------------------- */
+
+const ItemGroup = forwardRef<HTMLDivElement, ItemGroupProps>(
+  ({ items, variant }, ref) => {
+    return (
+      <motion.div
+        ref={ref}
+        className={`
+          absolute inset-0
+          grid gap-6 p-4
+          grid-cols-2 grid-rows-2          /* mobile: 2×2 */
+          sm:grid-cols-2 sm:grid-rows-2    /* tablet: 2×2 */
+          lg:grid-cols-4 lg:grid-rows-2    /* desktop: 4×2 */
+        `}
+        initial={{ opacity: 0 }}
+        animate={{
+          opacity: 1,
+          transition: { duration: 0.3, ease: "easeOut" },
+        }}
+        exit={{
+          opacity: 0,
+          transition: { duration: 0.2, ease: "easeIn" },
+        }}
+      >
+        {items.map((item, i) =>
+          !item.name || !item.logo ? (
+            <div key={`empty-${i}`} />
+          ) : (
+            <motion.a
+              key={`${item.name}-${i}`}
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-center rounded-lg bg-(--color-inner-card) hover:bg-(--color-muted-accent) p-2 transition-all duration-300 border border-transparent hover:border-(--color-accent) hover:shadow-glow"
+              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 1, scale: 0.95 }}
+              animate={{
+                scale: 1,
+                transition: { duration: 0.45, ease: "easeOut" },
+              }}
+            >
+              <Image
+                src={item.logo}
+                alt={item.alt ?? `${item.name} logo`}
+                width={300}
+                height={200}
+                className={`${variant === "no-filter" ? "" : "client-logo "}object-contain max-w-full w-auto h-32 sm:h-40 lg:h-48 opacity-90 group-hover:opacity-100 transition-all duration-300`}
+                sizes="(max-width: 640px) 100vw,
+                       (max-width: 1024px) 50vw,
+                       25vw"
+              />
+            </motion.a>
+          )
+        )}
+      </motion.div>
+    );
+  }
+);
+
+ItemGroup.displayName = "ItemGroup";
+
+/* -------------------------------------------------------------------------- */
+/*                                Icon Slider                                */
+/* -------------------------------------------------------------------------- */
+
+export default function IconSlider({
+  items,
+  title,
+  showNavigation = true,
+  showPagination = true,
+  variant = "large-block",
+  className = "",
+}: IconSliderProps) {
+  const [selectedGroup, setSelectedGroup] = useState(0);
+  const [direction, setDirection] = useState<1 | -1>(1);
+  const [itemsPerView, setItemsPerView] = useState(8);
+
+  // responsive grouping
+  useEffect(() => {
+    const handleResize = () => {
+      const w = window.innerWidth;
+      if (w < 640)
+        setItemsPerView(4); // mobile: 2×2
+      else if (w < 1024)
+        setItemsPerView(4); // tablet: 2×2
+      else setItemsPerView(8); // desktop: 4×2
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  /* ---------------------------- group calculation --------------------------- */
+  const itemGroups: SliderItem[][] = [];
+  for (let i = 0; i < items.length; i += itemsPerView) {
+    const group = items.slice(i, i + itemsPerView);
+    while (group.length < itemsPerView)
+      group.push({ name: "", logo: "", url: "#" });
+    itemGroups.push(group);
+  }
+
+  /* ---------------------------- navigation logic ---------------------------- */
+  function setSlide(newDirection: 1 | -1) {
+    const next = wrap(0, itemGroups.length, selectedGroup + newDirection);
+    setSelectedGroup(next);
+    setDirection(newDirection);
+  }
+
+  const shouldShowNavigation = showNavigation && itemGroups.length > 1;
+  const shouldShowPagination = showPagination && itemGroups.length > 1;
+  const currentItems =
+    itemGroups[selectedGroup] || items.slice(0, itemsPerView);
+
+  /* ---------------------------------- render --------------------------------- */
+  return (
+    <div className={className}>
+      {title && <h2 className="text-center mb-4">{title}</h2>}
+
+      <div className="flex items-center justify-between gap-4">
+        {/* Left Arrow - desktop only */}
+        {shouldShowNavigation ? (
+          <Button
+            variant="neutral"
+            size="icon"
+            round={true}
+            aria-label="Previous"
+            onClick={() => setSlide(-1)}
+            className="hidden sm:flex"
+          >
+            <ArrowLeft />
+          </Button>
+        ) : (
+          <div className="hidden sm:block w-10" />
+        )}
+
+        <div className="flex-1 relative h-120 md:h-128 overflow-hidden">
+          <AnimatePresence custom={direction} initial={false} mode="wait">
+            <ItemGroup
+              key={selectedGroup}
+              items={currentItems}
+              direction={direction}
+              isMobile={false}
+              variant={variant}
+            />
+          </AnimatePresence>
+        </div>
+
+        {/* Right Arrow - desktop only */}
+        {shouldShowNavigation ? (
+          <Button
+            variant="neutral"
+            size="icon"
+            round={true}
+            aria-label="Next"
+            onClick={() => setSlide(1)}
+            className="hidden sm:flex"
+          >
+            <ArrowRight />
+          </Button>
+        ) : (
+          <div className="hidden sm:block w-10" />
+        )}
+      </div>
+
+      {/* Desktop pagination dots */}
+      {shouldShowPagination && (
+        <div className="hidden sm:flex justify-center gap-2 mt-4">
+          {itemGroups.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                setDirection(i > selectedGroup ? 1 : -1);
+                setSelectedGroup(i);
+              }}
+              type="button"
+              className={styles.dot}
+              aria-current={i === selectedGroup ? "true" : undefined}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Mobile: prev + dots + next in one bottom row */}
+      {(shouldShowNavigation || shouldShowPagination) && (
+        <div className="flex sm:hidden justify-center items-center gap-4 mt-4">
+          {shouldShowNavigation && (
+            <Button
+              variant="neutral"
+              size="icon"
+              round={true}
+              aria-label="Previous"
+              onClick={() => setSlide(-1)}
+            >
+              <ArrowLeft />
+            </Button>
+          )}
+          {shouldShowPagination && (
+            <div className="flex gap-2 items-center">
+              {itemGroups.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    setDirection(i > selectedGroup ? 1 : -1);
+                    setSelectedGroup(i);
+                  }}
+                  type="button"
+                  className={styles.dot}
+                  aria-current={i === selectedGroup ? "true" : undefined}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
+          {shouldShowNavigation && (
+            <Button
+              variant="neutral"
+              size="icon"
+              round={true}
+              aria-label="Next"
+              onClick={() => setSlide(1)}
+            >
+              <ArrowRight />
+            </Button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                   Icons                                   */
+/* -------------------------------------------------------------------------- */
+
+const iconsProps: SVGProps<SVGSVGElement> = {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: "24",
+  height: "24",
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "2",
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+};
+
+function ArrowLeft() {
+  return (
+    <svg {...iconsProps}>
+      <path d="m12 19-7-7 7-7" />
+      <path d="M19 12H5" />
+    </svg>
+  );
+}
+
+function ArrowRight() {
+  return (
+    <svg {...iconsProps}>
+      <path d="M5 12h14" />
+      <path d="m12 5 7 7-7 7" />
+    </svg>
+  );
+}

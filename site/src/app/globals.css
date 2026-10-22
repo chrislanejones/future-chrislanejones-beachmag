@@ -1,0 +1,783 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   1. CANONICAL TOKENS
+   One definition per shared decision. Components consume these names; CSS
+   modules keep only layout, composition and illustration-specific values.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Coastal palette primitives (theme-independent) ──
+     Use these directly only where a surface must stay light/dark regardless
+     of theme (e.g. chips floating over photos); otherwise use the semantic
+     names below. */
+  --coast-cream: #f6f5f0;
+  --coast-stone: #53676a;
+  --coast-deep: #173f4a;
+  --coast-teal: #235967;
+  --coast-foam: #f8fbfa;
+
+  /* ── Semantic colors (site default; coastal routes override below) ── */
+  --color-base: #f9fafb; /* soft off-white, cleaner base */
+  --color-panel: #ffffff; /* pure white cards */
+
+  --color-ink: #111827; /* gray-900 body text */
+  --color-foreground: #374151; /* gray-700 for icons/headings/buttons */
+  --color-muted: #6b7280; /* gray-500, *only* for small footnotes */
+  --color-muted-accent: rgba(107, 114, 128, 0.08);
+  --color-inner-card: #e8e9e9;
+
+  --color-surface-hover: #f3f4f6; /* gray-100, super pale for hover */
+
+  --color-accent: var(--coast-teal); /* same as the Contact button */
+  --color-accent-alt: #3b82f6; /* blue-500 */
+  --color-on-accent: var(--coast-foam);
+
+  --color-border: #e5e7eb; /* gray-200, subtle */
+  /* Control edges (inputs, textareas) need 3:1 against their surface; the
+     faint --color-border is for decorative dividers only. */
+  --color-control-border: #708b90;
+  /* Error text and error borders: 5.5:1 or better on every surface. */
+  --color-danger: #b91c1c;
+  --color-success: #166534;
+  --color-focus-ring: #111827; /* near-black — high contrast on light backgrounds */
+  --focus-ring: 2px solid var(--color-focus-ring);
+
+  /* Status colors */
+  --color-danger: #ac3030;
+  --color-warn: #b45309;
+  --color-warn-fill: #f59e0b;
+
+  /* Category badge outlines; text/background use the shared semantic palette. */
+  --color-tag-red: #ef4444;
+  --color-tag-yellow: #eab308;
+  --color-tag-pink: #ec4899;
+  --color-tag-purple: #a855f7;
+  --color-tag-cyan: #06b6d4;
+  --color-tag-orange: #f97316;
+  --color-tag-dark: #0f172a;
+
+  /* Sidebar (admin). One format only: complete colors, mapped for Tailwind
+     in the @theme block below (bg-sidebar, text-sidebar-foreground, …). */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #111827;
+  --sidebar-primary: #374151;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f3f4f6;
+  --sidebar-accent-foreground: #374151;
+  --sidebar-border: #e5e7eb;
+  --sidebar-ring: #9ca3af;
+
+  /* ── Typography ──
+     Three primary roles — body, heading, display — sized fluidly here and
+     nowhere else. Supporting roles, each documented:
+       caption  metadata, eyebrows, chips and fine print (12–13px)
+       intro    the title at the top of an interior page (40–72px)
+       hero     the homepage hero headline only (40–98px)
+     Values in comments are approximate at 390px → 1280px → max. */
+  --type-caption: clamp(0.75rem, 0.73rem + 0.1vw, 0.8125rem); /* 12 → 13 */
+  --type-body: clamp(1rem, 0.96rem + 0.1vw, 1.0625rem); /* 16 → 16.6 → 17 */
+  --type-heading: clamp(1.25rem, 1.05rem + 0.75vw, 1.75rem); /* 20 → 26 → 28 */
+  --type-display: clamp(2rem, 1.5rem + 1.9vw, 3rem); /* 32 → 48 */
+  --type-intro: clamp(2.5rem, 1.8rem + 3.4vw, 4.5rem); /* 42 → 72 */
+  --type-hero: clamp(2.5rem, 1.375rem + 4.85vw, 6.125rem); /* 41 → 84 → 98 */
+  /* The name/logo lockup in the header and menu (17 → 20). */
+  --type-brand: clamp(1.0625rem, 0.95rem + 0.4vw, 1.25rem);
+
+  --leading-body: 1.6;
+  --leading-heading: 1.2;
+  --leading-display: 1.05;
+  --measure-prose: 70ch;
+
+  /* Supplied faces are 400/600/700 only (src/app/layout.tsx). */
+  --weight-regular: 400;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --font-code: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code",
+    "Fira Code", Menlo, Consolas, monospace;
+
+  /* Legacy fluid steps. Still used by blog prose, the admin and a few inline
+     styles; public coastal surfaces use the --type-* roles above. Remove each
+     step once its last consumer migrates. */
+  --step--1: clamp(0.82rem, 0.8rem + 0.18vw, 0.95rem); /* small text */
+  --step-0: clamp(0.95rem, 0.88rem + 0.25vw, 1.05rem); /* base paragraph */
+  --step-1: clamp(1.1rem, 1rem + 0.35vw, 1.25rem); /* smaller h4 */
+  --step-2: clamp(1.25rem, 1.1rem + 0.55vw, 1.45rem); /* smaller h3 */
+  --step-3: clamp(1.45rem, 1.2rem + 1vw, 1.75rem); /* smaller h2 */
+  --step-4: clamp(2rem, 1.45rem + 2.3vw, 2.5rem); /* h1 stays same */
+
+  /* ── Geometry ── */
+  --radius: 12px;
+  --radius-media: 20px;
+  --radius-control: 12px;
+  --radius-pill: 999px;
+
+  /* ── Motion ── */
+  --motion-fast: 160ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   2. THEME OVERRIDES
+   ═══════════════════════════════════════════════════════════════════════════ */
+.dark {
+  --color-base: #0b0d10;
+  --color-panel: #111418;
+  --color-ink: #f3f4f6; /* light gray for body */
+  --color-foreground: #d1d5db; /* gray-300 for icons/headings */
+  --color-muted: #9ca3af; /* gray-400 muted */
+  --color-muted-accent: rgba(255, 255, 255, 0.05);
+  --color-inner-card: #1f242b;
+
+  --color-surface-hover: #1a1e24;
+
+  --color-accent: #a7d3d7; /* coastal light teal for dark mode */
+  --color-accent-alt: #60a5fa; /* Tailwind blue-400 */
+  --color-on-accent: #163b45; /* dark text on the light teal */
+
+  --color-border: #1f242b;
+  --color-control-border: #779298;
+  --color-danger: #ffb4ab;
+  --color-success: #86efac;
+  --color-focus-ring: #ffffff; /* near-white — high contrast on dark backgrounds */
+
+  --color-danger: #ffabab;
+  --color-warn: #fbbf24;
+
+  /* Sidebar variables - dark mode */
+  --sidebar: #111418;
+  --sidebar-foreground: #f3f4f6;
+  --sidebar-primary: #4ade80;
+  --sidebar-primary-foreground: #0b0d10;
+  --sidebar-accent: #1a1e24;
+  --sidebar-accent-foreground: #f3f4f6;
+  --sidebar-border: #1f242b;
+  --sidebar-ring: #6b7280;
+}
+
+/* Coastal theme. Apply the scope to page roots AND portaled surfaces. */
+[data-coastal-theme],
+body:has([data-coastal-page]) {
+  --coast-base: var(--coast-cream);
+  --coast-panel: #eeeee6;
+  --coast-soft: #e8eff0;
+  --coast-ink: var(--coast-deep);
+  --coast-muted: var(--coast-stone);
+  --coast-accent: var(--coast-teal);
+  --coast-on-accent: var(--coast-foam);
+  --coast-line: #d4ddda;
+  --coast-control-line: #708b90;
+  --coast-danger: #b91c1c;
+  --coast-success: #166534;
+  --color-base: var(--coast-base);
+  --color-panel: var(--coast-panel);
+  --color-inner-card: var(--coast-soft);
+  --color-ink: var(--coast-ink);
+  --color-foreground: var(--coast-ink);
+  --color-muted: var(--coast-muted);
+  --color-accent: var(--coast-accent);
+  --color-on-accent: var(--coast-on-accent);
+  --color-border: var(--coast-line);
+  --color-control-border: var(--coast-control-line);
+  --color-danger: var(--coast-danger);
+  --color-success: var(--coast-success);
+  --color-surface-hover: var(--coast-soft);
+  --color-focus-ring: var(--coast-accent);
+}
+.dark [data-coastal-theme],
+.dark body:has([data-coastal-page]) {
+  --coast-base: #12282e;
+  --coast-panel: #1a343b;
+  --coast-soft: #203e46;
+  --coast-ink: #e6efec;
+  --coast-muted: #b0c3c5;
+  --coast-accent: #a7d3d7;
+  --coast-on-accent: #163b45;
+  --coast-line: #365159;
+  --coast-control-line: #779298;
+  --coast-danger: #ffb4ab;
+  --coast-success: #86efac;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   3. TAILWIND THEME MAPPINGS
+   ═══════════════════════════════════════════════════════════════════════════ */
+@theme inline {
+  --font-sans: var(--font-interphases), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-code);
+
+  --text-caption: var(--type-caption);
+  --text-caption--line-height: 1.5;
+  --text-body: var(--type-body);
+  --text-body--line-height: var(--leading-body);
+  --text-heading: var(--type-heading);
+  --text-heading--line-height: var(--leading-heading);
+  --text-display: var(--type-display);
+  --text-display--line-height: var(--leading-display);
+
+  /* The site's "small" size has always been the fluid --step--1 (a hand-made
+     .text-sm used to override Tailwind's). Configure the stock utility instead
+     of redefining it. */
+  --text-sm: var(--step--1);
+  --text-sm--line-height: 1.5;
+
+  /* Same for rounded-lg: the site's large radius is --radius (12px). */
+  --radius-lg: var(--radius);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   4. DOCUMENT DEFAULTS
+   Layered so Tailwind utilities and component classes can override them.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@layer base {
+  html,
+  body {
+    height: 100%;
+    font-family: var(--font-interphases), ui-sans-serif, system-ui;
+  }
+
+  body {
+    background-color: var(--color-base);
+    color: var(--color-ink);
+  }
+
+  h1 {
+    font-size: var(--step-4);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    font-weight: var(--weight-semibold);
+  }
+
+  h2 {
+    font-size: var(--step-3);
+    line-height: 1.15;
+    font-weight: var(--weight-semibold);
+  }
+
+  h3 {
+    font-size: var(--step-2);
+    line-height: 1.2;
+    font-weight: var(--weight-semibold);
+  }
+
+  h4 {
+    font-size: var(--step-1);
+    line-height: 1.3;
+    font-weight: var(--weight-regular);
+  }
+
+  p {
+    font-size: var(--step-0);
+    line-height: 1.6;
+    font-weight: var(--weight-regular);
+  }
+
+  /* Tailwind v4's Preflight sets `button { cursor: default }`. That not only
+     shows the wrong cursor on every button/tab, it makes taps unreliable on
+     iOS Safari (which needs cursor:pointer to fire click on non-anchor
+     elements) — that's why the /projects App/Website toggle "did nothing" in
+     Safari. Restore pointer on interactive elements. */
+  button:not(:disabled),
+  [role="tab"]:not([aria-disabled="true"]),
+  [role="button"]:not([aria-disabled="true"]),
+  label[for],
+  summary {
+    cursor: pointer;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   5. PROJECT UTILITIES
+   Registered with @utility so they sit in Tailwind's utilities layer and
+   support variants (hover:text-ink, md:bg-panel, …).
+   ═══════════════════════════════════════════════════════════════════════════ */
+@utility bg-base {
+  background-color: var(--color-base);
+}
+@utility bg-panel {
+  background-color: var(--color-panel);
+}
+@utility text-ink {
+  color: var(--color-ink);
+}
+@utility text-muted {
+  color: var(--color-muted);
+}
+@utility text-foreground {
+  color: var(--color-foreground);
+}
+
+@utility shadow-soft {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+}
+
+@utility shadow-glow {
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--color-accent) 30%, transparent),
+    0 12px 40px color-mix(in srgb, var(--color-accent) 10%, transparent);
+}
+
+/* Subtle, accent-tinted passive shadow (no green background) */
+@utility shadow-passive {
+  box-shadow:
+    0 0 0 0 rgba(0, 0, 0, 0),
+    0 0 0 0 rgba(0, 0, 0, 0),
+    0 0 0 0.340185px color-mix(in srgb, var(--color-accent) 4.3%, transparent),
+    0 2.04111px 6.80371px 0
+      color-mix(in srgb, var(--color-accent) 2.4%, transparent);
+}
+
+/* Hover glow, driven by --color-accent. Kept as a hand-written hover rule
+   because it is stronger than the resting shadow-glow. */
+.hover\:shadow-glow:hover {
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--color-accent) 100%, transparent),
+    0 12px 40px color-mix(in srgb, var(--color-accent) 40%, transparent);
+}
+
+/* .focus-ring utility — solid, high-contrast outline for keyboard nav */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   6. SHARED COMPONENT RULES
+   ═══════════════════════════════════════════════════════════════════════════ */
+.site-title {
+  font-size: var(--step-2);
+  line-height: 1.2;
+  font-weight: var(--weight-semibold);
+}
+
+/* Nav links: muted → ink on hover, dotted accent underline, subtle glow */
+.nav-link {
+  color: var(--color-ink);
+  text-decoration: none;
+  border-radius: 6px;
+  transition:
+    color 150ms var(--ease-standard),
+    text-shadow 150ms var(--ease-standard);
+}
+.nav-link:hover {
+  color: var(--color-ink);
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--color-accent);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--color-accent) 28%, transparent);
+}
+.nav-link:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 3px;
+  color: var(--color-ink);
+}
+
+@layer components {
+  /* Card border/background as specified */
+  .card {
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius);
+    background: var(--color-panel);
+  }
+}
+
+/* Speech bubble component */
+.speech-bubble-container {
+  display: grid;
+  align-items: center;
+  position: relative;
+  background: var(--color-inner-card);
+  border-radius: 1rem;
+}
+
+.speech-bubble--compact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* prevent row stretching; bubble sizes to content */
+  width: 100%;
+  color: var(--color-ink);
+  min-height: 280px;
+}
+.speech-bubble--compact * {
+  color: inherit; /* force inner text/links to white */
+}
+
+/* When compact is present, neutralize the 80px grid from base class */
+.speech-bubble-container.speech-bubble--compact {
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  padding: 1rem 1.25rem; /* comfy but not tall */
+}
+
+.speech-bubble-container::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 7%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 12px solid var(--color-inner-card);
+}
+
+.image-overlay-text {
+  color: #ffffff; /* pure white readable on light images */
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6); /* soft dark halo for contrast */
+  font-weight: var(--weight-regular);
+  border: none !important; /* remove borders/rings universally */
+}
+
+/* Client logo filters - dark in light mode, white in dark mode */
+.client-logo {
+  filter: grayscale(1) brightness(0.3) contrast(1.25);
+}
+
+.dark .client-logo {
+  filter: brightness(0) invert(1);
+}
+
+/* Chrome Group Colors for Links Manager */
+.chrome-group-blue {
+  background-color: #4285f4;
+  color: white;
+}
+
+.chrome-group-red {
+  background-color: #ea4335;
+  color: white;
+}
+
+.chrome-group-yellow {
+  background-color: #fbbc04;
+  color: #111827;
+}
+
+.chrome-group-green {
+  background-color: #34a853;
+  color: white;
+}
+
+.chrome-group-pink {
+  background-color: #ff6d9e;
+  color: white;
+}
+
+.chrome-group-purple {
+  background-color: #a142f4;
+  color: white;
+}
+
+.chrome-group-cyan {
+  background-color: #00bcd4;
+  color: white;
+}
+
+.chrome-group-orange {
+  background-color: #ff9800;
+  color: white;
+}
+
+/* ─── Blog / article prose ────────────────────────────────────────────────── */
+.blog-content {
+  color: var(--color-ink);
+  font-size: var(--step-0);
+  line-height: 1.75;
+  max-width: none;
+}
+
+/* paragraphs/lists explicitly inherit ink so no embedded rule can win */
+.blog-content p,
+.blog-content li {
+  color: var(--color-ink);
+}
+
+/* dark mode: pure white body copy for max contrast on dark panel */
+.dark .blog-content,
+.dark .blog-content p,
+.dark .blog-content li,
+.dark .blog-content strong,
+.dark .blog-content b,
+.dark .blog-content em,
+.dark .blog-content i {
+  color: #ffffff;
+}
+
+/* bold/italic emphasis — keep readable in light mode (default text color) */
+.blog-content strong,
+.blog-content b {
+  font-weight: var(--weight-bold, 700);
+  color: var(--color-ink);
+}
+.blog-content em,
+.blog-content i {
+  color: var(--color-ink);
+}
+
+/* headings */
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4,
+.blog-content h5,
+.blog-content h6 {
+  color: var(--color-ink);
+  font-weight: var(--weight-bold);
+  line-height: 1.25;
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+}
+.dark .blog-content h1,
+.dark .blog-content h2,
+.dark .blog-content h3,
+.dark .blog-content h4,
+.dark .blog-content h5,
+.dark .blog-content h6 {
+  color: #ffffff;
+}
+.blog-content h1 { font-size: var(--step-4); margin-top: 0; }
+.blog-content h2 { font-size: var(--step-3); }
+.blog-content h3 { font-size: var(--step-2); }
+.blog-content h4 { font-size: var(--step-1); }
+.blog-content h5,
+.blog-content h6 { font-size: var(--step-0); }
+
+/* paragraphs */
+.blog-content p {
+  margin-top: 0;
+  margin-bottom: 1.25em;
+}
+
+/* links */
+.blog-content a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 150ms;
+}
+.blog-content a:hover { opacity: 0.8; }
+
+/* lists */
+.blog-content ul,
+.blog-content ol {
+  padding-left: 1.6em;
+  margin-bottom: 1.25em;
+}
+.blog-content ul { list-style-type: disc; }
+.blog-content ol { list-style-type: decimal; }
+.blog-content li { margin-bottom: 0.4em; }
+.blog-content li > ul,
+.blog-content li > ol { margin-top: 0.4em; margin-bottom: 0.4em; }
+
+/* blockquote */
+.blog-content blockquote {
+  border-left: 4px solid var(--color-accent);
+  padding: 0.5em 1.25em;
+  margin: 1.5em 0;
+  color: var(--color-muted);
+  font-style: italic;
+  background: var(--color-muted-accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.blog-content blockquote p { margin-bottom: 0; }
+
+/* inline code */
+.blog-content code {
+  font-family: var(--font-code);
+  font-size: 0.875em;
+  background: var(--color-muted-accent);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 0.15em 0.45em;
+  color: var(--color-accent);
+}
+
+/* code blocks */
+.blog-content pre {
+  background: var(--color-inner-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.25em 1.5em;
+  overflow-x: auto;
+  margin: 1.5em 0;
+  line-height: 1.6;
+}
+.blog-content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-ink);
+  font-size: 0.875em;
+}
+
+/* horizontal rule */
+.blog-content hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 2em 0;
+}
+
+/* images */
+.blog-content img {
+  border-radius: var(--radius);
+  max-width: 100%;
+  height: auto;
+  margin: 1.5em auto;
+  display: block;
+}
+
+/* tables */
+.blog-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: var(--step--1);
+}
+.blog-content th,
+.blog-content td {
+  border: 1px solid var(--color-border);
+  padding: 0.6em 1em;
+  text-align: left;
+}
+.blog-content th {
+  background: var(--color-muted-accent);
+  font-weight: var(--weight-bold);
+}
+.blog-content tr:nth-child(even) td {
+  background: var(--color-muted-accent);
+}
+
+/* first element — no top margin */
+.blog-content > *:first-child { margin-top: 0; }
+.blog-content > *:last-child  { margin-bottom: 0; }
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* Admin panel gradient borders */
+.admin-border-right {
+  border-right: 1px solid transparent;
+  border-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in srgb, var(--color-accent) 30%, var(--color-border)) 15%,
+    color-mix(in srgb, var(--color-accent) 40%, var(--color-border)) 50%,
+    color-mix(in srgb, var(--color-accent) 30%, var(--color-border)) 85%,
+    transparent 100%
+  ) 1;
+}
+
+.admin-border-bottom {
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(
+    to right,
+    transparent 0%,
+    color-mix(in srgb, var(--color-accent) 30%, var(--color-border)) 10%,
+    color-mix(in srgb, var(--color-accent) 40%, var(--color-border)) 50%,
+    color-mix(in srgb, var(--color-accent) 30%, var(--color-border)) 90%,
+    transparent 100%
+  ) 1;
+}
+
+/* Panel glow for admin */
+.admin-panel-glow {
+  box-shadow: inset -1px 0 12px -6px color-mix(in srgb, var(--color-accent) 15%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RIP <marquee> — CSS tribute scrolling animation
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes marquee-scroll {
+  0%   { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.marquee-container {
+  display: block;
+  overflow: hidden;
+  width: 100%;
+}
+
+.marquee-inner {
+  display: block;
+  /* no white-space: nowrap — block width = container width, so translateX(100%)
+     starts the text at exactly the right edge with zero effect on layout */
+  animation: marquee-scroll 8s linear infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ACCESSIBILITY — Keyboard Focus Rings
+   Black in light mode, white in dark mode. High contrast, always visible.
+   Tokens: --color-focus-ring (#111827 light / #ffffff dark)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Universal rule — every focusable element gets the ring when reached by Tab */
+*:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 3px;
+}
+
+/* Strip default browser outline for mouse/touch users only
+   (focus-visible fires only on keyboard nav, so mouse clicks are unaffected) */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Radix UI dropdown / popover items that use [data-highlighted] for focus */
+[data-highlighted]:focus-visible,
+[data-state="checked"]:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 3px;
+}
+
+/* Skip-to-content link — already visible when focused, keep it clean */
+[href="#main-content"]:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Interactive image overlays keep a visible keyboard indicator. */
+.image-overlay-text:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   REDUCED MOTION — global coverage
+   Module-level rules cover their own components; these cover what they
+   cannot reach: portaled coastal surfaces (menus, drawers, dialogs mounted
+   outside .coastalPage) and the global marquee. Durations are shortened
+   rather than removed so Radix/Vaul still receive their end events.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  [data-coastal-theme] *,
+  [data-coastal-theme] *::before,
+  [data-coastal-theme] *::after,
+  body:has([data-coastal-page]) [data-vaul-drawer],
+  body:has([data-coastal-page]) [data-vaul-drawer] *,
+  body:has([data-coastal-page]) [data-radix-popper-content-wrapper] * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-inner {
+    animation: none;
+  }
+}

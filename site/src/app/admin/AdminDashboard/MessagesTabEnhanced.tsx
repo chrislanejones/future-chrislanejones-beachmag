@@ -1,0 +1,400 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import {
+  Search,
+  Mail,
+  MailOpen,
+  Trash2,
+  Phone,
+  Calendar,
+  ExternalLink,
+} from "lucide-react";
+import { useQuery, useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import { Id, Doc } from "../../../../convex/_generated/dataModel";
+import { ErrorDisplay } from "../components/ErrorDisplay";
+import { SuccessDisplay } from "../components/SuccessDisplay";
+import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/dialog";
+
+// Derived from the Convex schema (SSOT) instead of a hand-rolled shape.
+type ContactMessage = Doc<"contactMessages">;
+
+const MessagesTabEnhanced = () => {
+  // Keep the raw result: undefined means Convex is still loading.
+  const messagesQuery = useQuery(api.contactMessages.getAll);
+  const messages = messagesQuery ?? [];
+  const markAsRead = useMutation(api.contactMessages.markAsRead);
+  const markAsUnread = useMutation(api.contactMessages.markAsUnread);
+  const deleteMessage = useMutation(api.contactMessages.deleteMessage);
+
+  const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(
+    null
+  );
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterStatus, setFilterStatus] = useState<"all" | "unread" | "read">(
+    "all"
+  );
+  const [error, setError] = useState<Error | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+
+  // Auto-select first unread message or first message
+  // Auto-select during render instead of in an effect: setting the selection
+  // makes the condition false on the very next pass, so this converges without
+  // the extra render (and the flash of nothing selected) an effect would cost.
+  if (messages.length > 0 && !selectedMessage) {
+    const unreadMessage = messages.find((m) => !m.read);
+    setSelectedMessage((unreadMessage || messages[0]) as ContactMessage);
+  }
+
+  // Mark as read when selected. The state update waits for the mutation, so
+  // nothing is set synchronously inside the effect.
+  const selectedId = selectedMessage?._id;
+  const selectedUnread = !!selectedMessage && !selectedMessage.read;
+  useEffect(() => {
+    if (!selectedId || !selectedUnread) return;
+    markAsRead({ id: selectedId })
+      .then(() =>
+        setSelectedMessage((prev) =>
+          prev?._id === selectedId ? { ...prev, read: true } : prev,
+        ),
+      )
+      .catch((err) => console.error("Failed to mark as read:", err));
+  }, [selectedId, selectedUnread, markAsRead]);
+
+  const handleMarkAsUnread = async (id: Id<"contactMessages">) => {
+    try {
+      await markAsUnread({ id });
+      setSelectedMessage((prev) => prev?._id === id ? { ...prev, read: false } : prev);
+    } catch (err) {
+      console.error("Failed to mark as unread:", err);
+    }
+  };
+
+  const handleDelete = async (id: Id<"contactMessages">) => {
+    try {
+      await deleteMessage({ id });
+      setSuccess("Message deleted successfully");
+      setDeleteConfirm(null);
+      if (selectedMessage?._id === id) {
+        setSelectedMessage(null);
+      }
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err : new Error("Failed to delete message")
+      );
+    }
+  };
+
+  const handleSelectMessage = (message: ContactMessage) => {
+    setSelectedMessage(message);
+  };
+
+  const filteredMessages = messages.filter((message) => {
+    const matchesSearch =
+      message.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      message.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      message.message.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesFilter =
+      filterStatus === "all" ||
+      (filterStatus === "unread" && !message.read) ||
+      (filterStatus === "read" && message.read);
+
+    return matchesSearch && matchesFilter;
+  });
+
+  const unreadCount = messages.filter((m) => !m.read).length;
+
+  const formatDate = (timestamp: number) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    if (days === 0) {
+      return date.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+      });
+    } else if (days === 1) {
+      return "Yesterday";
+    } else if (days < 7) {
+      return date.toLocaleDateString("en-US", { weekday: "long" });
+    } else {
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+    }
+  };
+
+  const formatFullDate = (timestamp: number) => {
+    return new Date(timestamp).toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  };
+
+  if (messagesQuery === undefined) {
+    return <Spinner label="Loading messages..." />;
+  }
+
+  return (
+    <div className="grid grid-cols-3 gap-6 h-full">
+      {/* Status Messages */}
+      {error && (
+        <div className="col-span-3">
+          <ErrorDisplay error={error} onDismiss={() => setError(null)} />
+        </div>
+      )}
+      {success && (
+        <div className="col-span-3">
+          <SuccessDisplay
+            message={success}
+            onDismiss={() => setSuccess(null)}
+          />
+        </div>
+      )}
+
+      {/* Left Panel - Message List */}
+      <div className="bg-(--color-panel) border border-(--color-border) rounded-2xl p-4 flex flex-col">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-(--color-ink)">Messages</h3>
+          {unreadCount > 0 && (
+            <span className="px-2 py-1 bg-accent text-on-accent text-xs font-bold rounded-full">
+              {unreadCount} new
+            </span>
+          )}
+        </div>
+
+        {/* Search */}
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
+          <input
+            type="text"
+            placeholder="Search messages..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 bg-(--color-muted-accent) rounded-lg text-ink text-sm focus:ring-2 focus:ring-accent focus:outline-none"
+          />
+        </div>
+
+        {/* Filter Tabs */}
+        <div className="flex gap-1 mb-4 p-1 bg-(--color-muted-accent) rounded-lg">
+          {(["all", "unread", "read"] as const).map((status) => (
+            <button
+              key={status}
+              onClick={() => setFilterStatus(status)}
+              className={`flex-1 px-3 py-1.5 text-sm rounded-md transition ${
+                filterStatus === status
+                  ? "bg-(--color-foreground) text-(--color-panel)"
+                  : "text-muted hover:text-ink"
+              }`}
+            >
+              {status.charAt(0).toUpperCase() + status.slice(1)}
+            </button>
+          ))}
+        </div>
+
+        {/* Message List */}
+        <div className="flex-1 overflow-y-auto space-y-2">
+          {filteredMessages.length === 0 ? (
+            <p className="text-sm text-muted text-center py-8">
+              No messages found
+            </p>
+          ) : (
+            filteredMessages.map((message) => (
+              <button
+                key={message._id}
+                onClick={() => handleSelectMessage(message as ContactMessage)}
+                className={`w-full text-left p-3 rounded-lg transition ${
+                  selectedMessage?._id === message._id
+                    ? "bg-(--color-foreground) text-(--color-panel)"
+                    : "bg-(--color-muted-accent) hover:bg-(--color-surface-hover) text-(--color-ink)"
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <div
+                    className={`mt-1 ${
+                      selectedMessage?._id === message._id
+                        ? "text-(--color-panel)"
+                        : message.read
+                          ? "text-muted"
+                          : "text-accent"
+                    }`}
+                  >
+                    {message.read ? (
+                      <MailOpen className="w-4 h-4" />
+                    ) : (
+                      <Mail className="w-4 h-4" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
+                      <span
+                        className={`font-medium truncate ${
+                          !message.read && selectedMessage?._id !== message._id
+                            ? "text-(--color-ink)"
+                            : ""
+                        }`}
+                      >
+                        {message.name}
+                      </span>
+                      <span
+                        className={`text-xs shrink-0 ${
+                          selectedMessage?._id === message._id
+                            ? "opacity-70"
+                            : "text-muted"
+                        }`}
+                      >
+                        {formatDate(message.createdAt)}
+                      </span>
+                    </div>
+                    <p
+                      className={`text-sm truncate mt-1 ${
+                        selectedMessage?._id === message._id
+                          ? "opacity-70"
+                          : "text-muted"
+                      }`}
+                    >
+                      {message.message}
+                    </p>
+                  </div>
+                </div>
+              </button>
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* Right Panel - Message Detail */}
+      <div className="col-span-2 bg-(--color-panel) border border-(--color-border) rounded-2xl overflow-hidden flex flex-col">
+        {selectedMessage ? (
+          <>
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 bg-(--color-muted-accent)">
+              <div>
+                <h2 className="font-bold text-ink">{selectedMessage.name}</h2>
+                <p className="text-sm text-muted">{selectedMessage.email}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <a
+                  href={`mailto:${selectedMessage.email}`}
+                  className="p-2 text-muted hover:text-ink transition rounded-lg hover:bg-surface-hover"
+                  title="Reply via email"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+                <Button
+                  onClick={() => setDeleteConfirm(selectedMessage._id)}
+                  variant="ghost"
+                  size="sm"
+                  className="text-(--color-danger) hover:text-(--color-danger) hover:bg-red-500/10"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Message Content */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+              {/* Meta Info */}
+              <div className="flex flex-wrap gap-4 text-sm">
+                <div className="flex items-center gap-2 text-muted">
+                  <Calendar className="w-4 h-4" />
+                  <span>{formatFullDate(selectedMessage.createdAt)}</span>
+                </div>
+                {selectedMessage.phone && (
+                  <div className="flex items-center gap-2 text-muted">
+                    <Phone className="w-4 h-4" />
+                    <a
+                      href={`tel:${selectedMessage.phone}`}
+                      className="hover:text-ink transition"
+                    >
+                      {selectedMessage.phone}
+                    </a>
+                  </div>
+                )}
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`px-2 py-0.5 text-xs rounded-full ${
+                      selectedMessage.read
+                        ? "bg-muted-accent text-muted"
+                        : "bg-accent/10 text-accent"
+                    }`}
+                  >
+                    {selectedMessage.read ? "Read" : "Unread"}
+                  </span>
+                  <span className="px-2 py-0.5 text-xs bg-muted-accent text-muted rounded-full">
+                    {selectedMessage.source}
+                  </span>
+                </div>
+              </div>
+
+              {/* Message Body */}
+              <div className="p-4 bg-(--color-muted-accent) rounded-xl">
+                <p className="text-ink whitespace-pre-wrap leading-relaxed">
+                  {selectedMessage.message}
+                </p>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="flex gap-3 flex-wrap">
+                <Button variant="primary" className="gap-2" asChild>
+                  <a href={`mailto:${selectedMessage.email}`}>
+                    <Mail className="w-4 h-4" />
+                    Reply
+                  </a>
+                </Button>
+                {selectedMessage.phone && (
+                  <Button variant="secondary" className="gap-2" asChild>
+                    <a href={`tel:${selectedMessage.phone}`}>
+                      <Phone className="w-4 h-4" />
+                      Call
+                    </a>
+                  </Button>
+                )}
+                <Button
+                  variant="secondary"
+                  className="gap-2"
+                  onClick={() => handleMarkAsUnread(selectedMessage._id)}
+                >
+                  <Mail className="w-4 h-4" />
+                  Mark as Unread
+                </Button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="flex-1 flex items-center justify-center text-muted">
+            <div className="text-center">
+              <Mail className="w-12 h-12 mx-auto opacity-40 mb-4" />
+              <p>Select a message to view</p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <ConfirmDialog
+          open
+          onOpenChange={(open) => !open && setDeleteConfirm(null)}
+          title="Delete Message?"
+          onConfirm={() => handleDelete(deleteConfirm as Id<"contactMessages">)}
+        />
+      )}
+    </div>
+  );
+};
+
+export default MessagesTabEnhanced;

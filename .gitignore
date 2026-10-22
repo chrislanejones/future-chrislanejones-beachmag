@@ -1,3 +1,6 @@
 node_modules/
+.env*
+.next/
+*.tsbuildinfo
 # Old Codex bundle; the original lives in the Codex outputs folder.
 outputs/coastal-site-preview.zip
