@@ -25,8 +25,12 @@ function useNavItems(): NavItem[] {
   return [...items.slice(0, at), EVENTS, ...items.slice(at)];
 }
 
-/** A dropdown on wide screens: opens on hover, click or keyboard; Escape and outside clicks close it. */
-function NavGroup({ item, open, onOpen, onClose }: { item: NavItem; open: boolean; onOpen: (hover: boolean) => void; onClose: (hover: boolean) => void }) {
+/**
+ * A dropdown on wide screens: opens on hover, click or keyboard; Escape and
+ * outside clicks close it. Each page gets the same beach mark it has in the
+ * life-preserver menu: `markStart` is how many subpages came before.
+ */
+function NavGroup({ item, markStart, open, onOpen, onClose }: { item: NavItem; markStart: number; open: boolean; onOpen: (hover: boolean) => void; onClose: (hover: boolean) => void }) {
   const id = `nav-group-${item.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
   return (
     <div className="nav-group" onPointerEnter={() => onOpen(true)} onPointerLeave={() => onClose(true)}>
@@ -35,9 +39,15 @@ function NavGroup({ item, open, onOpen, onClose }: { item: NavItem; open: boolea
         <ChevronDown className="nav-caret" size={14} strokeWidth={2.5} aria-hidden="true" />
       </button>
       <div className="nav-dropdown" id={id} hidden={!open}>
-        {item.children?.map((child) => (
-          <Link key={child.href} href={child.href ?? "/"} onClick={() => onClose(false)}>{child.label}</Link>
-        ))}
+        {item.children?.map((child, i) => {
+          const Mark = BEACH_MARKS[(markStart + i) % BEACH_MARKS.length];
+          return (
+            <Link key={child.href} href={child.href ?? "/"} onClick={() => onClose(false)}>
+              <Mark className="nav-mark" size={18} strokeWidth={1.75} aria-hidden="true" />
+              {child.label}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
@@ -140,11 +150,12 @@ export function SiteNav() {
           <span className="brand-wordmark">CHRIS LANE JONES</span>
         </Link>
         <nav className="desktop-links" aria-label="Main navigation" inert={open} ref={desktopRef}>
-          {items.map((item) =>
+          {items.map((item, index) =>
             item.children?.length ? (
               <NavGroup
                 key={item.label}
                 item={item}
+                markStart={items.slice(0, index).reduce((count, earlier) => count + (earlier.children?.length ?? 0), 0)}
                 open={group === item.label}
                 onOpen={(hover) => openGroup(item.label, hover)}
                 onClose={closeGroup}
