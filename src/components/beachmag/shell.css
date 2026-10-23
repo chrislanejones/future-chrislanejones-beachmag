@@ -525,8 +525,9 @@ html.dark .interior {
   font: 700 9px var(--font-dm-sans), sans-serif;
   letter-spacing: 0.15em;
 }
-/* The arrows, the sand game's five buttons, and any .radio-key (the link page) are the radio's sage transport
-   keys, and press down like them. The mobile menu keeps its own switch. */
+/* The arrows, the sand game's five buttons, and any .radio-key (the link
+   page, resume) are brushed-silver hardware keys that press down like the
+   radio's. The mobile menu keeps its own switch. */
 :is(#coastal-art, .interior) .client-controls {
   display: flex;
   gap: 8px;
@@ -537,27 +538,31 @@ html.dark .interior {
   width: 48px;
   height: 46px;
   padding: 0 0 4px;
-  border: 1px solid #5c6755;
-  border-top: 2px solid #e3e7d0;
-  border-bottom: 6px solid #4f5b48;
+  border: 1px solid #7d827c;
+  border-top: 2px solid #ffffff;
+  border-bottom: 6px solid #6f746e;
   border-radius: 3px;
-  background: linear-gradient(90deg, #7e8d6c, #bdc9a3 15%, #a4b58a 85%, #70835c);
-  box-shadow: 0 3px 0 #323e2e, 1px 4px 4px #0006;
-  color: #1c2c1b;
+  background:
+    repeating-linear-gradient(90deg, #ffffff12 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #f7f8f5, #d9dcd6 40%, #b9bdb6 62%, #d2d5cf 100%);
+  box-shadow: 0 3px 0 #3c403b, 1px 4px 4px #0006, inset 0 1px 0 #ffffffd0;
+  color: #1d2422;
   font: 700 22px/1 var(--font-dm-sans), sans-serif;
   transition: transform 70ms, box-shadow 70ms;
 }
 :is(#coastal-art, .interior) .client-controls button:hover:not(:disabled),
 #sandbox .game-bottom > div > button:hover:not(:disabled),
 .radio-key:hover {
-  background: linear-gradient(90deg, #87966f, #cbd6b1 15%, #b2c296 85%, #788b62);
+  background:
+    repeating-linear-gradient(90deg, #ffffff18 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #ffffff, #e6e8e3 40%, #c8ccc5 62%, #dfe2dc 100%);
 }
 :is(#coastal-art, .interior) .client-controls button:active:not(:disabled),
 #sandbox .game-bottom > div > button:active:not(:disabled),
 .radio-key:active,
 #sandbox .game-bottom > div > button[aria-pressed="true"] {
   transform: translateY(3px);
-  box-shadow: 0 0 0 #323e2e, inset 0 2px 4px #0005;
+  box-shadow: 0 0 0 #3c403b, inset 0 2px 4px #0005;
 }
 :is(#coastal-art, .interior) .client-controls button:disabled,
 #sandbox .game-bottom > div > button:disabled {
@@ -799,7 +804,7 @@ html.dark .gallery-drawer {
   cursor: pointer;
 }
 .interior a.radio-key {
-  color: #1c2c1b;
+  color: #1d2422;
   text-decoration: none;
 }
 .radio-key svg {
