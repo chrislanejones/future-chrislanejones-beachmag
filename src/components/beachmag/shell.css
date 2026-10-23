@@ -525,8 +525,7 @@ html.dark .interior {
   font: 700 9px var(--font-dm-sans), sans-serif;
   letter-spacing: 0.15em;
 }
-/* The arrows, the sand game's five buttons, the Sunlit paper / After dark
-   switches (home label row, inner pages) and any .radio-key (the link page) are the radio's sage transport
+/* The arrows, the sand game's five buttons, and any .radio-key (the link page) are the radio's sage transport
    keys, and press down like them. The mobile menu keeps its own switch. */
 :is(#coastal-art, .interior) .client-controls {
   display: flex;
@@ -534,9 +533,7 @@ html.dark .interior {
 }
 :is(#coastal-art, .interior) .client-controls button,
 #sandbox .game-bottom > div > button,
-.radio-key,
-.interior .edition-row > div > button,
-#coastal-art .top > div > button {
+.radio-key {
   width: 48px;
   height: 46px;
   padding: 0 0 4px;
@@ -552,18 +549,12 @@ html.dark .interior {
 }
 :is(#coastal-art, .interior) .client-controls button:hover:not(:disabled),
 #sandbox .game-bottom > div > button:hover:not(:disabled),
-.radio-key:hover,
-.interior .edition-row > div > button:hover,
-#coastal-art .top > div > button:hover {
+.radio-key:hover {
   background: linear-gradient(90deg, #87966f, #cbd6b1 15%, #b2c296 85%, #788b62);
 }
 :is(#coastal-art, .interior) .client-controls button:active:not(:disabled),
 #sandbox .game-bottom > div > button:active:not(:disabled),
 .radio-key:active,
-.interior .edition-row > div > button:active,
-.interior .edition-row > div > button[aria-pressed="true"],
-#coastal-art .top > div > button:active,
-#coastal-art .top > div > button[aria-pressed="true"],
 #sandbox .game-bottom > div > button[aria-pressed="true"] {
   transform: translateY(3px);
   box-shadow: 0 0 0 #323e2e, inset 0 2px 4px #0005;
@@ -853,29 +844,14 @@ html.dark .gallery-drawer {
   text-align: center;
 }
 
-/* The edition switches: word-sized keys; the chosen edition stays pressed in. */
-.interior .edition-row > div > button,
-#coastal-art .top > div > button {
-  width: auto;
-  min-height: 42px;
-  padding: 0 14px 4px;
-  font-size: 11px;
-  letter-spacing: 0.02em;
-}
-.interior .edition-row > div > button[aria-pressed="true"],
-#coastal-art .top > div > button[aria-pressed="true"] {
-  background: linear-gradient(90deg, #6f7d5f, #a9b78f 15%, #93a57a 85%, #637652);
-}
 
 
 /* Home label row: the specialties on the left, the edition keys on the right. */
 #coastal-art .top {
   align-items: center;
 }
-#coastal-art .top > div {
-  display: flex;
+#coastal-art .top > .edition-switch {
   flex-shrink: 0;
-  gap: 6px;
 }
 @media (max-width: 640px) {
   #coastal-art .top {
@@ -914,4 +890,108 @@ html.dark .gallery-drawer {
 }
 :is(#coastal-art, .interior) .client-picture img {
   object-fit: contain;
+}
+
+/* "Sunlit / After dark" rotary switch: a bakelite bar on a brushed knob,
+   turning 90° between the labels (-45° Sunlit, +45° After dark). */
+.edition-switch,
+.interior .edition-row .edition-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 2px 4px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: 700 10px/1 var(--font-dm-sans), Arial, sans-serif;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.edition-switch .edition-side {
+  opacity: 0.45;
+  transition: opacity 200ms ease;
+}
+.edition-switch[aria-checked="false"] [data-side="light"],
+.edition-switch[aria-checked="true"] [data-side="dark"] {
+  opacity: 1;
+}
+/* The panel plate with a tick at each stop. */
+.edition-dial {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #2b322c 0 58%, #1a201b 59% 100%);
+  box-shadow: inset 0 1px 2px #000a, 0 1px 0 #ffffff1f;
+}
+.edition-dial::before,
+.edition-dial::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 5px;
+  margin: -2.5px 0 0 -1px;
+  background: #e8e4d2;
+  border-radius: 1px;
+}
+.edition-dial::before {
+  transform: rotate(-45deg) translateY(-21px);
+}
+.edition-dial::after {
+  transform: rotate(45deg) translateY(-21px);
+}
+.edition-knob {
+  position: relative;
+  display: block;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f4f5ee, #c3c8bb 45%, #7c8379 100%);
+  box-shadow: 0 2px 0 #323e2e, 0 3px 5px #0008, inset 0 -2px 3px #0004;
+}
+/* The bar handle, with a cream pointer at its top end. */
+.edition-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 11px;
+  height: 34px;
+  margin: -17px 0 0 -5.5px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #1b201b, #3d433b 45%, #232823);
+  box-shadow: inset 0 1px 0 #ffffff26, 0 2px 3px #000a;
+  transform: rotate(-45deg);
+  transition: transform 360ms cubic-bezier(0.3, 1.45, 0.5, 1);
+}
+.edition-handle::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 50%;
+  width: 3px;
+  height: 9px;
+  margin-left: -1.5px;
+  border-radius: 2px;
+  background: #f1e7d4;
+}
+.edition-switch[aria-checked="true"] .edition-handle {
+  transform: rotate(45deg);
+}
+.edition-switch:hover .edition-knob {
+  filter: brightness(1.06);
+}
+.edition-switch:active .edition-knob {
+  transform: translateY(1px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .edition-handle,
+  .edition-switch .edition-side {
+    transition: none;
+  }
 }
