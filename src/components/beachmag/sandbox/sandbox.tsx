@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { Component, useEffect, useReducer, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { useTheme } from "@/lib/theme-store";
 import { ToolArt } from "./tool-art";
+import { ToolKnob } from "./tool-knob";
 import { WASH_CLEAR_MS, WASH_END_MS } from "./beach-wash";
 import { castleReducer, initialCastle, MAX_FLAGS, HALF_X, HALF_Z, type CastleTool } from "./sandcastle-model";
 import "./sandbox.css";
@@ -157,13 +158,26 @@ export function Sandbox() {
 
   return (
     <section id="sandbox" aria-label="Sandcastle sandbox">
+      {/* Top row: the words (a third), the tool knob (two thirds). The beach is the next row. */}
       <div className="sandbox-heading">
         <div>
           <p className="game-kicker">NO DEADLINES. JUST SAND.</p>
           <h2>Leave a little<br /><em>castle.</em></h2>
+          <p>A small patch of coast to make your own. Pick a mold, press the sand, lift the bucket. Five flags. One very good afternoon.</p>
         </div>
-        <p>A small patch of coast to make your own. Pick a mold, press the sand, lift the bucket. Five flags. One very good afternoon.</p>
+        <ToolKnob
+          tools={TOOLS.map(([id, label]) => ({
+            id,
+            label,
+            disabled: id === "flag" && available === 0 && !held,
+            note: id === "flag" ? (held ? "IN HAND" : `${available} LEFT`) : undefined,
+          }))}
+          value={tool}
+          onSelect={select}
+          disabled={busy}
+        />
       </div>
+      {/* Phones: the knob gets too small to read, so the tools stay a button grid. */}
       <div className="game-toolbar" role="group" aria-label="Sandcastle tools">
         {TOOLS.map(([id, label]) => (
           <button type="button" key={id} aria-pressed={tool === id} disabled={busy || (id === "flag" && available === 0 && !held)} onClick={() => select(id)}>

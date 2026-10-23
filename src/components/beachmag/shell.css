@@ -1006,3 +1006,130 @@ html.dark .gallery-drawer {
   width: auto;
   padding: 0 20px 4px;
 }
+
+/* ── Sand game: text a third, tool knob two thirds, the beach below ──── */
+#sandbox .sandbox-heading {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  align-items: center;
+}
+#sandbox .sandbox-heading > div > p:last-child {
+  margin-top: 16px;
+  font-size: 13px;
+  line-height: 1.7;
+  max-width: 32ch;
+}
+.tool-knob {
+  --cx: 50%;
+  --cy: 214px;
+  --rx: 44%;
+  --ry: 168px;
+  position: relative;
+  height: 262px;
+}
+/* Each tool sits on an arc around the knob (sin / cos from the component). */
+.tool-knob-label,
+#sandbox .tool-knob-label {
+  position: absolute;
+  left: calc(var(--cx) + var(--rx) * var(--x));
+  top: calc(var(--cy) - var(--ry) * var(--y));
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-height: 0;
+  padding: 4px 6px;
+  border: 0;
+  background: none;
+  font: 700 10px/1.1 var(--font-dm-sans), Arial, sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.55;
+  transition: opacity 180ms ease;
+}
+#sandbox .tool-knob-label .game-tool-art {
+  width: 34px;
+  height: 34px;
+}
+#sandbox .tool-knob-label small {
+  font-size: 8px;
+  opacity: 0.8;
+}
+#sandbox .tool-knob-label:hover:not(:disabled),
+#sandbox .tool-knob-label[aria-pressed="true"] {
+  opacity: 1;
+  background: none;
+  box-shadow: none;
+  color: inherit;
+}
+#sandbox .tool-knob-label[aria-pressed="true"] span {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+/* The dial: ticks at each tool, the chosen one long and orange. */
+.tool-knob-dial {
+  position: absolute;
+  left: var(--cx);
+  top: var(--cy);
+  width: 128px;
+  height: 128px;
+  transform: translate(-50%, -50%);
+}
+.tool-knob-tick {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 9px;
+  margin: -4.5px 0 0 -1px;
+  background: currentColor;
+  opacity: 0.6;
+  transform: rotate(var(--a)) translateY(-58px);
+}
+.tool-knob-tick[data-on] {
+  height: 13px;
+  margin-top: -6.5px;
+  background: #e5583a;
+  opacity: 1;
+}
+#sandbox .tool-knob-turn {
+  position: absolute;
+  inset: 22px;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+}
+#sandbox .tool-knob-turn:focus-visible {
+  outline: 3px solid #e5583a;
+  outline-offset: 2px;
+}
+/* The chicken-head knob from the edition switch, twice the size. */
+.tool-knob .edition-knob {
+  scale: 1.9;
+  transform: rotate(var(--angle));
+}
+@media (prefers-reduced-motion: reduce) {
+  .tool-knob-label {
+    transition: none;
+  }
+}
+/* The knob on wide screens; the button grid on phones and narrow tablets. */
+@media (min-width: 761px) {
+  #sandbox > div.game-toolbar {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  #sandbox .sandbox-heading {
+    grid-template-columns: 1fr;
+  }
+  .tool-knob {
+    display: none;
+  }
+}
