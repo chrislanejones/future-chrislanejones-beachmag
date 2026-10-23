@@ -1623,23 +1623,32 @@ section#sandbox .sandbox-heading {
 }
 #coastal-footer .footer-figures {
   position: absolute;
-  inset: auto -30px 0 0;
+  /* Out past the column on both sides: her head clears the send-off card
+     on the left, the stand reaches the footer's edge on the right. */
+  inset: auto -30px 0 -64px;
   z-index: -1;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  gap: 10px;
-  height: 320px;
+  height: 470px;
   color: var(--footer-ink);
   opacity: 0.3;
   pointer-events: none;
 }
+/* She rises past the send-off; its card stays on top of her. */
+#coastal-footer .footer-sendoff {
+  position: relative;
+  z-index: 1;
+}
 #coastal-footer .footer-figures .beach-girl {
+  position: absolute;
+  left: 0;
+  bottom: 0;
   height: 100%;
   aspect-ratio: 259 / 899;
 }
 #coastal-footer .footer-figures .lifeguard-stand {
-  height: 56%;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 46%;
   aspect-ratio: 353 / 478;
 }
 @media (max-width: 760px) {
