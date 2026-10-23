@@ -534,7 +534,8 @@ html.dark .interior {
 }
 :is(#coastal-art, .interior) .client-controls button,
 #sandbox .game-bottom > div > button,
-.radio-key {
+.radio-key,
+#featured-projects a.project-go.radio-key {
   width: 48px;
   height: 46px;
   padding: 0 0 4px;
@@ -552,7 +553,8 @@ html.dark .interior {
 }
 :is(#coastal-art, .interior) .client-controls button:hover:not(:disabled),
 #sandbox .game-bottom > div > button:hover:not(:disabled),
-.radio-key:hover {
+.radio-key:hover,
+#featured-projects a.project-go.radio-key:hover {
   background:
     repeating-linear-gradient(90deg, #ffffff18 0 1px, transparent 1px 3px),
     linear-gradient(180deg, #ffffff, #e6e8e3 40%, #c8ccc5 62%, #dfe2dc 100%);
@@ -560,6 +562,7 @@ html.dark .interior {
 :is(#coastal-art, .interior) .client-controls button:active:not(:disabled),
 #sandbox .game-bottom > div > button:active:not(:disabled),
 .radio-key:active,
+#featured-projects a.project-go.radio-key:active,
 #sandbox .game-bottom > div > button[aria-pressed="true"] {
   transform: translateY(3px);
   box-shadow: 0 0 0 #3c403b, inset 0 2px 4px #0005;
@@ -1218,4 +1221,19 @@ html.dark .gallery-drawer {
     order: 1;
     text-align: left;
   }
+}
+/* Home project cards: the call to action is a silver key. */
+#featured-projects a.project-go.radio-key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: auto;
+  min-height: 50px;
+  margin-top: 8px;
+  padding: 0 16px 4px;
+  color: #1d2422;
+  font-size: 13px;
+  text-decoration: none;
 }
