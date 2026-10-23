@@ -11,7 +11,7 @@ const SOCIAL = [
   { href: "https://codepen.io/chrislanejones", label: "CodePen" },
 ];
 
-type Column = { title: string; label: string; links: { href: string; label: string }[]; figures?: boolean };
+type Column = { title: string; label: string; links: { href: string; label: string }[] };
 
 const DIRECTORY: Column[] = [
   {
@@ -41,7 +41,6 @@ const DIRECTORY: Column[] = [
   {
     title: "03 / Resources",
     label: "Footer resources",
-    figures: true,
     links: [
       { href: "/site-history", label: "History of This Site" },
       { href: "/logo-page", label: "About the Logo" },
@@ -81,14 +80,6 @@ export function SiteFooter() {
         </div>
         {DIRECTORY.map((column) => (
           <nav key={column.title} aria-label={column.label}>
-            {/* The girl from the beach drawing stands behind this column,
-                the lifeguard stand off to her right at the footer's edge. */}
-            {column.figures && (
-              <span className="footer-figures">
-                <BeachFigure name="beach-girl" />
-                <BeachFigure name="lifeguard-stand" />
-              </span>
-            )}
             <h3>{column.title}</h3>
             {column.links.map((link) => (
               // The 404 Music Lounge is the not-found page: a prefetch of it always returns 404.
@@ -96,6 +87,10 @@ export function SiteFooter() {
             ))}
           </nav>
         ))}
+        {/* The last column: the girl from the beach drawing, rising past the send-off. */}
+        <div className="footer-figures" aria-hidden="true">
+          <BeachFigure name="beach-girl" />
+        </div>
       </div>
       <div className="footer-colophon">
         <p>© {new Date().getFullYear()} Chris Lane Jones. All rights reserved.</p>

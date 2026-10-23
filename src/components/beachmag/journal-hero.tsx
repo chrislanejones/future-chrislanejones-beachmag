@@ -6,6 +6,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { ContentBoundary } from "@/components/coastal/live-content";
 import { ClientStrip } from "./client-strip";
+import { BeachFigure } from "./beach-figure";
 import { EditionButtons } from "./edition-buttons";
 import { upcomingEvents } from "./events";
 
@@ -48,18 +49,8 @@ export function JournalHero() {
   const events = upcomingEvents(new Date());
   return (
     <>
-      <div className="lifeguard-drawing" aria-hidden="true">
-        <div className="station-roof"></div>
-        <div className="station-room"><span></span><span></span></div>
-        <div className="station-deck"></div>
-        <div className="station-post left-post"></div>
-        <div className="station-post right-post"></div>
-        <div className="station-brace"></div>
-        <div className="station-ladder"></div>
-        <div className="station-flagpole"></div>
-        <div className="station-flag"></div>
-        <div className="station-ground"></div>
-      </div>
+      {/* The lifeguard stand from the beach drawing, faint behind the masthead. */}
+      <BeachFigure name="lifeguard-stand" className="lifeguard-drawing" />
       {/* Hero copy from the beach site, in the design's masthead. */}
       <div className="top">
         <span>REACT, TYPESCRIPT &amp; RUST/WEBASSEMBLY | AI AUTOMATION | ENTERPRISE CMS &amp; WCAG ACCESSIBILITY</span>

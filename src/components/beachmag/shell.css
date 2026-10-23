@@ -1237,7 +1237,7 @@ section#sandbox .sandbox-heading {
   justify-self: center;
   width: 100%;
   max-width: 230px;
-  aspect-ratio: 536 / 929;
+  aspect-ratio: 807 / 1410;
   color: var(--ink);
   opacity: 0.55;
 }
@@ -1614,20 +1614,25 @@ section#sandbox .sandbox-heading {
   }
 }
 
-/* Footer: the girl from the drawing stands behind 03 / Resources, taller
-   than the column, and the lifeguard stand sits off to her right at the
-   footer's edge. Faint, so the links on top stay readable. */
-#coastal-footer .footer-directory > nav {
-  position: relative;
-  isolation: isolate;
+/* Home masthead: the lifeguard stand from the beach drawing takes the
+   CSS stencil's spot (position, tilt and layer come from the design). */
+#coastal-art .lifeguard-drawing.beach-figure {
+  width: 340px;
+  height: 360px;
+  opacity: 0.2;
+}
+
+/* Footer: the three link columns sit at equal steps; the fifth column is
+   the girl from the beach drawing, rising past the send-off. */
+@media (min-width: 641px) {
+  #coastal-footer .footer-directory {
+    grid-template-columns: 1.1fr 0.75fr 0.75fr 0.75fr 1.2fr;
+  }
 }
 #coastal-footer .footer-figures {
-  position: absolute;
-  /* Out past the column on both sides: her head clears the send-off card
-     on the left, the stand reaches the footer's edge on the right. */
-  inset: auto -30px 0 -64px;
-  z-index: -1;
-  height: 470px;
+  position: relative;
+  align-self: end;
+  height: 0;
   color: var(--footer-ink);
   opacity: 0.3;
   pointer-events: none;
@@ -1639,17 +1644,16 @@ section#sandbox .sandbox-heading {
 }
 #coastal-footer .footer-figures .beach-girl {
   position: absolute;
-  left: 0;
+  right: -20px;
   bottom: 0;
-  height: 100%;
-  aspect-ratio: 259 / 899;
+  height: 520px;
+  aspect-ratio: 651 / 1457;
 }
-#coastal-footer .footer-figures .lifeguard-stand {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  height: 46%;
-  aspect-ratio: 353 / 478;
+/* The send-off card moves left, out from in front of her. */
+@media (min-width: 761px) {
+  #coastal-footer .footer-contact {
+    margin-right: 270px;
+  }
 }
 @media (max-width: 760px) {
   #coastal-footer .footer-figures {
