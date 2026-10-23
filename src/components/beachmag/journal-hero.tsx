@@ -65,20 +65,24 @@ export function JournalHero() {
         <button type="button" className="cursor-interaction" aria-pressed={theme === "light"} onClick={() => setTheme("light")}>Sunlit paper</button>
         <button type="button" className="cursor-interaction" aria-pressed={theme === "dark"} onClick={() => setTheme("dark")}>After dark</button>
       </div>
-      <div className="top"><span>CHRIS LANE JONES</span><span>WEB ENGINEER<br />ST. AUGUSTINE, FL</span></div>
-      <h1 className="mast">Off the<br /><em>deep end.</em></h1>
-      <div className="sub"><span>WRITING, MAKING & SHOWING UP.</span><span>A coastal journal ↙</span></div>
+      {/* Hero copy from the beach site, in the design's masthead. */}
+      <div className="top"><span>REACT, TYPESCRIPT & RUST/WEBASSEMBLY</span></div>
+      <h1 className="mast">Senior web<br /><em>engineer.</em></h1>
+      <div className="sub">
+        <span>I consult, design, and develop web interfaces for businesses and government agencies.</span>
+        <a href="#featured-projects">Explore my work ↘</a>
+      </div>
       <div className="map-wrap">
         <Image
           className="map"
           src="/hero/coast-day.webp"
-          alt="3D map of the St. Augustine beach, framed as an angled journal photograph"
+          alt="3D map of a beach town, framed as an angled journal photograph"
           width={1200}
           height={550}
           sizes="(max-width: 640px) 92vw, 600px"
           priority
         />
-        <span className="edge">ST. AUGUSTINE / A WORLD IN THE BROWSER</span>
+        <span className="edge">JACKSONVILLE, FL</span>
         <span className="sticker">Made of curiosity.</span>
       </div>
       <div className="columns">

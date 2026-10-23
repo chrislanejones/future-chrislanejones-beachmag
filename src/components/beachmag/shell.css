@@ -80,3 +80,10 @@ html.dark:has([data-beachmag]),
   display: block;
   visibility: hidden;
 }
+
+/* Hero sub line: the beach site's description on the left, "Explore my work" right. */
+#coastal-art .sub a {
+  flex-shrink: 0;
+  color: inherit;
+  text-underline-offset: 4px;
+}
