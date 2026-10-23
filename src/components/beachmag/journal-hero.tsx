@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { ContentBoundary } from "@/components/coastal/live-content";
-import { setTheme, useTheme } from "@/lib/theme-store";
 import { ClientStrip } from "./client-strip";
 import { upcomingEvents } from "./events";
 
@@ -45,7 +44,6 @@ function LiveEntry() {
 }
 
 export function JournalHero() {
-  const theme = useTheme();
   const events = upcomingEvents(new Date());
   return (
     <>
@@ -61,16 +59,8 @@ export function JournalHero() {
         <div className="station-flag"></div>
         <div className="station-ground"></div>
       </div>
-      <div className="palette-switch" role="group" aria-label="Color scheme">
-        <span className="edition-intro">
-          <strong>React, TypeScript &amp; Rust/WebAssembly | AI Automation | Enterprise CMS &amp; WCAG Accessibility</strong>
-          <span>I consult, design, and develop web interfaces for businesses and government agencies.</span>
-        </span>
-        <button type="button" className="cursor-interaction" aria-pressed={theme === "light"} onClick={() => setTheme("light")}>Sunlit paper</button>
-        <button type="button" className="cursor-interaction" aria-pressed={theme === "dark"} onClick={() => setTheme("dark")}>After dark</button>
-      </div>
       {/* Hero copy from the beach site, in the design's masthead. */}
-      <div className="top"><span>REACT, TYPESCRIPT & RUST/WEBASSEMBLY</span></div>
+      <div className="top"><span>REACT, TYPESCRIPT &amp; RUST/WEBASSEMBLY | AI AUTOMATION | ENTERPRISE CMS &amp; WCAG ACCESSIBILITY</span></div>
       <h1 className="mast">Senior web<br /><em>engineer.</em></h1>
       <div className="sub">
         <span>I consult, design, and develop web interfaces for businesses and government agencies.</span>
