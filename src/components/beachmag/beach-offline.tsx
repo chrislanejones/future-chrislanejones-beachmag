@@ -49,11 +49,15 @@ function SkillSticker() {
 function Ramblings() {
   const [quote, setQuote] = useState(0);
   return (
-    // Keyed by quote so the paper-turn animation replays on each new thought.
-    <article className={`ramble text-only${quote ? " flip" : ""}`} key={quote}>
+    <article className="ramble text-only">
       <h3>My ramblings.</h3>
-      {/* One span: the design lays the blockquote out as flex, and the real quotes mix inline tags. */}
-      <blockquote><span>{QUOTES[quote]}</span></blockquote>
+      {/* Every quote sits in the same grid cell and only the current one shows,
+          so the card is always as tall as the longest quote and never jumps. */}
+      <blockquote className="quote-stack" aria-live="polite">
+        {QUOTES.map((text, index) => (
+          <span key={index} hidden={index !== quote}>{text}</span>
+        ))}
+      </blockquote>
       <div className="ramble-footer">
         <span>CHRIS LANE JONES</span>
         <button className="plain-button cursor-interaction" type="button" onClick={() => setQuote((quote + 1) % QUOTES.length)}>
@@ -133,19 +137,26 @@ export function BeachOffline() {
   useEffect(() => (section.current ? mountRadio(section.current) : undefined), []);
   return (
     <section id="beach-offline" ref={section} aria-label="Radio, ramblings and photo album">
-      <p className="eyebrow">HOMEPAGE / BEYOND THE BROWSER</p>
-      <h2>Salt air.<br /><em>Side A.</em></h2>
-      <p className="lede">A few things that don’t fit on a résumé.</p>
+      {/* Radio on the left, words on the right (shell.css); one column on phones. */}
       <div className="radio-scene hardware-radio">
-        <RadioMarkup />
-        <div className="skill-note">
-          <p>Every station on this dial came out of bckgrnd-msc. The background-music skill gives your agent all eighteen tracks to render, or to tuck under a voiceover.</p>
-          <p className="skill-links">
-            <a href="https://skills.sh/chrislanejones/bckgrnd-msc-mcp/background-music" target="_blank" rel="noopener noreferrer">background-music on skills.sh ↗<span className="sr-only"> (opens in a new tab)</span></a>
-            <a href="https://github.com/chrislanejones/bckgrnd-msc-mcp" target="_blank" rel="noopener noreferrer">Source on GitHub ↗<span className="sr-only"> (opens in a new tab)</span></a>
-          </p>
+        <div className="radio-head">
+          <p className="eyebrow">HOMEPAGE / BEYOND THE BROWSER</p>
+          <h2>Salt air.<br /><em>Side A.</em></h2>
+          <p className="lede">A few things that don’t fit on a résumé.</p>
         </div>
-        <SkillSticker />
+        <div className="radio-unit">
+          <RadioMarkup />
+        </div>
+        <div className="radio-notes">
+          <div className="skill-note">
+            <p>Every station on this dial came out of bckgrnd-msc. The background-music skill gives your agent all eighteen tracks to render, or to tuck under a voiceover.</p>
+            <p className="skill-links">
+              <a href="https://skills.sh/chrislanejones/bckgrnd-msc-mcp/background-music" target="_blank" rel="noopener noreferrer">background-music on skills.sh ↗<span className="sr-only"> (opens in a new tab)</span></a>
+              <a href="https://github.com/chrislanejones/bckgrnd-msc-mcp" target="_blank" rel="noopener noreferrer">Source on GitHub ↗<span className="sr-only"> (opens in a new tab)</span></a>
+            </p>
+          </div>
+          <SkillSticker />
+        </div>
         <input type="file" className="radio-file" accept="audio/*" hidden />
       </div>
       <ContentBoundary fallback={<Postcards photos={fallbackPhotos} ramble={<Ramblings />} />}>

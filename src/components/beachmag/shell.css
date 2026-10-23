@@ -48,3 +48,35 @@ html.dark:has([data-beachmag]),
   border-radius: 4px;
   object-fit: contain;
 }
+
+/* Radio scene: the radio on the left, the heading and notes on the right.
+   Below 900px it stacks: heading, radio, notes. */
+@media (min-width: 900px) {
+  #beach-offline .radio-scene {
+    display: grid;
+    grid-template-columns: minmax(0, 620px) minmax(0, 1fr);
+    grid-template-areas: "radio head" "radio notes";
+    grid-template-rows: auto 1fr;
+    column-gap: 48px;
+    align-items: start;
+  }
+  #beach-offline .radio-head { grid-area: head; }
+  #beach-offline .radio-unit { grid-area: radio; align-self: center; }
+  #beach-offline .radio-notes { grid-area: notes; }
+  #beach-offline .radio-notes .skill-note { margin: 22px 0 0; text-align: left; }
+  #beach-offline .radio-notes .skill-links { justify-content: flex-start; }
+  #beach-offline .radio-notes .skill-sticker { margin: 30px 0 8px; }
+}
+
+/* Ramblings: the card holds still. All quotes share one cell; the hidden
+   ones keep their space (visibility, not display) so the height never changes. */
+#beach-offline .ramble blockquote.quote-stack {
+  display: grid;
+}
+#beach-offline .quote-stack > span {
+  grid-area: 1 / 1;
+}
+#beach-offline .quote-stack > span[hidden] {
+  display: block;
+  visibility: hidden;
+}
