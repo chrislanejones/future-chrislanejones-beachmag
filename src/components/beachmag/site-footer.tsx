@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Waves } from "lucide-react";
+import { BeachFigure } from "./beach-figure";
 import "./footer.css";
 
 const SOCIAL = [
@@ -10,7 +11,9 @@ const SOCIAL = [
   { href: "https://codepen.io/chrislanejones", label: "CodePen" },
 ];
 
-const DIRECTORY = [
+type Column = { title: string; label: string; links: { href: string; label: string }[]; figures?: boolean };
+
+const DIRECTORY: Column[] = [
   {
     title: "01 / About",
     label: "Footer about",
@@ -38,6 +41,7 @@ const DIRECTORY = [
   {
     title: "03 / Resources",
     label: "Footer resources",
+    figures: true,
     links: [
       { href: "/site-history", label: "History of This Site" },
       { href: "/logo-page", label: "About the Logo" },
@@ -77,6 +81,14 @@ export function SiteFooter() {
         </div>
         {DIRECTORY.map((column) => (
           <nav key={column.title} aria-label={column.label}>
+            {/* The girl from the beach drawing stands behind this column,
+                the lifeguard stand off to her right at the footer's edge. */}
+            {column.figures && (
+              <span className="footer-figures">
+                <BeachFigure name="beach-girl" />
+                <BeachFigure name="lifeguard-stand" />
+              </span>
+            )}
             <h3>{column.title}</h3>
             {column.links.map((link) => (
               // The 404 Music Lounge is the not-found page: a prefetch of it always returns 404.

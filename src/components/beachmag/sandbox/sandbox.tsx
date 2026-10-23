@@ -5,7 +5,7 @@ import { Component, useEffect, useReducer, useRef, useState, useSyncExternalStor
 import { useTheme } from "@/lib/theme-store";
 import { ToolArt } from "./tool-art";
 import { ToolKnob } from "./tool-knob";
-import { SurferDrawing } from "./surfer-drawing";
+import { BeachFigure } from "../beach-figure";
 import { WASH_CLEAR_MS, WASH_END_MS } from "./beach-wash";
 import { castleReducer, initialCastle, MAX_FLAGS, HALF_X, HALF_Z, type CastleTool } from "./sandcastle-model";
 import "./sandbox.css";
@@ -165,7 +165,7 @@ export function Sandbox() {
   return (
     <section id="sandbox" aria-label="Sandcastle sandbox">
       {/* Top row: the words, then the tool knob with the status line under
-          it, then a surfer drawn like the lifeguard stand. The beach is the
+          it, then the surfer from the beach line drawing. The beach is the
           next row. */}
       <div className="sandbox-heading">
         <div className="sandbox-words">
@@ -191,7 +191,7 @@ export function Sandbox() {
           {/* The line that changes as you play sits under the knob. */}
           <p className="game-status" role="status">{notice || state.message}{busy && washStartedAt === null ? " · Let the sand settle…" : ""}</p>
         </div>
-        <SurferDrawing />
+        <BeachFigure name="surfer-guy" className="surfer-drawing" />
       </div>
       {/* Phones: the knob gets too small to read, so the tools stay a button grid. */}
       <div className="game-toolbar" role="group" aria-label="Sandcastle tools">

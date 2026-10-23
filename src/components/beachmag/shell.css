@@ -1222,22 +1222,24 @@ section#sandbox .sandbox-heading {
   grid-template-columns: minmax(0, 1fr) 380px minmax(0, 0.75fr);
   align-items: stretch;
 }
-/* The surfer: the lifeguard stand's thin ink lines, a little stronger
-   because it sits in its own column instead of behind the headline. */
-#sandbox .surfer-drawing {
-  align-self: center;
-  width: 100%;
-  max-width: 280px;
-  justify-self: center;
-  transform: rotate(-6deg);
-  color: var(--ink);
-  opacity: 0.3;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: square;
-  stroke-linejoin: miter;
+/* Figures from the beach line drawing (public/art): the file's alpha is
+   the ink, painted in the current color, like the client logos. */
+.beach-figure {
+  display: block;
+  background: currentColor;
+  -webkit-mask: var(--art) center bottom / contain no-repeat;
+  mask: var(--art) center bottom / contain no-repeat;
   pointer-events: none;
+}
+/* The surfer stands on the row's floor beside the knob. */
+#sandbox .surfer-drawing {
+  align-self: end;
+  justify-self: center;
+  width: 100%;
+  max-width: 230px;
+  aspect-ratio: 536 / 929;
+  color: var(--ink);
+  opacity: 0.55;
 }
 /* Not enough room for three across: words and knob keep the row. */
 @media (max-width: 1100px) {
@@ -1609,6 +1611,40 @@ section#sandbox .sandbox-heading {
   .interior a.client-board-tile:hover,
   .interior a.client-board-tile:focus-visible {
     transform: none;
+  }
+}
+
+/* Footer: the girl from the drawing stands behind 03 / Resources, taller
+   than the column, and the lifeguard stand sits off to her right at the
+   footer's edge. Faint, so the links on top stay readable. */
+#coastal-footer .footer-directory > nav {
+  position: relative;
+  isolation: isolate;
+}
+#coastal-footer .footer-figures {
+  position: absolute;
+  inset: auto -30px 0 0;
+  z-index: -1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 10px;
+  height: 320px;
+  color: var(--footer-ink);
+  opacity: 0.3;
+  pointer-events: none;
+}
+#coastal-footer .footer-figures .beach-girl {
+  height: 100%;
+  aspect-ratio: 259 / 899;
+}
+#coastal-footer .footer-figures .lifeguard-stand {
+  height: 56%;
+  aspect-ratio: 353 / 478;
+}
+@media (max-width: 760px) {
+  #coastal-footer .footer-figures {
+    display: none;
   }
 }
 
