@@ -10,7 +10,7 @@ import {
   MapPin,
 } from "lucide-react";
 import ContactForm from "@/components/page/contact-form";
-import ClientSliderContent from "@/components/main/client-slider-content";
+import { ClientBoard } from "@/components/beachmag/client-board";
 import styles from "./interior.module.css";
 import { Button } from "@/components/ui/button";
 
@@ -112,12 +112,7 @@ export function MaintenancePage({
           ))}
         </div>
       </section>
-      <section
-        className={`${styles.panel} ${styles.section}`}
-        aria-label="Clients"
-      >
-        <ClientSliderContent />
-      </section>
+      <ClientBoard />
       <section className={styles.serviceContact} id="contact">
         <h2>Let’s talk about your {kind === "React" ? "app" : "website"}.</h2>
         <ContactForm

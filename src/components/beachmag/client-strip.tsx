@@ -8,7 +8,7 @@ import { TRIMMED_LOGOS } from "./client-logos";
 import { LogoStrip } from "./logo-strip";
 
 /** The trimmed copy of a stock logo, or the logo as stored for one added later in the admin. */
-function logoSource(logo: string) {
+export function logoSource(logo: string) {
   const file = decodeURIComponent(logo.split("/").pop() ?? "");
   const trimmed = logo.includes("/client-icons/") ? TRIMMED_LOGOS.get(file) : undefined;
   return trimmed ? `/client-logos/${trimmed}` : logo;
