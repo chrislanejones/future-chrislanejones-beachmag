@@ -5,7 +5,6 @@ import { api } from "../../../convex/_generated/api";
 import { Briefcase, Download, MapPin } from "lucide-react";
 import { timelineEvents } from "@/data/career-timeline";
 import styles from "@/components/coastal/interior.module.css";
-import { Button } from "@/components/ui/button";
 
 export default function CareerPage() {
   const liveEvents = useQuery(api.careerTimeline.getAllEvents);
@@ -37,20 +36,18 @@ export default function CareerPage() {
             Download my latest experience, technical skills, and projects.
           </p>
           <div className={styles.actions}>
-            <Button asChild variant="pill">
-              <a
-                href="/career-and-resume/download/pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Download aria-hidden="true" /> Resume (PDF)
-              </a>
-            </Button>
-            <Button asChild variant="pill">
-              <a href="/career-and-resume/download/docx" download>
-                <Download aria-hidden="true" /> Resume (Word)
-              </a>
-            </Button>
+            <a
+              className="radio-key resume-key"
+              href="/career-and-resume/download/pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Download size={16} aria-hidden="true" /> Resume (PDF)
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
+            <a className="radio-key resume-key" href="/career-and-resume/download/docx" download>
+              <Download size={16} aria-hidden="true" /> Resume (Word)
+            </a>
           </div>
         </div>
       </section>

@@ -995,3 +995,8 @@ html.dark .gallery-drawer {
     transition: none;
   }
 }
+/* Resume downloads: two word-sized sage keys side by side. */
+.interior a.radio-key.resume-key {
+  width: auto;
+  padding: 0 20px 4px;
+}
