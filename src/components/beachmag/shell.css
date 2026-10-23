@@ -1647,7 +1647,7 @@ section#sandbox .sandbox-heading {
   right: -20px;
   bottom: 0;
   height: 520px;
-  aspect-ratio: 651 / 1457;
+  aspect-ratio: 999 / 1458;
 }
 /* The send-off card moves left, out from in front of her. */
 @media (min-width: 761px) {
