@@ -6,7 +6,7 @@ import { api } from "../../../../convex/_generated/api";
 import BlogPostPage from "./BlogPostPage";
 import { jsonLd as toJsonLd } from "@/lib/structured-data";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo";
-import { renderPostHtml } from "@/lib/blog-content";
+import { renderPostHtml, withSectionIds } from "@/lib/blog-content";
 import { SITE_URL } from "@/lib/structured-data";
 
 const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
@@ -104,6 +104,7 @@ export default async function Page({
       post.tags.length > 0 && { keywords: post.tags.join(", ") }),
   };
 
+  const body = withSectionIds(renderPostHtml(post.content));
   return (
     <>
       <script
@@ -112,12 +113,10 @@ export default async function Page({
       />
       {/* The body renders here on the server, so crawlers and AI tools get
           the full text. BlogPostPage mounts the widgets into this DOM. */}
-      <BlogPostPage params={{ slug }} initialPost={post}>
+      <BlogPostPage params={{ slug }} initialPost={post} sections={body.sections}>
         <article
           className="blog-content max-w-none mb-8"
-          dangerouslySetInnerHTML={{
-            __html: renderPostHtml(post.content),
-          }}
+          dangerouslySetInnerHTML={{ __html: body.html }}
         />
       </BlogPostPage>
     </>

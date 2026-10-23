@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, expect, test } from "vitest";
-import { renderPostHtml, sanitizePostHtml } from "./blog-content";
+import { renderPostHtml, sanitizePostHtml, withSectionIds } from "./blog-content";
 
 // Anything that can run code must come out inert.
 describe("sanitizePostHtml blocks active content", () => {
@@ -72,5 +72,16 @@ describe("renderPostHtml", () => {
   test("empty content", () => {
     expect(renderPostHtml(undefined)).toBe("");
     expect(renderPostHtml("")).toBe("");
+  });
+});
+
+describe("withSectionIds", () => {
+  test("numbers h2s, keeps existing ids, and lists plain-text labels", () => {
+    const { html, sections } = withSectionIds('<h2>One &amp; two</h2><p>x</p><h2 id="keep">It&#x27;s <em>here</em></h2><h3>skip</h3>');
+    expect(html).toBe('<h2 id="section-1">One &amp; two</h2><p>x</p><h2 id="keep">It&#x27;s <em>here</em></h2><h3>skip</h3>');
+    expect(sections).toEqual([
+      { id: "section-1", label: "One & two" },
+      { id: "keep", label: "It's here" },
+    ]);
   });
 });

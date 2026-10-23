@@ -77,3 +77,25 @@ export function renderPostHtml(content: string | undefined): string {
   const html = /^<[a-z][\s\S]*>/i.test(trimmed) ? trimmed : (marked.parse(trimmed) as string);
   return sanitizePostHtml(html);
 }
+
+const ENTITIES: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: '"', "#39": "'", "#x27": "'", nbsp: " " };
+
+/**
+ * Gives every h2 in rendered post HTML a `section-N` id (keeping one it
+ * already has) and lists them, for the article's "In this edition" index.
+ * Runs on sanitized output, so the ids are the only thing it adds.
+ */
+export function withSectionIds(html: string): { html: string; sections: { id: string; label: string }[] } {
+  const sections: { id: string; label: string }[] = [];
+  const out = html.replace(/<h2(\s[^>]*)?>([\s\S]*?)<\/h2>/gi, (_match, attrs: string | undefined, inner: string) => {
+    const existing = attrs?.match(/\sid="([^"]+)"/)?.[1];
+    const id = existing ?? `section-${sections.length + 1}`;
+    const label = inner
+      .replace(/<[^>]+>/g, "")
+      .replace(/&(#x27|#39|amp|lt|gt|quot|nbsp);/g, (_e, name: string) => ENTITIES[name])
+      .trim();
+    sections.push({ id, label });
+    return existing ? `<h2${attrs}>${inner}</h2>` : `<h2${attrs ?? ""} id="${id}">${inner}</h2>`;
+  });
+  return { html: out, sections };
+}

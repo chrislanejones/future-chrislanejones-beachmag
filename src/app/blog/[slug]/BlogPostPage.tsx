@@ -10,6 +10,7 @@ import {
 import { createRoot, type Root } from "react-dom/client";
 import { STEPPER_CONFIGS } from "@/components/blog/stepper-configs";
 import { CoastalPageShell } from "@/components/coastal/page-shell";
+import { ArchiveHero, ArchiveLayout, type IndexEntry } from "@/components/beachmag/interior-parts";
 import styles from "@/components/coastal/interior.module.css";
 import { Card } from "@/components/page/card";
 import { Button } from "@/components/ui/button";
@@ -21,9 +22,7 @@ import { api } from "../../../../convex/_generated/api";
 import Link from "next/link";
 import Image from "next/image";
 import {
-  Calendar,
   Heart,
-  MessageCircle,
   ArrowLeft,
   User,
   Mail,
@@ -57,13 +56,19 @@ function useUserIdentifier(): string {
 // The server fetches the post and renders its body (see page.tsx), passing
 // both in. The page paints complete on first load, crawlers get the full
 // text, and the live Convex query takes over once it connects.
+// Dates a person reads are MM-DD-YYYY; posts are stamped in UTC.
+const readableDate = (date: Date) =>
+  [date.getUTCMonth() + 1, date.getUTCDate()].map((n) => String(n).padStart(2, "0")).join("-") + "-" + date.getUTCFullYear();
+
 export default function BlogPostPage({
   params,
   initialPost,
+  sections,
   children,
 }: {
   params: { slug: string };
   initialPost: Doc<"blogPosts">;
+  sections: IndexEntry[];
   children: React.ReactNode;
 }) {
   const userIdentifier = useUserIdentifier();
@@ -217,65 +222,35 @@ export default function BlogPostPage({
     setShowCommentForm(false);
   };
 
+  const published = new Date(post.createdAt);
   return (
     <CoastalPageShell>
-      <div className={`${styles.content} ${styles.article}`}>
-        {/* Back to Blog */}
-        <div className="mb-8">
-          <Button asChild variant="secondary" size="sm">
-            <Link href="/blog">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Blog
-            </Link>
-          </Button>
-        </div>
+      <ArchiveHero
+        crumbs={[{ href: "/", label: "Home" }, { href: "/blog", label: "Blog" }, { label: post.title }]}
+        kicker="BLOG / CHRIS LANE JONES"
+        title={post.title}
+        path="/blog"
+      />
+      <ArchiveLayout index={sections}>
+        <p><Link href="/blog">Back to Blog</Link></p>
+        {post.coverImage && (
+          <p>
+            <Image src={post.coverImage} alt={post.title} width={1200} height={630} sizes="(max-width: 1240px) 92vw, 960px" priority fetchPriority="high" />
+          </p>
+        )}
+        <p className="article-meta">
+          <time dateTime={published.toISOString()}>{readableDate(published)}</time>
+          <span aria-hidden="true"> · </span>
+          <span>{post.likesCount || 0} likes</span>
+          <span aria-hidden="true"> · </span>
+          <span>{comments?.length || 0} comments</span>
+        </p>
 
-        <h1 className={styles.articleTitle}>{post.title}</h1>
+        {/* Content: server-rendered <article> passed in as children. */}
+        <div ref={articleRef}>{children}</div>
 
-        <div className={styles.articleBody}>
-          {post.coverImage && (
-            <div className={styles.articleCover}>
-              <Image
-                src={post.coverImage}
-                alt={post.title}
-                fill
-                sizes="(max-width: 1280px) 100vw, 1280px"
-                className="object-contain"
-                priority
-                fetchPriority="high"
-              />
-            </div>
-          )}
-
+        <div>
           <div>
-            {/* Meta Info */}
-            <div className="flex flex-wrap items-center gap-4 text-muted mb-8 pb-6 border-b border-(--color-border)">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                <time dateTime={new Date(post.createdAt).toISOString()}>
-                  {new Date(post.createdAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    timeZone: "UTC",
-                  })}
-                </time>
-              </div>
-              <div className="flex items-center gap-2">
-                <Heart
-                  className={`w-4 h-4 ${userLikeStatus?.liked ? "fill-current text-(--color-accent)" : ""}`}
-                />
-                <span>{post.likesCount || 0} likes</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <MessageCircle className="w-4 h-4" />
-                <span>{comments?.length || 0} comments</span>
-              </div>
-            </div>
-
-            {/* Content: server-rendered <article> passed in as children. */}
-            <div ref={articleRef}>{children}</div>
-
             {/* Tags */}
             {post.tags && post.tags.length > 0 && (
               <div className="mb-8 pb-6 border-b border-(--color-border)">
@@ -448,7 +423,7 @@ export default function BlogPostPage({
             </div>
           </div>
         </div>
-      </div>
+      </ArchiveLayout>
     </CoastalPageShell>
   );
 }
