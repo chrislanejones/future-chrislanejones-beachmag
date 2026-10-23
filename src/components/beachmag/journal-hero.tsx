@@ -6,6 +6,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { ContentBoundary } from "@/components/coastal/live-content";
 import { setTheme, useTheme } from "@/lib/theme-store";
+import { ClientStrip } from "./client-strip";
 import { upcomingEvents } from "./events";
 
 type Entry = { title: string; excerpt: string; href: string; date?: number };
@@ -114,6 +115,7 @@ export function JournalHero() {
           )}
         </aside>
       </div>
+      <ClientStrip />
     </>
   );
 }
