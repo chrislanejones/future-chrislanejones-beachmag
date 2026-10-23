@@ -83,7 +83,6 @@ export function FeaturedProjects() {
       <ContentBoundary fallback={<Spread rows={snapshot} />}>
         <LiveSpread />
       </ContentBoundary>
-      <p className="projects-bottom">TWO THINGS I MADE. MANY MORE RABBIT HOLES. <span aria-hidden="true">↗</span></p>
     </section>
   );
 }
