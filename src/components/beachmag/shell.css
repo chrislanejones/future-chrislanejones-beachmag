@@ -664,3 +664,8 @@ html.dark .interior {
 .interior :where(p, li, dd) > a:where(:not([class])) {
   text-decoration: underline;
 }
+.interior .work-card .work-card-blank {
+  display: block;
+  aspect-ratio: 1.6;
+  background: light-dark(#e4d8bf, #304445);
+}

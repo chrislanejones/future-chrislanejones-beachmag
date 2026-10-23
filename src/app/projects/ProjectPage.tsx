@@ -1,100 +1,84 @@
 "use client";
 
 import { useState } from "react";
-import { preload } from "react-dom";
-import { ProjectCard, type ProjectCardData } from "@/components/coastal/project-card";
-import { PageIntro } from "@/components/coastal/page-intro";
-import styles from "@/components/coastal/coastal.module.css";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getPageHeader } from "@/lib/page-headers";
+import Image from "next/image";
+import Link from "next/link";
 import { useQuery } from "convex/react";
+import { EndNote } from "@/components/beachmag/interior-parts";
+import type { ProjectCardData } from "@/components/coastal/project-card";
+import { projectPresentation } from "@/data/project-presentation";
 import { projects as fallbackProjects } from "@/data/projects-data";
+import { projectHref, projectSiteUrl } from "@/lib/projects";
 import { api } from "../../../convex/_generated/api";
 
-// Keep the archive and homepage fallbacks on the same complete catalog.
-const FALLBACK_APPS: ProjectCardData[] = fallbackProjects.filter((project) => project.category === "app");
-const FALLBACK_WEBSITES: ProjectCardData[] = fallbackProjects.filter((project) => project.category === "website");
+type Project = ProjectCardData & { _id?: string; category: string };
+type Filter = "all" | "app" | "website";
 
-// Measured preview widths: ~86vw in the one-column layout, ~41vw in two
-// columns, capped at 608px once the container stops growing (1600px+).
-const PREVIEW_SIZES = "(max-width: 767px) 86vw, (min-width: 1600px) 608px, 41vw";
+const FILTERS: { id: Filter; label: string }[] = [
+  { id: "all", label: "All work" },
+  { id: "app", label: "App projects" },
+  { id: "website", label: "Website projects" },
+];
 
-/* ------------------------------- Components ------------------------------- */
+const plain = (text: string) => text.replace(/[–—]/g, "-");
 
-function ProjectGridSection({ projects }: { projects: (ProjectCardData & { _id?: string })[] }) {
+function WorkCard({ project, priority }: { project: Project; priority: boolean }) {
+  const presentation = projectPresentation(project);
+  const title = plain(presentation.title);
+  const site = projectSiteUrl(project);
   return (
-    <section className={styles.archiveGrid} aria-label="Projects grid">
-      {projects.map((project, index) => (
-        <ProjectCard
-          key={project._id ?? project.title}
-          project={project}
-          sizes={PREVIEW_SIZES}
-          priority={index === 0}
-          showFeatures
-          delay={index * 0.04}
-        />
-      ))}
-    </section>
+    <article className="work-card">
+      <figure>
+        {presentation.image ? (
+          <Image src={presentation.image} alt={title} width={640} height={400} sizes="(max-width: 640px) 86vw, 560px" priority={priority} />
+        ) : (
+          <span className="work-card-blank" aria-hidden="true" />
+        )}
+        <figcaption>{project.category === "app" ? "APP" : "WEBSITE"} / SELECTED WORK</figcaption>
+      </figure>
+      <h2>{title}</h2>
+      <p>{plain(presentation.description)}</p>
+      <div className="work-actions">
+        <Link className="action-link" href={projectHref(project)}>Explore project <span aria-hidden="true">↗</span></Link>
+        {site && (
+          <a href={site} target="_blank" rel="noopener noreferrer">
+            Visit ↗<span className="sr-only"> {title} (opens in a new tab)</span>
+          </a>
+        )}
+      </div>
+    </article>
   );
 }
 
-export default function ProjectGrid() {
-  // The first card's sand backdrop is the mobile LCP element, and as a CSS
-  // background it is otherwise found only after the stylesheet loads.
-  preload("/textures/project-sand.svg", { as: "image", fetchPriority: "high" });
-  const [activeTab, setActiveTab] = useState<"apps" | "clients">("apps");
-  const appsConvex = useQuery(api.pageHeaders.getPageHeaderByPath, {
-    path: "/projects/apps",
-  });
-  const websitesConvex = useQuery(api.pageHeaders.getPageHeaderByPath, {
-    path: "/projects/websites",
-  });
-  const convexApps = useQuery(api.projects.getByCategory, { category: "app" });
-  const convexWebsites = useQuery(api.projects.getByCategory, {
-    category: "website",
-  });
-  const appProjects = convexApps?.length ? convexApps : FALLBACK_APPS;
-  const clientProjects = convexWebsites?.length
-    ? convexWebsites
-    : FALLBACK_WEBSITES;
-  const appsHeader = appsConvex ?? getPageHeader("/projects/apps");
-  const websitesHeader = websitesConvex ?? getPageHeader("/projects/websites");
+// "Built with salt & grit.": every project in one grid, filtered by kind.
+// The server passes its Convex read so the first paint links to real pages;
+// the live query takes over once it connects.
+export default function ProjectGrid({ initialProjects }: { initialProjects: Project[] }) {
+  const [filter, setFilter] = useState<Filter>("all");
+  const apps = useQuery(api.projects.getByCategory, { category: "app" });
+  const websites = useQuery(api.projects.getByCategory, { category: "website" });
+  const all: Project[] = apps && websites ? [...apps, ...websites] : initialProjects.length ? initialProjects : fallbackProjects;
+  const visible = filter === "all" ? all : all.filter((project) => project.category === filter);
 
   return (
     <>
-      <PageIntro header={activeTab === "apps" ? appsHeader : websitesHeader} path="/projects" />
-      <Tabs
-        value={activeTab}
-        onValueChange={(v) => setActiveTab(v as "apps" | "clients")}
-        className={styles.projectTabs}
-      >
-        <TabsList
-          variant="pills"
-          className={styles.projectTabList}
-          aria-label="Project categories"
-        >
-          <TabsTrigger
-            variant="pills"
-            value="apps"
-            className={styles.projectTab}
-          >
-            App Projects
-          </TabsTrigger>
-          <TabsTrigger
-            variant="pills"
-            value="clients"
-            className={styles.projectTab}
-          >
-            Website Projects
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="apps" className={styles.projectTabPanel}>
-          <ProjectGridSection projects={appProjects} />
-        </TabsContent>
-        <TabsContent value="clients" className={styles.projectTabPanel}>
-          <ProjectGridSection projects={clientProjects} />
-        </TabsContent>
-      </Tabs>
+      <div className="section-rule">
+        <p>THE WORK / APPLICATIONS &amp; WEBSITES</p>
+        <p role="status">{visible.length} project{visible.length === 1 ? "" : "s"}</p>
+      </div>
+      <div className="filter-tabs" role="group" aria-label="Project category">
+        {FILTERS.map((item) => (
+          <button key={item.id} type="button" aria-pressed={filter === item.id} onClick={() => setFilter(item.id)}>
+            {item.label}
+          </button>
+        ))}
+      </div>
+      <div className="project-grid">
+        {visible.map((project, index) => (
+          <WorkCard key={project._id ?? project.title} project={project} priority={index === 0} />
+        ))}
+      </div>
+      <EndNote line="Something on your mind?" href="/contact" label="Let’s build it" />
     </>
   );
 }
