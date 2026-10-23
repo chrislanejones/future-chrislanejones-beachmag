@@ -217,14 +217,15 @@ body.menu-open #site-takeover {
   clip-path: circle(150vmax at var(--menu-x, calc(100% - 42px)) var(--menu-y, 42px));
 }
 
-/* Desktop dropdowns: About and Work open a paper card under the link. */
+/* Desktop dropdowns: About and Work open a card that hangs from the
+   header's bottom rule, orange-topped like the footer. */
 #site-nav .nav-group {
   position: relative;
 }
 #site-nav .nav-group > button {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   padding: 0;
   border: 0;
   background: none;
@@ -232,14 +233,13 @@ body.menu-open #site-takeover {
   font: inherit;
   cursor: pointer;
 }
-#site-nav .nav-group > button:hover,
-#site-nav .nav-group > button[aria-expanded="true"] {
+/* Only the word underlines, so the chevron can turn without dragging a line. */
+#site-nav .nav-group > button:hover .nav-group-label,
+#site-nav .nav-group > button[aria-expanded="true"] .nav-group-label {
   text-decoration: underline;
   text-underline-offset: 5px;
 }
 #site-nav .nav-caret {
-  display: inline-block;
-  font-size: 10px;
   transition: transform 180ms ease;
 }
 #site-nav .nav-group > button[aria-expanded="true"] .nav-caret {
@@ -247,16 +247,18 @@ body.menu-open #site-takeover {
 }
 #site-nav .nav-dropdown {
   position: absolute;
-  top: calc(100% + 14px);
-  left: -16px;
+  /* The header pads 24px under the links; the card's orange edge covers its 4px rule. */
+  top: calc(100% + 38px);
+  left: -18px;
   z-index: 60;
   display: flex;
   flex-direction: column;
-  min-width: 230px;
+  min-width: 220px;
   padding: 6px 0;
   background: var(--nav-paper);
   border: 2px solid var(--nav-ink);
-  box-shadow: 5px 6px 0 var(--nav-ink);
+  border-top: 4px solid var(--nav-accent);
+  box-shadow: 0 14px 28px rgb(0 0 0 / 0.28);
 }
 #site-nav .nav-dropdown[hidden] {
   display: none;
@@ -267,22 +269,36 @@ body.menu-open #site-takeover {
   position: absolute;
   left: 0;
   right: 0;
-  top: -16px;
-  height: 14px;
+  top: -42px;
+  height: 38px;
 }
 #site-nav .nav-dropdown a {
   display: flex;
   align-items: center;
   min-height: 42px;
-  padding: 8px 16px;
+  margin: 0 8px;
+  padding: 8px 10px;
   font-size: 12px;
   font-weight: 700;
+}
+#site-nav .nav-dropdown a + a {
+  border-top: 1px solid color-mix(in srgb, var(--nav-ink) 18%, transparent);
 }
 #site-nav .nav-dropdown a:hover,
 #site-nav .nav-dropdown a:focus-visible {
   background: var(--nav-ink);
   color: var(--nav-paper);
   text-decoration: none;
+}
+/* Two-row header (links on the bottom row): only the 24px padding to the rule. */
+@media (min-width: 641px) and (max-width: 1000px) {
+  #site-nav .nav-dropdown {
+    top: calc(100% + 24px);
+  }
+  #site-nav .nav-dropdown::before {
+    top: -28px;
+    height: 24px;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   #site-nav .nav-caret {

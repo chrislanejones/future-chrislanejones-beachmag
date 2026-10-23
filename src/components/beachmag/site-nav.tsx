@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Shell, Volleyball, Waves } from "lucide-react";
+import { ChevronDown, Shell, Volleyball, Waves } from "lucide-react";
 import { useHeaderNavItems } from "@/components/page/links";
 import { setTheme, useTheme } from "@/lib/theme-store";
 
@@ -28,7 +28,8 @@ function NavGroup({ item, open, onOpen, onClose }: { item: NavItem; open: boolea
   return (
     <div className="nav-group" onPointerEnter={() => onOpen(true)} onPointerLeave={() => onClose(true)}>
       <button type="button" aria-expanded={open} aria-controls={id} onClick={() => (open ? onClose(false) : onOpen(false))}>
-        {item.label} <span className="nav-caret" aria-hidden="true">▾</span>
+        <span className="nav-group-label">{item.label}</span>
+        <ChevronDown className="nav-caret" size={14} strokeWidth={2.5} aria-hidden="true" />
       </button>
       <div className="nav-dropdown" id={id} hidden={!open}>
         {item.children?.map((child) => (
