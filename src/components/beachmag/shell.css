@@ -1617,8 +1617,10 @@ section#sandbox .sandbox-heading {
 /* Home masthead: the lifeguard stand from the beach drawing takes the
    CSS stencil's spot (position, tilt and layer come from the design). */
 #coastal-art .lifeguard-drawing.beach-figure {
-  width: 340px;
-  height: 400px;
+  right: 0;
+  top: 56px;
+  width: 380px;
+  height: 440px;
   transform: none;
   opacity: 0.2;
 }
