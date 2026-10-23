@@ -7,6 +7,7 @@ import { api } from "../../../convex/_generated/api";
 import { ContentBoundary, photos as fallbackPhotos } from "@/components/coastal/live-content";
 import type { GalleryPhoto } from "@/components/coastal/gallery-panel";
 import { QUOTES } from "@/components/main/quote-content";
+import GalleryDrawer from "./gallery-drawer";
 import { mountRadio } from "./radio-engine";
 import { RadioMarkup } from "./radio-markup";
 
@@ -68,61 +69,26 @@ function Ramblings() {
   );
 }
 
-// Renders the ramblings/photos row and the album after it, as the design does.
+// The ramblings card beside "Wish you were here.": the postcard opens the
+// polaroid gallery from the future-chrislanejones site.
 function Postcards({ photos, ramble }: { photos: GalleryPhoto[]; ramble: React.ReactNode }) {
-  const [open, setOpen] = useState(false);
-  const [index, setIndex] = useState(0);
-  const [turns, setTurns] = useState(0);
-  const opener = useRef<HTMLButtonElement>(null);
-  const closer = useRef<HTMLButtonElement>(null);
-  const opened = useRef(false);
-  useEffect(() => {
-    if (!opened.current && !open) return;
-    opened.current = true;
-    (open ? closer : opener).current?.focus({ preventScroll: true });
-  }, [open]);
-  const photo = photos[index % photos.length];
-  const step = (by: number) => {
-    setIndex((index + by + photos.length) % photos.length);
-    setTurns(turns + 1);
-  };
-  if (!photo) return <div className="two">{ramble}</div>;
+  const cover = photos[0];
+  if (!cover) return <div className="two">{ramble}</div>;
   return (
-    <>
-      <div className="two">
-        {ramble}
-        <div className="photos">
-          <h3>Wish you were here.</h3>
-          <button ref={opener} className="photo-stack cursor-interaction" type="button" aria-expanded={open} aria-controls="beach-album" onClick={() => setOpen(!open)}>
+    <div className="two">
+      {ramble}
+      <div className="photos">
+        <h3>Wish you were here.</h3>
+        <GalleryDrawer photos={photos} title="Postcards from here." description="Click a photo to bring it to the front.">
+          <button className="photo-stack cursor-interaction" type="button" aria-label="Open the postcards gallery">
             <span className="photo-front">
-              <Image src={photos[0].src} alt={photos[0].alt} width={600} height={400} sizes="(max-width: 640px) 90vw, 480px" />
+              <Image src={cover.src} alt={cover.alt} width={600} height={400} sizes="(max-width: 640px) 90vw, 480px" />
               <span>Open the postcards ↗</span>
             </span>
           </button>
-        </div>
+        </GalleryDrawer>
       </div>
-      <section
-        className={`album${open ? " opening" : ""}`}
-        id="beach-album"
-        aria-label="Beach photo album"
-        hidden={!open}
-        onKeyDown={(event) => event.key === "Escape" && setOpen(false)}
-      >
-        <div className="album-head">
-          <h3>Postcards from here.</h3>
-          <button ref={closer} className="plain-button cursor-interaction" type="button" onClick={() => setOpen(false)}>Close ×</button>
-        </div>
-        <figure className={`album-photo${turns ? " changing" : ""}`} key={turns}>
-          <Image src={photo.src} alt={photo.alt} width={1200} height={800} sizes="(max-width: 640px) 92vw, 900px" />
-          <figcaption>{photo.description}</figcaption>
-        </figure>
-        <div className="album-controls">
-          <button className="plain-button cursor-interaction" type="button" onClick={() => step(-1)}>← Previous</button>
-          <span className="photo-count" aria-live="polite">{(index % photos.length) + 1} / {photos.length}</span>
-          <button className="plain-button cursor-interaction" type="button" onClick={() => step(1)}>Next →</button>
-        </div>
-      </section>
-    </>
+    </div>
   );
 }
 
