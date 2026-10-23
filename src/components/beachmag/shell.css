@@ -1610,6 +1610,15 @@ section#sandbox .sandbox-heading {
   }
 }
 
+/* The radio's now-playing line: the tilted radio hangs below its box, so
+   the line sits a little lower, clear of it and in front. */
+#beach-offline .radio-unit .real-status {
+  position: relative;
+  z-index: 1;
+  margin: 64px 0 0;
+  font-size: 11px;
+}
+
 /* Home masthead: the lifeguard stand from the beach drawing takes the
    CSS stencil's spot (position, tilt and layer come from the design). */
 #coastal-art .lifeguard-drawing.beach-figure {
