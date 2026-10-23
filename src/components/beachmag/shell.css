@@ -1265,12 +1265,13 @@ section#sandbox .sandbox-heading {
   display: flex;
   flex-direction: column;
 }
-/* No rule line under the knob: at some widths it ran into the Flag label. */
-#sandbox .sandbox-dial > .game-status {
-  margin: 0;
-  padding-top: 6px;
-  border-top: 0;
-  text-align: center;
+/* The status line follows the how-to, a thin rule above it. */
+#sandbox .sandbox-words > .game-status {
+  max-width: 52ch;
+  margin: 14px 0 0;
+  padding-top: 10px;
+  min-height: 0;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 30%, transparent);
 }
 #sandbox .sandbox-words > #game-help {
   margin: 14px 0 0;
@@ -1443,13 +1444,8 @@ section#sandbox .sandbox-heading {
   .tool-knob {
     display: none;
   }
-  /* With the knob hidden, the status line follows the button grid. */
   #sandbox .sandbox-dial {
-    display: contents;
-  }
-  #sandbox .sandbox-dial > .game-status {
-    order: 1;
-    text-align: left;
+    display: none;
   }
 }
 /* Home project cards: the call to action is a silver key. */
