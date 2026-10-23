@@ -732,3 +732,52 @@ html.dark .interior {
   flex-shrink: 0;
   color: var(--footer-accent);
 }
+
+/* The postcards gallery drawer. It portals to <body>, outside #coastal-art,
+   so it repeats the magazine's paper / ink / orange (light, then After dark). */
+.gallery-drawer {
+  --gd-paper: #eee5d2;
+  --gd-ink: #152e31;
+  --gd-accent: #a6321c;
+  --gd-card: #faf3e5;
+  border: 0;
+  border-top: 5px solid var(--gd-accent);
+  border-radius: 0;
+  background: radial-gradient(color-mix(in srgb, var(--gd-ink) 14%, transparent) 0.6px, transparent 0.9px) 0 0 / 7px 9px, var(--gd-paper);
+  color: var(--gd-ink);
+  font-family: var(--font-dm-sans), Arial, sans-serif;
+}
+html.dark .gallery-drawer {
+  --gd-paper: #142224;
+  --gd-ink: #eee5d2;
+  --gd-accent: #ffab80;
+  --gd-card: #243638;
+}
+/* The drag handle. */
+.gallery-drawer > div:first-child {
+  background: var(--gd-ink);
+  opacity: 0.35;
+}
+.gallery-drawer h2 {
+  color: var(--gd-ink);
+  font: italic 900 32px/1.1 var(--font-bodoni-moda), Georgia, serif;
+  letter-spacing: -1px;
+}
+.gallery-drawer h2 + p {
+  color: var(--gd-ink);
+  opacity: 0.75;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+.gallery-drawer .polaroid {
+  background: var(--gd-card);
+  box-shadow: 4px 6px 0 color-mix(in srgb, var(--gd-ink) 22%, transparent), 0 14px 30px rgb(0 0 0 / 0.18);
+}
+.gallery-drawer .polaroid-caption {
+  color: var(--gd-ink);
+  font: italic 900 15px/1.2 var(--font-bodoni-moda), Georgia, serif;
+}
+.gallery-drawer .polaroid:focus-visible {
+  outline: 3px solid var(--gd-accent);
+  outline-offset: 4px;
+}

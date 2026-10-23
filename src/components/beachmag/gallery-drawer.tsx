@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Images } from "lucide-react";
+import { bodoniModa, dmSans } from "./fonts";
 
 type Direction = "left" | "right";
 
@@ -64,7 +65,7 @@ const Photo = ({
   onClick,
 }: PhotoProps) => (
   <motion.button
-    className="relative bg-white shadow-xl cursor-pointer transform-gpu focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+    className="polaroid relative shadow-xl cursor-pointer transform-gpu focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
     style={{
       width: width + 20,
       height: height + 60,
@@ -90,7 +91,7 @@ const Photo = ({
       </div>
     </div>
     <div className="px-2.5 py-2 h-12 flex items-center justify-center">
-      <p className="text-gray-800 text-center leading-tight">{description}</p>
+      <p className="polaroid-caption text-center leading-tight">{description}</p>
     </div>
   </motion.button>
 );
@@ -223,7 +224,7 @@ const PhotoGallery = ({
             onDragEnd={handleDragEnd}
           >
             <motion.button
-              className="relative bg-white shadow-xl cursor-grab active:cursor-grabbing transform-gpu focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+              className="polaroid relative shadow-xl cursor-grab active:cursor-grabbing transform-gpu focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
               style={{
                 width: 260,
                 height: 320,
@@ -248,7 +249,7 @@ const PhotoGallery = ({
                 </div>
               </div>
               <div className="px-2.5 py-2 h-16 flex items-center justify-center">
-                <p className="text-gray-800 text-center leading-tight text-sm">
+                <p className="polaroid-caption text-center leading-tight text-sm">
                   {photos[currentIndex].description}
                 </p>
               </div>
@@ -387,7 +388,8 @@ export default function GalleryDrawer({
         )}
       </DrawerTrigger>
 
-      <DrawerContent className="h-[72vh]">
+      {/* Portaled outside the page, so it carries the fonts and its own palette (shell.css). */}
+      <DrawerContent className={`gallery-drawer h-[72vh] ${bodoniModa.variable} ${dmSans.variable}`}>
         <div className="mx-auto w-full max-w-7xl">
           <DrawerHeader className="pb-2">
             <DrawerTitle className="text-center">
