@@ -163,14 +163,17 @@ export function Sandbox() {
 
   return (
     <section id="sandbox" aria-label="Sandcastle sandbox">
-      {/* Top row: the headline (a third, top left), the tool dial with the
-          blurb under it (two thirds, right). The beach is the next row. */}
+      {/* Top row: the headline top left and the blurb bottom left (a third),
+          the tool knob on the right (two thirds). The beach is the next row. */}
       <div className="sandbox-heading">
-        <div>
+        <div className="sandbox-words">
           <p className="game-kicker">NO DEADLINES. JUST SAND.</p>
           <h2>Leave a little<br /><em>castle.</em></h2>
+          <p>A small patch of coast to make your own. Pick a mold, press the sand, lift the bucket. Five flags. One very good afternoon.</p>
+          {/* The live status and the how-to live here too; the stage points at the help by id. */}
+          <p className="game-status" role="status">{notice || state.message}{busy && washStartedAt === null ? " · Let the sand settle…" : ""}</p>
+          <p id="game-help">Build it for me makes a whole castle; Undo brings back your beach. Tap the sand to build. Tap the wooden flag box or choose Pick up flag, then plant it. The box holds five flags; removing one returns it to the box. Dig neighboring spots to join the water channels. Use arrow keys to move the marker, Enter to build, or Delete to remove the top piece.</p>
         </div>
-        <div className="sandbox-dial">
         <ToolKnob
           tools={TOOLS.map(([id, label]) => ({
             id,
@@ -183,8 +186,6 @@ export function Sandbox() {
           onSelect={select}
           disabled={busy}
         />
-          <p>A small patch of coast to make your own. Pick a mold, press the sand, lift the bucket. Five flags. One very good afternoon.</p>
-        </div>
       </div>
       {/* Phones: the knob gets too small to read, so the tools stay a button grid. */}
       <div className="game-toolbar" role="group" aria-label="Sandcastle tools">
@@ -266,8 +267,6 @@ export function Sandbox() {
           <button type="button" disabled={busy} onClick={clearBeach}>{washStartedAt === null ? "Clear beach" : "Washing ashore…"}</button>
         </div>
       </div>
-      <p className="game-status" role="status">{notice || state.message}{busy && washStartedAt === null ? " · Let the sand settle…" : ""}</p>
-      <p id="game-help">Build it for me makes a whole castle; Undo brings back your beach. Tap the sand to build. Tap the wooden flag box or choose Pick up flag, then plant it. The box holds five flags; removing one returns it to the box. Dig neighboring spots to join the water channels. Use arrow keys to move the marker, Enter to build, or Delete to remove the top piece.</p>
     </section>
   );
 }
