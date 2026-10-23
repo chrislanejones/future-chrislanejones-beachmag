@@ -27,6 +27,11 @@ const TOOLS: [CastleTool, string][] = [
   ["moat", "Dig moat"], ["flag", "Pick up flag"], ["shell", "Shell"], ["erase", "Remove"],
 ];
 
+// The names printed on the tool knob, where there's room for one word.
+const SHORT: Record<CastleTool, string> = {
+  tower: "Tower", bucket: "Bucket", wall: "Wall", pile: "Pile", moat: "Moat", flag: "Flag", shell: "Shell", erase: "Remove",
+};
+
 // Motion runs only when the visitor allows it and the tab is visible.
 const REDUCED = "(prefers-reduced-motion: reduce)";
 function subscribeMotion(onChange: () => void) {
@@ -158,17 +163,19 @@ export function Sandbox() {
 
   return (
     <section id="sandbox" aria-label="Sandcastle sandbox">
-      {/* Top row: the words (a third), the tool knob (two thirds). The beach is the next row. */}
+      {/* Top row: the headline (a third, top left), the tool dial with the
+          blurb under it (two thirds, right). The beach is the next row. */}
       <div className="sandbox-heading">
         <div>
           <p className="game-kicker">NO DEADLINES. JUST SAND.</p>
           <h2>Leave a little<br /><em>castle.</em></h2>
-          <p>A small patch of coast to make your own. Pick a mold, press the sand, lift the bucket. Five flags. One very good afternoon.</p>
         </div>
+        <div className="sandbox-dial">
         <ToolKnob
           tools={TOOLS.map(([id, label]) => ({
             id,
             label,
+            short: SHORT[id],
             disabled: id === "flag" && available === 0 && !held,
             note: id === "flag" ? (held ? "IN HAND" : `${available} LEFT`) : undefined,
           }))}
@@ -176,6 +183,8 @@ export function Sandbox() {
           onSelect={select}
           disabled={busy}
         />
+          <p>A small patch of coast to make your own. Pick a mold, press the sand, lift the bucket. Five flags. One very good afternoon.</p>
+        </div>
       </div>
       {/* Phones: the knob gets too small to read, so the tools stay a button grid. */}
       <div className="game-toolbar" role="group" aria-label="Sandcastle tools">

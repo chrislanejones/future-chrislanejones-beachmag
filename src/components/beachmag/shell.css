@@ -1010,112 +1010,213 @@ html.dark .gallery-drawer {
 /* ── Sand game: text a third, tool knob two thirds, the beach below ──── */
 #sandbox .sandbox-heading {
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  align-items: center;
+  align-items: start;
 }
-#sandbox .sandbox-heading > div > p:last-child {
-  margin-top: 16px;
+#sandbox .sandbox-dial {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+}
+#sandbox .sandbox-dial > p {
+  margin: 0;
+  max-width: 44ch;
   font-size: 13px;
   line-height: 1.7;
-  max-width: 32ch;
+  text-align: center;
 }
+/* The tool knob: a 1960s TV channel dial. Chrome bezel, black face with a
+   fine white tick ring and a mint accent ring, the tools printed in white
+   spaced caps, an ivory grip with a chrome dome. The face turns so the chosen tool
+   sits under the fixed index at the top. */
 .tool-knob {
-  --cx: 50%;
-  --cy: 214px;
-  --rx: 44%;
-  --ry: 168px;
   position: relative;
-  height: 262px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 6px;
+  min-height: 430px;
 }
-/* Each tool sits on an arc around the knob (sin / cos from the component). */
-.tool-knob-label,
-#sandbox .tool-knob-label {
-  position: absolute;
-  left: calc(var(--cx) + var(--rx) * var(--x));
-  top: calc(var(--cy) - var(--ry) * var(--y));
-  transform: translate(-50%, -50%);
+.tool-knob-readout {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  min-height: 0;
-  padding: 4px 6px;
-  border: 0;
-  background: none;
-  font: 700 10px/1.1 var(--font-dm-sans), Arial, sans-serif;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  opacity: 0.55;
-  transition: opacity 180ms ease;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  font: italic 900 28px/1 var(--font-bodoni-moda), Georgia, serif;
 }
-#sandbox .tool-knob-label .game-tool-art {
-  width: 34px;
-  height: 34px;
+.tool-knob-readout small {
+  font: 700 9px var(--font-dm-sans), Arial, sans-serif;
+  font-style: normal;
+  letter-spacing: 0.12em;
+  opacity: 0.75;
 }
-#sandbox .tool-knob-label small {
-  font-size: 8px;
-  opacity: 0.8;
+/* The fixed index mark on the panel, pointing down at the dial. */
+.tool-knob-index {
+  width: 0;
+  height: 0;
+  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-top: 15px solid #e5583a;
+  filter: drop-shadow(0 1px 0 #0004);
 }
-#sandbox .tool-knob-label:hover:not(:disabled),
-#sandbox .tool-knob-label[aria-pressed="true"] {
-  opacity: 1;
-  background: none;
-  box-shadow: none;
-  color: inherit;
+/* Chrome bezel: a polished sweep, then a thin black ring before the face. */
+.tool-knob-body {
+  position: relative;
+  width: 340px;
+  height: 340px;
+  padding: 15px;
+  border-radius: 50%;
+  background: conic-gradient(from 20deg, #f7f7f1, #a9aea6 14%, #eef0e9 28%, #767c73 44%, #f3f4ee 58%, #9ea39b 72%, #e6e8e1 86%, #f7f7f1);
+  box-shadow: 0 8px 0 #4b514a, 0 14px 24px rgb(0 0 0 / 0.38), inset 0 0 0 1px #ffffffa0;
 }
-#sandbox .tool-knob-label[aria-pressed="true"] span {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
-}
-/* The dial: ticks at each tool, the chosen one long and orange. */
-.tool-knob-dial {
+.tool-knob-body::before {
+  content: "";
   position: absolute;
-  left: var(--cx);
-  top: var(--cy);
-  width: 128px;
-  height: 128px;
-  transform: translate(-50%, -50%);
+  inset: 12px;
+  border-radius: 50%;
+  background: #151915;
 }
-.tool-knob-tick {
+.tool-knob-face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 30%, #15181a, #0d0f10 70%, #070809);
+  box-shadow: inset 0 1px 2px #ffffff14, inset 0 -3px 8px #000000c0;
+  color: #f1e7d4;
+  transform: rotate(var(--turn));
+  transition: transform 520ms cubic-bezier(0.3, 1.25, 0.45, 1);
+}
+/* A ring of fine ticks at the edge (48, every 7.5°), like a tuning scale. */
+.tool-knob-face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from -0.6deg, #f1e7d4 0 1.2deg, transparent 1.2deg 7.5deg);
+  -webkit-mask: radial-gradient(circle, transparent 0 142px, #000 142.5px 150px, transparent 150.5px);
+  mask: radial-gradient(circle, transparent 0 142px, #000 142.5px 150px, transparent 150.5px);
+  opacity: 0.7;
+}
+/* The mint accent ring inside the ticks. */
+.tool-knob-face::after {
+  content: "";
+  position: absolute;
+  inset: 20px;
+  border: 3px solid #7fb8ad;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px #ffffff30;
+  pointer-events: none;
+}
+/* Each tool printed on the face at its own angle, upright when at the top. */
+#sandbox .tool-knob-print {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 2px;
-  height: 9px;
-  margin: -4.5px 0 0 -1px;
-  background: currentColor;
-  opacity: 0.6;
-  transform: rotate(var(--a)) translateY(-58px);
-}
-.tool-knob-tick[data-on] {
-  height: 13px;
-  margin-top: -6.5px;
-  background: #e5583a;
-  opacity: 1;
-}
-#sandbox .tool-knob-turn {
-  position: absolute;
-  inset: 22px;
-  display: grid;
-  place-items: center;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 64px;
   min-height: 0;
+  margin: -29px 0 0 -32px;
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: 700 10px/1 var(--font-dm-sans), Arial, sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transform: rotate(var(--at)) translateY(-102px);
+}
+#sandbox .tool-knob-print .game-tool-art {
+  width: 34px;
+  height: 34px;
+}
+#sandbox .tool-knob-print[aria-pressed="true"] {
+  background: none;
+  box-shadow: none;
+  color: #ffab80;
+}
+/* The icons print in white too: light fills, white lines. */
+#sandbox .tool-knob-print .tool-sand-fill,
+#sandbox .tool-knob-print .tool-shell-fill {
+  fill: #f1e7d4;
+}
+#sandbox .tool-knob-print .tool-shadow-fill {
+  fill: #b9ae95;
+}
+#sandbox .tool-knob-print .tool-water {
+  stroke: #8bc7c8;
+}
+#sandbox .tool-knob-print[aria-pressed="true"] .tool-sand-fill,
+#sandbox .tool-knob-print[aria-pressed="true"] .tool-shell-fill {
+  fill: #ffab80;
+}
+#sandbox .tool-knob-print:disabled {
+  opacity: 0.35;
+}
+#sandbox .tool-knob-print:focus-visible {
+  outline: 2px solid #e5583a;
+  outline-offset: 1px;
+}
+/* The grip is the chicken-head knob: a black bakelite bar with tapered
+   ends, a domed round hub, and a cream pointer line out to the tip. A light
+   edge keeps it readable on the black face. */
+#sandbox .tool-knob-grip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: 44px;
+  height: 160px;
+  min-height: 0;
+  margin: -80px 0 0 -22px;
   padding: 0;
   border: 0;
+  background: linear-gradient(90deg, #0d100d, #3a413a 40%, #262c26 62%, #0a0c0a);
+  clip-path: polygon(22% 0, 78% 0, 100% 24%, 100% 76%, 78% 100%, 22% 100%, 0 76%, 0 24%);
+  filter: drop-shadow(0 0 1px #d9cfb480) drop-shadow(0 6px 8px #000c);
+}
+#sandbox .tool-knob-grip::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 62px;
+  height: 62px;
+  margin: -31px 0 0 -31px;
   border-radius: 50%;
-  background: none;
+  background: radial-gradient(circle at 36% 30%, #4e564d, #1d221d 58%, #0b0d0b);
+  box-shadow: inset 0 1px 0 #ffffff33, 0 0 0 1px #d9cfb433;
 }
-#sandbox .tool-knob-turn:focus-visible {
-  outline: 3px solid #e5583a;
-  outline-offset: 2px;
+#sandbox .tool-knob-grip:focus-visible {
+  outline: none;
+  filter: drop-shadow(0 0 3px #e5583a) drop-shadow(0 6px 8px #000c);
 }
-/* The chicken-head knob from the edition switch, twice the size. */
-.tool-knob .edition-knob {
-  scale: 1.9;
-  transform: rotate(var(--angle));
+/* The cream line from the hub's middle to the tip, ending in an arrowhead. */
+.tool-knob-pointer {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  z-index: 1;
+  width: 2px;
+  height: 68px;
+  margin-left: -1px;
+  background: #efe4c2;
+}
+.tool-knob-pointer::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  margin-left: -4px;
+  border-right: 4px solid transparent;
+  border-bottom: 7px solid #efe4c2;
+  border-left: 4px solid transparent;
 }
 @media (prefers-reduced-motion: reduce) {
-  .tool-knob-label {
+  .tool-knob-face {
     transition: none;
   }
 }
