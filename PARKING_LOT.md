@@ -10,7 +10,6 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
 - **Services pages still use the old client slider** (`components/page/icon-slider.tsx`), whose white logos wash out on paper. Swap in the homepage's `ClientStrip` when those pages are ported.
 - **PGA Golf Game and VITA Major IT Projects Dashboard aren't in Convex**, so /projects doesn't list them (the design does). Add them in the live admin.
 - **h2s on old-content inner pages stay as the design sets them** (Bodoni, 36px); fine once each page is ported.
-- **No footer on `/`, `/browser-tabs` or `/events`**: the design never had one. Inner pages keep the beach site's `CoastalFooter` (site map, socials) in the magazine colors.
 - **VU meter reads after the volume knob**, so at low volume it barely moves. Metering before the volume would make it livelier.
 - **design/ is a reference archive**: `design/outputs/coastal-site-preview.zip` predates the radio stations, and `coastal-demo.wav` plus `generate_radio_demo.py` are unused. The 10-22 evening zip (sand game update) has an older radio than this repo; only its sandbox source was ported.
 - **Codex's sandbox uses `active` as a GLSL name** (reserved in WebGL2), so its wave overlay never compiled there. Fixed here in `incoming-wave.tsx`; tell Codex if that design keeps going.
