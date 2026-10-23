@@ -1,6 +1,5 @@
 import { CoastalPageShell } from "@/components/coastal/page-shell";
-import styles from "@/components/coastal/interior.module.css";
-import { CoastalPageIntro } from "@/components/coastal/page-intro";
+import { PageHero } from "@/components/beachmag/interior-parts";
 import ContactForm from "./ContactForm";
 import { getPageSEO } from "@/lib/seo";
 
@@ -12,11 +11,15 @@ export async function generateMetadata() {
 
 export default function ContactPage() {
   return (
-    <CoastalPageShell>
-      <CoastalPageIntro path="/contact" />
-      <div className={styles.content}>
-        <ContactForm />
-      </div>
+    <CoastalPageShell edition="SAY HELLO / THE COASTAL EDITION">
+      <PageHero
+        kicker="SAY HELLO"
+        title={<>Send a<br /><em>little signal.</em></>}
+        intro="A project to build, a website to untangle, or an idea worth talking about. Let’s start a conversation."
+        path="/contact"
+        caption="A message from your shore to mine. ↙"
+      />
+      <ContactForm />
     </CoastalPageShell>
   );
 }

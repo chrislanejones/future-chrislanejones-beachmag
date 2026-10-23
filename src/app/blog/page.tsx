@@ -2,8 +2,7 @@
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../../convex/_generated/api";
 import { CoastalPageShell } from "@/components/coastal/page-shell";
-import styles from "@/components/coastal/interior.module.css";
-import { CoastalPageIntro } from "@/components/coastal/page-intro";
+import { PageHero } from "@/components/beachmag/interior-parts";
 import BlogPage from "./BlogPage";
 import { getPageSEO } from "@/lib/seo";
 
@@ -19,11 +18,15 @@ export default async function Page() {
   const posts = await convex.query(api.blogPosts.getAllPosts, {});
 
   return (
-    <CoastalPageShell>
-      <CoastalPageIntro path="/blog" />
-      <div className={styles.content}>
-        <BlogPage posts={posts} />
-      </div>
+    <CoastalPageShell edition="NOTES FROM THE SHORE / THE COASTAL EDITION">
+      <PageHero
+        kicker="NOTES FROM THE SHORE"
+        title={<>Off the<br /><em>deep end.</em></>}
+        intro="Things I learn, build, and occasionally break. Field notes from a life spent making things for the web."
+        path="/blog"
+        caption="Writing, making & showing up. ↙"
+      />
+      <BlogPage posts={posts} />
     </CoastalPageShell>
   );
 }

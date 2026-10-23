@@ -6,9 +6,10 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
 
 - **PGA Golf Game isn't in Convex**: the homepage falls back to the static snapshot for it. Add it through the live site's admin, then the fallback goes unused.
 - **Events live in code**: `src/components/beachmag/events.ts` is hand-edited. The Convex `conferences` table could hold them later, written through the live site's admin. The Cowork and Coffee entry has no public Meetup link yet.
-- **Detail pages keep the old banner intro**: `projects/[slug]`, `conferences/[year]` and `conferences/[year]/[slug]` build their own `BeachBanner` header instead of `PageIntro`, so they get the new frame and colors but not the masthead.
-- **`/projects/image-horse` is a 404** (the beach site's code too): the projects page links a slug the detail route can't find. Was already broken before the skin.
-- **h2s on inner pages stay DM Sans**: Bodoni at card sizes looked cramped, so only page titles (h1) use it.
+- **55-page design port (design/site), 10-22-2026**: done for the home, about, projects (+ details), blog (+ posts), contact, conferences (+ years, details) and events. Still on the generic design hero with the beach site's content underneath: career-and-resume, react-maintenance, wordpress-maintenance, site-history, logo-page, link-page, site-map, color-guide, admin-showcase and the 404 Music Lounge. Each has a matching `design/site/coastal-*.html` to port from.
+- **Services pages still use the old client slider** (`components/page/icon-slider.tsx`), whose white logos wash out on paper. Swap in the homepage's `ClientStrip` when those pages are ported.
+- **PGA Golf Game and VITA Major IT Projects Dashboard aren't in Convex**, so /projects doesn't list them (the design does). Add them in the live admin.
+- **h2s on old-content inner pages stay as the design sets them** (Bodoni, 36px); fine once each page is ported.
 - **Nav links are hard-coded** in `site-nav.tsx`, not read from the Convex `navigation` table the old header uses. Edits in the live admin won't show here.
 - **No footer on `/`, `/browser-tabs` or `/events`**: the design never had one. Inner pages keep the beach site's `CoastalFooter` (site map, socials) in the magazine colors.
 - **VU meter reads after the volume knob**, so at low volume it barely moves. Metering before the volume would make it livelier.
