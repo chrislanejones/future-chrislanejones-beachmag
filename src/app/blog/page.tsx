@@ -18,7 +18,7 @@ export default async function Page() {
   const posts = await convex.query(api.blogPosts.getAllPosts, {});
 
   return (
-    <CoastalPageShell edition="NOTES FROM THE SHORE / THE COASTAL EDITION">
+    <CoastalPageShell>
       <PageHero
         kicker="NOTES FROM THE SHORE"
         title={<>Off the<br /><em>deep end.</em></>}

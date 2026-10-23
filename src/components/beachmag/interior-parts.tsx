@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { BANNER_SCENES } from "@/components/coastal/scene-banner";
 import { SceneLoop } from "@/components/coastal/scene-loop";
+import { EditionRow, type Crumb } from "./edition-row";
 
 // The pieces inner pages are built from (design/site). Styles: interior.css.
 
@@ -32,9 +33,9 @@ export function PageHero({ kicker, title, intro, path, caption }: { kicker: stri
   );
 }
 
-export type Crumb = { href?: string; label: string };
+export type { Crumb };
 
-/** Articles, projects and conferences: breadcrumbs, then the title beside a small polaroid. */
+/** Articles, projects and conferences: the top row with full breadcrumbs, then the title beside a small polaroid. */
 export function ArchiveHero({ crumbs, kicker, title, intro, path, caption = "A little world. A big rabbit hole." }: {
   crumbs: Crumb[];
   kicker: string;
@@ -45,14 +46,7 @@ export function ArchiveHero({ crumbs, kicker, title, intro, path, caption = "A l
 }) {
   return (
     <>
-      <nav className="archive-crumbs" aria-label="Breadcrumb">
-        {crumbs.map((crumb, index) => (
-          <span key={crumb.label}>
-            {index > 0 && <span aria-hidden="true">/ </span>}
-            {crumb.href ? <Link href={crumb.href}>{crumb.label}</Link> : <span aria-current="page">{crumb.label}</span>}
-          </span>
-        ))}
-      </nav>
+      <EditionRow crumbs={crumbs} className="hero-row" />
       <header className="archive-hero">
         <p className="page-kicker">{kicker}</p>
         <div>

@@ -14,7 +14,7 @@ export async function generateMetadata() {
 export default async function ProjectsPage() {
   const projects = await getProjects().catch(() => []);
   return (
-    <CoastalPageShell edition="SELECTED WORK / THE COASTAL EDITION">
+    <CoastalPageShell>
       <PageHero
         kicker="SELECTED WORK"
         title={<>Built with<br /><em>salt &amp; grit.</em></>}

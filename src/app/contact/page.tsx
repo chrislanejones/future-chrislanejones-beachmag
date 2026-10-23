@@ -11,7 +11,7 @@ export async function generateMetadata() {
 
 export default function ContactPage() {
   return (
-    <CoastalPageShell edition="SAY HELLO / THE COASTAL EDITION">
+    <CoastalPageShell>
       <PageHero
         kicker="SAY HELLO"
         title={<>Send a<br /><em>little signal.</em></>}

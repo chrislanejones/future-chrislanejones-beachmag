@@ -1237,3 +1237,14 @@ html.dark .gallery-drawer {
   font-size: 13px;
   text-decoration: none;
 }
+
+/* Top row: breadcrumbs on the left, the edition knob on the right. An
+   article's own row (full crumbs with the title) replaces the page's. */
+.interior:has(.hero-row) > .page-row {
+  display: none;
+}
+.interior .edition-row .archive-crumbs {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}

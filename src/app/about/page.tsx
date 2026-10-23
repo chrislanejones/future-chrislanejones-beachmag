@@ -13,7 +13,7 @@ export async function generateMetadata() {
 export default async function About() {
   const conferences = await getConferences().catch(() => []);
   return (
-    <CoastalPageShell edition="THE PERSON BEHIND THE PIXELS / THE COASTAL EDITION">
+    <CoastalPageShell>
       <PageHero
         kicker="THE PERSON BEHIND THE PIXELS"
         title={<>Made of<br /><em>curiosity.</em></>}
