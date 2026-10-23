@@ -3,7 +3,7 @@ import type { CSSProperties } from "react";
 export type BeachFigureName = "beach-girl" | "lifeguard-stand" | "surfer-guy";
 
 // Bump when the files in public/art change, so browsers fetch the new ones.
-const ART_VERSION = "2";
+const ART_VERSION = "3";
 
 /**
  * A figure cut from the beach line drawing (public/art): the file's alpha is
