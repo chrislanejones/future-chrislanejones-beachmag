@@ -271,3 +271,11 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
   `/favicon.ico` (404). Edit it in Admin or run `browserLinks:update --prod`.
 - **10-21-2026 — Missing blog image.** `/blog/rust-vs-gc.webp` 404s on
   /blog/rust-borrow-checker-vs-garbage-collector (live and local); the file isn't in `public/blog/`.
+- **10-23-2026 — A booking page of my own ("my own Calendly").** Recommended route: a `/book`
+  page in the beachmag style (month calendar like /events, time slots, a short form) on top of
+  Cal.com's API, so time zones, calendar sync and reminders are theirs. The front end can be
+  built here with sample slots; the API key goes in `.env.local` (Chris's), and any Convex
+  tables or functions belong on `-beach`, never deployed from this repo. Waiting on Chris:
+  route A/B/C and whether he already uses a scheduler.
+- **10-23-2026 — Beachmag footer kicker.** Still reads "THE COASTAL EDITION / UNTIL NEXT TIME"
+  after the top row lost "THE COASTAL EDITION".
