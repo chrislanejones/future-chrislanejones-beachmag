@@ -140,7 +140,7 @@ export function SiteNav() {
           <span className="brand-wordmark">CHRIS LANE JONES</span>
         </Link>
         <nav className="desktop-links" aria-label="Main navigation" inert={open} ref={desktopRef}>
-          {items.filter((item) => item.href !== "/").map((item) =>
+          {items.map((item) =>
             item.children?.length ? (
               <NavGroup
                 key={item.label}
