@@ -77,9 +77,9 @@ export function JournalHero() {
           className="map"
           src="/hero/coast-day.webp"
           alt="3D map of a beach town, framed as an angled journal photograph"
-          width={1200}
-          height={550}
-          sizes="(max-width: 640px) 92vw, 600px"
+          width={1280}
+          height={622}
+          sizes="(max-width: 1240px) 92vw, 1120px"
           priority
         />
         <span className="edge">JACKSONVILLE, FL</span>

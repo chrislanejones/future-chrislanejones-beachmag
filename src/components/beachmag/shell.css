@@ -117,3 +117,15 @@ html.dark:has([data-beachmag]),
     font-size: 7px;
   }
 }
+
+/* Radio lights: the reels spin for every station, so it's the TAPE light that
+   glows while playing; FM / AM stays dark. */
+#beach-offline .is-playing .band-label .power-led {
+  background: #5c302b;
+  box-shadow: none;
+}
+
+/* Hero map: taller than the design's 220px strip; scales with the column. */
+#coastal-art .map {
+  height: clamp(240px, 34vw, 420px);
+}
