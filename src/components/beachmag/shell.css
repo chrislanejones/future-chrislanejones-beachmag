@@ -1007,9 +1007,9 @@ html.dark .gallery-drawer {
   padding: 0 20px 4px;
 }
 
-/* ── Sand game: text a third, tool knob two thirds, the beach below ──── */
+/* ── Sand game: words on the left, tool knob on the right, the beach below ── */
 #sandbox .sandbox-heading {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: stretch;
 }
 /* The words: kicker and headline at the top, the blurb pushed to the bottom. */
@@ -1020,17 +1020,17 @@ html.dark .gallery-drawer {
 #sandbox .sandbox-words > h2 + p {
   margin: auto 0 0;
   padding-top: 24px;
-  max-width: 34ch;
+  max-width: 44ch;
   font-size: 13px;
   line-height: 1.7;
 }
 #sandbox .sandbox-words > .game-status {
   margin: 14px 0 0;
-  max-width: 34ch;
+  max-width: 44ch;
 }
 #sandbox .sandbox-words > #game-help {
   margin: 10px 0 0;
-  max-width: 40ch;
+  max-width: 52ch;
   font-size: 11px;
   line-height: 1.6;
   opacity: 0.8;

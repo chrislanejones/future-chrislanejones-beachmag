@@ -163,8 +163,8 @@ export function Sandbox() {
 
   return (
     <section id="sandbox" aria-label="Sandcastle sandbox">
-      {/* Top row: the headline top left and the blurb bottom left (a third),
-          the tool knob on the right (two thirds). The beach is the next row. */}
+      {/* Top row, halves: the headline top left and the blurb bottom left,
+          the tool knob on the right. The beach is the next row. */}
       <div className="sandbox-heading">
         <div className="sandbox-words">
           <p className="game-kicker">NO DEADLINES. JUST SAND.</p>
