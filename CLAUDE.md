@@ -19,7 +19,7 @@ The coastal-magazine skin for chrislanejones.com, on the live site's Next.js + C
 | Path | What it is |
 |---|---|
 | repo root | **The app.** Next.js + Convex, copied from `~/repo/future-chrislanejones-beach` at `08f5780` on 10-22-2026. `pnpm dev` serves it on port 3100. |
-| `src/components/beachmag/` | The skin: `BeachmagShell`, the homepage sections, the radio, the sandbox and the browser-tabs archive. |
+| `src/components/beachmag/` | The skin: `BeachmagShell`, the homepage sections, the radio, the sandbox, the browser-tabs archive and the events calendar. Inner pages reach it through `src/components/coastal/page-shell.tsx`; `shell.css` maps their `--coast-*` colors onto the magazine palette. |
 | `design/` | **Reference only, not built or deployed.** The static design the skin was ported from (`design/outputs/*.html`) and its Python builders. |
 
 `src/components/beachmag/beachmag.css` and `browser-tabs.css` are generated from the design: `pnpm design:css`. Station audio is rendered with `pnpm audio:render` into `public/audio/`.

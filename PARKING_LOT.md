@@ -6,9 +6,11 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
 
 - **PGA Golf Game isn't in Convex**: the homepage falls back to the static snapshot for it. Add it through the live site's admin, then the fallback goes unused.
 - **Events live in code**: `src/components/beachmag/events.ts` is hand-edited. The Convex `conferences` table could hold them later, written through the live site's admin. The Cowork and Coffee entry has no public Meetup link yet.
-- **Inner pages still wear the old skin**: about, projects, blog, conferences, contact, career and the rest use `CoastalPageShell`, so their old header doesn't list Events. Only `/`, `/browser-tabs` and `/events` use `BeachmagShell`. Chris asked (10-22) for them in the home page's layout; next up.
+- **Detail pages keep the old banner intro**: `projects/[slug]`, `conferences/[year]` and `conferences/[year]/[slug]` build their own `BeachBanner` header instead of `PageIntro`, so they get the new frame and colors but not the masthead.
+- **`/projects/image-horse` is a 404** (the beach site's code too): the projects page links a slug the detail route can't find. Was already broken before the skin.
+- **h2s on inner pages stay DM Sans**: Bodoni at card sizes looked cramped, so only page titles (h1) use it.
 - **Nav links are hard-coded** in `site-nav.tsx`, not read from the Convex `navigation` table the old header uses. Edits in the live admin won't show here.
-- **No footer on the skinned pages**: the design never had one; the old `CoastalFooter` (site map, socials) isn't on `/` or `/browser-tabs`.
+- **No footer on `/`, `/browser-tabs` or `/events`**: the design never had one. Inner pages keep the beach site's `CoastalFooter` (site map, socials) in the magazine colors.
 - **VU meter reads after the volume knob**, so at low volume it barely moves. Metering before the volume would make it livelier.
 - **design/ is a reference archive**: `design/outputs/coastal-site-preview.zip` predates the radio stations, and `coastal-demo.wav` plus `generate_radio_demo.py` are unused. The 10-22 evening zip (sand game update) has an older radio than this repo; only its sandbox source was ported.
 - **Codex's sandbox uses `active` as a GLSL name** (reserved in WebGL2), so its wave overlay never compiled there. Fixed here in `incoming-wave.tsx`; tell Codex if that design keeps going.

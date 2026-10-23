@@ -12,7 +12,9 @@ html.dark:has([data-beachmag]),
   color-scheme: dark;
 }
 
-.site-shell:has(> [data-beachmag]) {
+/* "body" outranks the beach site's .site-shell:has(.coastalPage) rule, which
+   inner pages also match now that they sit inside the magazine. */
+body .site-shell:has(> [data-beachmag]) {
   max-width: 1240px;
   padding: 0;
 }
@@ -364,4 +366,63 @@ body.menu-open #site-takeover .menu-more a {
     content: "●";
     font-size: 9px;
   }
+}
+
+/* ── Inner pages: the beach site's content on the magazine's paper ───────── */
+#coastal-art .direction:has([data-coastal-page]) {
+  min-height: 0;
+}
+/* The beach site paints with --coast-*; point them at the magazine palette. */
+#coastal-art [data-coastal-theme] {
+  --coast-base: var(--paper);
+  --coast-panel: var(--tear-fill);
+  --coast-soft: color-mix(in srgb, var(--ink) 7%, var(--paper));
+  --coast-ink: var(--ink);
+  --coast-muted: color-mix(in srgb, var(--ink) 74%, var(--paper));
+  --coast-accent: var(--orange);
+  --coast-on-accent: var(--paper);
+  --coast-line: var(--line);
+  --coast-control-line: var(--line);
+  background: transparent;
+}
+#coastal-art #main-content,
+#coastal-art [data-coastal-page] > footer {
+  width: auto;
+}
+#coastal-art #main-content:focus {
+  outline: none;
+}
+/* Page titles only: small card titles in Bodoni get cramped. */
+#coastal-art [data-coastal-page] h1 {
+  font-family: var(--font-bodoni-moda), Georgia, serif;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  word-spacing: normal;
+}
+
+/* Masthead: the homepage's, sized for longer titles. */
+#coastal-art .page-masthead .top {
+  align-items: flex-end;
+  text-transform: uppercase;
+}
+#coastal-art .page-masthead .top a {
+  color: inherit;
+  text-underline-offset: 4px;
+}
+#coastal-art .page-masthead .mast {
+  font-size: clamp(52px, 8.5vw, 96px);
+  letter-spacing: -0.06em;
+  overflow-wrap: break-word;
+}
+#coastal-art .page-masthead .sub span {
+  max-width: 70ch;
+  line-height: 1.55;
+}
+#coastal-art .scene-map {
+  position: relative;
+  overflow: hidden;
+}
+#coastal-art .scene-map :is(img, video) {
+  object-fit: cover;
+  object-position: var(--scene-focus, 50% 50%);
 }
