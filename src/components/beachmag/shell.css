@@ -867,23 +867,22 @@ html.dark .gallery-drawer {
   letter-spacing: -2px;
   text-align: center;
 }
+/* Plain words, one per line like a credits list: not boxes. */
 .interior .link-hub-skills {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
   margin: 4px 0 0;
   padding: 0;
   list-style: none;
 }
 .interior .link-hub-skills li {
-  padding: 6px 10px;
-  border: 1px solid currentColor;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
+
 .interior .link-hub-intro {
   max-width: 34ch;
   margin: 4px auto 0;
@@ -944,73 +943,108 @@ html.dark .gallery-drawer {
   }
 }
 
-/* Link page "Chrome Tabs I Left Open": the links as rows of browser tabs on
-   a tab bar. The hovered tab comes forward like the selected one. */
-.interior .tab-strip {
-  display: flex;
-  flex-wrap: wrap;
-  row-gap: 14px;
+/* Link page card headings: Bodoni like every other section head. */
+.interior .link-hub-heading {
+  margin: 0 0 22px;
+  font: 900 clamp(30px, 3.4vw, 38px)/1 var(--font-bodoni-moda), Georgia, serif;
+  letter-spacing: -0.03em;
+  text-align: center;
+}
+.interior .link-hub-heading em {
+  color: var(--accent);
+  font-style: italic;
+}
+
+/* Link page "Chrome tabs I left open": the archive page's rows, two across. */
+.interior .link-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 28px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.interior .tab-strip li {
-  flex: 1 1 190px;
-  max-width: 260px;
-  min-width: 0;
-  margin-right: -1px;
-  box-shadow: inset 0 -2px 0 var(--ink);
-}
-.interior .tab-strip a {
-  position: relative;
+.interior .link-tabs a {
   display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 62px;
+  padding: 11px 2px;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  text-decoration: none;
+}
+.interior .link-tabs-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+.interior .link-tabs-copy {
+  min-width: 0;
+}
+.interior .link-tabs-copy strong {
+  display: block;
+  font-size: 14px;
+  line-height: 1.3;
+}
+.interior .link-tabs-copy small {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  opacity: 0.7;
+  overflow-wrap: anywhere;
+}
+.interior .link-tabs-arrow {
+  margin-left: auto;
+  color: var(--accent);
+  font-size: 18px;
+  transition: transform 160ms ease;
+}
+.interior .link-tabs a:hover strong,
+.interior .link-tabs a:focus-visible strong {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+.interior .link-tabs a:hover .link-tabs-arrow,
+.interior .link-tabs a:focus-visible .link-tabs-arrow {
+  transform: translate(3px, -3px);
+}
+@media (max-width: 560px) {
+  .interior .link-tabs {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Link page: the way into the full tab archive, a plain link, not a key. */
+.interior .link-hub-more {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  padding: 9px 10px 11px 14px;
-  border: 1.5px solid var(--ink);
-  border-bottom: 0;
-  border-radius: 12px 12px 0 0;
-  background: color-mix(in srgb, var(--ink) 7%, var(--sheet));
-  font: 600 13px/1.2 var(--font-dm-sans), Arial, sans-serif;
+  font: 700 15px/1.3 var(--font-dm-sans), Arial, sans-serif;
   text-decoration: none;
-  transition: background-color 160ms ease, transform 160ms ease;
 }
-.interior .tab-strip a img,
-.interior .tab-strip a svg {
-  flex-shrink: 0;
+.interior .link-hub-more-label {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
 }
-.interior .tab-strip-title {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.interior .tab-strip-close {
-  font-size: 16px;
-  line-height: 1;
-  opacity: 0.45;
-}
-.interior .tab-strip a:hover,
-.interior .tab-strip a:focus-visible {
-  z-index: 1;
-  background: var(--sheet);
-  transform: translateY(-3px);
-  box-shadow: inset 0 3px 0 var(--accent);
-}
-.interior .tab-strip a:hover .tab-strip-close,
-.interior .tab-strip a:focus-visible .tab-strip-close {
+.interior .link-hub-more-arrow {
   color: var(--accent);
-  opacity: 1;
+  transition: transform 160ms ease;
+}
+.interior .link-hub-more:hover .link-hub-more-arrow,
+.interior .link-hub-more:focus-visible .link-hub-more-arrow {
+  transform: translateX(3px);
 }
 @media (prefers-reduced-motion: reduce) {
   .interior .link-index-arrow,
-  .interior .tab-strip a {
+  .interior .link-tabs-arrow,
+  .interior .link-hub-more-arrow {
     transition: none;
   }
   .interior .link-index a:hover .link-index-arrow,
-  .interior .tab-strip a:hover {
+  .interior .link-tabs a:hover .link-tabs-arrow,
+  .interior .link-hub-more:hover .link-hub-more-arrow {
     transform: none;
   }
 }

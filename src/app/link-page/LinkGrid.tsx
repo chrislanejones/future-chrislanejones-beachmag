@@ -144,9 +144,7 @@ export default function LinkGrid() {
 
         {/* Card 2: Social Links - Top Right (grid-area: 1 / 2 / 2 / 3) */}
         <Card size="small" delay={0.2} className="h-full">
-          <h3 className="mb-6 text-center flex items-center justify-center space-x-2">
-            Connect With Me
-          </h3>
+          <h2 className="link-hub-heading">Connect <em>with me.</em></h2>
           <LinkListBoundary>
             <LinkList />
           </LinkListBoundary>
@@ -154,25 +152,25 @@ export default function LinkGrid() {
 
         {/* Card 3: Current Chrome Tabs - Bottom (spans both columns, grid-area: 2 / 1 / 3 / 3) */}
         <Card size="large" delay={0.3}>
-          <h3 className="mb-6 text-center flex items-center justify-center space-x-2">
-            <FaChrome className="w-6 h-6" />
-            <span>Chrome Tabs I Left Open...</span>
-          </h3>
+          <h2 className="link-hub-heading">Chrome tabs I left <em>open…</em></h2>
           <div className="space-y-3">
             {featuredLinks && featuredLinks.length > 0 ? (
-              // Drawn as a strip of browser tabs, favicon and title, with a
-              // close mark that is only for show. Styles: shell.css (.tab-strip).
-              <ul className="tab-strip">
+              // The same rows as the browser-tabs archive: favicon, title, the
+              // site's address, ↗. Styles: shell.css (.link-tabs).
+              <ul className="link-tabs">
                 {featuredLinks.map((link) => (
                   <li key={link._id}>
-                    <a href={link.href} target="_blank" rel="noopener noreferrer" title={link.label}>
+                    <a href={link.href} target="_blank" rel="noopener noreferrer">
                       {link.favicon ? (
-                        <Image src={link.favicon} width={16} height={16} unoptimized alt="" className="w-4 h-4 rounded" />
+                        <Image src={link.favicon} width={20} height={20} unoptimized alt="" className="link-tabs-icon" />
                       ) : (
-                        <FaExternalLinkAlt className="w-4 h-4" aria-hidden="true" />
+                        <FaExternalLinkAlt className="link-tabs-icon" aria-hidden="true" />
                       )}
-                      <span className="tab-strip-title">{link.label}</span>
-                      <span className="tab-strip-close" aria-hidden="true">×</span>
+                      <span className="link-tabs-copy">
+                        <strong>{link.label}</strong>
+                        <small>{link.domain}</small>
+                      </span>
+                      <span className="link-tabs-arrow" aria-hidden="true">↗</span>
                       <span className="sr-only"> (opens in a new tab)</span>
                     </a>
                   </li>
@@ -188,10 +186,11 @@ export default function LinkGrid() {
             )}
 
             {/* Link to full browser tabs page */}
-            <div className="mt-6 pt-4 border-t border-border">
-              <Link className="radio-key" href="/browser-tabs">
+            <div className="mt-6 pt-4">
+              <Link className="link-hub-more" href="/browser-tabs">
                 <FaChrome className="w-4 h-4" aria-hidden="true" />
-                View All Browser Tabs
+                <span className="link-hub-more-label">View all browser tabs</span>
+                <span className="link-hub-more-arrow" aria-hidden="true">→</span>
               </Link>
             </div>
           </div>
