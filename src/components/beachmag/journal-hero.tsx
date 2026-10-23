@@ -81,7 +81,7 @@ export function JournalHero() {
           priority
         />
         <span className="edge">JACKSONVILLE, FL</span>
-        <span className="sticker">Made of curiosity.</span>
+        <span className="sticker">Still making things.</span>
       </div>
       <div className="columns">
         <ContentBoundary fallback={<EntryView entry={FALLBACK_ENTRY} />}>

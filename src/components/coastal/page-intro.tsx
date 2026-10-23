@@ -5,7 +5,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { getPageHeader, type PageHeaderData } from "@/lib/page-headers";
 
-/** The last word goes in the accent color, like "curiosity." on the design's About page. */
+/** The last word goes in the accent color, like "things." on the About's About page. */
 export function MastTitle({ title }: { title: string }) {
   const text = /[.!?]$/.test(title) ? title : `${title}.`;
   const split = text.lastIndexOf(" ");

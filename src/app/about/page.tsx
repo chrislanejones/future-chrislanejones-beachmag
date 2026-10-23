@@ -16,8 +16,8 @@ export default async function About() {
     <CoastalPageShell>
       <PageHero
         kicker="THE PERSON BEHIND THE PIXELS"
-        title={<>Made of<br /><em>curiosity.</em></>}
-        intro="From video production to web development. From Virginia’s mountains back to Florida’s coast. Still making things, still learning."
+        title={<>Still making<br /><em>things.</em></>}
+        intro="From video production to web development. From Virginia’s mountains back to Florida’s coast. Still learning."
         path="/about"
         caption="Same curiosity. A different coastline. ↙"
       />
