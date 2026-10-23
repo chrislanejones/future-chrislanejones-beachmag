@@ -257,28 +257,24 @@ const PhotoGallery = ({
           </motion.div>
         </AnimatePresence>
 
-        {/* (Keep navigation buttons for accessibility) */}
-        <div className="absolute bottom-3 flex justify-center gap-6">
-          <Button
-            variant="neutral"
-            size="icon"
-            round
+        {/* (Keep navigation buttons for accessibility) — the site's silver keys. */}
+        <div className="gallery-keys absolute bottom-3 flex justify-center gap-6">
+          <button
+            type="button"
             aria-label="Previous photo"
             onClick={() =>
               setCurrentIndex((i) => (i - 1 + photos.length) % photos.length)
             }
           >
-            ‹
-          </Button>
-          <Button
-            variant="neutral"
-            size="icon"
-            round
+            ←
+          </button>
+          <button
+            type="button"
             aria-label="Next photo"
             onClick={() => setCurrentIndex((i) => (i + 1) % photos.length)}
           >
-            ›
-          </Button>
+            →
+          </button>
         </div>
       </div>
     );

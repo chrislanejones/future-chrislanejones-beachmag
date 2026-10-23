@@ -547,6 +547,7 @@ html.dark .interior {
   gap: 8px;
 }
 :is(#coastal-art, .interior) .client-controls button,
+.gallery-drawer .gallery-keys button,
 #sandbox .game-bottom > div > button,
 .radio-key,
 #featured-projects a.project-go.radio-key {
@@ -566,6 +567,7 @@ html.dark .interior {
   transition: transform 70ms, box-shadow 70ms;
 }
 :is(#coastal-art, .interior) .client-controls button:hover:not(:disabled),
+.gallery-drawer .gallery-keys button:hover,
 #sandbox .game-bottom > div > button:hover:not(:disabled),
 .radio-key:hover,
 #featured-projects a.project-go.radio-key:hover {
@@ -574,6 +576,7 @@ html.dark .interior {
     linear-gradient(180deg, #ffffff, #e6e8e3 40%, #c8ccc5 62%, #dfe2dc 100%);
 }
 :is(#coastal-art, .interior) .client-controls button:active:not(:disabled),
+.gallery-drawer .gallery-keys button:active,
 #sandbox .game-bottom > div > button:active:not(:disabled),
 .radio-key:active,
 #featured-projects a.project-go.radio-key:active,
@@ -663,6 +666,7 @@ html.dark .interior {
   :is(#coastal-art, .interior) a.client-tile,
   :is(#coastal-art, .interior) .client-mark,
   :is(#coastal-art, .interior) .client-controls button,
+  .gallery-drawer .gallery-keys button,
   #sandbox .game-bottom > div > button {
     transition: none;
   }
