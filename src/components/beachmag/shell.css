@@ -1245,13 +1245,13 @@ section#sandbox .sandbox-heading {
   mask: var(--art) center bottom / contain no-repeat;
   pointer-events: none;
 }
-/* The surfer stands on the row's floor beside the knob. */
-#sandbox .surfer-drawing {
+/* The beach girl stands on the row's floor beside the knob. */
+#sandbox .sand-figure {
   align-self: end;
   justify-self: center;
   width: 100%;
   max-width: 300px;
-  aspect-ratio: 970 / 1410;
+  aspect-ratio: 999 / 1458;
   color: var(--ink);
   opacity: 0.55;
 }
@@ -1260,7 +1260,7 @@ section#sandbox .sandbox-heading {
   section#sandbox .sandbox-heading {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
-  #sandbox .surfer-drawing {
+  #sandbox .sand-figure {
     display: none;
   }
 }
@@ -1659,19 +1659,19 @@ section#sandbox .sandbox-heading {
   opacity: 0.3;
   pointer-events: none;
 }
-/* She rises past the send-off; its card stays on top of her. */
+/* The surfer rises past the send-off; its card stays on top of him. */
 #coastal-footer .footer-sendoff {
   position: relative;
   z-index: 1;
 }
-#coastal-footer .footer-figures .beach-girl {
+#coastal-footer .footer-figures .beach-figure {
   position: absolute;
   right: -20px;
   bottom: 0;
   height: 520px;
-  aspect-ratio: 999 / 1458;
+  aspect-ratio: 970 / 1410;
 }
-/* The send-off card moves left, out from in front of her. */
+/* The send-off card moves left, out from in front of him. */
 @media (min-width: 761px) {
   #coastal-footer .footer-contact {
     margin-right: 270px;

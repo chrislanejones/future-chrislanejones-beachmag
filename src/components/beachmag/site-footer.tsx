@@ -89,7 +89,7 @@ export function SiteFooter() {
         ))}
         {/* The last column: the girl from the beach drawing, rising past the send-off. */}
         <div className="footer-figures" aria-hidden="true">
-          <BeachFigure name="beach-girl" />
+          <BeachFigure name="surfer-guy" />
         </div>
       </div>
       <div className="footer-colophon">

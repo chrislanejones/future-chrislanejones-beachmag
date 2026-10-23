@@ -191,7 +191,7 @@ export function Sandbox() {
           disabled={busy}
         />
         </div>
-        <BeachFigure name="surfer-guy" className="surfer-drawing" />
+        <BeachFigure name="beach-girl" className="sand-figure" />
       </div>
       {/* Phones: the knob gets too small to read, so the tools stay a button grid. */}
       <div className="game-toolbar" role="group" aria-label="Sandcastle tools">
