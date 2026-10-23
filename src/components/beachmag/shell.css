@@ -341,7 +341,7 @@ body.menu-open #site-takeover .menu-group {
 #site-takeover nav a.menu-sub .menu-mark {
   flex-shrink: 0;
   margin-right: 12px;
-  color: var(--nav-accent);
+  color: var(--nav-ink);
 }
 body.menu-open #site-takeover nav a {
   transition-delay: calc(210ms + var(--order) * 45ms);
@@ -881,4 +881,15 @@ html.dark .gallery-drawer {
   #coastal-art .top {
     flex-wrap: wrap;
   }
+}
+
+/* The menu follows the edition: paper with ink type, like the page under it
+   (the design inverted it: dark in Sunlit paper, cream After dark). */
+#site-takeover {
+  background: var(--nav-paper);
+  color: var(--nav-ink);
+}
+#site-takeover .menu-editions button[aria-pressed="true"] {
+  background: var(--nav-ink);
+  color: var(--nav-paper);
 }
