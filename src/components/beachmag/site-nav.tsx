@@ -3,43 +3,63 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Waves } from "lucide-react";
+import { useHeaderNavItems } from "@/components/page/links";
 import { setTheme, useTheme } from "@/lib/theme-store";
 
-const DESKTOP_LINKS = [
-  { href: "/about", label: "About" },
-  { href: "/projects", label: "Projects" },
-  { href: "/blog", label: "Blog" },
-  { href: "/events", label: "Events" },
-  { href: "/browser-tabs", label: "Browser Tabs" },
-];
+type NavItem = { label: string; href?: string; isExternal?: boolean; children?: NavItem[] };
 
-const MENU_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/projects", label: "Projects" },
-  { href: "/blog", label: "Blog" },
-  { href: "/events", label: "Events" },
-  { href: "/contact", label: "Contact" },
-];
+const EVENTS: NavItem = { label: "Events", href: "/events" };
 
-// Every other page, small, under the big links.
-const MORE_LINKS = [
-  { href: "/career-and-resume", label: "Career & Resume" },
-  { href: "/conferences", label: "Conferences" },
-  { href: "/browser-tabs", label: "Browser Tabs" },
-  { href: "/react-maintenance", label: "React Services" },
-  { href: "/wordpress-maintenance", label: "WordPress Services" },
-  { href: "/site-history", label: "Site History" },
-  { href: "/link-page", label: "Link Page" },
-  { href: "/site-map", label: "Site Map" },
-];
+/**
+ * The live site's header nav (Convex, editable in the admin; static copy as
+ * fallback), with Events added after Blog: it exists only on this site.
+ */
+function useNavItems(): NavItem[] {
+  const items = useHeaderNavItems() as NavItem[];
+  if (items.some((item) => item.href === "/events" || item.children?.some((child) => child.href === "/events"))) return items;
+  const blog = items.findIndex((item) => item.href === "/blog");
+  const at = blog < 0 ? items.length - 1 : blog + 1;
+  return [...items.slice(0, at), EVENTS, ...items.slice(at)];
+}
+
+/** A dropdown on wide screens: opens on hover, click or keyboard; Escape and outside clicks close it. */
+function NavGroup({ item, open, onOpen, onClose }: { item: NavItem; open: boolean; onOpen: (hover: boolean) => void; onClose: (hover: boolean) => void }) {
+  const id = `nav-group-${item.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+  return (
+    <div className="nav-group" onPointerEnter={() => onOpen(true)} onPointerLeave={() => onClose(true)}>
+      <button type="button" aria-expanded={open} aria-controls={id} onClick={() => (open ? onClose(false) : onOpen(false))}>
+        {item.label} <span className="nav-caret" aria-hidden="true">▾</span>
+      </button>
+      <div className="nav-dropdown" id={id} hidden={!open}>
+        {item.children?.map((child) => (
+          <Link key={child.href} href={child.href ?? "/"} onClick={() => onClose(false)}>{child.label}</Link>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 // The life-preserver menu: every page on the site. It takes over the screen at
 // any width; body classes drive the open and close, so the closing animation
 // can finish first.
 export function SiteNav() {
   const theme = useTheme();
+  const items = useNavItems();
   const [open, setOpen] = useState(false);
+  const [group, setGroup] = useState<string | null>(null);
+  const groupTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const desktopRef = useRef<HTMLElement>(null);
+  // Hover only counts with a real pointer; a short delay lets it cross the gap to the menu.
+  const openGroup = (label: string, hover: boolean) => {
+    if (hover && !matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    clearTimeout(groupTimer.current);
+    setGroup(label);
+  };
+  const closeGroup = (hover: boolean) => {
+    clearTimeout(groupTimer.current);
+    if (hover) groupTimer.current = setTimeout(() => setGroup(null), 160);
+    else setGroup(null);
+  };
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const firstRender = useRef(true);
@@ -86,7 +106,24 @@ export function SiteNav() {
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
-  useEffect(() => () => document.body.classList.remove("menu-open", "menu-closing"), []);
+  useEffect(() => {
+    if (!group) return;
+    const onKey = (event: KeyboardEvent) => event.key === "Escape" && setGroup(null);
+    const onPointer = (event: PointerEvent) => {
+      if (!desktopRef.current?.contains(event.target as Node)) setGroup(null);
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointer);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointer);
+    };
+  }, [group]);
+
+  useEffect(() => () => {
+    document.body.classList.remove("menu-open", "menu-closing");
+    clearTimeout(groupTimer.current);
+  }, []);
 
   return (
     <>
@@ -98,11 +135,20 @@ export function SiteNav() {
           </span>
           <span className="brand-wordmark">CHRIS LANE JONES</span>
         </Link>
-        <nav className="desktop-links" aria-label="Main navigation" inert={open}>
-          {DESKTOP_LINKS.map((link) => (
-            <Link key={link.href} href={link.href}>{link.label}</Link>
-          ))}
-          <Link href="/contact">Contact ↗</Link>
+        <nav className="desktop-links" aria-label="Main navigation" inert={open} ref={desktopRef}>
+          {items.filter((item) => item.href !== "/").map((item) =>
+            item.children?.length ? (
+              <NavGroup
+                key={item.label}
+                item={item}
+                open={group === item.label}
+                onOpen={(hover) => openGroup(item.label, hover)}
+                onClose={closeGroup}
+              />
+            ) : (
+              <Link key={item.label} href={item.href ?? "/"}>{item.href === "/contact" ? "Contact ↗" : item.label}</Link>
+            ),
+          )}
         </nav>
         <button
           ref={toggleRef}
@@ -135,26 +181,26 @@ export function SiteNav() {
       >
         <p className="menu-label">CHRIS LANE JONES / MENU</p>
         <nav aria-label="Site pages">
-          {MENU_LINKS.map((link, order) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              style={{ "--order": String(order) } as React.CSSProperties}
-              onClick={() => setOpen(false)}
-            >
-              {link.label} <span>↗</span>
-            </Link>
-          ))}
-        </nav>
-        <nav className="menu-more" aria-label="More pages">
-          <p>MORE PAGES</p>
-          <ul>
-            {MORE_LINKS.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} onClick={() => setOpen(false)}>{link.label}</Link>
-              </li>
-            ))}
-          </ul>
+          {/* Groups show their name, then each subpage on its own line after a dash. */}
+          {items.flatMap((item) => [item, ...(item.children ?? [])].map((entry) => ({ entry, sub: entry !== item, group: item }))).map(({ entry, sub, group: parent }, order) => {
+            const style = { "--order": String(order) } as React.CSSProperties;
+            if (!sub && parent.children?.length) {
+              return <p key={`group-${entry.label}`} className="menu-group" style={style}>{entry.label}</p>;
+            }
+            return (
+              <Link
+                key={`${parent.label}-${entry.href}`}
+                href={entry.href ?? "/"}
+                className={sub ? "menu-sub" : undefined}
+                style={style}
+                onClick={() => setOpen(false)}
+              >
+                {sub ? <span className="menu-dash" aria-hidden="true">- </span> : null}
+                {entry.label}
+                {sub ? null : <span aria-hidden="true">↗</span>}
+              </Link>
+            );
+          })}
         </nav>
         <div className="menu-bottom">
           <p>CHOOSE YOUR EDITION</p>

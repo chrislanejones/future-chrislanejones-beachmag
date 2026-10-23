@@ -215,53 +215,122 @@ body.menu-open #site-takeover {
   clip-path: circle(150vmax at var(--menu-x, calc(100% - 42px)) var(--menu-y, 42px));
 }
 
-/* "More pages": every other page, small, under the big links. */
-#site-takeover .menu-more {
-  display: block;
-  margin-top: 26px;
+/* Desktop dropdowns: About and Work open a paper card under the link. */
+#site-nav .nav-group {
+  position: relative;
 }
-#site-takeover .menu-more p {
-  margin: 0 0 8px;
-  font: 700 10px var(--font-dm-sans), sans-serif;
-  letter-spacing: 0.13em;
-  opacity: 0.8;
-}
-#site-takeover .menu-more ul {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 18px;
-  margin: 0;
+#site-nav .nav-group > button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   padding: 0;
-  list-style: none;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
 }
-#site-takeover .menu-more a {
+#site-nav .nav-group > button:hover,
+#site-nav .nav-group > button[aria-expanded="true"] {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+#site-nav .nav-caret {
+  display: inline-block;
+  font-size: 10px;
+  transition: transform 180ms ease;
+}
+#site-nav .nav-group > button[aria-expanded="true"] .nav-caret {
+  transform: rotate(180deg);
+}
+#site-nav .nav-dropdown {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: -16px;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  min-width: 230px;
+  padding: 6px 0;
+  background: var(--nav-paper);
+  border: 2px solid var(--nav-ink);
+  box-shadow: 5px 6px 0 var(--nav-ink);
+}
+#site-nav .nav-dropdown[hidden] {
+  display: none;
+}
+/* An invisible bridge over the gap, so the pointer can reach the card. */
+#site-nav .nav-dropdown::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -16px;
+  height: 14px;
+}
+#site-nav .nav-dropdown a {
   display: flex;
   align-items: center;
-  min-height: 44px;
-  border-top: 1px solid color-mix(in srgb, currentColor 30%, transparent);
-  font: 700 14px/1.25 var(--font-dm-sans), sans-serif;
-  letter-spacing: 0;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: transform 450ms cubic-bezier(0.16, 1.3, 0.3, 1), opacity 230ms ease;
+  min-height: 42px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
 }
-body.menu-open #site-takeover .menu-more a {
-  opacity: 1;
-  transform: none;
-  transition-delay: 600ms;
-}
-#site-takeover .menu-more a:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-@media (min-width: 641px) {
-  #site-takeover .menu-more ul {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
+#site-nav .nav-dropdown a:hover,
+#site-nav .nav-dropdown a:focus-visible {
+  background: var(--nav-ink);
+  color: var(--nav-paper);
+  text-decoration: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  #site-takeover .menu-more a {
+  #site-nav .nav-caret {
     transition: none;
+  }
+}
+
+/* The menu: group names in Bodoni like the links, each subpage under its
+   group after a dash, smaller, so the whole site fits on a phone. */
+#site-takeover nav {
+  gap: 2px;
+}
+#site-takeover nav a,
+#site-takeover .menu-group {
+  font-size: clamp(28px, 5.2vh, 40px);
+}
+#site-takeover .menu-group {
+  margin: 10px 0 0;
+  font-family: var(--font-bodoni-moda), Georgia, serif;
+  font-weight: 900;
+  line-height: 1.13;
+  letter-spacing: -1.5px;
+  opacity: 0;
+  transform: translateY(45px) rotate(6deg);
+  transform-origin: left center;
+  transition: transform 550ms cubic-bezier(0.16, 1.3, 0.3, 1), opacity 230ms ease;
+}
+body.menu-open #site-takeover .menu-group {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(210ms + var(--order) * 45ms);
+}
+#site-takeover nav a.menu-sub {
+  justify-content: flex-start;
+  min-height: 40px;
+  padding-left: 6px;
+  font: 700 17px/1.2 var(--font-dm-sans), sans-serif;
+  letter-spacing: 0;
+}
+#site-takeover nav a.menu-sub .menu-dash {
+  margin-right: 8px;
+  font: inherit;
+  color: var(--nav-accent);
+}
+body.menu-open #site-takeover nav a {
+  transition-delay: calc(210ms + var(--order) * 45ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  #site-takeover .menu-group {
+    transition: none !important;
   }
 }
 
