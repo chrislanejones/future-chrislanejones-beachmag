@@ -62,7 +62,10 @@ export function JournalHero() {
         <div className="station-ground"></div>
       </div>
       <div className="palette-switch" role="group" aria-label="Color scheme">
-        <span>THE EDITION</span>
+        <span className="edition-intro">
+          <strong>React, TypeScript &amp; Rust/WebAssembly | AI Automation | Enterprise CMS &amp; WCAG Accessibility</strong>
+          <span>I consult, design, and develop web interfaces for businesses and government agencies.</span>
+        </span>
         <button type="button" className="cursor-interaction" aria-pressed={theme === "light"} onClick={() => setTheme("light")}>Sunlit paper</button>
         <button type="button" className="cursor-interaction" aria-pressed={theme === "dark"} onClick={() => setTheme("dark")}>After dark</button>
       </div>

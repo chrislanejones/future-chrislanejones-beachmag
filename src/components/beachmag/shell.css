@@ -525,15 +525,18 @@ html.dark .interior {
   font: 700 9px var(--font-dm-sans), sans-serif;
   letter-spacing: 0.15em;
 }
-/* The arrows, the sand game's five buttons and any .radio-key (the link
-   page) are the radio's sage transport keys, and press down like them. */
+/* The arrows, the sand game's five buttons, the Sunlit paper / After dark
+   switches and any .radio-key (the link page) are the radio's sage transport
+   keys, and press down like them. The mobile menu keeps its own switch. */
 #coastal-art .client-controls {
   display: flex;
   gap: 8px;
 }
 #coastal-art .client-controls button,
 #sandbox .game-bottom > div > button,
-.radio-key {
+.radio-key,
+.interior .edition-row > div > button,
+#coastal-art .palette-switch > button {
   width: 48px;
   height: 46px;
   padding: 0 0 4px;
@@ -549,12 +552,18 @@ html.dark .interior {
 }
 #coastal-art .client-controls button:hover:not(:disabled),
 #sandbox .game-bottom > div > button:hover:not(:disabled),
-.radio-key:hover {
+.radio-key:hover,
+.interior .edition-row > div > button:hover,
+#coastal-art .palette-switch > button:hover {
   background: linear-gradient(90deg, #87966f, #cbd6b1 15%, #b2c296 85%, #788b62);
 }
 #coastal-art .client-controls button:active:not(:disabled),
 #sandbox .game-bottom > div > button:active:not(:disabled),
 .radio-key:active,
+.interior .edition-row > div > button:active,
+.interior .edition-row > div > button[aria-pressed="true"],
+#coastal-art .palette-switch > button:active,
+#coastal-art .palette-switch > button[aria-pressed="true"],
 #sandbox .game-bottom > div > button[aria-pressed="true"] {
   transform: translateY(3px);
   box-shadow: 0 0 0 #323e2e, inset 0 2px 4px #0005;
@@ -809,4 +818,74 @@ html.dark .gallery-drawer {
   .radio-key {
     transition: none;
   }
+}
+
+/* Link page intro card: headline, specialty tags, one plain sentence. */
+.interior .link-hub-title {
+  margin: 6px 0 0;
+  font-size: clamp(40px, 5vw, 56px);
+  line-height: 0.95;
+  letter-spacing: -2px;
+  text-align: center;
+}
+.interior .link-hub-skills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.interior .link-hub-skills li {
+  padding: 6px 10px;
+  border: 1px solid currentColor;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.interior .link-hub-intro {
+  max-width: 34ch;
+  margin: 4px auto 0;
+  font-size: 15px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* The edition switches: word-sized keys; the chosen edition stays pressed in. */
+.interior .edition-row > div > button,
+#coastal-art .palette-switch > button {
+  width: auto;
+  min-height: 42px;
+  padding: 0 14px 4px;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+.interior .edition-row > div > button[aria-pressed="true"],
+#coastal-art .palette-switch > button[aria-pressed="true"] {
+  background: linear-gradient(90deg, #6f7d5f, #a9b78f 15%, #93a57a 85%, #637652);
+}
+
+/* Home: the title line and one sentence beside the edition switches. */
+#coastal-art .palette-switch > .edition-intro {
+  display: flex;
+  flex: 1 1 320px;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  margin-right: 16px;
+  letter-spacing: 0;
+}
+#coastal-art .palette-switch > .edition-intro strong {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+#coastal-art .palette-switch > .edition-intro span {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
 }

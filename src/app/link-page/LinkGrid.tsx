@@ -126,14 +126,16 @@ export default function LinkGrid() {
               className="h-30 w-30 rounded-full ring-2 ring-white/5 object-cover"
               src={avatar}
             />
-            <h1 className="text-center" style={{ fontSize: "var(--step-3)" }}>
-              Senior Web Engineer | React, TypeScript & Rust/WebAssembly | AI
-              Automation | Enterprise CMS & WCAG Accessibility
-            </h1>
-            <h2 className="text-center" style={{ fontSize: "var(--step-1)" }}>
-              I Consult, Design, and Develop Web Interfaces for Businesses and
-              Government Agencies.
-            </h2>
+            <h1 className="link-hub-title">Senior web <em>engineer.</em></h1>
+            <ul className="link-hub-skills" aria-label="Specialties">
+              <li>React, TypeScript &amp; Rust/WebAssembly</li>
+              <li>AI automation</li>
+              <li>Enterprise CMS</li>
+              <li>WCAG accessibility</li>
+            </ul>
+            <p className="link-hub-intro">
+              I consult, design, and develop web interfaces for businesses and government agencies.
+            </p>
           </div>
         </Card>
 
