@@ -245,25 +245,33 @@ body.menu-open #site-takeover {
 #site-nav .nav-group > button[aria-expanded="true"] .nav-caret {
   transform: rotate(180deg);
 }
+/* Sun-bleached wood for the signposts, mixed from the nav's own paper. */
+#site-nav,
+#site-takeover {
+  --plank: color-mix(in srgb, var(--nav-paper) 72%, #c89a5a);
+  --plank-deep: color-mix(in srgb, var(--nav-paper) 48%, #8a6a3e);
+  --post: color-mix(in srgb, var(--nav-paper) 38%, #6b4e2e);
+}
+/* The dropdown is a signpost: a post drops from the header's rule and the
+   pages hang off it as plank arrows, each tilted a touch. */
 #site-nav .nav-dropdown {
   position: absolute;
-  /* The header pads 24px under the links; the card's orange edge covers its 4px rule. */
   top: calc(100% + 38px);
-  left: -18px;
+  left: -10px;
   z-index: 60;
   display: flex;
   flex-direction: column;
-  min-width: 220px;
-  padding: 6px 0;
-  background: var(--nav-paper);
-  border: 2px solid var(--nav-ink);
-  border-top: 4px solid var(--nav-accent);
-  box-shadow: 0 14px 28px rgb(0 0 0 / 0.28);
+  gap: 9px;
+  width: max-content;
+  padding: 8px 0 16px 20px;
+  background: none;
+  border: 0;
+  box-shadow: none;
 }
 #site-nav .nav-dropdown[hidden] {
   display: none;
 }
-/* An invisible bridge over the gap, so the pointer can reach the card. */
+/* An invisible bridge over the gap, so the pointer can reach the planks. */
 #site-nav .nav-dropdown::before {
   content: "";
   position: absolute;
@@ -272,27 +280,92 @@ body.menu-open #site-takeover {
   top: -42px;
   height: 38px;
 }
+#site-nav .nav-dropdown::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: -40px;
+  bottom: 0;
+  z-index: -1;
+  width: 12px;
+  background: var(--post);
+  box-shadow: inset 0 0 0 2px var(--nav-ink), inset -4px 0 0 color-mix(in srgb, var(--nav-ink) 30%, transparent);
+  border-radius: 0 0 3px 3px;
+}
 #site-nav .nav-dropdown a {
+  --tilt: -1.2deg;
+  position: relative;
+  isolation: isolate;
   display: flex;
   align-items: center;
-  min-height: 42px;
-  margin: 0 8px;
-  padding: 8px 10px;
+  gap: 14px;
+  width: max-content;
+  min-width: 236px;
+  min-height: 44px;
+  margin: 0;
+  padding: 8px 36px 8px 24px;
+  white-space: nowrap;
+  background: var(--nav-ink);
+  clip-path: polygon(0 0, calc(100% - 17px) 0, 100% 50%, calc(100% - 17px) 100%, 0 100%);
   font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: rotate(var(--tilt));
+  transform-origin: left center;
+  transition: transform 160ms ease, color 160ms ease;
+}
+#site-nav .nav-dropdown a:nth-child(even) {
+  --tilt: 1deg;
+}
+/* The plank's face, inset so the ink shows as its edge, arrow included. */
+#site-nav .nav-dropdown a::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  z-index: -1;
+  background: var(--plank);
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%);
+  transition: background-color 160ms ease;
+}
+/* The nail at the post end. */
+#site-nav .nav-dropdown a::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: var(--nav-ink);
 }
 #site-nav .nav-dropdown .nav-mark {
   flex-shrink: 0;
-  margin-right: 10px;
+  order: 1;
+  margin: 0 0 0 auto;
 }
 #site-nav .nav-dropdown a + a {
-  border-top: 1px solid color-mix(in srgb, var(--nav-ink) 18%, transparent);
+  border-top: 0;
 }
 #site-nav .nav-dropdown a:hover,
 #site-nav .nav-dropdown a:focus-visible {
-  background: var(--nav-ink);
   color: var(--nav-paper);
   text-decoration: none;
+  transform: rotate(var(--tilt)) translateX(6px);
+}
+#site-nav .nav-dropdown a:hover::after,
+#site-nav .nav-dropdown a:focus-visible::after {
+  background: var(--nav-ink);
+}
+#site-nav .nav-dropdown a:hover::before,
+#site-nav .nav-dropdown a:focus-visible::before {
+  background: var(--nav-paper);
+}
+#site-nav .nav-dropdown a:focus-visible {
+  outline: 3px solid var(--nav-accent);
+  outline-offset: 2px;
 }
 /* Two-row header (links on the bottom row): only the 24px padding to the rule. */
 @media (min-width: 641px) and (max-width: 1000px) {
@@ -305,49 +378,106 @@ body.menu-open #site-takeover {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  #site-nav .nav-caret {
+  #site-nav .nav-caret,
+  #site-nav .nav-dropdown a,
+  #site-nav .nav-dropdown a::after {
     transition: none;
   }
 }
 
-/* The menu: group names in Bodoni like the links, each subpage under its
-   group after a beach mark, smaller, so the whole site fits on a phone. */
+/* The phone menu is one tall signpost: a post down the left, every page
+   a plank arrow off it; section names are the deeper cross-boards. */
 #site-takeover nav {
-  gap: 2px;
+  position: relative;
+  gap: 7px;
+  padding: 4px 0 18px 22px;
+}
+#site-takeover nav::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: -14px;
+  bottom: 0;
+  width: 14px;
+  background: var(--post);
+  box-shadow: inset 0 0 0 2px var(--nav-ink), inset -4px 0 0 color-mix(in srgb, var(--nav-ink) 30%, transparent);
+  border-radius: 0 0 4px 4px;
 }
 #site-takeover nav a,
 #site-takeover .menu-group {
-  font-size: clamp(28px, 5.2vh, 40px);
-}
-#site-takeover .menu-group {
-  margin: 10px 0 0;
-  font-family: var(--font-bodoni-moda), Georgia, serif;
-  font-weight: 900;
-  line-height: 1.13;
-  letter-spacing: -1.5px;
-  opacity: 0;
-  transform: translateY(45px) rotate(6deg);
-  transform-origin: left center;
-  transition: transform 550ms cubic-bezier(0.16, 1.3, 0.3, 1), opacity 230ms ease;
-}
-body.menu-open #site-takeover .menu-group {
-  opacity: 1;
-  transform: none;
-  transition-delay: calc(210ms + var(--order) * 45ms);
-}
-#site-takeover nav a.menu-sub {
+  --tilt: -0.8deg;
+  position: relative;
+  isolation: isolate;
+  display: flex;
   justify-content: flex-start;
-  min-height: 40px;
-  padding-left: 6px;
-  font: 700 17px/1.2 var(--font-dm-sans), sans-serif;
-  letter-spacing: 0;
+  align-items: center;
+  gap: 12px;
+  width: min(100%, 360px);
+  min-height: 44px;
+  margin: 0;
+  padding: 7px 40px 7px 28px;
+  white-space: nowrap;
+  background: var(--nav-ink);
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%);
+  transform-origin: left center;
+}
+#site-takeover nav > :nth-child(even) {
+  --tilt: 0.8deg;
+}
+#site-takeover nav a::after,
+#site-takeover .menu-group::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  z-index: -1;
+  background: var(--plank);
+  clip-path: polygon(0 0, calc(100% - 19px) 0, 100% 50%, calc(100% - 19px) 100%, 0 100%);
+}
+#site-takeover nav a::before,
+#site-takeover .menu-group::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin-top: -3.5px;
+  border-radius: 50%;
+  background: var(--nav-ink);
+}
+/* Pages: DM Sans, upright, the beach mark out at the arrow's tip. */
+#site-takeover nav a,
+#site-takeover nav a.menu-sub {
+  font: 700 13px/1.2 var(--font-dm-sans), sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+#site-takeover nav a span {
+  display: none;
 }
 #site-takeover nav a.menu-sub .menu-mark {
   flex-shrink: 0;
-  margin-right: 12px;
+  order: 1;
+  margin: 0 0 0 auto;
   color: var(--nav-ink);
 }
-body.menu-open #site-takeover nav a {
+/* Sections: Bodoni on the deeper board. */
+#site-takeover .menu-group {
+  margin-top: 8px;
+  font: 900 clamp(22px, 4vh, 28px)/1.1 var(--font-bodoni-moda), Georgia, serif;
+  letter-spacing: -0.5px;
+  opacity: 0;
+  transform: translateY(45px) rotate(6deg);
+  transition: transform 550ms cubic-bezier(0.16, 1.3, 0.3, 1), opacity 230ms ease;
+}
+#site-takeover .menu-group::after {
+  background: var(--plank-deep);
+}
+/* On open the planks settle at their tilt (the design's reveal sets none). */
+body.menu-open #site-takeover nav a,
+body.menu-open #site-takeover .menu-group {
+  opacity: 1;
+  transform: rotate(var(--tilt));
   transition-delay: calc(210ms + var(--order) * 45ms);
 }
 @media (prefers-reduced-motion: reduce) {
