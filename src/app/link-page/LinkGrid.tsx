@@ -29,36 +29,27 @@ type SocialLinkRow = Doc<"socialLinks">;
 const FALLBACK_AVATAR = "/Professional-Photo-of-Chris-Lane-Jones.webp";
 
 // Internal routes get a Next <Link> for client navigation; anything flagged
-// external opens in a new tab.
+// external opens in a new tab. Each one is a sage radio key (shell.css).
 function LinkButton({ link }: { link: SocialLinkRow }) {
   const content = (
     <>
-      <span className="mr-2">
-        <SocialIcon iconKey={link.iconKey} size={16} />
-      </span>
+      <SocialIcon iconKey={link.iconKey} size={16} />
       {link.label}
     </>
   );
 
   if (link.isExternal ?? link.href.startsWith("http")) {
     return (
-      <Button
-        variant="primary"
-        showExternalIcon={true}
-        className="justify-center"
-        asChild
-      >
-        <a href={link.href} target="_blank" rel="noopener noreferrer">
-          {content}
-        </a>
-      </Button>
+      <a className="radio-key" href={link.href} target="_blank" rel="noopener noreferrer">
+        {content}
+        <span aria-hidden="true">↗</span>
+        <span className="sr-only"> (opens in a new tab)</span>
+      </a>
     );
   }
 
   return (
-    <Button variant="primary" className="justify-center" asChild>
-      <Link href={link.href}>{content}</Link>
-    </Button>
+    <Link className="radio-key" href={link.href}>{content}</Link>
   );
 }
 
