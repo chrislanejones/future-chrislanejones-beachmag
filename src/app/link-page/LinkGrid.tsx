@@ -27,29 +27,30 @@ type SocialLinkRow = Doc<"socialLinks">;
 // the card still renders before the profile query resolves.
 const FALLBACK_AVATAR = "/Professional-Photo-of-Chris-Lane-Jones.webp";
 
-// Internal routes get a Next <Link> for client navigation; anything flagged
-// external opens in a new tab. Each one is a sage radio key (shell.css).
-function LinkButton({ link }: { link: SocialLinkRow }) {
+// One row of the "Connect With Me" index: icon, name, a dotted leader, then
+// ↗ for other sites or → for pages here. Internal routes get a Next <Link>;
+// anything flagged external opens in a new tab. Styles: shell.css (.link-index).
+function LinkRow({ link }: { link: SocialLinkRow }) {
+  const external = link.isExternal ?? link.href.startsWith("http");
   const content = (
     <>
       <SocialIcon iconKey={link.iconKey} size={16} />
-      {link.label}
+      <span className="link-index-label">{link.label}</span>
+      <span className="link-index-leader" aria-hidden="true"></span>
+      <span className="link-index-arrow" aria-hidden="true">{external ? "↗" : "→"}</span>
     </>
   );
 
-  if (link.isExternal ?? link.href.startsWith("http")) {
+  if (external) {
     return (
-      <a className="radio-key" href={link.href} target="_blank" rel="noopener noreferrer">
+      <a href={link.href} target="_blank" rel="noopener noreferrer">
         {content}
-        <span aria-hidden="true">↗</span>
         <span className="sr-only"> (opens in a new tab)</span>
       </a>
     );
   }
 
-  return (
-    <Link className="radio-key" href={link.href}>{content}</Link>
-  );
+  return <Link href={link.href}>{content}</Link>;
 }
 
 // Convex's useQuery throws on a server error, and a throw during render cannot
@@ -94,11 +95,13 @@ function LinkList() {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <ul className="link-index">
       {allRows.map((link) => (
-        <LinkButton key={link._id} link={link} />
+        <li key={link._id}>
+          <LinkRow link={link} />
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 
@@ -157,20 +160,24 @@ export default function LinkGrid() {
           </h3>
           <div className="space-y-3">
             {featuredLinks && featuredLinks.length > 0 ? (
-              <div className="grid grid-cols-2 gap-3">
+              // Drawn as a strip of browser tabs, favicon and title, with a
+              // close mark that is only for show. Styles: shell.css (.tab-strip).
+              <ul className="tab-strip">
                 {featuredLinks.map((link) => (
-                  <a key={link._id} className="radio-key" href={link.href} target="_blank" rel="noopener noreferrer">
-                    {link.favicon ? (
-                      <Image src={link.favicon} width={16} height={16} unoptimized alt="" className="w-4 h-4 rounded" />
-                    ) : (
-                      <FaExternalLinkAlt className="w-4 h-4" aria-hidden="true" />
-                    )}
-                    {link.label}
-                    <span aria-hidden="true">↗</span>
-                    <span className="sr-only"> (opens in a new tab)</span>
-                  </a>
+                  <li key={link._id}>
+                    <a href={link.href} target="_blank" rel="noopener noreferrer" title={link.label}>
+                      {link.favicon ? (
+                        <Image src={link.favicon} width={16} height={16} unoptimized alt="" className="w-4 h-4 rounded" />
+                      ) : (
+                        <FaExternalLinkAlt className="w-4 h-4" aria-hidden="true" />
+                      )}
+                      <span className="tab-strip-title">{link.label}</span>
+                      <span className="tab-strip-close" aria-hidden="true">×</span>
+                      <span className="sr-only"> (opens in a new tab)</span>
+                    </a>
+                  </li>
                 ))}
-              </div>
+              </ul>
             ) : (
               <div className="text-center py-8 text-muted">
                 <p className="text-sm">No featured links yet.</p>

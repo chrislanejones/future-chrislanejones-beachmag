@@ -892,6 +892,129 @@ html.dark .gallery-drawer {
   text-align: center;
 }
 
+/* Link page "Connect With Me": a magazine index, two columns of rows with a
+   dotted leader to the arrow, instead of a wall of keys. */
+.interior .link-index {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.interior .link-index a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 10px 2px;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  font: 700 14px/1.3 var(--font-dm-sans), Arial, sans-serif;
+  text-decoration: none;
+}
+.interior .link-index svg {
+  flex-shrink: 0;
+}
+.interior .link-index-label {
+  white-space: nowrap;
+}
+.interior .link-index-leader {
+  flex: 1;
+  min-width: 8px;
+  align-self: flex-end;
+  margin-bottom: 7px;
+  border-bottom: 2px dotted color-mix(in srgb, var(--ink) 35%, transparent);
+}
+.interior .link-index-arrow {
+  color: var(--accent);
+  transition: transform 160ms ease;
+}
+.interior .link-index a:hover .link-index-label,
+.interior .link-index a:focus-visible .link-index-label {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+.interior .link-index a:hover .link-index-arrow,
+.interior .link-index a:focus-visible .link-index-arrow {
+  transform: translateX(3px);
+}
+@media (max-width: 560px) {
+  .interior .link-index {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Link page "Chrome Tabs I Left Open": the links as rows of browser tabs on
+   a tab bar. The hovered tab comes forward like the selected one. */
+.interior .tab-strip {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.interior .tab-strip li {
+  flex: 1 1 190px;
+  max-width: 260px;
+  min-width: 0;
+  margin-right: -1px;
+  box-shadow: inset 0 -2px 0 var(--ink);
+}
+.interior .tab-strip a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 9px 10px 11px 14px;
+  border: 1.5px solid var(--ink);
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+  background: color-mix(in srgb, var(--ink) 7%, var(--sheet));
+  font: 600 13px/1.2 var(--font-dm-sans), Arial, sans-serif;
+  text-decoration: none;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+.interior .tab-strip a img,
+.interior .tab-strip a svg {
+  flex-shrink: 0;
+}
+.interior .tab-strip-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.interior .tab-strip-close {
+  font-size: 16px;
+  line-height: 1;
+  opacity: 0.45;
+}
+.interior .tab-strip a:hover,
+.interior .tab-strip a:focus-visible {
+  z-index: 1;
+  background: var(--sheet);
+  transform: translateY(-3px);
+  box-shadow: inset 0 3px 0 var(--accent);
+}
+.interior .tab-strip a:hover .tab-strip-close,
+.interior .tab-strip a:focus-visible .tab-strip-close {
+  color: var(--accent);
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .interior .link-index-arrow,
+  .interior .tab-strip a {
+    transition: none;
+  }
+  .interior .link-index a:hover .link-index-arrow,
+  .interior .tab-strip a:hover {
+    transform: none;
+  }
+}
+
 
 
 /* Home label row: the specialties on the left, the edition keys on the right. */
