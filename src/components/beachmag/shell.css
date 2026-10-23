@@ -507,12 +507,14 @@ html.dark .interior {
   font: 700 9px var(--font-dm-sans), sans-serif;
   letter-spacing: 0.15em;
 }
-/* The arrows are the radio's sage transport keys, and press down like them. */
+/* The arrows, and the sand game's five buttons, are the radio's sage
+   transport keys, and press down like them. */
 #coastal-art .client-controls {
   display: flex;
   gap: 8px;
 }
-#coastal-art .client-controls button {
+#coastal-art .client-controls button,
+#sandbox .game-bottom > div > button {
   width: 48px;
   height: 46px;
   padding: 0 0 4px;
@@ -526,14 +528,18 @@ html.dark .interior {
   font: 700 22px/1 var(--font-dm-sans), sans-serif;
   transition: transform 70ms, box-shadow 70ms;
 }
-#coastal-art .client-controls button:hover:not(:disabled) {
+#coastal-art .client-controls button:hover:not(:disabled),
+#sandbox .game-bottom > div > button:hover:not(:disabled) {
   background: linear-gradient(90deg, #87966f, #cbd6b1 15%, #b2c296 85%, #788b62);
 }
-#coastal-art .client-controls button:active:not(:disabled) {
+#coastal-art .client-controls button:active:not(:disabled),
+#sandbox .game-bottom > div > button:active:not(:disabled),
+#sandbox .game-bottom > div > button[aria-pressed="true"] {
   transform: translateY(3px);
   box-shadow: 0 0 0 #323e2e, inset 0 2px 4px #0005;
 }
-#coastal-art .client-controls button:disabled {
+#coastal-art .client-controls button:disabled,
+#sandbox .game-bottom > div > button:disabled {
   opacity: 0.4;
   cursor: default;
 }
@@ -613,7 +619,8 @@ html.dark .interior {
 @media (prefers-reduced-motion: reduce) {
   #coastal-art a.client-tile,
   #coastal-art .client-mark,
-  #coastal-art .client-controls button {
+  #coastal-art .client-controls button,
+  #sandbox .game-bottom > div > button {
     transition: none;
   }
   #coastal-art a.client-tile:hover,
@@ -678,4 +685,20 @@ html.dark .interior {
   display: block;
   aspect-ratio: 1.6;
   background: light-dark(#e4d8bf, #304445);
+}
+
+/* The game's keys carry words, so they size to their label. The status line's
+   rule sits below the row, clear of the keys' pressed-down travel. */
+#sandbox .game-bottom > div > button {
+  width: auto;
+  min-height: 46px;
+  padding: 0 14px 4px;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+#sandbox .game-bottom {
+  margin-bottom: 18px;
+}
+#sandbox .game-bottom > div {
+  gap: 8px;
 }
