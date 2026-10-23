@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { localDay, upcomingEvents } from "./events";
 
@@ -31,7 +32,7 @@ function Month({ year, month, today, events }: { year: number; month: number; to
   const prefix = `${year}-${String(month + 1).padStart(2, "0")}-`;
   return (
     <table className="calendar-month">
-      <caption>{MONTH_NAMES[month]} <span>{year}</span></caption>
+      <caption className="sr-only">{MONTH_NAMES[month]} {year}</caption>
       <thead>
         <tr>
           {WEEKDAYS.map((day) => (
@@ -46,7 +47,11 @@ function Month({ year, month, today, events }: { year: number; month: number; to
               if (!day) return <td key={column} className="calendar-blank" />;
               const date = prefix + String(day).padStart(2, "0");
               const onDay = events.filter((event) => event.start.startsWith(date));
-              const classes = [onDay.length && "has-event", date === today && "is-today"].filter(Boolean).join(" ");
+              const classes = [
+                onDay.length && "has-event",
+                onDay.some((event) => event.secret) && "is-secret",
+                date === today && "is-today",
+              ].filter(Boolean).join(" ");
               return (
                 <td key={column} className={classes || undefined}>
                   <time dateTime={date}>{day}</time>
@@ -63,10 +68,10 @@ function Month({ year, month, today, events }: { year: number; month: number; to
   );
 }
 
-// /events: every month from this one to the last event on the books, then the
-// full list. Months with nothing on them in between still show, like a real
-// wall calendar.
+// /events: a wall calendar from this month to the last event on the books,
+// one month at a time, then the full list beside it.
 export function EventsCalendar() {
+  const [shown, setShown] = useState(0);
   const now = new Date();
   const today = localDay(now);
   const events = upcomingEvents(now, Infinity);
@@ -78,6 +83,7 @@ export function EventsCalendar() {
     months.push({ year: cursor.getFullYear(), month: cursor.getMonth() });
     cursor.setMonth(cursor.getMonth() + 1);
   }
+  const current = months[Math.min(shown, months.length - 1)];
 
   return (
     <>
@@ -93,15 +99,21 @@ export function EventsCalendar() {
       <div className="columns events-calendar">
         <article>
           <div className="label">THE CALENDAR</div>
-          {months.map(({ year, month }) => (
-            <Month key={`${year}-${month}`} year={year} month={month} today={today} events={events} />
-          ))}
+          {/* One month at a time; the silver keys turn the page. */}
+          <div className="calendar-head">
+            <p className="calendar-title" aria-live="polite">{MONTH_NAMES[current.month]} <span>{current.year}</span></p>
+            <div className="client-controls">
+              <button type="button" aria-label="Previous month" disabled={shown === 0} onClick={() => setShown(shown - 1)}>←</button>
+              <button type="button" aria-label="Next month" disabled={shown >= months.length - 1} onClick={() => setShown(shown + 1)}>→</button>
+            </div>
+          </div>
+          <Month year={current.year} month={current.month} today={today} events={events} />
         </article>
         <aside className="events">
           <h2>Coming up.</h2>
           {events.length ? (
             events.map((event) => (
-              <div className="event" id={eventId(event)} key={event.start + event.name}>
+              <div className={event.secret ? "event is-secret" : "event"} id={eventId(event)} key={event.start + event.name}>
                 <time dateTime={event.start}>{event.month}<b>{event.day}</b></time>
                 <div>
                   <strong>

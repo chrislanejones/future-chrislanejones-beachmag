@@ -1419,3 +1419,35 @@ html.dark .gallery-drawer {
     transform: none;
   }
 }
+
+/* /events: one month at a time, turned with the silver keys. */
+#coastal-art .calendar-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+#coastal-art .calendar-title {
+  margin: 0;
+  font: italic 900 30px/1 var(--font-bodoni-moda), Georgia, serif;
+  letter-spacing: -0.03em;
+}
+#coastal-art .calendar-title span {
+  font: 700 11px var(--font-dm-sans), Arial, sans-serif;
+  font-style: normal;
+  letter-spacing: 0.1em;
+  vertical-align: middle;
+}
+/* A secret event: its own sea-glass color, no details. */
+#coastal-art .calendar-month td.has-event.is-secret {
+  background: light-dark(#2f7d74, #7fb8ad);
+  color: light-dark(#f1e7d4, #142224);
+}
+#coastal-art .event.is-secret time,
+#coastal-art .event.is-secret strong {
+  color: light-dark(#2f7d74, #7fb8ad);
+}
+#coastal-art .event.is-secret small {
+  font-style: italic;
+}

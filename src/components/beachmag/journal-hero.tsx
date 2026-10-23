@@ -91,7 +91,7 @@ export function JournalHero() {
           <h2>See you out there.</h2>
           {events.length ? (
             events.map((event) => (
-              <div className="event" key={event.start + event.name}>
+              <div className={event.secret ? "event is-secret" : "event"} key={event.start + event.name}>
                 <time dateTime={event.start}>{event.month}<b>{event.day}</b></time>
                 <div>
                   <strong>

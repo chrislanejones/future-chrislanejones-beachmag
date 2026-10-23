@@ -1,7 +1,14 @@
 // Events Chris is going to. Add one entry per event: the homepage shows the
 // next three under "See you out there.", and /events puts them all on a
 // calendar. Past ones drop off both. `start` is local time in ISO form.
-export type HomeEvent = { start: string; name: string; place: string; url?: string };
+export type HomeEvent = {
+  start: string;
+  name: string;
+  place: string;
+  url?: string;
+  /** Not announced yet: shown in its own color, with no details. */
+  secret?: boolean;
+};
 
 export const HOME_EVENTS: HomeEvent[] = [
   {
@@ -14,6 +21,12 @@ export const HOME_EVENTS: HomeEvent[] = [
     name: "AI Connect Jax: From Signals to Closed Loops",
     place: "Legacy Ale Works · Jacksonville · 5:30 PM",
     url: "https://www.meetup.com/aiconnect/events/316373251/",
+  },
+  {
+    start: "2026-12-08T10:15",
+    name: "Secret event",
+    place: "Coming soon",
+    secret: true,
   },
 ];
 
