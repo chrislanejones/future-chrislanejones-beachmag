@@ -1216,10 +1216,37 @@ html.dark .gallery-drawer {
   padding: 0 20px 4px;
 }
 
-/* ── Sand game: words on the left, tool knob on the right, the beach below ── */
-#sandbox .sandbox-heading {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+/* ── Sand game: words | tool knob | surfer drawing, the beach below ──
+   (section# outweighs the game's own 1fr 1fr rule, which loads after this) */
+section#sandbox .sandbox-heading {
+  grid-template-columns: minmax(0, 1fr) 380px minmax(0, 0.75fr);
   align-items: stretch;
+}
+/* The surfer: the lifeguard stand's thin ink lines, a little stronger
+   because it sits in its own column instead of behind the headline. */
+#sandbox .surfer-drawing {
+  align-self: center;
+  width: 100%;
+  max-width: 280px;
+  justify-self: center;
+  transform: rotate(-6deg);
+  color: var(--ink);
+  opacity: 0.3;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  pointer-events: none;
+}
+/* Not enough room for three across: words and knob keep the row. */
+@media (max-width: 1100px) {
+  section#sandbox .sandbox-heading {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  #sandbox .surfer-drawing {
+    display: none;
+  }
 }
 /* The words: kicker, headline, the blurb right under it, then the how-to. */
 #sandbox .sandbox-words {
@@ -1408,7 +1435,7 @@ html.dark .gallery-drawer {
   }
 }
 @media (max-width: 760px) {
-  #sandbox .sandbox-heading {
+  section#sandbox .sandbox-heading {
     grid-template-columns: 1fr;
   }
   .tool-knob {
