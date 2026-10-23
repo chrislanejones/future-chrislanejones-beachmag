@@ -87,3 +87,33 @@ html.dark:has([data-beachmag]),
   color: inherit;
   text-underline-offset: 4px;
 }
+
+/* Nav wordmark: the name reads at headline size, not as a caption. */
+#site-nav .nav-brand {
+  gap: 12px;
+}
+#site-nav .brand-wave {
+  width: 44px;
+  height: 44px;
+}
+#site-nav .nav-brand .brand-wordmark {
+  font-size: 20px;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+}
+#site-nav .nav-brand .brand-wordmark > span {
+  margin-top: 3px;
+  font-size: 9px;
+}
+@media (max-width: 640px) {
+  #site-nav .brand-wave {
+    width: 34px;
+    height: 34px;
+  }
+  #site-nav .nav-brand .brand-wordmark {
+    font-size: 15px;
+  }
+  #site-nav .nav-brand .brand-wordmark > span {
+    font-size: 7px;
+  }
+}
