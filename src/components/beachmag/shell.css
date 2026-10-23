@@ -289,7 +289,7 @@ body.menu-open #site-takeover {
 }
 
 /* The menu: group names in Bodoni like the links, each subpage under its
-   group after a dash, smaller, so the whole site fits on a phone. */
+   group after a beach mark, smaller, so the whole site fits on a phone. */
 #site-takeover nav {
   gap: 2px;
 }
@@ -320,9 +320,9 @@ body.menu-open #site-takeover .menu-group {
   font: 700 17px/1.2 var(--font-dm-sans), sans-serif;
   letter-spacing: 0;
 }
-#site-takeover nav a.menu-sub .menu-dash {
-  margin-right: 8px;
-  font: inherit;
+#site-takeover nav a.menu-sub .menu-mark {
+  flex-shrink: 0;
+  margin-right: 12px;
   color: var(--nav-accent);
 }
 body.menu-open #site-takeover nav a {

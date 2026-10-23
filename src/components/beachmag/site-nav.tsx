@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Waves } from "lucide-react";
+import { Shell, Volleyball, Waves } from "lucide-react";
 import { useHeaderNavItems } from "@/components/page/links";
 import { setTheme, useTheme } from "@/lib/theme-store";
 
@@ -181,8 +181,10 @@ export function SiteNav() {
       >
         <p className="menu-label">CHRIS LANE JONES / MENU</p>
         <nav aria-label="Site pages">
-          {/* Groups show their name, then each subpage on its own line after a dash. */}
-          {items.flatMap((item) => [item, ...(item.children ?? [])].map((entry) => ({ entry, sub: entry !== item, group: item }))).map(({ entry, sub, group: parent }, order) => {
+          {/* Groups show their name, then each subpage on its own line after a
+              beach mark: volleyball, shell, volleyball… down each group. */}
+          {items.flatMap((item) => [item, ...(item.children ?? [])].map((entry, index) => ({ entry, sub: entry !== item, group: item, index }))).map(({ entry, sub, group: parent, index }, order) => {
+            const Mark = index % 2 ? Volleyball : Shell;
             const style = { "--order": String(order) } as React.CSSProperties;
             if (!sub && parent.children?.length) {
               return <p key={`group-${entry.label}`} className="menu-group" style={style}>{entry.label}</p>;
@@ -195,7 +197,7 @@ export function SiteNav() {
                 style={style}
                 onClick={() => setOpen(false)}
               >
-                {sub ? <span className="menu-dash" aria-hidden="true">- </span> : null}
+                {sub ? <Mark className="menu-mark" size={20} strokeWidth={1.75} aria-hidden="true" /> : null}
                 {entry.label}
                 {sub ? null : <span aria-hidden="true">↗</span>}
               </Link>
