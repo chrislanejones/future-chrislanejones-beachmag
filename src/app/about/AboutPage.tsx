@@ -1,24 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import ConferenceSliderContent from "@/components/main/conference-slider-content";
+import { EndNote } from "@/components/beachmag/interior-parts";
 import { aboutSections } from "@/data/about-data";
-import { Reveal } from "@/components/coastal/reveal";
-import styles from "@/components/coastal/coastal.module.css";
 
 function renderDescriptionWithLinks(description: string) {
   return description
-    .replace(/[\u2013\u2014]/g, "-")
+    .replace(/[–—]/g, "-")
     .split(/(\[.*?\]\(.*?\))/g)
     .map((part, index) => {
       const match = part.match(/\[(.*?)\]\((.*?)\)/);
       return match ? (
-        <a
-          key={index}
-          href={match[2]}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a key={index} href={match[2]} target="_blank" rel="noopener noreferrer">
           {match[1]}
         </a>
       ) : (
@@ -27,48 +19,45 @@ function renderDescriptionWithLinks(description: string) {
     });
 }
 
+// The design's chapters: a taped field-note photo beside each part of the story.
 export default function AboutPage() {
   return (
     <>
-      <div className={styles.aboutStories}>
-        {aboutSections.map((section, index) => (
-          <Reveal
-            key={section.title}
-            className={index === 0 ? styles.featuredStory : undefined}
-          >
-            <article className={styles.aboutStory}>
-              <div className={styles.aboutPhoto}>
-                <Image
-                  src={section.image}
-                  alt={section.imageAlt}
-                  fill
-                  sizes="(max-width: 767px) 90vw, 50vw"
-                  loading={index === 0 ? "eager" : "lazy"}
-                  className={index === 1 ? styles.aboutGraphic : undefined}
-                />
-              </div>
-              <div className={styles.aboutCopy}>
-                <h2>{section.title}</h2>
-                {section.description.split("\n\n").map((paragraph, i) => (
-                  <p key={i}>{renderDescriptionWithLinks(paragraph)}</p>
-                ))}
-                {index === 0 && (
-                  <Link href="/career-and-resume" className={styles.textLink}>
-                    Career & Resume{" "}
-                    <ArrowUpRight size={17} aria-hidden="true" />
-                  </Link>
-                )}
-              </div>
-            </article>
-          </Reveal>
-        ))}
+      <div className="section-rule">
+        <p>A FEW CHAPTERS OF MY LIFE</p>
+        <p>FLORIDA / VIRGINIA / BACK AGAIN</p>
       </div>
-      <section
-        className={styles.aboutConferences}
-        aria-label="Tech Conferences Attended"
-      >
-        <ConferenceSliderContent />
-      </section>
+      {aboutSections.map((section, index) => {
+        const number = String(index + 1).padStart(2, "0");
+        return (
+          <section className="story-row" key={section.title}>
+            <figure>
+              <Image
+                src={section.image}
+                alt={section.imageAlt}
+                width={520}
+                height={400}
+                sizes="(max-width: 640px) 85vw, 520px"
+                loading={index === 0 ? "eager" : "lazy"}
+              />
+              <figcaption>FIELD NOTE / {number}</figcaption>
+            </figure>
+            <div>
+              <p className="page-kicker">CHAPTER {number}</p>
+              <h2>{section.title}</h2>
+              {section.description.split("\n\n").map((paragraph, i) => (
+                <p key={i}>{renderDescriptionWithLinks(paragraph)}</p>
+              ))}
+              {index === 0 && (
+                <p>
+                  <Link href="/career-and-resume">Career &amp; Resume</Link>
+                </p>
+              )}
+            </div>
+          </section>
+        );
+      })}
+      <EndNote line="Good people. Good conversations." href="/conferences" label="Conferences & community" />
     </>
   );
 }

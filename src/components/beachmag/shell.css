@@ -655,3 +655,12 @@ html.dark .interior {
   border-top: 2px solid;
   font-weight: 700;
 }
+/* The design assumes browser defaults that Tailwind's reset removes: spacing
+   between paragraphs and lists, and underlined links in running text. Low
+   specificity, so every rule in interior.css still wins. */
+.interior :where(p, ul, ol, dl, blockquote, pre) {
+  margin-block: 1em;
+}
+.interior :where(p, li, dd) > a:where(:not([class])) {
+  text-decoration: underline;
+}

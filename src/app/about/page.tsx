@@ -1,5 +1,5 @@
 import { CoastalPageShell } from "@/components/coastal/page-shell";
-import { CoastalPageIntro } from "@/components/coastal/page-intro";
+import { PageHero } from "@/components/beachmag/interior-parts";
 import AboutPage from "@/app/about/AboutPage";
 import { getPageSEO } from "@/lib/seo";
 
@@ -11,8 +11,14 @@ export async function generateMetadata() {
 
 export default function About() {
   return (
-    <CoastalPageShell>
-      <CoastalPageIntro path="/about" />
+    <CoastalPageShell edition="THE PERSON BEHIND THE PIXELS / THE COASTAL EDITION">
+      <PageHero
+        kicker="THE PERSON BEHIND THE PIXELS"
+        title={<>Made of<br /><em>curiosity.</em></>}
+        intro="From video production to web development. From Virginia’s mountains back to Florida’s coast. Still making things, still learning."
+        path="/about"
+        caption="Same curiosity. A different coastline. ↙"
+      />
       <AboutPage />
     </CoastalPageShell>
   );
