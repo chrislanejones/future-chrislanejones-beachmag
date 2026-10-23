@@ -8,23 +8,35 @@ import { setTheme, useTheme } from "@/lib/theme-store";
 const DESKTOP_LINKS = [
   { href: "/about", label: "About" },
   { href: "/projects", label: "Projects" },
+  { href: "/blog", label: "Blog" },
+  { href: "/events", label: "Events" },
   { href: "/browser-tabs", label: "Browser Tabs" },
-  { href: "/#beach-offline", label: "Journal" },
-  { href: "/#sandbox", label: "Sandbox" },
 ];
 
 const MENU_LINKS = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/projects", label: "Projects" },
-  { href: "/#beach-offline", label: "Journal" },
-  { href: "/#sandbox", label: "Sandbox" },
-  { href: "/browser-tabs", label: "Browser Tabs" },
+  { href: "/blog", label: "Blog" },
+  { href: "/events", label: "Events" },
   { href: "/contact", label: "Contact" },
 ];
 
-// The life-preserver menu. It takes over the screen on phones; body classes
-// drive the slide in and out, so the closing animation can finish first.
+// Every other page, small, under the big links.
+const MORE_LINKS = [
+  { href: "/career-and-resume", label: "Career & Resume" },
+  { href: "/conferences", label: "Conferences" },
+  { href: "/browser-tabs", label: "Browser Tabs" },
+  { href: "/react-maintenance", label: "React Services" },
+  { href: "/wordpress-maintenance", label: "WordPress Services" },
+  { href: "/site-history", label: "Site History" },
+  { href: "/link-page", label: "Link Page" },
+  { href: "/site-map", label: "Site Map" },
+];
+
+// The life-preserver menu: every page on the site. It takes over the screen at
+// any width; body classes drive the open and close, so the closing animation
+// can finish first.
 export function SiteNav() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -70,14 +82,8 @@ export function SiteNav() {
         first.focus();
       }
     };
-    const wide = matchMedia("(min-width:641px)");
-    const onWide = (event: MediaQueryListEvent) => event.matches && setOpen(false);
     document.addEventListener("keydown", onKey);
-    wide.addEventListener("change", onWide);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      wide.removeEventListener("change", onWide);
-    };
+    return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
   useEffect(() => () => document.body.classList.remove("menu-open", "menu-closing"), []);
@@ -105,7 +111,15 @@ export function SiteNav() {
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           aria-controls="site-takeover"
-          onClick={() => setOpen((value) => !value)}
+          onClick={() => {
+            // The circle grows out of the life preserver, wherever the header put it.
+            const box = toggleRef.current?.getBoundingClientRect();
+            if (box && menuRef.current) {
+              menuRef.current.style.setProperty("--menu-x", `${box.left + box.width / 2}px`);
+              menuRef.current.style.setProperty("--menu-y", `${box.top + box.height / 2}px`);
+            }
+            setOpen((value) => !value);
+          }}
         >
           <span></span><span></span>
         </button>
@@ -120,7 +134,7 @@ export function SiteNav() {
         inert={!open}
       >
         <p className="menu-label">CHRIS LANE JONES / MENU</p>
-        <nav aria-label="Mobile navigation">
+        <nav aria-label="Site pages">
           {MENU_LINKS.map((link, order) => (
             <Link
               key={link.href}
@@ -131,6 +145,16 @@ export function SiteNav() {
               {link.label} <span>↗</span>
             </Link>
           ))}
+        </nav>
+        <nav className="menu-more" aria-label="More pages">
+          <p>MORE PAGES</p>
+          <ul>
+            {MORE_LINKS.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} onClick={() => setOpen(false)}>{link.label}</Link>
+              </li>
+            ))}
+          </ul>
         </nav>
         <div className="menu-bottom">
           <p>CHOOSE YOUR EDITION</p>

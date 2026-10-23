@@ -93,6 +93,12 @@ function getDefaultSEO(path: string): Metadata {
         "Get in touch about web projects, WordPress maintenance, React consulting, or speaking at a meetup. Based in Jacksonville, FL, and available for remote work.",
       alternates: { canonical: `${SITE_URL}/contact` },
     },
+    "/events": {
+      title: "Events: Meetups & Coworking in Northeast Florida",
+      description:
+        "Where I'll be: meetups, coworking mornings and conferences around St. Augustine and Jacksonville. Come say hi.",
+      alternates: { canonical: `${SITE_URL}/events` },
+    },
     "/projects": {
       title: "Projects: Apps, Tools & Client Websites",
       description:

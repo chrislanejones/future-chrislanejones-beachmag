@@ -1,6 +1,6 @@
-// "See you out there." on the homepage: events Chris is going to.
-// Add one entry per event; the homepage sorts them, hides past ones and
-// shows the next three. `start` is local time in ISO form.
+// Events Chris is going to. Add one entry per event: the homepage shows the
+// next three under "See you out there.", and /events puts them all on a
+// calendar. Past ones drop off both. `start` is local time in ISO form.
 export type HomeEvent = { start: string; name: string; place: string; url?: string };
 
 export const HOME_EVENTS: HomeEvent[] = [
@@ -19,9 +19,13 @@ export const HOME_EVENTS: HomeEvent[] = [
 
 const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
+/** `now` as YYYY-MM-DD in local time, to compare with `start`. */
+export const localDay = (now: Date) =>
+  [now.getFullYear(), now.getMonth() + 1, now.getDate()].map((n) => String(n).padStart(2, "0")).join("-");
+
 /** The next events still ahead of `now`, soonest first, with the date split for the design's tile. */
 export function upcomingEvents(now: Date, limit = 3) {
-  const today = now.toISOString().slice(0, 10);
+  const today = localDay(now);
   return HOME_EVENTS.filter((event) => event.start.slice(0, 10) >= today)
     .sort((a, b) => a.start.localeCompare(b.start))
     .slice(0, limit)

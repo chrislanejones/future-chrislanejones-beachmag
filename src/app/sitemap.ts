@@ -18,6 +18,7 @@ const staticPages = [
   '/color-guide',
   '/conferences',
   '/contact',
+  '/events',
   '/link-page',
   '/logo-page',
   '/projects',

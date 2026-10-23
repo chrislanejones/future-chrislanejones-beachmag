@@ -6,10 +6,12 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
 
 - **PGA Golf Game isn't in Convex**: the homepage falls back to the static snapshot for it. Add it through the live site's admin, then the fallback goes unused.
 - **Events live in code**: `src/components/beachmag/events.ts` is hand-edited. The Convex `conferences` table could hold them later, written through the live site's admin. The Cowork and Coffee entry has no public Meetup link yet.
-- **Inner pages still wear the old skin**: about, projects, blog, conferences, contact, career and the rest use `CoastalPageShell`. Only `/` and `/browser-tabs` use `BeachmagShell`.
+- **Inner pages still wear the old skin**: about, projects, blog, conferences, contact, career and the rest use `CoastalPageShell`, so their old header doesn't list Events. Only `/`, `/browser-tabs` and `/events` use `BeachmagShell`. Chris asked (10-22) for them in the home page's layout; next up.
+- **Nav links are hard-coded** in `site-nav.tsx`, not read from the Convex `navigation` table the old header uses. Edits in the live admin won't show here.
 - **No footer on the skinned pages**: the design never had one; the old `CoastalFooter` (site map, socials) isn't on `/` or `/browser-tabs`.
 - **VU meter reads after the volume knob**, so at low volume it barely moves. Metering before the volume would make it livelier.
-- **design/ is a reference archive**: `design/outputs/coastal-site-preview.zip` predates the radio stations, and `coastal-demo.wav` plus `generate_radio_demo.py` are unused.
+- **design/ is a reference archive**: `design/outputs/coastal-site-preview.zip` predates the radio stations, and `coastal-demo.wav` plus `generate_radio_demo.py` are unused. The 10-22 evening zip (sand game update) has an older radio than this repo; only its sandbox source was ported.
+- **Codex's sandbox uses `active` as a GLSL name** (reserved in WebGL2), so its wave overlay never compiled there. Fixed here in `incoming-wave.tsx`; tell Codex if that design keeps going.
 
 ## From the beach site
 
