@@ -1,0 +1,15 @@
+COASTAL MAGAZINE SITE — COMPLETE PUBLIC-PAGE PREVIEW
+
+Extract the entire ZIP before opening coastal-homepage.html in Chrome or Edge.
+Open coastal-site-map.html for a searchable directory of all 55 public pages.
+coastal-mobile.html is the mobile homepage frame; other pages adapt when the browser window is narrowed.
+
+Includes 8 project detail pages, 7 complete articles, 16 conference detail pages,
+7 conference year archives, services, resume, history, logo, palette, links and music lounge.
+
+Internet is needed for hosted images, fonts, video, resume downloads and external destinations.
+The live contact form and article discussion remain on chrislanejones.com.
+Private admin/authentication pages are not reproduced. This is a local preview, not a deployment.
+
+Validation: all 55 page files, local navigation targets, internal anchors, shared navigation/footer,
+and JavaScript syntax checked. Browser visual verification has not been completed.
