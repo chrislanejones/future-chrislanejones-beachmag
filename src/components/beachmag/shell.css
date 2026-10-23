@@ -40,6 +40,13 @@ html.dark:has([data-beachmag]),
   height: 100%;
 }
 
+/* The design's hover paints the mask's background; with inline SVGs that
+   would fill a square, so tint the icon itself instead. */
+#tool-gallery .tech-item:hover .brand-icon {
+  background: none;
+  color: var(--accent);
+}
+
 /* Browser tabs: the favicon fills the design's lettered site mark. */
 #browser-tabs .site-mark .resource-favicon {
   display: block;
@@ -101,10 +108,6 @@ html.dark:has([data-beachmag]),
   line-height: 1.15;
   letter-spacing: 0.04em;
 }
-#site-nav .nav-brand .brand-wordmark > span {
-  margin-top: 3px;
-  font-size: 9px;
-}
 @media (max-width: 640px) {
   #site-nav .brand-wave {
     width: 34px;
@@ -112,9 +115,6 @@ html.dark:has([data-beachmag]),
   }
   #site-nav .nav-brand .brand-wordmark {
     font-size: 15px;
-  }
-  #site-nav .nav-brand .brand-wordmark > span {
-    font-size: 7px;
   }
 }
 

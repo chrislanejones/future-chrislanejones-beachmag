@@ -90,7 +90,7 @@ export function SiteNav() {
           <span className="brand-marks" aria-hidden="true">
             <Waves className="brand-wave" size={38} strokeWidth={1.5} />
           </span>
-          <span className="brand-wordmark">CHRIS LANE JONES <span>THE COASTAL EDITION</span></span>
+          <span className="brand-wordmark">CHRIS LANE JONES</span>
         </Link>
         <nav className="desktop-links" aria-label="Main navigation" inert={open}>
           {DESKTOP_LINKS.map((link) => (
