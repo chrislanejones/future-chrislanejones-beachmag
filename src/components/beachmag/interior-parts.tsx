@@ -1,0 +1,94 @@
+import Link from "next/link";
+import type { CSSProperties, ReactNode } from "react";
+import { BANNER_SCENES } from "@/components/coastal/scene-banner";
+import { SceneLoop } from "@/components/coastal/scene-loop";
+
+// The pieces inner pages are built from (design/site). Styles: interior.css.
+
+/** A page's 3D beach scene (day and night, looping when allowed) in the taped polaroid. */
+export function ScenePolaroid({ path, caption, className = "" }: { path: string; caption: ReactNode; className?: string }) {
+  const scene = BANNER_SCENES[path] ?? BANNER_SCENES["/about"];
+  return (
+    <figure className={`page-polaroid ${className}`.trim()}>
+      <div className="polaroid-scene" style={{ "--scene-focus": scene.focus } as CSSProperties}>
+        <SceneLoop scene={scene} sizes="(max-width: 640px) 90vw, 520px" />
+      </div>
+      <figcaption>{caption}</figcaption>
+    </figure>
+  );
+}
+
+/** Main pages: kicker, headline and intro beside the scene polaroid. */
+export function PageHero({ kicker, title, intro, path, caption }: { kicker: string; title: ReactNode; intro: ReactNode; path: string; caption: ReactNode }) {
+  return (
+    <header className="page-hero">
+      <div>
+        <p className="page-kicker">{kicker}</p>
+        <h1>{title}</h1>
+        <p className="page-intro">{intro}</p>
+      </div>
+      <ScenePolaroid path={path} caption={caption} />
+    </header>
+  );
+}
+
+export type Crumb = { href?: string; label: string };
+
+/** Articles, projects and conferences: breadcrumbs, then the title beside a small polaroid. */
+export function ArchiveHero({ crumbs, kicker, title, intro, path, caption = "A little world. A big rabbit hole." }: {
+  crumbs: Crumb[];
+  kicker: string;
+  title: ReactNode;
+  intro?: ReactNode;
+  path: string;
+  caption?: ReactNode;
+}) {
+  return (
+    <>
+      <nav className="archive-crumbs" aria-label="Breadcrumb">
+        {crumbs.map((crumb, index) => (
+          <span key={crumb.label}>
+            {index > 0 && <span aria-hidden="true">/ </span>}
+            {crumb.href ? <Link href={crumb.href}>{crumb.label}</Link> : <span aria-current="page">{crumb.label}</span>}
+          </span>
+        ))}
+      </nav>
+      <header className="archive-hero">
+        <p className="page-kicker">{kicker}</p>
+        <div>
+          <h1>{title}</h1>
+          {intro && <p className="page-intro">{intro}</p>}
+        </div>
+        <ScenePolaroid path={path} caption={caption} className="archive-banner" />
+      </header>
+    </>
+  );
+}
+
+export type IndexEntry = { id: string; label: string };
+
+/** "In this edition": a jump list beside the prose. Without entries the prose runs full width. */
+export function ArchiveLayout({ index, children }: { index: IndexEntry[]; children: ReactNode }) {
+  if (!index.length) return <div className="archive-prose">{children}</div>;
+  return (
+    <div className="archive-layout-wide">
+      <nav className="article-index" aria-label="In this edition">
+        <p>IN THIS EDITION ↓</p>
+        {index.map((entry) => (
+          <a key={entry.id} href={`#${entry.id}`}>{entry.label}</a>
+        ))}
+      </nav>
+      <div className="archive-prose">{children}</div>
+    </div>
+  );
+}
+
+/** The closing ink band: a line, and where to go next. */
+export function EndNote({ line, href, label }: { line: ReactNode; href: string; label: string }) {
+  return (
+    <div className="end-note">
+      <p>{line}</p>
+      <Link href={href}>{label} ↗</Link>
+    </div>
+  );
+}

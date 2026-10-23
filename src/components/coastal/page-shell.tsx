@@ -1,23 +1,16 @@
 import type { ReactNode } from "react";
-import { BeachmagShell } from "@/components/beachmag/shell";
-import { CoastalArt } from "@/components/beachmag/coastal-art";
-import { CoastalFooter } from "./navigation";
+import { InteriorPage } from "@/components/beachmag/interior";
 import styles from "./coastal.module.css";
 
-// Inner pages wear the coastal-magazine skin: the homepage's nav and paper
-// column around the beach site's content. shell.css maps the beach site's
-// --coast-* colors onto the magazine palette.
-export function CoastalPageShell({ children }: { children: ReactNode }) {
+// Inner pages wear the coastal-magazine layout (design/site): the paper sheet,
+// edition row and footer from InteriorPage, around the beach site's content.
+// shell.css maps the beach site's --coast-* colors onto the sheet's palette.
+export function CoastalPageShell({ edition, children }: { edition?: string; children: ReactNode }) {
   return (
-    <BeachmagShell>
-      <CoastalArt>
-        <div className={styles.coastalPage} data-coastal-theme data-coastal-page>
-          <div id="main-content" tabIndex={-1} className={styles.container}>
-            {children}
-          </div>
-          <CoastalFooter />
-        </div>
-      </CoastalArt>
-    </BeachmagShell>
+    <InteriorPage edition={edition}>
+      <div className={styles.coastalPage} data-coastal-theme data-coastal-page id="main-content" tabIndex={-1}>
+        {children}
+      </div>
+    </InteriorPage>
   );
 }

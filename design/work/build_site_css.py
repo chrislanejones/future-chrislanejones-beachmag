@@ -30,3 +30,50 @@ def site_css(css, source, out):
 
 site_css('\n'.join(blocks[1:]), 'outputs/coastal-homepage.html', 'beachmag.css')
 site_css(Path('work/browser-tabs.css').read_text(encoding='utf-8'), 'work/browser-tabs.css', 'browser-tabs.css')
+
+
+# ── Inner pages (design/site, the 55-page export) ─────────────────────────
+# Every inner page shares one interior sheet and the footer sheet. The
+# interior rules use bare class names (.page-hero, .story-row…), so each one is
+# scoped under .interior; the page-wide body/main rules are dropped because the
+# Next app owns the page frame.
+GLOBAL_RULES = {'body', 'body>main', '*', ':focus-visible'}
+
+
+def scope_rules(css, prefix):
+    out, i = [], 0
+    while i < len(css):
+        brace = css.find('{', i)
+        if brace < 0:
+            break
+        head = css[i:brace].strip()
+        depth, j = 1, brace + 1
+        while depth:
+            depth += {'{': 1, '}': -1}.get(css[j], 0)
+            j += 1
+        body = css[brace + 1:j - 1]
+        if head.startswith('@media') or head.startswith('@supports'):
+            out.append(f'{head}{{{scope_rules(body, prefix)}}}')
+        elif head.startswith('@'):
+            out.append(f'{head}{{{body}}}')
+        elif head not in GLOBAL_RULES:
+            selectors = [s.strip() for s in head.split(',')]
+            scoped = [s if s.startswith(prefix) else f'{prefix} {s}' for s in selectors]
+            out.append(f'{",".join(scoped)}{{{body}}}')
+        i = j
+    return '\n'.join(out)
+
+
+def design_block(page, marker):
+    html = Path(page).read_text(encoding='utf-8')
+    for block in re.findall(r'<style[^>]*>(.*?)</style>', html, re.S):
+        if marker in block:
+            return block
+    raise SystemExit(f'No style block with {marker!r} in {page}')
+
+
+ARTICLE_PAGE = 'site/coastal-blog--migrating-an-engine-into-a-web-worker.html'
+interior = design_block(ARTICLE_PAGE, '.archive-prose')
+interior = re.sub(r"@import url\('https://fonts\.googleapis\.com/[^)]*\);?", '', interior)
+site_css(scope_rules(interior, '.interior'), ARTICLE_PAGE, 'interior.css')
+site_css(design_block(ARTICLE_PAGE, '#coastal-footer'), ARTICLE_PAGE, 'footer.css')

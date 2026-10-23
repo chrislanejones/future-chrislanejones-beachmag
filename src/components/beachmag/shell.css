@@ -426,3 +426,48 @@ body.menu-open #site-takeover .menu-more a {
   object-fit: cover;
   object-position: var(--scene-focus, 50% 50%);
 }
+
+/* ── Inner pages from the 55-page design (interior.css) ─────────────────── */
+/* light-dark() in interior.css needs a color-scheme set by a rule. */
+.interior {
+  color-scheme: light;
+}
+html.dark .interior {
+  color-scheme: dark;
+}
+/* The design's polaroids hold a still; ours hold the looping scene. */
+.interior .polaroid-scene {
+  position: relative;
+  aspect-ratio: 1.3;
+  overflow: hidden;
+  background: var(--sheet);
+}
+.interior .archive-banner .polaroid-scene {
+  aspect-ratio: 1.5;
+}
+.interior .polaroid-scene :is(img, video) {
+  object-fit: cover;
+  object-position: var(--scene-focus, 50% 50%);
+}
+@media (max-width: 640px) {
+  .interior .polaroid-scene {
+    aspect-ratio: 1.6;
+  }
+}
+.interior .archive-crumbs > span {
+  display: inline-flex;
+  gap: 10px;
+}
+/* Beach-site content still inside a page paints with --coast-*: map it here. */
+.interior [data-coastal-theme] {
+  --coast-base: var(--paper);
+  --coast-panel: var(--sheet);
+  --coast-soft: color-mix(in srgb, var(--ink) 7%, var(--paper));
+  --coast-ink: var(--ink);
+  --coast-muted: color-mix(in srgb, var(--ink) 74%, var(--paper));
+  --coast-accent: var(--accent);
+  --coast-on-accent: var(--paper);
+  --coast-line: color-mix(in srgb, var(--ink) 30%, transparent);
+  --coast-control-line: color-mix(in srgb, var(--ink) 45%, transparent);
+  background: transparent;
+}
