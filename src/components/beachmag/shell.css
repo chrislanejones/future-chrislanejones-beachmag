@@ -525,8 +525,8 @@ html.dark .interior {
   font: 700 9px var(--font-dm-sans), sans-serif;
   letter-spacing: 0.15em;
 }
-/* The arrows, the sand game's five buttons, the inner pages' Sunlit paper /
-   After dark switches and any .radio-key (the link page) are the radio's sage transport
+/* The arrows, the sand game's five buttons, the Sunlit paper / After dark
+   switches (home label row, inner pages) and any .radio-key (the link page) are the radio's sage transport
    keys, and press down like them. The mobile menu keeps its own switch. */
 #coastal-art .client-controls {
   display: flex;
@@ -535,7 +535,8 @@ html.dark .interior {
 #coastal-art .client-controls button,
 #sandbox .game-bottom > div > button,
 .radio-key,
-.interior .edition-row > div > button {
+.interior .edition-row > div > button,
+#coastal-art .top > div > button {
   width: 48px;
   height: 46px;
   padding: 0 0 4px;
@@ -552,7 +553,8 @@ html.dark .interior {
 #coastal-art .client-controls button:hover:not(:disabled),
 #sandbox .game-bottom > div > button:hover:not(:disabled),
 .radio-key:hover,
-.interior .edition-row > div > button:hover {
+.interior .edition-row > div > button:hover,
+#coastal-art .top > div > button:hover {
   background: linear-gradient(90deg, #87966f, #cbd6b1 15%, #b2c296 85%, #788b62);
 }
 #coastal-art .client-controls button:active:not(:disabled),
@@ -560,6 +562,8 @@ html.dark .interior {
 .radio-key:active,
 .interior .edition-row > div > button:active,
 .interior .edition-row > div > button[aria-pressed="true"],
+#coastal-art .top > div > button:active,
+#coastal-art .top > div > button[aria-pressed="true"],
 #sandbox .game-bottom > div > button[aria-pressed="true"] {
   transform: translateY(3px);
   box-shadow: 0 0 0 #323e2e, inset 0 2px 4px #0005;
@@ -850,14 +854,31 @@ html.dark .gallery-drawer {
 }
 
 /* The edition switches: word-sized keys; the chosen edition stays pressed in. */
-.interior .edition-row > div > button {
+.interior .edition-row > div > button,
+#coastal-art .top > div > button {
   width: auto;
   min-height: 42px;
   padding: 0 14px 4px;
   font-size: 11px;
   letter-spacing: 0.02em;
 }
-.interior .edition-row > div > button[aria-pressed="true"] {
+.interior .edition-row > div > button[aria-pressed="true"],
+#coastal-art .top > div > button[aria-pressed="true"] {
   background: linear-gradient(90deg, #6f7d5f, #a9b78f 15%, #93a57a 85%, #637652);
 }
 
+
+/* Home label row: the specialties on the left, the edition keys on the right. */
+#coastal-art .top {
+  align-items: center;
+}
+#coastal-art .top > div {
+  display: flex;
+  flex-shrink: 0;
+  gap: 6px;
+}
+@media (max-width: 640px) {
+  #coastal-art .top {
+    flex-wrap: wrap;
+  }
+}

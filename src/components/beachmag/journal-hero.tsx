@@ -6,6 +6,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { ContentBoundary } from "@/components/coastal/live-content";
 import { ClientStrip } from "./client-strip";
+import { EditionButtons } from "./edition-buttons";
 import { upcomingEvents } from "./events";
 
 type Entry = { title: string; excerpt: string; href: string; date?: number };
@@ -60,7 +61,10 @@ export function JournalHero() {
         <div className="station-ground"></div>
       </div>
       {/* Hero copy from the beach site, in the design's masthead. */}
-      <div className="top"><span>REACT, TYPESCRIPT &amp; RUST/WEBASSEMBLY | AI AUTOMATION | ENTERPRISE CMS &amp; WCAG ACCESSIBILITY</span></div>
+      <div className="top">
+        <span>REACT, TYPESCRIPT &amp; RUST/WEBASSEMBLY | AI AUTOMATION | ENTERPRISE CMS &amp; WCAG ACCESSIBILITY</span>
+        <EditionButtons />
+      </div>
       <h1 className="mast">Senior web<br /><em>engineer.</em></h1>
       <div className="sub">
         <span>I consult, design, and develop web interfaces for businesses and government agencies.</span>
