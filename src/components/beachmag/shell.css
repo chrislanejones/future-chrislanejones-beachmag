@@ -892,8 +892,8 @@ html.dark .gallery-drawer {
   object-fit: contain;
 }
 
-/* "Sunlit / After dark" rotary switch: a bakelite bar on a brushed knob,
-   turning 90° between the labels (-45° Sunlit, +45° After dark). */
+/* "Sunlit / After dark" rotary switch: a chicken-head knob turning 90°
+   between the labels (-45° Sunlit, +45° After dark). */
 .edition-switch,
 .interior .edition-row .edition-switch {
   display: inline-flex;
@@ -917,80 +917,86 @@ html.dark .gallery-drawer {
 .edition-switch[aria-checked="true"] [data-side="dark"] {
   opacity: 1;
 }
-/* The panel plate with a tick at each stop. */
+/* A scale of tick lines across the 90° the knob travels (every 15°), in the
+   page's ink so it reads in both editions. */
 .edition-dial {
   position: relative;
   display: grid;
   place-items: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #2b322c 0 58%, #1a201b 59% 100%);
-  box-shadow: inset 0 1px 2px #000a, 0 1px 0 #ffffff1f;
+  width: 58px;
+  height: 58px;
 }
-.edition-dial::before,
-.edition-dial::after {
-  content: "";
+.edition-scale {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 2px;
-  height: 5px;
-  margin: -2.5px 0 0 -1px;
-  background: #e8e4d2;
-  border-radius: 1px;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from -45.75deg, currentColor 0 1.5deg, transparent 1.5deg 15deg);
+  -webkit-mask: radial-gradient(circle, transparent 0 22px, #000 22.5px 29px, transparent 29.5px), conic-gradient(from -47deg, #000 0 94deg, transparent 94deg);
+  -webkit-mask-composite: source-in;
+  mask: radial-gradient(circle, transparent 0 22px, #000 22.5px 29px, transparent 29.5px), conic-gradient(from -47deg, #000 0 94deg, transparent 94deg);
+  mask-composite: intersect;
+  opacity: 0.75;
 }
-.edition-dial::before {
-  transform: rotate(-45deg) translateY(-21px);
-}
-.edition-dial::after {
-  transform: rotate(45deg) translateY(-21px);
-}
+/* The chicken-head knob: a tapered bakelite bar across a domed hub, with a
+   cream pointer line ending in an arrow. -45° Sunlit, +45° After dark. */
 .edition-knob {
   position: relative;
   display: block;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #f4f5ee, #c3c8bb 45%, #7c8379 100%);
-  box-shadow: 0 2px 0 #323e2e, 0 3px 5px #0008, inset 0 -2px 3px #0004;
+  width: 44px;
+  height: 44px;
+  transform: rotate(-45deg);
+  transition: transform 360ms cubic-bezier(0.3, 1.45, 0.5, 1);
+  filter: drop-shadow(0 2px 2px #000a);
 }
-/* The bar handle, with a cream pointer at its top end. */
-.edition-handle {
+.edition-bar {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 16px;
+  height: 44px;
+  margin-left: -8px;
+  background: linear-gradient(90deg, #121512, #2f352e 42%, #1c201c 70%, #101310);
+  clip-path: polygon(22% 0, 78% 0, 100% 30%, 100% 70%, 78% 100%, 22% 100%, 0 70%, 0 30%);
+}
+.edition-hub {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 11px;
-  height: 34px;
-  margin: -17px 0 0 -5.5px;
-  border-radius: 4px;
-  background: linear-gradient(90deg, #1b201b, #3d433b 45%, #232823);
-  box-shadow: inset 0 1px 0 #ffffff26, 0 2px 3px #000a;
-  transform: rotate(-45deg);
-  transition: transform 360ms cubic-bezier(0.3, 1.45, 0.5, 1);
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #4a5147, #1d211d 62%, #111411);
+  box-shadow: inset 0 1px 0 #ffffff1f;
 }
-.edition-handle::before {
+/* The line runs from the hub's middle to the tip, ending in an arrowhead. */
+.edition-pointer {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  width: 2px;
+  height: 17px;
+  margin-left: -1px;
+  background: #efe4c2;
+}
+.edition-pointer::before {
   content: "";
   position: absolute;
-  top: 3px;
+  top: -4px;
   left: 50%;
-  width: 3px;
-  height: 9px;
-  margin-left: -1.5px;
-  border-radius: 2px;
-  background: #f1e7d4;
+  margin-left: -3px;
+  border-right: 3px solid transparent;
+  border-bottom: 5px solid #efe4c2;
+  border-left: 3px solid transparent;
 }
-.edition-switch[aria-checked="true"] .edition-handle {
+.edition-switch[aria-checked="true"] .edition-knob {
   transform: rotate(45deg);
 }
 .edition-switch:hover .edition-knob {
-  filter: brightness(1.06);
-}
-.edition-switch:active .edition-knob {
-  transform: translateY(1px);
+  filter: drop-shadow(0 2px 2px #000a) brightness(1.15);
 }
 @media (prefers-reduced-motion: reduce) {
-  .edition-handle,
+  .edition-knob,
   .edition-switch .edition-side {
     transition: none;
   }
