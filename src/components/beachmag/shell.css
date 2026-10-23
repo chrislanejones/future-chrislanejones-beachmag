@@ -129,3 +129,10 @@ html.dark:has([data-beachmag]),
 #coastal-art .map {
   height: clamp(240px, 34vw, 420px);
 }
+
+/* The open menu tilts #page-content 4deg. On a tall page the tilted bottom
+   pokes out sideways, which widens a phone's layout viewport and pushes the
+   fixed close button off screen. Clip the spill; fixed children aren't clipped. */
+main[data-beachmag] {
+  overflow-x: clip;
+}

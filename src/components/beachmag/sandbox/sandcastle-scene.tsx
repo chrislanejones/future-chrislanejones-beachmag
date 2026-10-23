@@ -5,7 +5,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { BufferAttribute, BufferGeometry, Color, DoubleSide, OrthographicCamera, Shape, Vector3, type Group, type ShaderMaterial, type Texture } from "three";
 import { FlagBox } from "./flag-box";
 import { IncomingWave } from "./incoming-wave";
-import { beachWashAt } from "./beach-wash";
+import { SandErosion } from "./sand-erosion";
+import { beachWashAt, erosionAt } from "./beach-wash";
 import { SandMold,moldHeight } from "./sand-molds";
 import { makeShellGeometries, makeShellTexture, type ShellKind } from "./shell-geometry";
 import { BEACH_COLUMNS, BEACH_ROWS, HALF_X, HALF_Z, MOAT_DEPTH, MOUND_HEIGHT, onBeach, pieceElevation, type CastlePiece, type CastleTool } from "./sandcastle-model";
@@ -121,7 +122,7 @@ const sandVertex = `
   }`;
 const sandFragment = `
   varying vec2 vUv; varying vec2 vScreenUv; varying vec3 vNormal; varying float vHeight; varying float vWaterLevel;
-  uniform float uTime; uniform float uDetail; uniform float uWash; uniform float uDamp; uniform vec3 uSand; uniform vec3 uWater; uniform vec3 uLight;
+  uniform vec3 uDryCorner; uniform float uTime; uniform float uDetail; uniform float uWash; uniform float uDamp; uniform vec3 uSand; uniform vec3 uWater; uniform vec3 uLight;
   void main() {
     // Soft value noise: gentle mottling instead of per-pixel grain, which aliased into stripes.
     vec2 cell = vUv * 260.0; vec2 i = floor(cell); vec2 f = fract(cell); f = f * f * (3.0 - 2.0 * f);
@@ -146,7 +147,8 @@ const sandFragment = `
     float coast = p.x + p.y * .7 - 1.22
       + sin(p.y * 7.0 + uTime * .45) * .018;
     float tide = sin(uTime * .65 + p.y * 3.0) * .022;
-    float shore = coast + tide + uWash;
+    float protection=1.-smoothstep(.065,.15,distance(p,uDryCorner.xy));
+    float shore = coast + tide + uWash - protection*2.;
     float water = smoothstep(-.018, .025, shore);
     float wet = smoothstep(-.065, .02, shore);
     vec3 color = mix(sand, mix(sand, uWater, .25) * .87, max(wet,uDamp*.45));
@@ -187,7 +189,7 @@ function CameraFit() {
     const x = (HALF_X + .3) * SPACING, z = (HALF_Z + .3) * SPACING;
     const left = -(HALF_X + 1.9) * SPACING;
     let reach = 0;
-    for (const [cx, cy, cz] of [[-x, 0, -z], [x, 0, -z], [-x, 0, z], [x, 0, z], [-x, 1.2, -z], [x, 1.2, -z], [left,0,2.8], [left,1.3,2.8]]) {
+    for (const [cx, cy, cz] of [[-x, 0, -z], [x, 0, -z], [-x, 0, z], [x, 0, z], [-x, 1.2, -z], [x, 1.2, -z], [left-.5,0,4.8], [left-.5,1.3,4.8]]) {
       const p = new Vector3(cx, cy, cz).project(camera);
       reach = Math.max(reach, Math.abs(p.x), Math.abs(p.y));
     }
@@ -334,7 +336,7 @@ function Beach({ pieces, tool, cursor, dark, moving, washStartedAt, onPlace, onA
   useEffect(() => () => { texture.dispose(); terrain.dispose(); Object.values(shells).forEach(geometry => geometry.dispose()); }, [texture, shells, terrain]);
   const uniforms = useMemo(() => ({
     uTime: { value: 0 }, uDetail: { value: dark ? .02 : .03 }, uMoatDepth: { value: MOAT_DEPTH },
-    uWash:{value:0},uDamp:{value:0},
+    uWash:{value:0},uDamp:{value:0},uDryCorner:{value:new Vector3()},
     uSand: { value: new Color(dark ? "#756448" : "#ddc397") }, uWater: { value: new Color(dark ? "#2e6970" : "#86bcbc") },
     uLight: { value: [-4, 9, 5].map(v => v / Math.hypot(-4, 9, 5)) },
   }), [dark]);
@@ -404,7 +406,9 @@ function Beach({ pieces, tool, cursor, dark, moving, washStartedAt, onPlace, onA
     invalidate();
   }, [cursor, field, invalidate,washStartedAt]);
 
-  useFrame((_, delta) => {
+  useFrame(({camera}, delta) => {
+    const dry=new Vector3(-5.8,0,4.3).project(camera);uniforms.uDryCorner.value.set(dry.x*.5+.5,dry.y*.5+.5,0);
+    if(washStartedAt!==null){const pos=terrain.getAttribute("position") as BufferAttribute;const advance=beachWashAt(Math.min(1800,performance.now()-washStartedAt)).advance;const screen=new Vector3();for(let i=0;i<pos.count;i++){const x=pos.getX(i),z=pos.getZ(i);screen.set(x,0,z).project(camera);pos.setY(i,sandHeight(field,x,z)*(1-erosionAt(advance,screen.x*.5+.5,screen.y*.5+.5)))}pos.needsUpdate=true;terrain.computeVertexNormals()}
     const tween=terrainTween.current;
     if(tween){const progress=smooth(.3,.75,(performance.now()-tween.start)/DIG_MS),position=terrain.getAttribute("position") as BufferAttribute;for(let i=0;i<position.count;i++)position.setY(i,tween.from[i]+(tween.to[i]-tween.from[i])*progress);position.needsUpdate=true;terrain.computeVertexNormals();if(progress===1){terrain.computeBoundingSphere();terrainTween.current=null}}
     if (shader.current) {
@@ -436,7 +440,7 @@ function Beach({ pieces, tool, cursor, dark, moving, washStartedAt, onPlace, onA
     <mesh geometry={terrain} position={[0, .012, 0]} receiveShadow>
       <shadowMaterial opacity={dark ? .22 : .16} transparent depthWrite={false} />
     </mesh>
-    {pieces.filter(piece => piece.kind !== "mound" && piece.kind !== "moat").map(piece => <SandPiece key={piece.id} piece={piece} texture={texture} shells={shells} dark={dark} elevation={pieceElevation(pieces, piece)} born={molds.find(m=>m.piece.id===piece.id)?.start} />)}
+    {pieces.filter(piece => piece.kind !== "mound" && piece.kind !== "moat").map(piece => <SandErosion key={piece.id} x={piece.x*SPACING} z={piece.z*SPACING} startedAt={washStartedAt}><SandPiece piece={piece} texture={texture} shells={shells} dark={dark} elevation={pieceElevation(pieces, piece)} born={molds.find(m=>m.piece.id===piece.id)?.start} /></SandErosion>)}
     {molds.map(mold=><BucketMold key={mold.piece.id} mold={mold} onDone={()=>setMolds(current=>current.filter(m=>m!==mold))}/>)}
     {digs.map(dig => <Shovel key={`${dig.x},${dig.z},${dig.start}`} dig={dig} height={Math.max(0,sandHeight(field, dig.x * SPACING, dig.z * SPACING))}
       onDone={() => setDigs(current => current.filter(d => d !== dig))} />)}

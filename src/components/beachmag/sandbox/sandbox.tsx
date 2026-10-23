@@ -211,11 +211,22 @@ export function Sandbox() {
             }}
           />
         </Boundary>
-        <span className="supply-caption">FLAG BOX · {available} LEFT {held ? " / 1 IN HAND" : ""}</span>
       </div>
       <div className="game-bottom">
         <span>{used} / 5 flags planted · {state.pieces.length} pieces</span>
         <div>
+          <button
+            type="button"
+            className="auto-build"
+            disabled={busy}
+            onClick={() => {
+              dispatch({ type: "build" });
+              setHeld(false);
+              setNotice("");
+            }}
+          >
+            Build it for me ↗
+          </button>
           <button type="button" disabled={busy || tool !== "wall"} aria-pressed={rotated} onClick={() => setRotated(!rotated)}>Rotate mold ↻</button>
           <button type="button" disabled={busy} onClick={() => place()}>Place at marker</button>
           <button
@@ -233,7 +244,7 @@ export function Sandbox() {
         </div>
       </div>
       <p className="game-status" role="status">{notice || state.message}{busy && washStartedAt === null ? " · Let the sand settle…" : ""}</p>
-      <p id="game-help">Tap the sand to build. Tap the wooden flag box or choose Pick up flag, then plant it. The box holds five flags; removing one returns it to the box. Dig neighboring spots to join the water channels. Use arrow keys to move the marker, Enter to build, or Delete to remove the top piece.</p>
+      <p id="game-help">Build it for me makes a whole castle; Undo brings back your beach. Tap the sand to build. Tap the wooden flag box or choose Pick up flag, then plant it. The box holds five flags; removing one returns it to the box. Dig neighboring spots to join the water channels. Use arrow keys to move the marker, Enter to build, or Delete to remove the top piece.</p>
     </section>
   );
 }

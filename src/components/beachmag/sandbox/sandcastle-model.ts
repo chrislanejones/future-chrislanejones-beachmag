@@ -15,7 +15,8 @@ export type CastleAction =
   | { type: "place"; tool: CastleTool; x: number; z: number; rotated: boolean }
   | { type: "rotate"; x: number; z: number }
   | { type: "undo" }
-  | { type: "clear" };
+  | { type: "clear" }
+  | { type: "build" };
 
 export const BEACH_COLUMNS = 9;
 export const BEACH_ROWS = 7;
@@ -78,8 +79,8 @@ export function pieceElevation(pieces: CastlePiece[], piece: CastlePiece) {
 function fortMessage(pieces: CastlePiece[], added: string) {
   const corners = pieces.filter(p => p.kind === "tower" || p.kind === "bucket").length;
   const walls = pieces.filter(p => p.kind === "wall").length;
-  if (corners >= 4 && walls >= 4 && pieces.some(p => p.kind === "moat")) return `${added} Towers, walls, and a moat: that’s a proper fort.`;
-  if (corners >= 4 && walls >= 4) return `${added} Four corners and four walls: that’s a fort. A moat would finish it.`;
+  if (corners >= 4 && walls >= 4 && pieces.some(p => p.kind === "moat")) return `${added} Towers, walls, and a moat: thatâ€™s a proper fort.`;
+  if (corners >= 4 && walls >= 4) return `${added} Four corners and four walls: thatâ€™s a fort. A moat would finish it.`;
   return added;
 }
 
@@ -87,6 +88,20 @@ export function castleReducer(state: CastleState, action: CastleAction): CastleS
   const save = (pieces: CastlePiece[], message: string, nextId = state.nextId): CastleState => ({
     pieces, message, nextId, history: [...state.history.slice(-49), state.pieces],
   });
+  if (action.type === "build") {
+    let built: CastleState = {pieces:[],history:[],nextId:state.nextId,message:""};
+    const add=(tool:CastleTool,x:number,z:number,rotated=false)=>{built=castleReducer(built,{type:"place",tool,x,z,rotated})};
+    for(const x of [-2,2])for(const z of [-1,1])add("tower",x,z);
+    for(const x of [-1,0,1])add("wall",x,-1);
+    for(const x of [-1,1])add("wall",x,1);
+    for(const x of [-2,2])add("wall",x,0,true);
+    add("bucket",0,0);add("tower",0,0);
+    for(let x=-3;x<=3;x++){add("moat",x,-2);if(x!==0)add("moat",x,2)}
+    for(const x of [-3,3])for(const z of [-1,0,1])add("moat",x,z);
+    for(const x of [-2,2])for(const z of [-1,1])add("flag",x,z);
+    add("flag",0,0);add("shell",-1,3);add("shell",1,3);
+    return save(built.pieces,"Your castle is ready: four towers, a tall keep, a moat, and five flags. Make it yours, or Undo to restore your beach.",built.nextId);
+  }
   if (action.type === "undo") {
     const previous = state.history.at(-1);
     return previous ? { ...state, pieces: previous, history: state.history.slice(0, -1), message: "Last change undone." } : state;
@@ -138,7 +153,7 @@ export function castleReducer(state: CastleState, action: CastleAction): CastleS
   if (tool === "flag" || tool === "shell") {
     if (tool === "flag" && state.pieces.filter(piece => piece.kind === "flag").length >= MAX_FLAGS)
       return { ...state, message: "All five flags are planted. Remove one or undo to use it again." };
-    if (atSpot.some(piece => piece.kind === tool)) return { ...state, message: `There’s already a ${tool} there. Pick another spot.` };
+    if (atSpot.some(piece => piece.kind === tool)) return { ...state, message: `Thereâ€™s already a ${tool} there. Pick another spot.` };
     if (moat) return { ...state, message: `A ${tool} would sink in the moat. Try the sand or a castle.` };
     const on = topStructure ? ` on the ${LABEL[topStructure.kind].toLowerCase()}` : topMound ? " on the mound" : "";
     return add(tool, 0, `${LABEL[tool]} added${on}.`);

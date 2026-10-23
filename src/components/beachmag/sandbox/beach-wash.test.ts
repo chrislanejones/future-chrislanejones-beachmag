@@ -1,5 +1,5 @@
 import {describe,expect,test} from 'vitest';
-import {beachWashAt,WASH_IN_MS,WASH_CLEAR_MS,WASH_RETREAT_MS,WASH_END_MS,WASH_REACH} from './beach-wash';
+import {beachWashAt,erosionAt,WASH_IN_MS,WASH_CLEAR_MS,WASH_RETREAT_MS,WASH_END_MS,WASH_REACH} from './beach-wash';
 import {castleReducer,initialCastle} from './sandcastle-model';
 
 describe('clear-beach tide',()=>{
@@ -25,3 +25,5 @@ describe('clear-beach tide',()=>{
   expect(castleReducer(cleared,{type:'undo'}).pieces).toEqual(withFlag.pieces);
  });
 });
+
+ test("erosion follows the water front and finishes before reset",()=>{expect(erosionAt(0,.2,.2)).toBe(0);expect(erosionAt(.5,.8,.8)).toBeGreaterThan(erosionAt(.5,.2,.2));for(const x of [0,.5,1])for(const y of [0,.5,1])expect(erosionAt(beachWashAt(WASH_CLEAR_MS).advance,x,y)).toBe(1)});

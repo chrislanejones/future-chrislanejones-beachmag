@@ -23,7 +23,6 @@
 #sandbox .game-toolbar button[aria-pressed=true] .tool-water{stroke:light-dark(#8bc7c8,#377f87)}
 #sandbox .game-toolbar small{display:block;font-size:7px;margin-top:3px}
 #sandbox .game-stage{height:470px;position:relative;border:2px solid currentColor;overflow:hidden;background:light-dark(#ddc397,#756448)}
-#sandbox .supply-caption{position:absolute;bottom:10px;left:12px;font-size:8px;letter-spacing:1px;background:light-dark(#eee5d2dd,#142224dd);padding:7px;pointer-events:none}
 #sandbox .game-bottom{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-top:15px;font-size:10px}
 #sandbox .game-bottom>div{display:flex;gap:5px;flex-wrap:wrap}
 #sandbox .game-status{font-size:12px;min-height:36px;line-height:1.5;padding-top:14px;border-top:1px solid}

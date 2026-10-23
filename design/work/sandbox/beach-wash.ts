@@ -3,6 +3,7 @@ export const WASH_CLEAR_MS = 2050;
 export const WASH_RETREAT_MS = 2350;
 export const WASH_END_MS = 4400;
 export const WASH_REACH = 1.55;
+export function erosionAt(advance:number,x:number,y:number){return ease((x+y*.7-1.22+advance+.065)/.25)}
 
 function ease(value:number){
  const t=Math.max(0,Math.min(1,value));

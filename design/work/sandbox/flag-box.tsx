@@ -5,7 +5,7 @@ import {DoubleSide,Shape} from 'three';
 export function FlagBox({available,dark,onPick}:{available:number;dark:boolean;onPick:()=>void}){
  const flag=useMemo(()=>{const s=new Shape();s.moveTo(0,0);s.lineTo(.31,-.1);s.lineTo(0,-.2);s.closePath();return s},[]);
  const wood=dark?'#98744d':'#bf935c',edge=dark?'#765b3c':'#97703e';
- return <group position={[-5.4,0,2.35]} rotation={[0,-.12,0]}
+ return <group position={[-5.8,0,4.3]} rotation={[0,-.12,0]}
   onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()}
   onPointerMove={e=>e.stopPropagation()}
   onClick={e=>{e.stopPropagation();onPick()}}>
