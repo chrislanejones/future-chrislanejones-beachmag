@@ -6,7 +6,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { ContentBoundary } from "@/components/coastal/live-content";
 import { setTheme, useTheme } from "@/lib/theme-store";
-import { HOME_EVENTS } from "./events";
+import { upcomingEvents } from "./events";
 
 type Entry = { title: string; excerpt: string; href: string; date?: number };
 
@@ -45,6 +45,7 @@ function LiveEntry() {
 
 export function JournalHero() {
   const theme = useTheme();
+  const events = upcomingEvents(new Date());
   return (
     <>
       <div className="lifeguard-drawing" aria-hidden="true">
@@ -86,12 +87,27 @@ export function JournalHero() {
         </ContentBoundary>
         <aside className="events">
           <h2>See you out there.</h2>
-          {HOME_EVENTS.map((event) => (
-            <div className="event" key={`${event.month}-${event.day}-${event.name}`}>
-              <time>{event.month}<b>{event.day}</b></time>
-              <div><strong>{event.name}</strong><small>{event.place}</small></div>
-            </div>
-          ))}
+          {events.length ? (
+            events.map((event) => (
+              <div className="event" key={event.start + event.name}>
+                <time dateTime={event.start}>{event.month}<b>{event.day}</b></time>
+                <div>
+                  <strong>
+                    {event.url ? (
+                      <a href={event.url} target="_blank" rel="noopener noreferrer">
+                        {event.name}<span className="sr-only"> (opens in a new tab)</span>
+                      </a>
+                    ) : (
+                      event.name
+                    )}
+                  </strong>
+                  <small>{event.place}</small>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="copy">Nothing on the calendar yet.</p>
+          )}
         </aside>
       </div>
     </>

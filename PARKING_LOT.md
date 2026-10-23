@@ -5,7 +5,7 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
 ## Coastal-magazine skin (10-22-2026)
 
 - **PGA Golf Game isn't in Convex**: the homepage falls back to the static snapshot for it. Add it through the live site's admin, then the fallback goes unused.
-- **Events are samples**: `src/components/beachmag/events.ts` holds the design's three placeholder events until Chris sends the real list.
+- **Events live in code**: `src/components/beachmag/events.ts` is hand-edited. The Convex `conferences` table could hold them later, written through the live site's admin. The Cowork and Coffee entry has no public Meetup link yet.
 - **Inner pages still wear the old skin**: about, projects, blog, conferences, contact, career and the rest use `CoastalPageShell`. Only `/` and `/browser-tabs` use `BeachmagShell`.
 - **No footer on the skinned pages**: the design never had one; the old `CoastalFooter` (site map, socials) isn't on `/` or `/browser-tabs`.
 - **VU meter reads after the volume knob**, so at low volume it barely moves. Metering before the volume would make it livelier.
