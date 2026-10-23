@@ -2,13 +2,16 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, Shell, Volleyball, Waves } from "lucide-react";
+import { ChevronDown, Fish, Shell, TreePalm, Umbrella, Volleyball, Waves } from "lucide-react";
 import { useHeaderNavItems } from "@/components/page/links";
 import { setTheme, useTheme } from "@/lib/theme-store";
 
 type NavItem = { label: string; href?: string; isExternal?: boolean; children?: NavItem[] };
 
 const EVENTS: NavItem = { label: "Events", href: "/events" };
+
+// The menu's subpage marks, in turn down the whole list.
+const BEACH_MARKS = [Volleyball, Shell, TreePalm, Fish, Umbrella];
 
 /**
  * The live site's header nav (Convex, editable in the admin; static copy as
@@ -183,9 +186,12 @@ export function SiteNav() {
         <p className="menu-label">CHRIS LANE JONES / MENU</p>
         <nav aria-label="Site pages">
           {/* Groups show their name, then each subpage on its own line after a
-              beach mark: volleyball, shell, volleyball… down each group. */}
-          {items.flatMap((item) => [item, ...(item.children ?? [])].map((entry, index) => ({ entry, sub: entry !== item, group: item, index }))).map(({ entry, sub, group: parent, index }, order) => {
-            const Mark = index % 2 ? Volleyball : Shell;
+              beach mark: volleyball, shell, palm, fish, umbrella, then again. */}
+          {items
+            .flatMap((item) => [item, ...(item.children ?? [])].map((entry) => ({ entry, sub: entry !== item, group: item })))
+            .map((row, _i, rows) => ({ ...row, mark: rows.slice(0, _i).filter((earlier) => earlier.sub).length }))
+            .map(({ entry, sub, group: parent, mark }, order) => {
+            const Mark = BEACH_MARKS[mark % BEACH_MARKS.length];
             const style = { "--order": String(order) } as React.CSSProperties;
             if (!sub && parent.children?.length) {
               return <p key={`group-${entry.label}`} className="menu-group" style={style}>{entry.label}</p>;

@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { FaChrome, FaExternalLinkAlt } from "react-icons/fa";
-import { Button } from "@/components/ui/button";
 import Card from "@/components/page/card";
 import Image from "next/image";
 import styles from "@/components/coastal/interior.module.css";
@@ -158,33 +157,16 @@ export default function LinkGrid() {
             {featuredLinks && featuredLinks.length > 0 ? (
               <div className="grid grid-cols-2 gap-3">
                 {featuredLinks.map((link) => (
-                  <Button
-                    key={link._id}
-                    variant="primary"
-                    showExternalIcon={true}
-                    className="justify-center"
-                    asChild
-                  >
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {link.favicon ? (
-                        <Image
-                          src={link.favicon}
-                          width={16}
-                          height={16}
-                          unoptimized
-                          alt=""
-                          className="w-4 h-4 mr-2 rounded"
-                        />
-                      ) : (
-                        <FaExternalLinkAlt className="w-4 h-4 mr-2" />
-                      )}
-                      {link.label}
-                    </a>
-                  </Button>
+                  <a key={link._id} className="radio-key" href={link.href} target="_blank" rel="noopener noreferrer">
+                    {link.favicon ? (
+                      <Image src={link.favicon} width={16} height={16} unoptimized alt="" className="w-4 h-4 rounded" />
+                    ) : (
+                      <FaExternalLinkAlt className="w-4 h-4" aria-hidden="true" />
+                    )}
+                    {link.label}
+                    <span aria-hidden="true">↗</span>
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
                 ))}
               </div>
             ) : (
@@ -198,12 +180,10 @@ export default function LinkGrid() {
 
             {/* Link to full browser tabs page */}
             <div className="mt-6 pt-4 border-t border-border">
-              <Button variant="primary" className="w-full justify-center" asChild>
-                <Link href="/browser-tabs">
-                  <FaChrome className="w-4 h-4 mr-2" />
-                  View All Browser Tabs
-                </Link>
-              </Button>
+              <Link className="radio-key" href="/browser-tabs">
+                <FaChrome className="w-4 h-4" aria-hidden="true" />
+                View All Browser Tabs
+              </Link>
             </div>
           </div>
         </Card>
