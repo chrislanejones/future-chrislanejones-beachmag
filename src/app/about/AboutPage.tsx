@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { EndNote } from "@/components/beachmag/interior-parts";
+import { LogoStrip } from "@/components/beachmag/logo-strip";
+import { conferenceHref, sortConferences, type Conference } from "@/lib/conferences";
 import { aboutSections } from "@/data/about-data";
 
 function renderDescriptionWithLinks(description: string) {
@@ -20,7 +22,7 @@ function renderDescriptionWithLinks(description: string) {
 }
 
 // The design's chapters: a taped field-note photo beside each part of the story.
-export default function AboutPage() {
+export default function AboutPage({ conferences }: { conferences: Conference[] }) {
   return (
     <>
       <div className="section-rule">
@@ -57,6 +59,23 @@ export default function AboutPage() {
           </section>
         );
       })}
+      {conferences.length > 0 && (
+        <LogoStrip
+          id="conference-trail"
+          kicker="ON THE ROAD / TECH CONFERENCES"
+          title="The conference trail."
+          label="Conference logos"
+          footer="EVENTS, PLACES & GOOD IDEAS."
+          items={sortConferences(conferences)
+            .filter((conference) => conference.logo)
+            .map((conference) => ({
+              key: conference._id,
+              name: `${conference.name} ${conference.year}`,
+              href: conferenceHref(conference),
+              image: conference.logo,
+            }))}
+        />
+      )}
       <EndNote line="Good people. Good conversations." href="/conferences" label="Conferences & community" />
     </>
   );

@@ -2,6 +2,7 @@ import { CoastalPageShell } from "@/components/coastal/page-shell";
 import { PageHero } from "@/components/beachmag/interior-parts";
 import AboutPage from "@/app/about/AboutPage";
 import { getPageSEO } from "@/lib/seo";
+import { getConferences } from "@/lib/conferences-server";
 
 export const revalidate = 60;
 
@@ -9,7 +10,8 @@ export async function generateMetadata() {
   return await getPageSEO("/about");
 }
 
-export default function About() {
+export default async function About() {
+  const conferences = await getConferences().catch(() => []);
   return (
     <CoastalPageShell edition="THE PERSON BEHIND THE PIXELS / THE COASTAL EDITION">
       <PageHero
@@ -19,7 +21,7 @@ export default function About() {
         path="/about"
         caption="Same curiosity. A different coastline. ↙"
       />
-      <AboutPage />
+      <AboutPage conferences={conferences} />
     </CoastalPageShell>
   );
 }

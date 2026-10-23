@@ -501,24 +501,24 @@ html.dark .interior {
 }
 
 /* ── "Past & present.": the client strip (from the 10-22 22:25 design) ──── */
-#coastal-art .client-strip {
+:is(#coastal-art, .interior) .client-strip {
   margin: 36px 0 28px;
   padding: 22px 0 16px;
   border-top: 3px solid var(--ink);
   border-bottom: 1px solid var(--line);
 }
-#coastal-art .client-heading {
+:is(#coastal-art, .interior) .client-heading {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
   margin-bottom: 20px;
 }
-#coastal-art .client-heading h2 {
+:is(#coastal-art, .interior) .client-heading h2 {
   font-size: 29px;
   letter-spacing: -1px;
 }
-#coastal-art .client-heading small {
+:is(#coastal-art, .interior) .client-heading small {
   display: block;
   margin-bottom: 9px;
   color: var(--orange);
@@ -528,11 +528,11 @@ html.dark .interior {
 /* The arrows, the sand game's five buttons, the Sunlit paper / After dark
    switches (home label row, inner pages) and any .radio-key (the link page) are the radio's sage transport
    keys, and press down like them. The mobile menu keeps its own switch. */
-#coastal-art .client-controls {
+:is(#coastal-art, .interior) .client-controls {
   display: flex;
   gap: 8px;
 }
-#coastal-art .client-controls button,
+:is(#coastal-art, .interior) .client-controls button,
 #sandbox .game-bottom > div > button,
 .radio-key,
 .interior .edition-row > div > button,
@@ -550,14 +550,14 @@ html.dark .interior {
   font: 700 22px/1 var(--font-dm-sans), sans-serif;
   transition: transform 70ms, box-shadow 70ms;
 }
-#coastal-art .client-controls button:hover:not(:disabled),
+:is(#coastal-art, .interior) .client-controls button:hover:not(:disabled),
 #sandbox .game-bottom > div > button:hover:not(:disabled),
 .radio-key:hover,
 .interior .edition-row > div > button:hover,
 #coastal-art .top > div > button:hover {
   background: linear-gradient(90deg, #87966f, #cbd6b1 15%, #b2c296 85%, #788b62);
 }
-#coastal-art .client-controls button:active:not(:disabled),
+:is(#coastal-art, .interior) .client-controls button:active:not(:disabled),
 #sandbox .game-bottom > div > button:active:not(:disabled),
 .radio-key:active,
 .interior .edition-row > div > button:active,
@@ -568,12 +568,12 @@ html.dark .interior {
   transform: translateY(3px);
   box-shadow: 0 0 0 #323e2e, inset 0 2px 4px #0005;
 }
-#coastal-art .client-controls button:disabled,
+:is(#coastal-art, .interior) .client-controls button:disabled,
 #sandbox .game-bottom > div > button:disabled {
   opacity: 0.4;
   cursor: default;
 }
-#coastal-art .client-track {
+:is(#coastal-art, .interior) .client-track {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: calc((100% - 48px) / 5);
@@ -585,7 +585,7 @@ html.dark .interior {
   scrollbar-color: var(--orange) transparent;
   padding: 4px 2px 14px;
 }
-#coastal-art a.client-tile {
+:is(#coastal-art, .interior) a.client-tile {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -604,7 +604,7 @@ html.dark .interior {
   scroll-snap-align: start;
   transition: transform 180ms, border-color 180ms;
 }
-#coastal-art .client-mark {
+:is(#coastal-art, .interior) .client-mark {
   display: block;
   width: 100%;
   height: 46px;
@@ -613,16 +613,16 @@ html.dark .interior {
   mask: var(--logo) center / contain no-repeat;
   transition: background-color 180ms;
 }
-#coastal-art a.client-tile:hover,
-#coastal-art a.client-tile:focus-visible {
+:is(#coastal-art, .interior) a.client-tile:hover,
+:is(#coastal-art, .interior) a.client-tile:focus-visible {
   border-color: var(--orange);
   transform: translateY(-3px);
 }
-#coastal-art a.client-tile:hover .client-mark,
-#coastal-art a.client-tile:focus-visible .client-mark {
+:is(#coastal-art, .interior) a.client-tile:hover .client-mark,
+:is(#coastal-art, .interior) a.client-tile:focus-visible .client-mark {
   background: var(--orange);
 }
-#coastal-art .client-footer {
+:is(#coastal-art, .interior) .client-footer {
   display: flex;
   justify-content: space-between;
   gap: 15px;
@@ -631,30 +631,30 @@ html.dark .interior {
   letter-spacing: 0.04em;
 }
 @media (max-width: 640px) {
-  #coastal-art .client-track {
+  :is(#coastal-art, .interior) .client-track {
     grid-auto-columns: calc((100% - 24px) / 3);
   }
-  #coastal-art .client-heading h2 {
+  :is(#coastal-art, .interior) .client-heading h2 {
     font-size: 25px;
   }
-  #coastal-art .client-footer {
+  :is(#coastal-art, .interior) .client-footer {
     font-size: 9px;
   }
 }
 @media (max-width: 390px) {
-  #coastal-art .client-track {
+  :is(#coastal-art, .interior) .client-track {
     grid-auto-columns: calc((100% - 12px) / 2);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  #coastal-art a.client-tile,
-  #coastal-art .client-mark,
-  #coastal-art .client-controls button,
+  :is(#coastal-art, .interior) a.client-tile,
+  :is(#coastal-art, .interior) .client-mark,
+  :is(#coastal-art, .interior) .client-controls button,
   #sandbox .game-bottom > div > button {
     transition: none;
   }
-  #coastal-art a.client-tile:hover,
-  #coastal-art a.client-tile:focus-visible {
+  :is(#coastal-art, .interior) a.client-tile:hover,
+  :is(#coastal-art, .interior) a.client-tile:focus-visible {
     transform: none;
   }
 }
@@ -892,4 +892,26 @@ html.dark .gallery-drawer {
 #site-takeover .menu-editions button[aria-pressed="true"] {
   background: var(--nav-ink);
   color: var(--nav-paper);
+}
+
+/* The logo strip inside inner pages (About's conference trail) borrows the
+   sheet's palette under the names the strip uses. */
+.interior .client-strip {
+  --orange: var(--accent);
+  --line: color-mix(in srgb, var(--ink) 30%, transparent);
+  --tear-fill: var(--sheet);
+}
+/* Full-color logos (conferences) sit as they are, on a light tile in both editions. */
+:is(#coastal-art, .interior) a.client-tile:has(.client-picture) {
+  background: #f8f1e4;
+  color: #173437;
+}
+:is(#coastal-art, .interior) .client-picture {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 56px;
+}
+:is(#coastal-art, .interior) .client-picture img {
+  object-fit: contain;
 }
