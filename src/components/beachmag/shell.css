@@ -1236,8 +1236,8 @@ section#sandbox .sandbox-heading {
   align-self: end;
   justify-self: center;
   width: 100%;
-  max-width: 230px;
-  aspect-ratio: 807 / 1410;
+  max-width: 300px;
+  aspect-ratio: 970 / 1410;
   color: var(--ink);
   opacity: 0.55;
 }
@@ -1618,7 +1618,8 @@ section#sandbox .sandbox-heading {
    CSS stencil's spot (position, tilt and layer come from the design). */
 #coastal-art .lifeguard-drawing.beach-figure {
   width: 340px;
-  height: 360px;
+  height: 400px;
+  transform: none;
   opacity: 0.2;
 }
 
