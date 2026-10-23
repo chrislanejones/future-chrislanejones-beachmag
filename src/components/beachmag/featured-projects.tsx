@@ -6,14 +6,15 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { ContentBoundary } from "@/components/coastal/live-content";
 import { projects as snapshot, type Project } from "@/data/projects-data";
-import { projectSiteUrl } from "@/lib/projects";
+import { projectHref, projectSiteUrl } from "@/lib/projects";
 import { isImageHorseApp } from "@/data/project-presentation";
 
-type ProjectRow = Pick<Project, "title" | "description" | "image" | "githubUrl" | "codebergUrl" | "vercelUrl" | "customUrl">;
+type ProjectRow = Pick<Project, "title" | "description" | "image" | "githubUrl" | "codebergUrl" | "vercelUrl" | "customUrl"> & { _id?: string };
 
 // The homepage spread is curated: Convex supplies the project (image, link),
-// the design supplies the short magazine copy around it. A project missing
-// from Convex (PGA Golf Game, today) falls back to the static snapshot.
+// the design supplies the short magazine copy around it. A project in Convex
+// links to its own page here; one missing from Convex (PGA Golf Game, today)
+// falls back to the static snapshot and its live site, since it has no page.
 const HOME_PROJECTS = [
   {
     title: "Image Horse",
@@ -39,25 +40,39 @@ const HOME_PROJECTS = [
 
 function Spread({ rows }: { rows: ProjectRow[] }) {
   const cards = HOME_PROJECTS.flatMap((copy) => {
-    const project = rows.find(copy.matches) ?? snapshot.find(copy.matches);
-    const href = project && projectSiteUrl(project);
-    return project?.image && href ? [{ ...copy, image: project.image, href }] : [];
+    const stored = rows.find((row) => row._id && copy.matches(row));
+    const project = stored ?? snapshot.find(copy.matches);
+    const href = stored ? projectHref(stored) : project && projectSiteUrl(project);
+    return project?.image && href ? [{ ...copy, image: project.image, href, internal: Boolean(stored) }] : [];
   });
   return (
     <div className="projects-spread">
       {cards.map((card) => (
         <article className="project-cutout" key={card.title}>
-          <a className="project-print" href={card.href} target="_blank" rel="noopener noreferrer" aria-label={`${card.verb} ${card.title} in a new tab`}>
-            <Image src={card.image} alt={card.alt} width={640} height={400} sizes="(max-width: 560px) 92vw, 560px" />
-            <span>{card.label}</span>
-          </a>
+          {card.internal ? (
+            <Link className="project-print" href={card.href} aria-label={`Explore ${card.title}`}>
+              <Image src={card.image} alt={card.alt} width={640} height={400} sizes="(max-width: 560px) 92vw, 560px" />
+              <span>{card.label}</span>
+            </Link>
+          ) : (
+            <a className="project-print" href={card.href} target="_blank" rel="noopener noreferrer" aria-label={`${card.verb} ${card.title} in a new tab`}>
+              <Image src={card.image} alt={card.alt} width={640} height={400} sizes="(max-width: 560px) 92vw, 560px" />
+              <span>{card.label}</span>
+            </a>
+          )}
           <div className="project-copy">
             <p className="projects-eyebrow">{card.eyebrow}</p>
             <h3>{card.title}</h3>
             <p>{card.blurb}</p>
-            <a className="project-go" href={card.href} target="_blank" rel="noopener noreferrer">
-              {card.cta} <span aria-hidden="true">↗</span><span className="project-sr"> (opens in a new tab)</span>
-            </a>
+            {card.internal ? (
+              <Link className="project-go" href={card.href}>
+                Explore project <span aria-hidden="true">↗</span>
+              </Link>
+            ) : (
+              <a className="project-go" href={card.href} target="_blank" rel="noopener noreferrer">
+                {card.cta} <span aria-hidden="true">↗</span><span className="project-sr"> (opens in a new tab)</span>
+              </a>
+            )}
           </div>
         </article>
       ))}

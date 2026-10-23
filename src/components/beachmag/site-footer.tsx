@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Waves } from "lucide-react";
 import "./footer.css";
 
 const SOCIAL = [
@@ -60,7 +61,10 @@ export function SiteFooter() {
       </div>
       <div className="footer-directory">
         <div className="footer-bio">
-          <Link className="footer-name" href="/">Chris Lane Jones</Link>
+          <Link className="footer-name" href="/">
+            <Waves className="footer-wave" size={34} strokeWidth={1.5} aria-hidden="true" />
+            Chris Lane Jones
+          </Link>
           <p className="footer-role">Senior web engineer</p>
           <p>I consult, design, and develop web interfaces for businesses and government agencies.</p>
           <nav className="footer-social" aria-label="Social profiles">

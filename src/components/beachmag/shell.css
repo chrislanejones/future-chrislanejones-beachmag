@@ -720,3 +720,15 @@ html.dark .interior {
 #sandbox .game-bottom > div {
   gap: 8px;
 }
+
+/* Footer name carries the header's waves mark. */
+#coastal-footer .footer-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+#coastal-footer .footer-wave {
+  flex-shrink: 0;
+  color: var(--footer-accent);
+}
