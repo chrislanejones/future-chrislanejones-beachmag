@@ -39,7 +39,7 @@ or with `prefers-reduced-motion`.
 - 28 MP4 files (16.3 MB) and 28 WebP stills (1.6 MB) are committed under `public/`. Git
   and repo size grow, and Vercel serves them as static assets.
 - Loops go stale. They must be re-recorded when the world or a camera changes
-  (recipe in `docs/handoffs/2026-10-15-page-banner-scenes.md`). The old hero 3D
+  (recipe in `docs/chapters/04-design-and-scenes/scene-capture.md`). The old hero 3D
   files (`hero-coast-scene.tsx`, `hero-ocean-lite.tsx`, `ocean-clock.ts`,
   `hero-coast-model.ts`, `coast-atmosphere.tsx`) are now unused and listed in
   `PARKING_LOT.md` for removal or a future port.

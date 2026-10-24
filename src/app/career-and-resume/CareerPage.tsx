@@ -6,9 +6,10 @@ import { Briefcase, Download, MapPin } from "lucide-react";
 import { timelineEvents } from "@/data/career-timeline";
 import styles from "@/components/coastal/interior.module.css";
 
-export default function CareerPage() {
-  const liveEvents = useQuery(api.careerTimeline.getAllEvents);
-  const events = liveEvents ?? timelineEvents;
+export default function CareerPage({ offline = false }: { offline?: boolean }) {
+  // offline: the static timeline only (the page renders this if the live read throws).
+  const liveEvents = useQuery(api.careerTimeline.getAllEvents, offline ? "skip" : {});
+  const events = liveEvents?.length ? liveEvents : timelineEvents;
   return (
     <>
       <section

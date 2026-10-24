@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useQuery } from "convex/react";
+import { ContentBoundary } from "@/components/coastal/live-content";
 import { EndNote } from "@/components/beachmag/interior-parts";
 import type { ProjectCardData } from "@/components/coastal/project-card";
 import { projectPresentation } from "@/data/project-presentation";
@@ -54,10 +55,24 @@ function WorkCard({ project, priority }: { project: Project; priority: boolean }
 // The server passes its Convex read so the first paint links to real pages;
 // the live query takes over once it connects.
 export default function ProjectGrid({ initialProjects }: { initialProjects: Project[] }) {
-  const [filter, setFilter] = useState<Filter>("all");
+  const stillRows = initialProjects.length ? initialProjects : fallbackProjects;
+  return (
+    <ContentBoundary fallback={<GridView all={stillRows} />}>
+      <LiveGrid stillRows={stillRows} />
+    </ContentBoundary>
+  );
+}
+
+function LiveGrid({ stillRows }: { stillRows: Project[] }) {
   const apps = useQuery(api.projects.getByCategory, { category: "app" });
   const websites = useQuery(api.projects.getByCategory, { category: "website" });
-  const all: Project[] = apps && websites ? [...apps, ...websites] : initialProjects.length ? initialProjects : fallbackProjects;
+  // Empty tables read as "nothing yet", so the server rows or the snapshot stay up.
+  const live = apps?.length || websites?.length ? [...(apps ?? []), ...(websites ?? [])] : null;
+  return <GridView all={live ?? stillRows} />;
+}
+
+function GridView({ all }: { all: Project[] }) {
+  const [filter, setFilter] = useState<Filter>("all");
   const visible = filter === "all" ? all : all.filter((project) => project.category === filter);
 
   return (

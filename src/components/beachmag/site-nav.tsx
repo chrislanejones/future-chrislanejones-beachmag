@@ -17,8 +17,8 @@ const BEACH_MARKS = [Volleyball, Shell, TreePalm, Fish, Umbrella];
  * The live site's header nav (Convex, editable in the admin; static copy as
  * fallback), with Events added after Blog: it exists only on this site.
  */
-function useNavItems(): NavItem[] {
-  const items = useHeaderNavItems() as NavItem[];
+function useNavItems(live: boolean): NavItem[] {
+  const items = useHeaderNavItems(live) as NavItem[];
   if (items.some((item) => item.href === "/events" || item.children?.some((child) => child.href === "/events"))) return items;
   const blog = items.findIndex((item) => item.href === "/blog");
   const at = blog < 0 ? items.length - 1 : blog + 1;
@@ -62,9 +62,10 @@ function NavGroup({ item, markStart, open, onOpen, onClose }: { item: NavItem; m
 // The life-preserver menu: every page on the site. It takes over the screen at
 // any width; body classes drive the open and close, so the closing animation
 // can finish first.
-export function SiteNav() {
+export function SiteNav({ offline = false }: { offline?: boolean }) {
   const theme = useTheme();
-  const items = useNavItems();
+  // offline: the static list only (the shell renders this if the live nav throws).
+  const items = useNavItems(!offline);
   const [open, setOpen] = useState(false);
   const [group, setGroup] = useState<string | null>(null);
   const groupTimer = useRef<ReturnType<typeof setTimeout>>(undefined);

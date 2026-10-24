@@ -7,7 +7,8 @@ import { api } from "../../convex/_generated/api";
 // Apps first, then websites, each in the admin's order.
 export const getProjects = cache(async () => {
   const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
-  const projects = await convex.query(api.projects.getAll, {});
+  // An unreachable Convex is an empty list, so the build and ISR never fail on it.
+  const projects = await convex.query(api.projects.getAll, {}).catch(() => []);
   return projects.sort(
     (a, b) =>
       Number(a.category !== "app") - Number(b.category !== "app") ||

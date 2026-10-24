@@ -2,7 +2,7 @@
 Date: 2026-10-14   Status: proposed
 
 ## Context
-The 2026-10-13 security review (`docs/handoffs/2026-10-13-security-handoff.md`,
+The 2026-10-13 security review (`docs/handoffs/2026-10-13-security-handoff.md` (removed 10-24-2026, in git history),
 finding P2) found the site only sent `Content-Security-Policy-Report-Only`, with
 `'unsafe-inline'` and `'unsafe-eval'` for scripts and broad wildcards. ADR-003
 removed executable blog content, which unblocks enforcement. Next.js App Router

@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../../../convex/_generated/api";
 import BlogPostPage from "./BlogPostPage";
+import { CoastalPageShell } from "@/components/coastal/page-shell";
+import { ContentBoundary } from "@/components/coastal/live-content";
 import { jsonLd as toJsonLd } from "@/lib/structured-data";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { renderPostHtml, withSectionIds } from "@/lib/blog-content";
@@ -16,7 +18,7 @@ export const revalidate = 60;
 // Prerender every known post at build time; new ones still render on
 // demand (dynamicParams defaults to true) and then cache via ISR.
 export async function generateStaticParams() {
-  const posts = await convex.query(api.blogPosts.getAllPosts, {});
+  const posts = await convex.query(api.blogPosts.getAllPosts, {}).catch(() => []);
   return posts.map((p) => ({ slug: p.slug }));
 }
 
@@ -113,12 +115,20 @@ export default async function Page({
       />
       {/* The body renders here on the server, so crawlers and AI tools get
           the full text. BlogPostPage mounts the widgets into this DOM. */}
-      <BlogPostPage params={{ slug }} initialPost={post} sections={body.sections}>
-        <article
-          className="blog-content max-w-none mb-8"
-          dangerouslySetInnerHTML={{ __html: body.html }}
-        />
-      </BlogPostPage>
+      <ContentBoundary
+        fallback={
+          <CoastalPageShell>
+            <article className="blog-content max-w-none mb-8" dangerouslySetInnerHTML={{ __html: body.html }} />
+          </CoastalPageShell>
+        }
+      >
+        <BlogPostPage params={{ slug }} initialPost={post} sections={body.sections}>
+          <article
+            className="blog-content max-w-none mb-8"
+            dangerouslySetInnerHTML={{ __html: body.html }}
+          />
+        </BlogPostPage>
+      </ContentBoundary>
     </>
   );
 }

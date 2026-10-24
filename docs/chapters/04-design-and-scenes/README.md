@@ -14,7 +14,7 @@ The [simple design guide](../../SIMPLE-DESIGN-GUIDE.md) is the detailed palette 
 
 A scene can omit its video and stay a still. The current Site History banner does so. The site no longer loads the legacy town model as its hero, even though old model source files remain in the repository.
 
-Recordings originate in the separate private `3d-world` project. The [capture handoff](../../handoffs/2026-10-15-page-banner-scenes.md) explains cameras and capture steps. Still images and clips must depict the same shot; a changed scene or camera needs new captures.
+Recordings originate in the separate private `3d-world` project. The [capture handoff](scene-capture.md) explains cameras and capture steps. Still images and clips must depict the same shot; a changed scene or camera needs new captures.
 
 ## Interactive 3D and motion
 

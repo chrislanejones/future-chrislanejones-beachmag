@@ -6,6 +6,7 @@ import Image from "next/image";
 import styles from "@/components/coastal/interior.module.css";
 import Link from "next/link";
 import { useQuery } from "convex/react";
+import { ContentBoundary } from "@/components/coastal/live-content";
 import { api } from "../../../convex/_generated/api";
 import type { Doc } from "../../../convex/_generated/dataModel";
 import { SocialIcon } from "@/lib/social-icons";
@@ -106,13 +107,21 @@ function LinkList() {
 }
 
 export default function LinkGrid() {
-  // Query for featured links from Convex
-  const featuredLinks = useQuery(api.browserLinks.getFeatured) as
+  return (
+    <ContentBoundary fallback={<LinkGridView offline />}>
+      <LinkGridView />
+    </ContentBoundary>
+  );
+}
+
+function LinkGridView({ offline = false }: { offline?: boolean }) {
+  // offline: skip Convex (the boundary's fallback), so the page still renders with its static parts.
+  const featuredLinks = useQuery(api.browserLinks.getFeatured, offline ? "skip" : {}) as
     | FeaturedLink[]
     | undefined;
 
   // Profile photo, admin-managed, with the /public headshot as the fallback.
-  const profile = useQuery(api.siteSettings.getProfile);
+  const profile = useQuery(api.siteSettings.getProfile, offline ? "skip" : {});
   const avatar = profile?.avatar || FALLBACK_AVATAR;
 
   return (

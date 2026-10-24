@@ -26,7 +26,7 @@ Retain the previous deployment and lockfile for rollback. Backend schema/data ch
 
 ## Operational references
 
-- [Scene capture handoff](../../handoffs/2026-10-15-page-banner-scenes.md)
+- [Scene capture handoff](../04-design-and-scenes/scene-capture.md)
 - [Resume upload decision](../../adr/006-admin-resume-upload.md)
 - [Storage boundaries](../../adr/017-media-storage-boundaries.md)
 - [Frontend/backend deployment decision](../../adr/020-separate-frontend-and-backend-deployments.md)

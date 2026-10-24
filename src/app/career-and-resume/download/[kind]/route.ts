@@ -20,7 +20,8 @@ export async function GET(
     return new Response("Not found", { status: 404 });
   }
 
-  const file = await convex.query(api.resume.getDownload, { kind });
+  const file = await convex.query(api.resume.getDownload, { kind }).catch(() => undefined);
+  if (file === undefined) return new Response("Resume unavailable", { status: 503 });
   if (!file) return new Response("Not found", { status: 404 });
 
   // The URL is admin-set, but the server still only fetches from UploadThing or Convex storage.

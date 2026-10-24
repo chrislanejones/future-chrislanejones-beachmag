@@ -2,6 +2,7 @@
 
 import { PageHero } from "@/components/beachmag/interior-parts";
 import { useQuery } from "convex/react";
+import { ContentBoundary } from "./live-content";
 import { api } from "../../../convex/_generated/api";
 import { getPageHeader, type PageHeaderData } from "@/lib/page-headers";
 
@@ -27,7 +28,16 @@ export function PageIntro({ header, path }: { header: PageHeaderData; path?: str
   );
 }
 
-export function CoastalPageIntro({ path }: { path: string }) {
+function LivePageIntro({ path }: { path: string }) {
   const header = useQuery(api.pageHeaders.getPageHeaderByPath, { path });
   return <PageIntro header={header ?? getPageHeader(path)} path={path} />;
+}
+
+/** The page's hero from Convex, or the static one if that read fails. */
+export function CoastalPageIntro({ path }: { path: string }) {
+  return (
+    <ContentBoundary fallback={<PageIntro header={getPageHeader(path)} path={path} />}>
+      <LivePageIntro path={path} />
+    </ContentBoundary>
+  );
 }

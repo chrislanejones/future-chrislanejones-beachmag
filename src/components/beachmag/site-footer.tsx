@@ -18,8 +18,8 @@ const SOCIAL = [
   { href: "https://codepen.io/chrislanejones", label: "CodePen" },
 ];
 
-function useSocial() {
-  const rows = useQuery(api.socialLinks.getForFooter);
+function useSocial(live: boolean) {
+  const rows = useQuery(api.socialLinks.getForFooter, live ? {} : "skip");
   if (!rows?.length) return SOCIAL;
   return [...rows].sort((a, b) => (a.footerOrder ?? 999) - (b.footerOrder ?? 999)).map((row) => ({ href: row.href, label: row.label }));
 }
@@ -30,8 +30,8 @@ function useSocial() {
 // same way the header re-adds it (site-nav.tsx).
 const EVENTS = { href: "/events", label: "Events", order: 99 };
 
-function useColumns() {
-  const sections = useFooterNavSections();
+function useColumns(live: boolean) {
+  const sections = useFooterNavSections(live);
   if (sections.some((section) => section.links.some((link) => link.href === EVENTS.href))) return sections;
   return sections.map((section, index) => {
     if (index !== 0) return section;
@@ -41,8 +41,8 @@ function useColumns() {
   });
 }
 
-function Directory() {
-  const columns = useColumns();
+function Directory({ live }: { live: boolean }) {
+  const columns = useColumns(live);
   return (
     <>
       {columns.map((column, index) => (
@@ -59,8 +59,9 @@ function Directory() {
 }
 
 // The coastal-magazine footer: a send-off, then the whole site in three columns.
-export function SiteFooter() {
-  const social = useSocial();
+export function SiteFooter({ offline = false }: { offline?: boolean }) {
+  // offline: static columns and social row (the shell renders this if the live footer throws).
+  const social = useSocial(!offline);
   return (
     <footer id="coastal-footer" aria-label="Site footer">
       <div className="footer-sendoff">
@@ -95,7 +96,7 @@ export function SiteFooter() {
             ))}
           </nav>
         </div>
-        <Directory />
+        <Directory live={!offline} />
         {/* The last column: the girl from the beach drawing, rising past the send-off. */}
         <div className="footer-figures" aria-hidden="true">
           <BeachFigure name="surfer-guy" />

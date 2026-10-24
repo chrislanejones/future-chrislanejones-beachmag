@@ -2,7 +2,7 @@
 Date: 2026-10-13   Status: draft
 
 ## Context
-The 2026-10-13 security review (`docs/handoffs/2026-10-13-security-handoff.md`,
+The 2026-10-13 security review (`docs/handoffs/2026-10-13-security-handoff.md` (removed 10-24-2026, in git history),
 findings P2 and P3) found two gaps. First, the three anonymous public mutations
 (`contactMessages.create`, `blogPosts.addComment`, `blogPosts.toggleLike`) had
 length caps but no rate limit. They accepted whitespace-only fields and never

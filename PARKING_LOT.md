@@ -243,7 +243,7 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
 - **10-14-2026 — Blog soft 404.** `/blog/[slug]` returns 200 for missing slugs because
   `src/app/blog/loading.tsx` streams the response.
 - **10-15-2026 — Home hero 3D files are unused now.** The home hero shows stills of the newer
-  3d-world (docs/handoffs/2026-10-15-page-banner-scenes.md), so nothing imports
+  3d-world (docs/chapters/04-design-and-scenes/scene-capture.md), so nothing imports
   `hero-coast-scene.tsx`, `hero-ocean-lite.tsx`, `ocean-clock.ts`, `hero-coast-model.ts` or
   `coast-atmosphere.tsx` any more. Choose between deleting them and porting the newer town into
   the site so the hero can move again. The README's "How the hero loads" section still describes
@@ -254,7 +254,7 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
 - **10-15-2026 — Site-history banner shows the edge of the 3D world.** Its aerial
   camera still catches the flat field and haze where the town ends (top left), which
   Chris flagged on /projects. Re-shoot it tilted down like projects
-  (docs/handoffs/2026-10-15-page-banner-scenes.md).
+  (docs/chapters/04-design-and-scenes/scene-capture.md).
 - **10-15-2026 — 3d-world loop mode.** Blending each moving part (waves, tree bend,
   flags, boat) with itself one period earlier would make recordings repeat exactly,
   with no pixel crossfade or ghosting at the seam. Started as branch `feat/loop-mode`

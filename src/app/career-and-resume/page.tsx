@@ -2,6 +2,7 @@ import { CoastalPageShell } from "@/components/coastal/page-shell";
 import styles from "@/components/coastal/interior.module.css";
 import { CoastalPageIntro } from "@/components/coastal/page-intro";
 import CareerPage from "@/app/career-and-resume/CareerPage";
+import { ContentBoundary } from "@/components/coastal/live-content";
 import { getPageSEO } from "@/lib/seo";
 
 export const revalidate = 60;
@@ -15,7 +16,9 @@ export default function Career() {
     <CoastalPageShell>
       <CoastalPageIntro path="/career-and-resume" />
       <div className={styles.content}>
-        <CareerPage />
+        <ContentBoundary fallback={<CareerPage offline />}>
+          <CareerPage />
+        </ContentBoundary>
       </div>
     </CoastalPageShell>
   );

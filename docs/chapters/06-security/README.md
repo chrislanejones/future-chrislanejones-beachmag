@@ -22,7 +22,7 @@ Contact submissions and supported blog interactions use server validators and th
 
 ## Verification
 
-Run the backend tests after changing authorization, validation or rate limits. Check negative cases as well as owner success. The existing [security handoff](../../handoffs/2026-10-13-security-handoff.md) is a dated investigation; current source and test results take precedence over its historical counts.
+Run the backend tests after changing authorization, validation or rate limits. Check negative cases as well as owner success. The 10-13-2026 security handoff was a dated investigation (removed 10-24-2026; it lives in git history); current source and test results take precedence over its historical counts.
 
 Analytics behavior and privacy choices are described in [ADR-018](../../adr/018-deferred-analytics.md). Delayed loading is a performance decision, not a consent mechanism.
 

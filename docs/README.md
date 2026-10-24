@@ -21,7 +21,6 @@ This handbook follows the beach version from setup to deployment. Read it in ord
 
 - [Change summary](Change-summary.md): dated work and validation, with release status.
 - [Simple design guide](SIMPLE-DESIGN-GUIDE.md): palette, contrast and shared visual rules.
-- [Handoffs](handoffs/): dated investigations and capture instructions; not a substitute for the current chapters.
 - [Existing ADR index](adr/INDEX.md): stable links to all numbered decisions, including older records retained for continuity.
 - [Parking lot](../PARKING_LOT.md): follow-up work and historical findings.
 

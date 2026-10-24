@@ -58,13 +58,14 @@ export function SiteLogo({ className = "" }: { className?: string }) {
 }
 
 // Use a hook to fetch header nav items
-export function useHeaderNavItems() {
-  const convexHeaderNavItems = useQuery(api.navigation.getHeaderNavItems);
+export function useHeaderNavItems(live = true) {
+  // live=false skips Convex: the boundary's fallback renders the static list.
+  const convexHeaderNavItems = useQuery(api.navigation.getHeaderNavItems, live ? {} : "skip");
 
   // Transform Convex data to match existing HeaderNavItem structure (for consistency)
   return React.useMemo(() => {
-    if (!convexHeaderNavItems) {
-      // Return static data or a loading state if Convex data is not yet available
+    if (!convexHeaderNavItems?.length) {
+      // Static list while loading, when skipped, or when the table is empty
       return [
         { label: "Home", href: "/", order: 0 },
         {
@@ -117,12 +118,12 @@ export const headerNavLinks: NavLink[] = [
 ];
 
 // Use a hook to fetch footer nav sections
-export function useFooterNavSections() {
-  const convexFooterSections = useQuery(api.navigation.getFooterNavSections);
+export function useFooterNavSections(live = true) {
+  const convexFooterSections = useQuery(api.navigation.getFooterNavSections, live ? {} : "skip");
 
   return React.useMemo(() => {
-    if (!convexFooterSections) {
-      // Return static data or a loading state if Convex data is not yet available
+    if (!convexFooterSections?.length) {
+      // Static sections while loading, when skipped, or when the table is empty
       return [
         {
           title: "About",

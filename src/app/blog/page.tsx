@@ -15,7 +15,7 @@ export async function generateMetadata() {
 }
 
 export default async function Page() {
-  const posts = await convex.query(api.blogPosts.getAllPosts, {});
+  const posts = await convex.query(api.blogPosts.getAllPosts, {}).catch(() => []);
 
   return (
     <CoastalPageShell>
