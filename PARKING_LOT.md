@@ -304,3 +304,22 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
 - **10-24-2026 — Local dev is flaky for browser tests.** `next dev` (Turbopack) full-reloads mid
   test and once panicked on Lighthouse's stray `C:\...` profile dirs in the repo root. Verify
   UI with `pnpm build && next start -p 3101`; run Lighthouse with `TMPDIR=/tmp/claude-1000/lh`.
+- **10-24-2026 — Contact-form spam.** The form on /contact, /react-maintenance and
+  /wordpress-maintenance is one component (`page/contact-form.tsx`) writing to
+  `contactMessages.create` with sources `contact-page`, `react-maintenance-page`,
+  `wordpress-maintenance-page`; the admin Messages tab reads the same table. Defenses today:
+  field validation plus rate limits of 5/hour per email and 30/hour overall (`convex/rateLimits.ts`).
+  The spam is one SEO pitch every few days from a fresh address, so the limits never trip.
+  Options, cheapest first:
+  1. **Honeypot + time-to-submit** in the form (hidden field that must stay empty; reject submits
+     under ~3 s). Free, invisible, needs a Convex deploy for the new args.
+  2. **Flag, don't reject:** in `create`, mark messages as `spam: true` when the body has a URL or
+     SEO phrases ("ahead of competitors in search", "first page", "targeted visitors", "rank");
+     add a Spam filter next to Unread/Read in the Messages tab. Needs a schema field.
+  3. **Cloudflare Turnstile** (free, managed widget) or **Vercel BotID**: verify the token in a
+     Convex action before the insert. More work, catches scripted submits.
+  4. Disposable/known-spam email-domain list, checked in `requiredEmail`.
+  Start with 1 + 2; add 3 if the pitches keep coming.
+- **10-24-2026 — No email on a new message.** `contactMessages.create` only inserts; Chris sees
+  messages when he opens the admin. A Convex action after insert (Resend, or Gmail via a webhook)
+  would send a heads-up. Pairs with the spam flag so only non-spam notifies.
