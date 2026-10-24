@@ -934,7 +934,8 @@ html.dark .gallery-drawer {
    dotted leader to the arrow, instead of a wall of keys. */
 .interior .link-index {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* minmax(0, …): the tracks never grow past the card for a long label. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: 24px;
   margin: 0;
   padding: 0;
@@ -1917,5 +1918,39 @@ section#sandbox .sandbox-heading {
   #site-nav .life-badge {
     display: grid;
     cursor: default;
+  }
+}
+
+/* The link page's index: one column until the card is wide enough for two.
+   At tablet widths the card is ~370px, and two columns overflowed it. */
+@media (max-width: 1100px) {
+  .interior .link-index {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Touch screens: small text links get a 44px-tall invisible hit area, so
+   they're easy to tap without changing how anything looks (WCAG 2.5.8). The
+   calendar's event links are left out: their ::before/::after draw the dot. */
+@media (pointer: coarse) {
+  #site-nav .desktop-links > a,
+  #site-nav .nav-group > button,
+  .interior .archive-crumbs a,
+  .interior .read-link,
+  .interior .work-actions a,
+  .interior .end-note a,
+  #coastal-art .columns article a {
+    position: relative;
+  }
+  #site-nav .desktop-links > a::after,
+  #site-nav .nav-group > button::after,
+  .interior .archive-crumbs a::after,
+  .interior .read-link::after,
+  .interior .work-actions a::after,
+  .interior .end-note a::after,
+  #coastal-art .columns article a::after {
+    content: "";
+    position: absolute;
+    inset: -12px -6px;
   }
 }
