@@ -14,7 +14,7 @@ Convex agent skills for common tasks can be installed by running
 
 # future-chrislanejones-beachmag
 
-The coastal-magazine skin for chrislanejones.com, on the live site's Next.js + Convex app. Not the live site.
+**The live site, chrislanejones.com** (since 10-24-2026): the coastal-magazine skin on the Next.js + Convex app. `future-chrislanejones-beach` is retired as the main site.
 
 | Path | What it is |
 |---|---|
@@ -26,7 +26,8 @@ The coastal-magazine skin for chrislanejones.com, on the live site's Next.js + C
 
 ## Hard rules
 
-- **`future-chrislanejones-beach` is the live site.** This repo must never deploy, link or push to anything it uses.
-- **Never run `convex dev`, `convex deploy`, `convex run` with mutations, or `convex import`** here. The Convex deployment belongs to the live site; `convex/` here is a copy so the types and queries compile. Reads through the app are fine.
-- **Never run `vercel`, `vercel link` or `vercel deploy`** here, and never connect this repo to the live Vercel project.
+- **This repo is production.** The Vercel project `future-chrislanejones-beach` (domains `www.chrislanejones.com` and `chrislanejones.com`) builds from this repo's GitHub `main`, so **every push to `main` deploys the live site**. Push only when Chris asks.
+- **`convex/` here is now the source of the production Convex functions.** `convex deploy`, `convex run` with mutations, `convex import` and changes to Convex env vars hit live data: only with Chris's explicit go-ahead for that run. Never `convex dev` against production.
+- **Never run `vercel deploy`** by hand or change the Vercel project's settings, domains or env vars without Chris's go-ahead. Rollback lives in the Vercel dashboard (Instant Rollback).
+- The local app reads and writes the production Convex deployment: don't submit the contact form, like or comment on posts, or use admin buttons while testing.
 - `.env.local` is Chris's to copy in. Never read, create or edit it.
