@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Fish, Shell, TreePalm, Umbrella, Volleyball, Waves } from "lucide-react";
 import { useHeaderNavItems } from "@/components/page/links";
 import { setTheme, useTheme } from "@/lib/theme-store";
@@ -32,37 +32,13 @@ function useNavItems(): NavItem[] {
  */
 function NavGroup({ item, markStart, open, onOpen, onClose }: { item: NavItem; markStart: number; open: boolean; onOpen: (hover: boolean) => void; onClose: (hover: boolean) => void }) {
   const id = `nav-group-${item.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const rowRef = useRef<HTMLDivElement>(null);
-
-  // Center the row under its link, kept between the header's left edge and the end of the links.
-  useLayoutEffect(() => {
-    if (!open) return;
-    const place = () => {
-      const button = buttonRef.current;
-      const row = rowRef.current;
-      const links = row?.offsetParent;
-      const header = row?.closest("#site-nav");
-      if (!button || !row || !links || !header) return;
-      const linksBox = links.getBoundingClientRect();
-      const buttonBox = button.getBoundingClientRect();
-      const minLeft = header.getBoundingClientRect().left + parseFloat(getComputedStyle(header).paddingLeft) - linksBox.left;
-      const maxLeft = linksBox.width - row.offsetWidth;
-      const centered = buttonBox.left + buttonBox.width / 2 - linksBox.left - row.offsetWidth / 2;
-      row.style.left = `${Math.max(minLeft, Math.min(centered, maxLeft))}px`;
-    };
-    place();
-    window.addEventListener("resize", place);
-    return () => window.removeEventListener("resize", place);
-  }, [open]);
-
   return (
     <div className="nav-group" onPointerEnter={() => onOpen(true)} onPointerLeave={() => onClose(true)}>
-      <button ref={buttonRef} type="button" aria-expanded={open} aria-controls={id} onClick={() => (open ? onClose(false) : onOpen(false))}>
+      <button type="button" aria-expanded={open} aria-controls={id} onClick={() => (open ? onClose(false) : onOpen(false))}>
         <span className="nav-group-label">{item.label}</span>
         <ChevronDown className="nav-caret" size={14} strokeWidth={2.5} aria-hidden="true" />
       </button>
-      <div ref={rowRef} className="nav-dropdown" id={id} hidden={!open}>
+      <div className="nav-dropdown" id={id} hidden={!open}>
         {item.children?.map((child, i) => {
           const Mark = BEACH_MARKS[(markStart + i) % BEACH_MARKS.length];
           return (
