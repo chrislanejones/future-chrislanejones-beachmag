@@ -42,13 +42,15 @@ const MediaTabEnhanced = () => {
   const createMedia = useMutation(api.media.create);
   const [documentBusy, setDocumentBusy] = useState(false);
   const { startUpload: startDocumentUpload } = useUploadThing("documentUploader");
+  const { startUpload: startAudioUpload } = useUploadThing("audioUploader");
 
   // The Documents shelf takes PDFs and Word files straight into the library.
   const uploadDocument = async (file: File) => {
     setDocumentBusy(true);
     setError(null);
     try {
-      const uploaded = (await startDocumentUpload([file]))?.[0];
+      const upload = file.type.startsWith("audio/") ? startAudioUpload : startDocumentUpload;
+      const uploaded = (await upload([file]))?.[0];
       if (!uploaded) throw new Error("Upload failed");
       await createMedia({ url: uploaded.url, filename: uploaded.name, size: uploaded.size, mimeType: uploaded.type || file.type, assignedToType: "document", assignedToTitle: "Document" });
       setSuccess(`${uploaded.name} added to Documents`);
@@ -354,7 +356,7 @@ const MediaTabEnhanced = () => {
                 type="file"
                 id="document-upload"
                 className="sr-only"
-                accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                accept=".pdf,.docx,.mp3,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,audio/mpeg"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file) void uploadDocument(file);

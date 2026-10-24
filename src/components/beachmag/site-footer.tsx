@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useFooterNavSections } from "@/components/page/links";
-import { Umbrella, Waves } from "lucide-react";
+import { Waves } from "lucide-react";
 import { BeachFigure } from "./beach-figure";
 import "./footer.css";
 
@@ -68,7 +68,13 @@ export function SiteFooter() {
           <p className="footer-kicker">THE COASTAL EDITION / UNTIL NEXT TIME</p>
           <h2>
             See you<br /><em>out there.</em>
-            <span className="footer-umbrella" aria-hidden="true"><Umbrella size={32} strokeWidth={2.25} /></span>
+            <svg className="footer-umbrella" viewBox="0 0 64 64" aria-hidden="true">
+              
+<path d="M32 34 L5.0 34.0 A27 27 0 0 1 8.6 20.5 Z" fill="var(--footer-accent)" />              <path d="M32 34 L8.6 20.5 A27 27 0 0 1 18.5 10.6 Z" fill="var(--footer-ink)" />              <path d="M32 34 L18.5 10.6 A27 27 0 0 1 32.0 7.0 Z" fill="var(--footer-accent)" />              <path d="M32 34 L32.0 7.0 A27 27 0 0 1 45.5 10.6 Z" fill="var(--footer-ink)" />              <path d="M32 34 L45.5 10.6 A27 27 0 0 1 55.4 20.5 Z" fill="var(--footer-accent)" />              <path d="M32 34 L55.4 20.5 A27 27 0 0 1 59.0 34.0 Z" fill="var(--footer-ink)" />
+              <path d="M5 34 A27 27 0 0 1 59 34" fill="none" stroke="var(--footer-paper)" strokeWidth="2.5" strokeLinecap="round" />
+              <path d="M32 34 V58 a4 4 0 0 0 8 0" fill="none" stroke="var(--footer-ink)" strokeWidth="3" strokeLinecap="round" />
+              <circle cx="32" cy="6" r="2.5" fill="var(--footer-ink)" />
+            </svg>
           </h2>
         </div>
         <Link className="footer-contact" href="/contact">LET’S MAKE SOMETHING <span aria-hidden="true">↗</span></Link>

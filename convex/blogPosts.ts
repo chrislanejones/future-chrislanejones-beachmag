@@ -101,6 +101,7 @@ export const createPost = mutation({
     excerpt: v.string(),
     content: v.string(),
     coverImage: v.optional(v.string()),
+    audioUrl: v.optional(v.string()),
     tags: v.optional(v.array(v.string())),
     published: v.optional(v.boolean()),
   },
@@ -132,6 +133,8 @@ export const updatePost = mutation({
     excerpt: v.optional(v.string()),
     content: v.optional(v.string()),
     coverImage: v.optional(v.string()),
+    // "" clears the track (a patch with undefined removes the field).
+    audioUrl: v.optional(v.string()),
     tags: v.optional(v.array(v.string())),
     published: v.optional(v.boolean()),
     createdAt: v.optional(v.number()),
@@ -139,6 +142,7 @@ export const updatePost = mutation({
   handler: async (ctx, args) => {
     await requireAuth(ctx);
     const { id, ...updateData } = args;
+    if (updateData.audioUrl === "") updateData.audioUrl = undefined;
     // If the slug is changing, make sure no OTHER post already owns it.
     if (updateData.slug) {
       const clash = await ctx.db

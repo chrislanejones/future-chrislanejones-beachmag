@@ -46,6 +46,15 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       return { uploadedBy: metadata.uploadedBy, url: file.url, filename: file.name, size: file.size, type: file.type };
     }),
+  // One audio track per blog post (MP3), picked in the Blog Posts tab.
+  audioUploader: f({ audio: { maxFileSize: "32MB", maxFileCount: 1 } })
+    .middleware(async () => {
+      const userId = await requireAdmin();
+      return { uploadedBy: userId };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      return { uploadedBy: metadata.uploadedBy, url: file.url, filename: file.name, size: file.size, type: file.type };
+    }),
   blogImageUploader: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
     .middleware(async () => {
       const userId = await requireAdmin();

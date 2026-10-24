@@ -20,6 +20,7 @@ import { api } from "../../../../convex/_generated/api";
 import type { Id, Doc } from "../../../../convex/_generated/dataModel";
 import { HtmlEditorEnhanced } from "../components/HtmlEditorEnhanced";
 import { MediaDrawer } from "../components/MediaDrawer";
+import { useUploadThing } from "@/utils/uploadthing";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/dialog";
 
@@ -64,10 +65,40 @@ const BlogPostsTabEnhanced = () => {
     excerpt: "",
     content: "",
     coverImage: "",
+    audioUrl: "",
     tags: [] as string[],
     published: false,
     createdAt: Date.now(),
   }));
+  const createMedia = useMutation(api.media.create);
+  const [audioBusy, setAudioBusy] = useState(false);
+  const { startUpload: startAudioUpload } = useUploadThing("audioUploader");
+
+  // One MP3 per post: it goes to UploadThing and gets a card under Media
+  // Manager → Documents; Save All writes the URL on the post.
+  const uploadAudio = async (file: File) => {
+    setAudioBusy(true);
+    try {
+      const uploaded = (await startAudioUpload([file]))?.[0];
+      if (!uploaded) throw new Error("Upload failed");
+      await createMedia({
+        url: uploaded.url,
+        filename: uploaded.name,
+        size: uploaded.size,
+        mimeType: uploaded.type || file.type,
+        assignedToType: "document",
+        assignedToId: `blog-audio-${selectedPost?._id ?? formData.slug ?? "new"}`,
+        assignedToTitle: `Audio: ${formData.title || "blog post"}`,
+      });
+      setFormData((data) => ({ ...data, audioUrl: uploaded.url }));
+      setIsEditing(true);
+    } catch (err) {
+      console.error("Audio upload failed:", err);
+      setSaveStatus("error");
+    } finally {
+      setAudioBusy(false);
+    }
+  };
 
   const [tagInput, setTagInput] = useState("");
 
@@ -91,6 +122,7 @@ const BlogPostsTabEnhanced = () => {
       excerpt: selectedPost.excerpt,
       content: selectedPost.content,
       coverImage: selectedPost.coverImage || "",
+      audioUrl: selectedPost.audioUrl || "",
       tags: selectedPost.tags || [],
       published: selectedPost.published,
       createdAt: selectedPost.createdAt,
@@ -107,6 +139,7 @@ const BlogPostsTabEnhanced = () => {
       excerpt: "",
       content: "",
       coverImage: "",
+      audioUrl: "",
       tags: [],
       published: false,
       createdAt: nowMs(),
@@ -159,6 +192,7 @@ const BlogPostsTabEnhanced = () => {
     try {
       if (isCreating) {
         await createPost({
+          audioUrl: formData.audioUrl || undefined,
           title: formData.title,
           slug: formData.slug,
           excerpt: formData.excerpt,
@@ -177,6 +211,7 @@ const BlogPostsTabEnhanced = () => {
           excerpt: formData.excerpt,
           content: formData.content,
           coverImage: formData.coverImage || undefined,
+          audioUrl: formData.audioUrl,
           tags: formData.tags,
           published: formData.published,
           createdAt: formData.createdAt,
@@ -221,6 +256,7 @@ const BlogPostsTabEnhanced = () => {
         excerpt: selectedPost.excerpt,
         content: selectedPost.content,
         coverImage: selectedPost.coverImage || "",
+      audioUrl: selectedPost.audioUrl || "",
         tags: selectedPost.tags || [],
         published: selectedPost.published,
         createdAt: selectedPost.createdAt,
@@ -511,6 +547,43 @@ const BlogPostsTabEnhanced = () => {
               </div>
 
               {/* Cover Image */}
+              <div>
+                <label className="block mb-2 text-ink font-medium" htmlFor="post-audio">
+                  Audio track (MP3)
+                </label>
+                <p className="text-xs text-muted mb-2">One recording per post, read on the page under the date. Uploads go to UploadThing and show under Media Manager → Documents.</p>
+                {formData.audioUrl ? (
+                  <div className="rounded-xl bg-(--color-muted-accent) p-3 space-y-2">
+                    <audio controls preload="metadata" src={formData.audioUrl} className="w-full" />
+                    <p className="text-xs text-muted truncate">{formData.audioUrl.split("/").pop()}</p>
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted">No audio yet.</p>
+                )}
+                {isEditing && (
+                  <div className="flex gap-2 mt-2">
+                    <input
+                      type="file"
+                      id="post-audio"
+                      className="sr-only"
+                      accept=".mp3,audio/mpeg"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) void uploadAudio(file);
+                        e.target.value = "";
+                      }}
+                    />
+                    <Button variant="secondary" size="sm" disabled={audioBusy} onClick={() => document.getElementById("post-audio")?.click()}>
+                      {audioBusy ? "Uploading..." : formData.audioUrl ? "Replace MP3" : "Upload MP3"}
+                    </Button>
+                    {formData.audioUrl && (
+                      <Button variant="destructive" size="sm" onClick={() => setFormData({ ...formData, audioUrl: "" })}>
+                        Remove
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </div>
               <div>
                 <label className="block mb-2 text-ink font-medium">
                   Cover Image

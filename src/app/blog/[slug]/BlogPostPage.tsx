@@ -10,6 +10,7 @@ import {
 import { createRoot, type Root } from "react-dom/client";
 import { STEPPER_CONFIGS } from "@/components/blog/stepper-configs";
 import { CoastalPageShell } from "@/components/coastal/page-shell";
+import { PostAudio } from "@/components/beachmag/post-audio";
 import { ArchiveHero, ArchiveLayout, type IndexEntry } from "@/components/beachmag/interior-parts";
 import styles from "@/components/coastal/interior.module.css";
 import { Card } from "@/components/page/card";
@@ -245,6 +246,7 @@ export default function BlogPostPage({
           <span aria-hidden="true"> · </span>
           <span>{comments?.length || 0} comments</span>
         </p>
+        {post.audioUrl && <PostAudio src={post.audioUrl} title={post.title} />}
 
         {/* Content: server-rendered <article> passed in as children. */}
         <div ref={articleRef}>{children}</div>

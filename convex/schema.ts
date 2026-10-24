@@ -95,6 +95,8 @@ export default defineSchema({
     excerpt: v.string(),
     content: v.string(),
     coverImage: v.optional(v.string()),
+    // One MP3 per post, on UploadThing (ADR-022); played under the date line.
+    audioUrl: v.optional(v.string()),
     tags: v.optional(v.array(v.string())),
     published: v.boolean(),
     likesCount: v.optional(v.number()),

@@ -334,3 +334,8 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
   keep working either way). Replaced UploadThing copies are not deleted automatically: remove
   old "Resume (PDF/Word)" cards in Documents by hand. `scripts/upload-resume.sh` is the legacy
   Convex-storage route now.
+- **10-24-2026 — Narration that keeps playing across pages.** The Image Horse blog's player
+  (rust-wasm-photo-tool/marketing, Narration.tsx) lives above the routes with a docked mini
+  player, so audio survives navigation. Our port (`beachmag/post-audio.tsx`) owns its own
+  <audio> per post. To get the carry-over here: a provider in BeachmagShell, a mini player
+  in the footer area, and every internal link as <Link> (a plain <a> reloads the page).
