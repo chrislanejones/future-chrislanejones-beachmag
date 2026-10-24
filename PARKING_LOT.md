@@ -323,3 +323,8 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
 - **10-24-2026 — No email on a new message.** `contactMessages.create` only inserts; Chris sees
   messages when he opens the admin. A Convex action after insert (Resend, or Gmail via a webhook)
   would send a heads-up. Pairs with the spam flag so only non-spam notifies.
+- **10-24-2026 — Blog covers.** Covers come only from the admin's Cover Image (Media Manager →
+  UploadThing → `coverImage`); none are set yet, on purpose, until Chris makes photos he likes
+  (the ChatGPT ones looked too AI). Pages hide the image and OG falls back to the professional
+  photo meanwhile. The seven files in `public/blog/covers/` (~1.2 MB) are not referenced by
+  anything: delete or replace them when the new covers land. Cover size to aim for: 1200×630.
