@@ -24,7 +24,7 @@ export const HOME_EVENTS: HomeEvent[] = [
   },
   {
     start: "2026-12-08T10:15",
-    name: "Secret event",
+    name: "Secret Podcast Event",
     place: "Coming soon",
     secret: true,
   },
