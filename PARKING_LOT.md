@@ -319,7 +319,7 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
   3. **Cloudflare Turnstile** (free, managed widget) or **Vercel BotID**: verify the token in a
      Convex action before the insert. More work, catches scripted submits.
   4. Disposable/known-spam email-domain list, checked in `requiredEmail`.
-  Start with 1 + 2; add 3 if the pitches keep coming.
+  **Decided 10-24-2026: do 1 + 2** (Chris); 3 and 4 only if the pitches keep coming.
 - **10-24-2026 — No email on a new message.** `contactMessages.create` only inserts; Chris sees
   messages when he opens the admin. A Convex action after insert (Resend, or Gmail via a webhook)
   would send a heads-up. Pairs with the spam flag so only non-spam notifies.
