@@ -294,3 +294,13 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
     `limitless-parakeet-517` URL; `scripts/upload-resume.sh` runs `convex run --prod`;
     `vercel.json` redirects the live domain; `convex/auth.config.ts` defaults to the live Clerk dev instance.
   - Admin "seed" buttons (`SettingsTabEnhanced.tsx:68-82`) delete rows.
+- **10-24-2026 — Admin-driven routes, after launch.** Wired today: homepage projects (Featured on
+  home page + Featured Order), footer columns (Pages & Menu → Footer Sections, numbered in code),
+  client logos (uploads render full-color; stock files stay masked), /events SEO row. Still
+  code-only on the beachmag side: the Events list itself (`beachmag/events.ts`), the ramblings
+  quotes, and the Events link that site-nav.tsx / site-footer.tsx re-add until the admin lists
+  it under About (it's now in Available Pages). Footer "Career & Resume" in Convex points at
+  `/career` (redirect), not `/career-and-resume`.
+- **10-24-2026 — Local dev is flaky for browser tests.** `next dev` (Turbopack) full-reloads mid
+  test and once panicked on Lighthouse's stray `C:\...` profile dirs in the repo root. Verify
+  UI with `pnpm build && next start -p 3101`; run Lighthouse with `TMPDIR=/tmp/claude-1000/lh`.
