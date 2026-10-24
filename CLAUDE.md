@@ -29,5 +29,5 @@ Convex agent skills for common tasks can be installed by running
 - **This repo is production.** The Vercel project `future-chrislanejones-beach` (domains `www.chrislanejones.com` and `chrislanejones.com`) builds from this repo's GitHub `main`, so **every push to `main` deploys the live site**. Push only when Chris asks.
 - **`convex/` here is now the source of the production Convex functions.** `convex deploy`, `convex run` with mutations, `convex import` and changes to Convex env vars hit live data: only with Chris's explicit go-ahead for that run. Never `convex dev` against production.
 - **Never run `vercel deploy`** by hand or change the Vercel project's settings, domains or env vars without Chris's go-ahead. Rollback lives in the Vercel dashboard (Instant Rollback).
-- The local app reads and writes the production Convex deployment: don't submit the contact form, like or comment on posts, or use admin buttons while testing.
+- Convex deployments: production is `hardy-fox-765` (the live site); local `.env.local` points at `limitless-parakeet-517`, a separate deployment with its own data, so project slugs and content differ locally. Check the URL before testing writes.
 - `.env.local` is Chris's to copy in. Never read, create or edit it.
