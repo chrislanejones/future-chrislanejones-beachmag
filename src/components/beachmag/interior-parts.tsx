@@ -12,7 +12,7 @@ export function ScenePolaroid({ path, caption, className = "" }: { path: string;
   return (
     <figure className={`page-polaroid ${className}`.trim()}>
       <div className="polaroid-scene" style={{ "--scene-focus": scene.focus } as CSSProperties}>
-        <SceneLoop scene={scene} sizes="(max-width: 640px) 90vw, 520px" />
+        <SceneLoop scene={scene} sizes="(max-width: 640px) 90vw, 520px" preload />
       </div>
       <figcaption>{caption}</figcaption>
     </figure>

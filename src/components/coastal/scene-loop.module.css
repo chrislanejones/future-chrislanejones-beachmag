@@ -2,11 +2,14 @@
   position: absolute;
   inset: 0;
 }
-.night,
-:global(.dark) .day {
+/* Only the current theme's still shows, so only that one downloads (they are
+   lazy). The doubled class outranks the display block that interior.css gives
+   every polaroid image, which showed the night still in Sunlit mode. */
+.scene.scene > .night,
+:global(.dark) .scene.scene > .day {
   display: none;
 }
-:global(.dark) .night {
+:global(.dark) .scene.scene > .night {
   display: block;
 }
 .video {

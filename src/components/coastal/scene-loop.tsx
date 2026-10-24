@@ -1,7 +1,8 @@
 "use client";
 
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { preload as preloadResource } from "react-dom";
 import styles from "./scene-loop.module.css";
 
 export type SceneTheme = { still: string; video?: string; alt: string; blur?: string };
@@ -33,8 +34,17 @@ function environment() {
  * moment. Phones, Data Saver and reduced motion keep the still.
  * preloadBoth: once the current theme's loop is playing, fetch the other theme's
  * loop in the background so switching light/dark plays at once (the home hero).
+ * preload: the still is the page's largest paint (a top-of-page hero). The stills
+ * stay lazy, so only the visible one downloads; a preload per theme, keyed to the
+ * OS color scheme the theme follows by default, starts the right one early.
  */
-export function SceneLoop({ scene, sizes, className = "", preloadBoth = false }: { scene: LoopScene; sizes: string; className?: string; preloadBoth?: boolean }) {
+export function SceneLoop({ scene, sizes, className = "", preloadBoth = false, preload = false }: { scene: LoopScene; sizes: string; className?: string; preloadBoth?: boolean; preload?: boolean }) {
+  if (preload) {
+    for (const [theme, media] of [["day", "(prefers-color-scheme: light)"], ["night", "(prefers-color-scheme: dark)"]] as const) {
+      const { props } = getImageProps({ src: scene[theme].still, alt: "", fill: true, quality: 75, sizes });
+      preloadResource(props.src, { as: "image", imageSrcSet: props.srcSet, imageSizes: props.sizes, fetchPriority: "high", media });
+    }
+  }
   const host = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [allowed, setAllowed] = useState(false);

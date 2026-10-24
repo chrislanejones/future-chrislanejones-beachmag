@@ -97,6 +97,19 @@ export function Sandbox() {
     };
   }, []);
 
+  // Three.js is the heaviest script on the page (about 250 KB) and the beach sits
+  // at the bottom, so the scene loads only once the reader is a screen away.
+  const [near, setNear] = useState(false);
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setNear(true);
+      observer.disconnect();
+    }, { rootMargin: "100% 0px" });
+    if (host.current) observer.observe(host.current);
+    return () => observer.disconnect();
+  }, []);
+
   function pickFlag() {
     if (busy) return;
     if (held) {
@@ -226,7 +239,7 @@ export function Sandbox() {
         }}
       >
         <Boundary>
-          <Scene
+          {near && <Scene
             pieces={state.pieces}
             tool={tool}
             cursor={cursor}
@@ -239,7 +252,7 @@ export function Sandbox() {
             onAim={(point) => {
               aim.current = point;
             }}
-          />
+          />}
         </Boundary>
       </div>
       <div className="game-bottom">

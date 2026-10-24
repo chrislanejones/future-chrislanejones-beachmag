@@ -85,6 +85,9 @@ const interphases = localFont({
     },
   ],
   variable: "--font-interphases",
+  // The magazine skin sets type in Bodoni Moda and DM Sans; only the admin and
+  // the color guide still draw in Interphases, and they fetch it when they do.
+  preload: false,
 });
 
 // src/app/layout.tsx
