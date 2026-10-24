@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ConvexClientProvider } from "@/providers/ConvexClientProvider";
+import { MotionProvider } from "@/providers/MotionProvider";
 import { DeferredAnalytics } from "@/providers/DeferredAnalytics";
 import { Suspense } from "react";
 import { PERSON, SITE_URL, jsonLd, siteGraph } from "@/lib/structured-data";
@@ -113,7 +114,7 @@ export default function RootLayout({
 
             {/* 👇 Global page container */}
             <div className="site-shell mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-              {children}
+              <MotionProvider>{children}</MotionProvider>
             </div>
           </ConvexClientProvider>
         </body>

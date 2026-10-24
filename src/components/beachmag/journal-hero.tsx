@@ -1,6 +1,7 @@
 "use client";
 
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
+import { preload } from "react-dom";
 import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
@@ -45,7 +46,24 @@ function LiveEntry() {
   );
 }
 
+// The homepage hero: Chris's 10-24-2026 framing of St. Augustine Beach
+// (3d-world, Regular lens), 5:30 PM and 9 PM.
+const HERO = {
+  day: "/hero/home-day.webp",
+  night: "/hero/home-night.webp",
+  alt: "A 3D model of St. Augustine Beach: a white condo, beach cottages and the dune walkovers, with the pier and a sailboat down the shore",
+};
+const HERO_SIZES = "(max-width: 1240px) 92vw, 1120px";
+
+function preloadHero() {
+  for (const [src, media] of [[HERO.day, "(prefers-color-scheme: light)"], [HERO.night, "(prefers-color-scheme: dark)"]] as const) {
+    const { props } = getImageProps({ src, alt: "", width: 1520, height: 739, sizes: HERO_SIZES });
+    preload(props.src, { as: "image", imageSrcSet: props.srcSet, imageSizes: props.sizes, fetchPriority: "high", media });
+  }
+}
+
 export function JournalHero() {
+  preloadHero();
   const events = upcomingEvents(new Date());
   return (
     <>
@@ -62,15 +80,11 @@ export function JournalHero() {
         <a href="#featured-projects">Explore my work ↘</a>
       </div>
       <div className="map-wrap">
-        <Image
-          className="map"
-          src="/hero/coast-day.webp"
-          alt="3D map of a beach town, framed as an angled journal photograph"
-          width={1280}
-          height={622}
-          sizes="(max-width: 1240px) 92vw, 1120px"
-          priority
-        />
+        {/* Day in Sunlit, night in After dark (CSS picks by html.dark). Both
+            stay lazy so only the visible one downloads; the preloads above
+            start the OS theme's still early. Stills only, no video yet. */}
+        <Image className="map map-day" src={HERO.day} alt={HERO.alt} width={1520} height={739} sizes={HERO_SIZES} />
+        <Image className="map map-night" src={HERO.night} alt={HERO.alt} width={1520} height={739} sizes={HERO_SIZES} />
         <span className="edge">JACKSONVILLE, FL</span>
         <span className="sticker">Still making things.</span>
       </div>

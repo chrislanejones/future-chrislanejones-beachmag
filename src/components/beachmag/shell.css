@@ -1756,9 +1756,10 @@ section#sandbox .sandbox-heading {
   line-height: 1.16;
   padding: 8px 0;
 }
-/* The row no longer stretches the shorter card up to the taller one. */
+/* The ramblings card matches the postcards card's height; the quote sits
+   centered in it (beachmag.css: .text-only blockquote flex:1, centered). */
 #beach-offline .two {
-  align-items: start;
+  align-items: stretch;
 }
 
 /* The beach umbrella after "out there.": alternating accent and cream panels,
@@ -1953,4 +1954,22 @@ section#sandbox .sandbox-heading {
     position: absolute;
     inset: -12px -6px;
   }
+}
+
+/* Homepage hero: the day still in Sunlit, the night still in After dark. */
+#coastal-art .map-wrap .map-night,
+html.dark #coastal-art .map-wrap .map-day {
+  display: none;
+}
+html.dark #coastal-art .map-wrap .map-night {
+  display: block;
+}
+
+/* Featured project polaroids: the screenshots are ~16:9, so the print is too,
+   filled edge to edge and anchored to the top (where an app's toolbar is),
+   instead of a 1.6 frame with cream bars above and below. */
+#featured-projects .project-print img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: top center;
 }
