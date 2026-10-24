@@ -10,6 +10,7 @@ const KNOWN_PATHS = new Set([
   "/career-and-resume",
   "/conferences",
   "/contact",
+  "/events",
   "/link-page",
   "/logo-page",
   "/projects",
