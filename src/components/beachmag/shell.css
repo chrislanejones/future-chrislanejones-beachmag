@@ -224,7 +224,7 @@ body.menu-open #site-takeover {
   transition: padding-bottom 180ms ease;
 }
 #site-nav:has(.nav-dropdown:not([hidden])) {
-  padding-bottom: 56px;
+  padding-bottom: 48px;
 }
 #site-nav .desktop-links {
   position: relative;
@@ -252,14 +252,15 @@ body.menu-open #site-takeover {
 #site-nav .nav-group > button[aria-expanded="true"] .nav-caret {
   transform: rotate(180deg);
 }
+/* site-nav.tsx sets `left` to center the row under its link. */
 #site-nav .nav-dropdown {
   position: absolute;
-  top: calc(100% + 12px);
-  right: 0;
+  top: calc(100% + 4px);
+  left: 0;
   z-index: 60;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 4px 22px;
   width: max-content;
   max-width: calc(100vw - 60px);
@@ -274,8 +275,8 @@ body.menu-open #site-takeover {
   position: absolute;
   left: 0;
   right: 0;
-  top: -14px;
-  height: 14px;
+  top: -6px;
+  height: 6px;
 }
 #site-nav .nav-dropdown a {
   display: inline-flex;
@@ -302,12 +303,12 @@ body.menu-open #site-takeover {
     max-width: 100%;
   }
   #site-nav:has(.nav-dropdown:not([hidden])) {
-    padding-bottom: 66px;
+    padding-bottom: 58px;
   }
 }
 @media (min-width: 641px) and (max-width: 820px) {
   #site-nav:has(.nav-dropdown:not([hidden])) {
-    padding-bottom: 106px;
+    padding-bottom: 98px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
