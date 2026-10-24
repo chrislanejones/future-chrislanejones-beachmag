@@ -39,7 +39,6 @@
      faint --color-border is for decorative dividers only. */
   --color-control-border: #708b90;
   /* Error text and error borders: 5.5:1 or better on every surface. */
-  --color-danger: #b91c1c;
   --color-success: #166534;
   --color-focus-ring: #111827; /* near-black — high contrast on light backgrounds */
   --focus-ring: 2px solid var(--color-focus-ring);
@@ -114,6 +113,31 @@
   --radius-control: 12px;
   --radius-pill: 999px;
 
+  /* ── Magazine (beachmag) primitives ───────────────────────────────────
+     The single source for the coastal-magazine skin's colors, type and
+     motion. src/components/beachmag/*.css must reference these, never a
+     hex; `pnpm check:css` fails when a new literal appears there. The
+     generated files (beachmag.css, interior.css, footer.css, browser-tabs.css)
+     still carry literals until design/work/build_site_css.py emits var()s. */
+  --bm-cream: #eee5d2;        /* paper (light) */
+  --bm-cream-2: #f1e7d4;      /* paper, warmer */
+  --bm-sheet: #faf3e5;        /* a card on the paper */
+  --bm-sand: #e9dfc9;         /* the sandbox */
+  --bm-ink: #152e31;          /* ink (light) */
+  --bm-ink-2: #173437;        /* ink, footer paper */
+  --bm-ink-3: #173e42;        /* ink, sandbox */
+  --bm-deep: #172f32;         /* the page margin behind the column */
+  --bm-night: #142224;        /* paper (dark) */
+  --bm-night-2: #243638;      /* a card on the night paper */
+  --bm-accent: #a6321c;       /* rust orange (light) */
+  --bm-accent-dark: #ffab80;  /* peach (dark) */
+  --bm-accent-deep: #a33620;  /* the footer's top rule */
+  --bm-focus: #d47a40;
+  --bm-font-display: var(--font-bodoni-moda), Georgia, serif;
+  --bm-font-body: var(--font-dm-sans), Arial, sans-serif;
+  --ease-pop: cubic-bezier(0.2, 1.5, 0.4, 1);   /* the bouncy press (keys, knobs, the preserver) */
+  --ease-snap: cubic-bezier(0.7, 0, 0.15, 1);   /* the menu takeover */
+
   /* ── Motion ── */
   --motion-fast: 160ms;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -140,7 +164,6 @@
 
   --color-border: #1f242b;
   --color-control-border: #779298;
-  --color-danger: #ffb4ab;
   --color-success: #86efac;
   --color-focus-ring: #ffffff; /* near-white — high contrast on dark backgrounds */
 
@@ -766,6 +789,11 @@ body:has([data-coastal-page]) {
    rather than removed so Radix/Vaul still receive their end events.
    ═══════════════════════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
+  [data-beachmag] *,
+  [data-beachmag] *::before,
+  [data-beachmag] *::after,
+  .gallery-drawer,
+  .gallery-drawer *,
   [data-coastal-theme] *,
   [data-coastal-theme] *::before,
   [data-coastal-theme] *::after,

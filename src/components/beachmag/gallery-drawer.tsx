@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
-import { motion, AnimatePresence, type PanInfo } from "framer-motion";
+import { motion, AnimatePresence, MotionConfig, type PanInfo } from "framer-motion";
 import Image from "next/image";
 import {
   Drawer,
@@ -375,6 +375,8 @@ export default function GalleryDrawer({
     : description;
 
   return (
+    // The drawer's framer-motion follows the visitor's reduced-motion setting.
+    <MotionConfig reducedMotion="user">
     <Drawer>
       <DrawerTrigger asChild>
         {children ?? (
@@ -402,5 +404,6 @@ export default function GalleryDrawer({
         </div>
       </DrawerContent>
     </Drawer>
+    </MotionConfig>
   );
 }

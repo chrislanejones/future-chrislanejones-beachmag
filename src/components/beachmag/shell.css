@@ -1,7 +1,7 @@
 /* Page frame for the coastal-magazine skin: the teal margin and the 1240px column. */
 body:has([data-beachmag]) {
   margin: 0;
-  background: #172f32;
+  background: var(--bm-deep);
 }
 
 /* The edition. Next's CSS compiler lowers light-dark() to variables that only
@@ -24,7 +24,7 @@ body .site-shell:has(> [data-beachmag]) {
 }
 
 [data-beachmag] :focus-visible {
-  outline: 3px solid #d47a40;
+  outline: 3px solid var(--bm-focus);
   outline-offset: 4px;
 }
 
@@ -41,7 +41,7 @@ body .site-shell:has(> [data-beachmag]) {
   font: 700 13px var(--font-dm-sans), Arial, sans-serif;
   text-decoration: none;
   transform: translateY(-130%);
-  transition: transform 160ms ease;
+  transition: transform var(--motion-fast) ease;
 }
 [data-beachmag] .skip-link:focus {
   transform: translateY(0);
@@ -190,7 +190,7 @@ body .site-shell:has(> [data-beachmag]) {
     color: var(--nav-ink);
     box-shadow: 0 0 0 2px var(--nav-paper), 0 0 0 3px var(--nav-ink);
     cursor: pointer;
-    transition: transform 400ms cubic-bezier(0.2, 1.5, 0.4, 1);
+    transition: transform 400ms var(--ease-pop);
   }
   #site-nav .life-toggle::before {
     content: "";
@@ -284,7 +284,7 @@ body.menu-open #site-takeover {
   border: 2px solid var(--nav-ink);
   border-top: 4px solid var(--nav-accent);
   box-shadow: 0 14px 28px rgb(0 0 0 / 0.28);
-  animation: nav-card-in 160ms ease both;
+  animation: nav-card-in var(--motion-fast) ease both;
 }
 #site-nav .nav-dropdown[hidden] {
   display: none;
@@ -826,10 +826,10 @@ html.dark .interior {
 /* The postcards gallery drawer. It portals to <body>, outside #coastal-art,
    so it repeats the magazine's paper / ink / orange (light, then After dark). */
 .gallery-drawer {
-  --gd-paper: #eee5d2;
-  --gd-ink: #152e31;
-  --gd-accent: #a6321c;
-  --gd-card: #faf3e5;
+  --gd-paper: var(--bm-cream);
+  --gd-ink: var(--bm-ink);
+  --gd-accent: var(--bm-accent);
+  --gd-card: var(--bm-sheet);
   border: 0;
   border-top: 5px solid var(--gd-accent);
   border-radius: 0;
@@ -838,10 +838,10 @@ html.dark .interior {
   font-family: var(--font-dm-sans), Arial, sans-serif;
 }
 html.dark .gallery-drawer {
-  --gd-paper: #142224;
-  --gd-ink: #eee5d2;
-  --gd-accent: #ffab80;
-  --gd-card: #243638;
+  --gd-paper: var(--bm-night);
+  --gd-ink: var(--bm-cream);
+  --gd-accent: var(--bm-accent-dark);
+  --gd-card: var(--bm-night-2);
 }
 /* The drag handle. */
 .gallery-drawer > div:first-child {
@@ -965,7 +965,7 @@ html.dark .gallery-drawer {
 }
 .interior .link-index-arrow {
   color: var(--accent);
-  transition: transform 160ms ease;
+  transition: transform var(--motion-fast) ease;
 }
 .interior .link-index a:hover .link-index-label,
 .interior .link-index a:focus-visible .link-index-label {
@@ -1037,7 +1037,7 @@ html.dark .gallery-drawer {
   margin-left: auto;
   color: var(--accent);
   font-size: 18px;
-  transition: transform 160ms ease;
+  transition: transform var(--motion-fast) ease;
 }
 .interior .link-tabs a:hover strong,
 .interior .link-tabs a:focus-visible strong {
@@ -1069,7 +1069,7 @@ html.dark .gallery-drawer {
 }
 .interior .link-hub-more-arrow {
   color: var(--accent);
-  transition: transform 160ms ease;
+  transition: transform var(--motion-fast) ease;
 }
 .interior .link-hub-more:hover .link-hub-more-arrow,
 .interior .link-hub-more:focus-visible .link-hub-more-arrow {
@@ -1367,7 +1367,7 @@ section#sandbox .sandbox-heading {
   opacity: 1;
   background: none;
   box-shadow: none;
-  color: light-dark(#a6321c, #ffab80);
+  color: light-dark(var(--bm-accent), var(--bm-accent-dark));
 }
 #sandbox .tool-knob-label[aria-pressed="true"] span {
   text-decoration: underline;
@@ -1782,14 +1782,14 @@ section#sandbox .sandbox-heading {
    blog's player in the magazine's paper. The play button is a filled circle;
    the seek bar and level are hairlines the accent fills. */
 .interior .post-audio {
-  --audio-accent: light-dark(#a6321c, #ffab80);
+  --audio-accent: light-dark(var(--bm-accent), var(--bm-accent-dark));
   display: flex;
   align-items: center;
   gap: 16px;
   margin: 0 0 28px;
   padding: 10px 16px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--sheet);
   color: var(--ink);
 }
@@ -1841,7 +1841,7 @@ section#sandbox .sandbox-heading {
   height: 4px;
   margin: 0;
   appearance: none;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: linear-gradient(to right, var(--audio-accent) var(--narration-fill, 0%), var(--line) var(--narration-fill, 0%));
   cursor: pointer;
 }
@@ -1893,5 +1893,13 @@ section#sandbox .sandbox-heading {
 @media (max-width: 560px) {
   .interior .narration-volume__slider {
     display: none;
+  }
+}
+
+/* Reduced motion, for the two rules whose specificity beat the guards above. */
+@media (prefers-reduced-motion: reduce) {
+  #sandbox .tool-knob-label,
+  #featured-projects a.project-go.radio-key {
+    transition: none;
   }
 }

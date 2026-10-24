@@ -4,7 +4,7 @@
 #sandbox .sandbox-heading{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:end;margin-bottom:25px}
 #sandbox .game-kicker{font-size:10px;letter-spacing:.13em;font-weight:bold;margin-bottom:14px}
 #sandbox h2{font:900 60px/.95 var(--font-bodoni-moda),Georgia,serif;letter-spacing:-3px;margin:0}
-#sandbox h2 em{color:light-dark(#a6321c,#ffab80)}
+#sandbox h2 em{color:light-dark(var(--bm-accent),var(--bm-accent-dark))}
 #sandbox .sandbox-heading>p{font-size:13px;line-height:1.7;max-width:32ch}
 #sandbox .game-toolbar{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:15px}
 #sandbox button{font:700 10px var(--font-dm-sans),Arial,sans-serif;min-height:44px;border:1px solid currentColor;background:transparent;color:inherit;padding:8px;cursor:pointer}

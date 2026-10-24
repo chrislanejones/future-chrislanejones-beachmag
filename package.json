@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --port 3100",
     "build": "next build",
+    "check:css": "node scripts/check-css.mjs",
     "start": "next start",
     "lint": "eslint src convex",
     "test": "vitest run",

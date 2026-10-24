@@ -339,3 +339,29 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
   player, so audio survives navigation. Our port (`beachmag/post-audio.tsx`) owns its own
   <audio> per post. To get the carry-over here: a provider in BeachmagShell, a mini player
   in the footer area, and every internal link as <Link> (a plain <a> reloads the page).
+- **10-24-2026 — CSS and UI single source of truth (steps 2-8).** Step 1 shipped: `--bm-*`
+  color/font/easing tokens in `src/app/globals.css`, hand-written CSS (shell.css, sandbox.css)
+  points at them, `pnpm check:css` fails on new color literals there. Still to do, in order,
+  each with Sunlit/After-dark screenshots before and after:
+  2. `design/work/build_site_css.py`: emit `var(--bm-*)` for the exact literals (and the two
+     font stacks) so beachmag.css / interior.css / footer.css / browser-tabs.css stop carrying
+     hexes; self-check by substituting back. Then lower the check:css baselines to 0.
+  3. Fold `sandbox.css` into the generator (it drifted: missing `#sandbox .supply-caption`).
+  4. Decide the near-duplicates in design/: ink #152e31/#173437/#173e42, accent
+     #a6321c/#a33620/#a93d20, paper #eee5d2/#f1e7d4, sheet ×4, dark paper ×3; dedupe the
+     byte-identical `spool`/`radio-spool` keyframes.
+  5. `src/lib/animations.ts` gains easeStandard, springSoft (70/12), fadeUp(); gallery-drawer
+     and contact-form use them (icon-slider's ease change needs Chris's OK).
+  6. UI primitives (the audit counted ~22 ways to make a button, 14 kickers, 12 paper cards,
+     5 arrow classes + ~50 hand-typed arrows): a hand-written `beachmag/primitives.css` in
+     `@layer components` with Button (key / paper / outline / ghost / icon-round), ArrowLink,
+     Kicker, PaperCard, Field. Keep as one-offs: radio keys and stations, the chicken-head
+     knob, the life preserver, the photo stack, the sticker, the skip link. Migrate in this
+     order: .radio-key → Button key; ArrowLink + Kicker; paper/outline on inner pages;
+     PaperCard; the contact form's fields; last, retire dead generated rules by editing
+     design/ and regenerating. Admin keeps ui/button.tsx (fold its repeated Tailwind strings
+     into list-item / dropzone / link variants). Suited to a Felix worktree session.
+- **10-24-2026 — "Richmond, VA" still appears publicly** in `src/data/about-data.ts:23-32`,
+  `src/data/career-timeline.ts:66,74`, `src/lib/seo-defaults.ts:17,59` (default metadata and
+  "RVAJS"), and in Convex conference cities (rvajs-2023, rvatech-code-cloud-2025: admin edit).
+  Chris to decide whether past-tense mentions stay.
