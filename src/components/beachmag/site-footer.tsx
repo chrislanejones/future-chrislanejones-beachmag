@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useFooterNavSections } from "@/components/page/links";
 import { Waves } from "lucide-react";
 import { BeachFigure } from "./beach-figure";
 import "./footer.css";
@@ -11,45 +14,39 @@ const SOCIAL = [
   { href: "https://codepen.io/chrislanejones", label: "CodePen" },
 ];
 
-type Column = { title: string; label: string; links: { href: string; label: string }[] };
+// The three columns come from the admin (Pages & Menu → Footer Sections);
+// the "01 /" numbering is the magazine's and is added here. Events exists only
+// on this site, so it joins the first column until the admin lists it, the
+// same way the header re-adds it (site-nav.tsx).
+const EVENTS = { href: "/events", label: "Events", order: 99 };
 
-const DIRECTORY: Column[] = [
-  {
-    title: "01 / About",
-    label: "Footer about",
-    links: [
-      { href: "/", label: "Home" },
-      { href: "/about", label: "About" },
-      { href: "/link-page", label: "Link Page" },
-      { href: "/browser-tabs", label: "Browser Tabs" },
-      { href: "/events", label: "Events" },
-      { href: "/contact", label: "Contact" },
-    ],
-  },
-  {
-    title: "02 / Work",
-    label: "Footer work",
-    links: [
-      { href: "/projects", label: "Projects" },
-      { href: "/career-and-resume", label: "Career & Resume" },
-      { href: "/blog", label: "Blog" },
-      { href: "/react-maintenance", label: "React Services" },
-      { href: "/wordpress-maintenance", label: "WordPress Services" },
-      { href: "/conferences", label: "Conferences" },
-    ],
-  },
-  {
-    title: "03 / Resources",
-    label: "Footer resources",
-    links: [
-      { href: "/site-history", label: "History of This Site" },
-      { href: "/logo-page", label: "About the Logo" },
-      { href: "/site-map", label: "Change Log / Site Map" },
-      { href: "/404", label: "404 Music Lounge" },
-      { href: "/admin-showcase", label: "Admin Showcase" },
-    ],
-  },
-];
+function useColumns() {
+  const sections = useFooterNavSections();
+  if (sections.some((section) => section.links.some((link) => link.href === EVENTS.href))) return sections;
+  return sections.map((section, index) => {
+    if (index !== 0) return section;
+    const at = section.links.findIndex((link) => link.href === "/contact");
+    const links = at < 0 ? [...section.links, EVENTS] : [...section.links.slice(0, at), EVENTS, ...section.links.slice(at)];
+    return { ...section, links };
+  });
+}
+
+function Directory() {
+  const columns = useColumns();
+  return (
+    <>
+      {columns.map((column, index) => (
+        <nav key={column._id ?? column.title} aria-label={`Footer ${column.title.toLowerCase()}`}>
+          <h3>{String(index + 1).padStart(2, "0")} / {column.title}</h3>
+          {column.links.map((link) => (
+            // The 404 Music Lounge is the not-found page: a prefetch of it always returns 404.
+            <Link key={link.href} href={link.href} prefetch={link.href === "/404" ? false : undefined}>{link.label}</Link>
+          ))}
+        </nav>
+      ))}
+    </>
+  );
+}
 
 // The coastal-magazine footer: a send-off, then the whole site in three columns.
 export function SiteFooter() {
@@ -78,15 +75,7 @@ export function SiteFooter() {
             ))}
           </nav>
         </div>
-        {DIRECTORY.map((column) => (
-          <nav key={column.title} aria-label={column.label}>
-            <h3>{column.title}</h3>
-            {column.links.map((link) => (
-              // The 404 Music Lounge is the not-found page: a prefetch of it always returns 404.
-              <Link key={link.href} href={link.href} prefetch={link.href === "/404" ? false : undefined}>{link.label}</Link>
-            ))}
-          </nav>
-        ))}
+        <Directory />
         {/* The last column: the girl from the beach drawing, rising past the send-off. */}
         <div className="footer-figures" aria-hidden="true">
           <BeachFigure name="surfer-guy" />

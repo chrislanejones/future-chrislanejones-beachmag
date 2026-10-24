@@ -9,47 +9,61 @@ import { projects as snapshot, type Project } from "@/data/projects-data";
 import { projectHref } from "@/lib/projects";
 import { isImageHorseApp } from "@/data/project-presentation";
 
-type ProjectRow = Pick<Project, "title" | "description" | "image" | "githubUrl" | "codebergUrl" | "vercelUrl" | "customUrl"> & { _id?: string };
+type ProjectRow = Pick<Project, "title" | "description" | "image" | "category" | "featured" | "order" | "githubUrl" | "codebergUrl" | "vercelUrl" | "customUrl"> & { _id?: string };
 
-// The homepage spread is curated: Convex supplies the project (image, link),
-// the design supplies the short magazine copy around it. Each card links to
-// the project's own page here; one missing from Convex (PGA Golf Game, today)
-// takes its image from the static snapshot and a placeholder link.
-const HOME_PROJECTS = [
+// Which projects show, and in what order, is the admin's call: "Featured on
+// home page" plus Featured Order (projects.order). These carry the magazine
+// copy written for a project; any other featured project uses its own
+// Convex text (category and the first sentence of its description).
+const HOME_COPY = [
   {
-    title: "Image Horse",
     matches: isImageHorseApp,
-    label: "01 / A LITTLE PIXEL MAGIC",
+    label: "A LITTLE PIXEL MAGIC",
     eyebrow: "IMAGE EDITOR · RUST / WASM / REACT",
     blurb: "A browser-based image editor. Rust does the pixel work; React brings it all together.",
-    alt: "Image Horse browser image editor",
   },
   {
-    title: "PGA Golf Game",
     matches: (project: ProjectRow) => project.title.trim().toLowerCase() === "pga golf game",
-    label: "02 / JUST ONE MORE ROUND",
+    label: "JUST ONE MORE ROUND",
     eyebrow: "BROWSER GAME · REACT THREE FIBER",
     blurb: "Playful characters, little courses, and hand-written physics. A round of golf inside your browser.",
-    alt: "PGA Golf Game with a miniature three-dimensional golf course",
   },
 ];
 
+const CATEGORY = { app: "APP / TOOL", website: "CLIENT WEBSITE" } as const;
+
+function firstSentence(text: string) {
+  const match = text.trim().match(/^.+?[.!?](?=\s|$)/);
+  return match ? match[0] : text.trim();
+}
+
+/** Featured rows in Featured Order; the snapshot stands in until Convex answers. */
+function featured(rows: ProjectRow[]) {
+  return rows.filter((row) => row.featured).sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+}
+
 function Spread({ rows }: { rows: ProjectRow[] }) {
-  const cards = HOME_PROJECTS.flatMap((copy) => {
-    const stored = rows.find((row) => row._id && copy.matches(row));
-    const project = stored ?? snapshot.find(copy.matches);
-    // A project with no page on this site yet (PGA Golf Game, until it's in
-    // Convex) holds a placeholder link that stays on this section.
-    const href = stored ? projectHref(stored) : "#featured-projects";
-    return project?.image ? [{ ...copy, image: project.image, href }] : [];
+  const cards = featured(rows).flatMap((project, index) => {
+    if (!project.image) return [];
+    const copy = HOME_COPY.find((entry) => entry.matches(project));
+    return [{
+      key: project._id ?? project.title,
+      title: project.title,
+      image: project.image,
+      // Snapshot rows (no _id) have no page id yet; the projects list is the safe stop.
+      href: project._id ? projectHref(project) : "/projects",
+      label: `${String(index + 1).padStart(2, "0")} / ${copy?.label ?? "FEATURED WORK"}`,
+      eyebrow: copy?.eyebrow ?? CATEGORY[project.category],
+      blurb: copy?.blurb ?? firstSentence(project.description),
+    }];
   });
   return (
     <div className="projects-spread">
       {cards.map((card) => (
-        <article className="project-cutout" key={card.title}>
+        <article className="project-cutout" key={card.key}>
           {/* The photo repeats "Explore project" below for the mouse; keyboards and screen readers use that one. */}
           <Link className="project-print" href={card.href} tabIndex={-1} aria-hidden="true">
-            <Image src={card.image} alt={card.alt} width={640} height={400} sizes="(max-width: 560px) 92vw, 560px" />
+            <Image src={card.image} alt="" width={640} height={400} sizes="(max-width: 560px) 92vw, 560px" />
             <span>{card.label}</span>
           </Link>
           <div className="project-copy">
