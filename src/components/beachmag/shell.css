@@ -1126,7 +1126,7 @@ html.dark .gallery-drawer {
   --tear-fill: var(--sheet);
 }
 /* Full-color logos (conferences) sit as they are, on a light tile in both editions. */
-:is(#coastal-art, .interior) a.client-tile:has(.client-picture) {
+:is(#coastal-art, .interior) :is(a.client-tile, a.client-board-tile):has(.client-picture) {
   background: #f8f1e4;
   color: #173437;
 }

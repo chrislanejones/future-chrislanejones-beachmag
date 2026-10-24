@@ -1,18 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { ContentBoundary } from "@/components/coastal/live-content";
 import { clients as staticClients, type Client } from "@/data/clients";
-import { logoSource } from "./client-strip";
+import { ClientFace } from "./client-strip";
 
 const COLUMNS = 4;
 const GAP = 18;
 
 // "Past & present." on the services pages: the clients as a board of big
 // logo tiles, four across and two down, paged with the silver keys and dots.
-// The logos are white artwork, so each is a mask painted in the page's ink.
+// Each logo renders through ClientFace: stock white artwork as a mask, uploads as is.
 // Styles: shell.css (.client-board).
 function ClientBoardView({ clients }: { clients: Client[] }) {
   const track = useRef<HTMLDivElement>(null);
@@ -50,7 +50,7 @@ function ClientBoardView({ clients }: { clients: Client[] }) {
       <div className="client-board-track" id="client-board-track" ref={track} tabIndex={0} role="group" aria-label="Client logos; swipe or use the arrow buttons">
         {clients.map((client) => (
           <a className="client-board-tile" key={client.name} href={client.url} target="_blank" rel="noopener noreferrer">
-            <span className="client-mark" aria-hidden="true" style={{ "--logo": `url("${logoSource(client.logo).replace(/"/g, "%22")}")` } as CSSProperties} />
+            <ClientFace logo={client.logo} />
             <span className="client-name">{client.name}<span className="sr-only"> (opens in a new tab)</span></span>
           </a>
         ))}

@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import type { CSSProperties } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { ContentBoundary } from "@/components/coastal/live-content";
@@ -14,8 +16,24 @@ export function logoSource(logo: string) {
   return trimmed ? `/client-logos/${trimmed}` : logo;
 }
 
-// "Past & present.": the client logos. They're white artwork, so each one is
-// a mask painted in the page's ink (shell.css).
+/** The stock logos are white artwork (/client-icons, trimmed in /client-logos); anything else came through the admin's Media Manager as a full-color file. */
+export function isStockLogo(logo: string) {
+  return logo.startsWith("/client-icons/") || logo.startsWith("/client-logos/");
+}
+
+/** A client's logo: white artwork as a mask in the page's ink, a full-color upload as is on a light tile (shell.css). */
+export function ClientFace({ logo }: { logo: string }) {
+  const src = logoSource(logo);
+  return isStockLogo(src) ? (
+    <span className="client-mark" aria-hidden="true" style={{ "--logo": `url("${src.replace(/"/g, "%22")}")` } as CSSProperties} />
+  ) : (
+    <span className="client-picture" aria-hidden="true">
+      <Image src={src} alt="" fill sizes="200px" />
+    </span>
+  );
+}
+
+// "Past & present.": the client logos, in the admin's order.
 function ClientView({ clients }: { clients: Client[] }) {
   return (
     <LogoStrip
@@ -24,7 +42,10 @@ function ClientView({ clients }: { clients: Client[] }) {
       title="Past & present."
       label="Client logos"
       footer="BUSINESSES, AGENCIES & GOOD PEOPLE."
-      items={clients.map((client) => ({ key: client.name, name: client.name, href: client.url, mark: logoSource(client.logo), external: true }))}
+      items={clients.map((client) => {
+        const src = logoSource(client.logo);
+        return { key: client.name, name: client.name, href: client.url, external: true, ...(isStockLogo(src) ? { mark: src } : { image: src }) };
+      })}
     />
   );
 }
