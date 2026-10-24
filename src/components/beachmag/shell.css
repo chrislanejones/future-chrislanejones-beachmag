@@ -1903,3 +1903,19 @@ section#sandbox .sandbox-heading {
     transition: none;
   }
 }
+
+/* The life preserver opens the menu on phones only. From 641px the header
+   shows every link, so the button gives way to a plain ring: the same
+   striped preserver, no menu lines, not focusable, not a control. */
+#site-nav .life-badge {
+  display: none;
+}
+@media (min-width: 641px) {
+  #site-nav .life-toggle:not(.life-badge) {
+    display: none;
+  }
+  #site-nav .life-badge {
+    display: grid;
+    cursor: default;
+  }
+}

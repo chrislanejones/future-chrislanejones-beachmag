@@ -32,16 +32,21 @@ export function isImageHorseApp(project: ProjectMedia) {
   ].includes(project.title.trim().toLowerCase());
 }
 
-/** Keep refreshed project previews and destinations consistent with legacy CMS data. */
+/**
+ * Keep refreshed project previews and destinations consistent with legacy CMS
+ * data. The image set in the admin (Convex, often an UploadThing file) always
+ * wins; the files here are only the fallback when a project has none, and
+ * their fixed aspect ratio applies only to them.
+ */
 export function projectPresentation(project: ProjectMedia) {
   if (isImageHorseApp(project)) {
     return {
       title: "Image Horse: Multi Image Annotator and Compressor",
       description:
         "A browser-based image annotation and editing tool powered by Rust/WASM for pixel-level operations and React + TypeScript for the UI. Edits run in WebAssembly on your own machine and originals live in the browser's IndexedDB.",
-      image: "/projects/Image-Horse-WebApp.webp",
+      image: project.image || "/projects/Image-Horse-WebApp.webp",
       imageFit: "contain" as const,
-      imageAspectRatio: 1799 / 1002,
+      imageAspectRatio: project.image ? undefined : 1799 / 1002,
       href: "https://edit.imagehorse.app/",
     };
   }
@@ -49,9 +54,9 @@ export function projectPresentation(project: ProjectMedia) {
     return {
       title: project.title,
       description: project.description,
-      image: "/projects/Alembic-AI-Website.webp",
+      image: project.image || "/projects/Alembic-AI-Website.webp",
       imageFit: "contain" as const,
-      imageAspectRatio: 1920 / 810,
+      imageAspectRatio: project.image ? undefined : 1920 / 810,
       href: "https://getalembic.com/",
     };
   }

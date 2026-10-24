@@ -197,6 +197,9 @@ export function SiteNav({ offline = false }: { offline?: boolean }) {
         >
           <span></span><span></span>
         </button>
+        {/* Desktop: the links are all in the header, so the preserver is the
+            brand's ring here, not a menu. Phones keep the button above. */}
+        <span className="life-toggle life-badge" aria-hidden="true" />
       </header>
       <div
         ref={menuRef}

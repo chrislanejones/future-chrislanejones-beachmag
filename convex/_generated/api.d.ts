@@ -29,6 +29,7 @@ import type * as resume from "../resume.js";
 import type * as seo from "../seo.js";
 import type * as siteSettings from "../siteSettings.js";
 import type * as socialLinks from "../socialLinks.js";
+import type * as storedUrls from "../storedUrls.js";
 
 import type {
   ApiFromModules,
@@ -58,6 +59,7 @@ declare const fullApi: ApiFromModules<{
   seo: typeof seo;
   siteSettings: typeof siteSettings;
   socialLinks: typeof socialLinks;
+  storedUrls: typeof storedUrls;
 }>;
 
 /**
