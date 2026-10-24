@@ -1973,3 +1973,37 @@ html.dark #coastal-art .map-wrap .map-night {
   object-fit: cover;
   object-position: top center;
 }
+
+/* Phones: the tuner display gets the whole first row; the VU meter (with the
+   tape counter) and the knobs share the second. */
+@media (max-width: 520px) {
+  #beach-offline .radio-instruments {
+    /* A fixed meter column: an auto one grows when the tuner spans both. */
+    grid-template-columns: 70px minmax(0, 1fr);
+    row-gap: 10px;
+  }
+  #beach-offline .radio-instruments .hardware-tuner {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  #beach-offline .radio-instruments .meter-stack {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: center;
+  }
+  #beach-offline .radio-instruments .knob-bank {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  /* The carry handle and antenna stand up to 72px above the radio's box; on
+     phones that landed on "A few things that don't fit on a résumé." */
+  #beach-offline .radio-unit {
+    margin-top: 84px;
+  }
+}
+/* Same clearance up to where the radio moves beside the heading (~900px). */
+@media (min-width: 521px) and (max-width: 899px) {
+  #beach-offline .radio-unit {
+    margin-top: 116px;
+  }
+}
