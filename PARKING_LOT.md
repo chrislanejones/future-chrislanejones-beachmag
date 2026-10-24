@@ -365,3 +365,8 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
   `src/data/career-timeline.ts:66,74`, `src/lib/seo-defaults.ts:17,59` (default metadata and
   "RVAJS"), and in Convex conference cities (rvajs-2023, rvatech-code-cloud-2025: admin edit).
   Chris to decide whether past-tense mentions stay.
+- **10-24-2026 — Copyrighted 404-lounge music, Chris will remove.** `public/music/audio/` still
+  holds four commercial tracks (Beach Boys, Sharon Van Etten, Panda Bear, Alvvays; 33.5 MB) that
+  the live site serves at /music/audio/* and the public repo carries. Nothing plays them:
+  `src/components/coastal/music-player.tsx` is imported nowhere. Removing the files and the
+  player takes them off the site; scrubbing them from git history is a history rewrite (Chris's call).
