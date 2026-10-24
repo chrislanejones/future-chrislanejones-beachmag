@@ -21,6 +21,7 @@ import { ErrorDisplay } from "../components/ErrorDisplay";
 import { SuccessDisplay } from "../components/SuccessDisplay";
 import { getPageName } from "../components/page-name";
 import { SITE_URL } from "@/lib/structured-data";
+import { DEFAULT_SEO } from "@/lib/seo-defaults";
 
 // Derived from the Convex schema (SSOT) instead of hand-rolled shapes.
 type SEOEntry = Doc<"seoMetadata">;
@@ -102,6 +103,16 @@ export const SeoTabEnhanced = () => {
       }
     }
 
+    // Pages with fallback SEO in the code but no Convex row yet (a new page
+    // like /events) are listed too; saving one creates its row.
+    if (seoEntries) {
+      for (const [path, entry] of Object.entries(DEFAULT_SEO)) {
+        if (!pageMap.has(path)) {
+          pageMap.set(path, { path, title: typeof entry.title === "string" ? entry.title : path });
+        }
+      }
+    }
+
     return Array.from(pageMap.values());
   }, [seoEntries, pageHeaders]);
 
@@ -144,11 +155,14 @@ export const SeoTabEnhanced = () => {
         ogImage: selectedPage.seoEntry.ogImage || "",
       });
     } else {
+      // No row yet: start from the page's fallback SEO, if the code has one.
+      const fallback = DEFAULT_SEO[selectedPage.path];
+      const canonical = (fallback?.alternates as { canonical?: string } | undefined)?.canonical;
       setFormData({
         path: selectedPage.path,
-        title: "",
-        description: "",
-        canonicalUrl: "",
+        title: typeof fallback?.title === "string" ? fallback.title : "",
+        description: fallback?.description ?? "",
+        canonicalUrl: canonical ?? "",
         ogImage: "",
       });
     }
@@ -168,7 +182,7 @@ export const SeoTabEnhanced = () => {
       });
     }
 
-    setIsEditing(false);
+    setIsEditing(!selectedPage.seoEntry && Boolean(DEFAULT_SEO[selectedPage.path]));
   }
 
   const filteredPages = mergedPages.filter(
