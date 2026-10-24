@@ -8,7 +8,7 @@ import styles from "./coastal.module.css";
 export function CoastalPageShell({ children }: { children: ReactNode }) {
   return (
     <InteriorPage>
-      <div className={styles.coastalPage} data-coastal-theme data-coastal-page id="main-content" tabIndex={-1}>
+      <div className={styles.coastalPage} data-coastal-theme data-coastal-page>
         {children}
       </div>
     </InteriorPage>

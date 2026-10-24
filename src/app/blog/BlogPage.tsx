@@ -41,7 +41,9 @@ export default function BlogPage({ posts }: { posts: Doc<"blogPosts">[] }) {
               <div>
                 <h2><Link href={`/blog/${post.slug}`}>{post.title}</Link></h2>
                 <p>{post.excerpt}</p>
-                <Link className="read-link" href={`/blog/${post.slug}`} aria-label={`Read ${post.title}`}>Read article ↗</Link>
+                <Link className="read-link" href={`/blog/${post.slug}`}>
+                  Read article<span className="sr-only">: {post.title}</span> <span aria-hidden="true">↗</span>
+                </Link>
               </div>
             </article>
           ))

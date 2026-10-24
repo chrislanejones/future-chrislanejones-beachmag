@@ -28,6 +28,34 @@ body .site-shell:has(> [data-beachmag]) {
   outline-offset: 4px;
 }
 
+/* Skip link: hidden above the header until a keyboard reaches it. */
+[data-beachmag] .skip-link {
+  position: absolute;
+  top: 0;
+  left: 30px;
+  z-index: 200;
+  padding: 12px 20px;
+  background: var(--nav-ink);
+  color: var(--nav-paper);
+  border-bottom: 4px solid var(--nav-accent);
+  font: 700 13px var(--font-dm-sans), Arial, sans-serif;
+  text-decoration: none;
+  transform: translateY(-130%);
+  transition: transform 160ms ease;
+}
+[data-beachmag] .skip-link:focus {
+  transform: translateY(0);
+}
+/* The skip target takes focus without drawing a ring around the whole page. */
+[data-beachmag] #main-content:focus {
+  outline: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-beachmag] .skip-link {
+    transition: none;
+  }
+}
+
 /* Tech binder icons are inline simple-icons SVGs, not the design's CDN masks. */
 #tool-gallery .brand-icon {
   background: none;
@@ -137,7 +165,9 @@ body .site-shell:has(> [data-beachmag]) {
 /* The open menu tilts #page-content 4deg. On a tall page the tilted bottom
    pokes out sideways, which widens a phone's layout viewport and pushes the
    fixed close button off screen. Clip the spill; fixed children aren't clipped. */
-main[data-beachmag] {
+[data-beachmag] {
+  /* Also the skip link's anchor, so it drops in over the column, not the margin. */
+  position: relative;
   overflow-x: clip;
 }
 
@@ -1320,7 +1350,8 @@ section#sandbox .sandbox-heading {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   white-space: nowrap;
-  opacity: 0.6;
+  /* 0.6 read at 3.25:1 on the sand; 0.85 clears 4.5:1 and still sits back from the chosen tool. */
+  opacity: 0.85;
   transition: opacity 180ms ease;
 }
 #sandbox .tool-knob-label .game-tool-art {
@@ -1329,7 +1360,6 @@ section#sandbox .sandbox-heading {
 }
 #sandbox .tool-knob-label small {
   font-size: 8px;
-  opacity: 0.8;
 }
 #sandbox .tool-knob-label:hover:not(:disabled) {
   opacity: 1;
@@ -1708,4 +1738,9 @@ section#sandbox .sandbox-heading {
 }
 #coastal-art .event.is-secret small {
   font-style: italic;
+}
+
+/* The tape slider's hit area reaches 24px tall (WCAG 2.5.8); the track stays thin. */
+#beach-offline .radio-instruments .radio-seek {
+  height: 24px;
 }

@@ -279,3 +279,18 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
   route A/B/C and whether he already uses a scheduler.
 - **10-23-2026 — Beachmag footer kicker.** Still reads "THE COASTAL EDITION / UNTIL NEXT TIME"
   after the top row lost "THE COASTAL EDITION".
+- **10-24-2026 — Before connecting beachmag to its own Convex.** Read-only survey; nothing
+  connected or changed. The dev server already reads whatever `.env.local` points at, which
+  is probably the live deployment, so the contact form and blog likes/comments write live data today.
+  - Make a separate deployment; set its own `ADMIN_USER_IDS`, `CLERK_JWT_ISSUER_DOMAIN` and a
+    Clerk JWT template named `convex`. `NEXT_PUBLIC_CONVEX_URL` is baked in at build (and the CSP).
+  - `convex/seo.ts` `KNOWN_PATHS` lacks `/events` and `/color-guide`: the daily
+    `cleanupStaleSEO` cron would delete their SEO rows.
+  - No fallback, so the build fails without Convex: blog, `projects/[slug]`, conferences,
+    `/browser-tabs`. The header nav query has no error boundary (an error blanks every page).
+  - Beachmag-only, no tables yet: events (`beachmag/events.ts`), ramblings quotes, footer
+    (ignores `footerNavSections`/`footerNavLinks`), PGA Golf Game project.
+  - Live pointers to remove: `scripts/check-seo.js:4` falls back to the live
+    `limitless-parakeet-517` URL; `scripts/upload-resume.sh` runs `convex run --prod`;
+    `vercel.json` redirects the live domain; `convex/auth.config.ts` defaults to the live Clerk dev instance.
+  - Admin "seed" buttons (`SettingsTabEnhanced.tsx:68-82`) delete rows.

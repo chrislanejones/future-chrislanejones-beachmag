@@ -22,10 +22,8 @@ const Code = ({ children }: { children: ReactNode }) => (
 
 // CSS tribute to the dearly departed <marquee> tag
 const MarqueeQuote = ({ children }: { children: ReactNode }) => (
-  <span
-    className="marquee-container"
-    aria-label="I still mourn the death of the marquee tag."
-  >
+  <span className="marquee-container">
+    <span className="sr-only">I still mourn the death of the marquee tag.</span>
     <span className="marquee-inner" aria-hidden="true">
       {children}
     </span>

@@ -33,7 +33,13 @@ function useNavItems(): NavItem[] {
 function NavGroup({ item, markStart, open, onOpen, onClose }: { item: NavItem; markStart: number; open: boolean; onOpen: (hover: boolean) => void; onClose: (hover: boolean) => void }) {
   const id = `nav-group-${item.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
   return (
-    <div className="nav-group" onPointerEnter={() => onOpen(true)} onPointerLeave={() => onClose(true)}>
+    <div
+      className="nav-group"
+      onPointerEnter={() => onOpen(true)}
+      onPointerLeave={() => onClose(true)}
+      // Tabbing out of the group closes its card.
+      onBlur={(event) => open && !event.currentTarget.contains(event.relatedTarget) && onClose(false)}
+    >
       <button type="button" aria-expanded={open} aria-controls={id} onClick={() => (open ? onClose(false) : onOpen(false))}>
         <span className="nav-group-label">{item.label}</span>
         <ChevronDown className="nav-caret" size={14} strokeWidth={2.5} aria-hidden="true" />
@@ -76,17 +82,17 @@ export function SiteNav() {
   };
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-  const firstRender = useRef(true);
+  // The last `open` the effect saw. Comparing values instead of counting runs
+  // keeps a remount (Strict Mode runs effects twice) from moving focus on load.
+  const lastOpen = useRef(open);
 
   useEffect(() => {
     const body = document.body;
     const content = document.getElementById("page-content");
     body.classList.toggle("menu-open", open);
     if (content) content.inert = open;
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
+    if (lastOpen.current === open) return;
+    lastOpen.current = open;
     toggleRef.current?.focus({ preventScroll: true });
     if (open) {
       body.classList.remove("menu-closing");
@@ -122,7 +128,13 @@ export function SiteNav() {
 
   useEffect(() => {
     if (!group) return;
-    const onKey = (event: KeyboardEvent) => event.key === "Escape" && setGroup(null);
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      // Focus inside the card would vanish with it, so it goes back to the group's button.
+      const card = document.activeElement?.closest("#site-nav .nav-dropdown");
+      card?.closest(".nav-group")?.querySelector("button")?.focus();
+      setGroup(null);
+    };
     const onPointer = (event: PointerEvent) => {
       if (!desktopRef.current?.contains(event.target as Node)) setGroup(null);
     };

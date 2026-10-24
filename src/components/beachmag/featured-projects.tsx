@@ -47,7 +47,8 @@ function Spread({ rows }: { rows: ProjectRow[] }) {
     <div className="projects-spread">
       {cards.map((card) => (
         <article className="project-cutout" key={card.title}>
-          <Link className="project-print" href={card.href} aria-label={`Explore ${card.title}`}>
+          {/* The photo repeats "Explore project" below for the mouse; keyboards and screen readers use that one. */}
+          <Link className="project-print" href={card.href} tabIndex={-1} aria-hidden="true">
             <Image src={card.image} alt={card.alt} width={640} height={400} sizes="(max-width: 560px) 92vw, 560px" />
             <span>{card.label}</span>
           </Link>
