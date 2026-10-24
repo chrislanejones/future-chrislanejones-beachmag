@@ -1,5 +1,5 @@
 # ADR-002: The downloadable resume moves out of git into Convex file storage
-Date: 2026-10-13   Status: draft
+Date: 2026-10-13   Status: draft · superseded in part by [021](021-resume-files-move-to-uploadthing.md)
 
 ## Context
 The resume (PDF + Word) lived in `public/career-files/`, so every version ever

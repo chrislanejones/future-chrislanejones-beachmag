@@ -328,3 +328,9 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
   (the ChatGPT ones looked too AI). Pages hide the image and OG falls back to the professional
   photo meanwhile. The seven files in `public/blog/covers/` (~1.2 MB) are not referenced by
   anything: delete or replace them when the new covers land. Cover size to aim for: 1200×630.
+- **10-24-2026 — Resumes on UploadThing (ADR-021).** The admin's Resume files panel now uploads
+  to UploadThing and lists the file under Media Manager → Documents. The two live resumes still
+  sit in Convex storage until Chris re-uploads them once through the panel (the download routes
+  keep working either way). Replaced UploadThing copies are not deleted automatically: remove
+  old "Resume (PDF/Word)" cards in Documents by hand. `scripts/upload-resume.sh` is the legacy
+  Convex-storage route now.

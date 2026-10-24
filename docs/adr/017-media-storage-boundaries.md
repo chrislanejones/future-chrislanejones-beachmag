@@ -1,6 +1,6 @@
 # ADR-017: Keep uploaded images, resume storage and versioned scene assets distinct
 
-Date: 2026-10-21 · Status: draft
+Date: 2026-10-21 · Status: draft · superseded in part by [021](021-resume-files-move-to-uploadthing.md)
 
 Retrospective record for the beach version's current working tree. The date is when this record was written, not an asserted original adoption or approval date.
 

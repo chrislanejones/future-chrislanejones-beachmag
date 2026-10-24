@@ -144,9 +144,13 @@ export default defineSchema({
   // The downloadable resume, one row per format. The files live in Convex
   // storage, not /public, so they never land in the git repo (see
   // convex/resume.ts and docs/adr/002).
+  // A resume lives either in UploadThing (url, since 10-24-2026) or in Convex
+  // storage (storageId, the older route); one of the two is set.
   resumeFiles: defineTable({
     kind: v.union(v.literal("pdf"), v.literal("docx")),
-    storageId: v.id("_storage"),
+    storageId: v.optional(v.id("_storage")),
+    url: v.optional(v.string()),
+    size: v.optional(v.number()),
     filename: v.string(),
     updatedAt: v.number(),
   }).index("by_kind", ["kind"]),

@@ -36,6 +36,16 @@ export const ourFileRouter = {
     }),
 
   // Legacy blog image uploader (keeping for backwards compatibility)
+  // Documents for the Media Manager and the resume panel: PDF, and "blob"
+  // for Word (.docx), which UploadThing has no named type for.
+  documentUploader: f({ pdf: { maxFileSize: "16MB", maxFileCount: 1 }, blob: { maxFileSize: "16MB", maxFileCount: 1 } })
+    .middleware(async () => {
+      const userId = await requireAdmin();
+      return { uploadedBy: userId };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      return { uploadedBy: metadata.uploadedBy, url: file.url, filename: file.name, size: file.size, type: file.type };
+    }),
   blogImageUploader: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
     .middleware(async () => {
       const userId = await requireAdmin();

@@ -10,6 +10,7 @@ import {
   ChevronDown,
   ChevronRight,
   ImageIcon,
+  FileText,
   Home,
   Pencil,
 } from "lucide-react";
@@ -23,9 +24,14 @@ import { Button } from "@/components/ui/button";
 import { ConfirmDialog, Modal } from "@/components/ui/dialog";
 import Image from "next/image";
 import { MediaDrawer } from "../components/MediaDrawer";
+import { useUploadThing } from "@/utils/uploadthing";
 
 // Derived from the Convex schema (SSOT) instead of hand-rolled shapes.
 type MediaFile = Doc<"media">;
+
+// PDFs and Word files sit under the Documents shelf and draw as a file card.
+const isDocument = (file: MediaFile) => file.assignedToType === "document";
+const extensionOf = (filename: string) => (filename.split(".").pop() || "file").toUpperCase();
 
 type GalleryItem = Doc<"homeGallery">;
 
@@ -33,6 +39,26 @@ const MediaTabEnhanced = () => {
   const organizedMedia = useQuery(api.media.getOrganized);
   const deleteMediaMutation = useMutation(api.media.deleteMedia);
   const updateMedia = useMutation(api.media.update);
+  const createMedia = useMutation(api.media.create);
+  const [documentBusy, setDocumentBusy] = useState(false);
+  const { startUpload: startDocumentUpload } = useUploadThing("documentUploader");
+
+  // The Documents shelf takes PDFs and Word files straight into the library.
+  const uploadDocument = async (file: File) => {
+    setDocumentBusy(true);
+    setError(null);
+    try {
+      const uploaded = (await startDocumentUpload([file]))?.[0];
+      if (!uploaded) throw new Error("Upload failed");
+      await createMedia({ url: uploaded.url, filename: uploaded.name, size: uploaded.size, mimeType: uploaded.type || file.type, assignedToType: "document", assignedToTitle: "Document" });
+      setSuccess(`${uploaded.name} added to Documents`);
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error("Failed to upload document"));
+    } finally {
+      setDocumentBusy(false);
+    }
+  };
 
   // Home Gallery
   const galleryItems = useQuery(api.homeGallery.getAll) as
@@ -231,6 +257,8 @@ const MediaTabEnhanced = () => {
       ];
     } else if (selectedView === "unassigned") {
       return organizedMedia.unassigned;
+    } else if (selectedView === "documents") {
+      return organizedMedia.documents;
     } else if (selectedView.startsWith("page-")) {
       const pageId = selectedView.replace("page-", "");
       const page = organizedMedia.pages.find((p) => p.id === pageId);
@@ -320,6 +348,25 @@ const MediaTabEnhanced = () => {
 
         {/* Upload Button */}
         <div className="col-span-2 flex justify-end">
+          {selectedView === "documents" ? (
+            <>
+              <input
+                type="file"
+                id="document-upload"
+                className="sr-only"
+                accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) void uploadDocument(file);
+                  e.target.value = "";
+                }}
+              />
+              <Button variant="primary" className="gap-2 w-full md:w-auto" disabled={documentBusy} onClick={() => document.getElementById("document-upload")?.click()}>
+                <Upload className="w-4 h-4" aria-hidden="true" />
+                {documentBusy ? "Uploading..." : "Upload Document"}
+              </Button>
+            </>
+          ) : (
           <Button
             variant="primary"
             className="gap-2 w-full md:w-auto"
@@ -331,6 +378,7 @@ const MediaTabEnhanced = () => {
             <Upload className="w-4 h-4" />
             Upload Images
           </Button>
+          )}
         </div>
       </div>
 
@@ -375,6 +423,18 @@ const MediaTabEnhanced = () => {
               >
                 ({organizedMedia.unassigned.length})
               </span>
+            </button>
+            {/* Documents: PDFs and Word files (the resumes live here) */}
+            <button
+              onClick={() => setSelectedView("documents")}
+              className={`w-full text-left px-3 py-2 rounded-lg transition text-sm ${
+                selectedView === "documents"
+                  ? "bg-(--color-foreground) text-(--color-panel)"
+                  : "bg-(--color-muted-accent) hover:bg-(--color-surface-hover) text-ink"
+              }`}
+            >
+              Documents
+              <span className="text-xs ml-2">({organizedMedia.documents.length})</span>
             </button>
 
             {/* Pages Section */}
@@ -590,7 +650,14 @@ const MediaTabEnhanced = () => {
               {filteredImages.map((img) => (
                 <li key={img._id} className="bg-(--color-panel) border border-(--color-border) rounded-xl overflow-hidden">
                   <div className="relative aspect-square bg-(--color-muted-accent)">
-                    <Image src={img.url} alt={img.altText || ""} fill className="object-cover" sizes="240px" />
+                    {isDocument(img) ? (
+                      <a href={img.url} target="_blank" rel="noopener noreferrer" className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-muted hover:text-ink" aria-label={`Open ${img.filename}`}>
+                        <FileText className="w-12 h-12" aria-hidden="true" />
+                        <span className="text-xs font-semibold tracking-wider">{extensionOf(img.filename)}</span>
+                      </a>
+                    ) : (
+                      <Image src={img.url} alt={img.altText || ""} fill className="object-cover" sizes="240px" />
+                    )}
                   </div>
                   <div className="p-3 space-y-1">
                     <p className="text-sm font-medium text-ink truncate" title={img.filename}>{img.filename}</p>
@@ -613,7 +680,13 @@ const MediaTabEnhanced = () => {
               {filteredImages.map((img) => (
                 <li key={img._id} className="flex items-center gap-3 p-3">
                   <div className="relative size-12 shrink-0 rounded-lg overflow-hidden bg-(--color-muted-accent)">
-                    <Image src={img.url} alt={img.altText || ""} fill className="object-cover" sizes="48px" />
+                    {isDocument(img) ? (
+                      <a href={img.url} target="_blank" rel="noopener noreferrer" className="absolute inset-0 flex items-center justify-center text-muted hover:text-ink" aria-label={`Open ${img.filename}`}>
+                        <FileText className="w-6 h-6" aria-hidden="true" />
+                      </a>
+                    ) : (
+                      <Image src={img.url} alt={img.altText || ""} fill className="object-cover" sizes="48px" />
+                    )}
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-ink truncate">{img.filename}</p>

@@ -87,6 +87,8 @@ export const MediaDrawer: React.FC<MediaDrawerProps> = ({
   });
 
   const filteredMedia = allMedia.filter((media: MediaItem) => {
+    // The drawer picks images; documents live under the Media Manager's Documents shelf.
+    if (media.assignedToType === "document") return false;
     const query = searchQuery.toLowerCase();
     return (
       media.filename.toLowerCase().includes(query) ||

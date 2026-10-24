@@ -60,7 +60,7 @@ export const getOrganized = query({
     // Admin-only: this returns every blog post including unpublished drafts
     // (titles + slugs). Convex functions are publicly callable, so gate here.
     if (!(await isAdmin(ctx))) {
-      return { pages: [], blogPosts: [], unassigned: [] };
+      return { pages: [], blogPosts: [], unassigned: [], documents: [] };
     }
     const allMedia = await ctx.db.query("media").collect();
     const blogPosts = await ctx.db.query("blogPosts").order("desc").collect();
@@ -90,6 +90,8 @@ export const getOrganized = query({
         ),
       })),
       unassigned: allMedia.filter((m) => !m.assignedToType),
+      // PDFs and Word files (resumes, and anything uploaded under Documents).
+      documents: allMedia.filter((m) => m.assignedToType === "document"),
     };
 
     return organized;

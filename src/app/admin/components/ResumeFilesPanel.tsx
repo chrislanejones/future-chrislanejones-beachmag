@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
+import { useUploadThing } from "@/utils/uploadthing";
 import { Download, FileText, Upload } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import { Button } from "@/components/ui/button";
@@ -22,12 +23,12 @@ const day = (ms: number) =>
   new Date(ms).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" }).replace(/\//g, "-");
 
 // Replaces the live resume files (what /career-and-resume/download/{pdf,docx}
-// serves). Each format uploads and publishes on its own; the server checks
-// the file type and size before the old file is deleted.
+// serves). Each format uploads to UploadThing and publishes on its own; the
+// file then shows under Documents in the Media Manager.
 export function ResumeFilesPanel() {
   const status = useQuery(api.resume.getAdminStatus);
-  const generateUploadUrl = useMutation(api.resume.generateAdminUploadUrl);
-  const publish = useMutation(api.resume.publish);
+  const publish = useMutation(api.resume.publishUpload);
+  const { startUpload } = useUploadThing("documentUploader");
   const [busy, setBusy] = useState<Kind | null>(null);
   const [message, setMessage] = useState<{ tone: "ok" | "error"; text: string } | null>(null);
   const inputs = useRef<Record<Kind, HTMLInputElement | null>>({ pdf: null, docx: null });
@@ -38,11 +39,9 @@ export function ResumeFilesPanel() {
     try {
       // The server double-checks size and type; this just saves a pointless upload.
       if (!file.name.toLowerCase().endsWith(`.${kind}`)) throw new Error(`Choose a .${kind} file.`);
-      const url = await generateUploadUrl();
-      const res = await fetch(url, { method: "POST", headers: { "Content-Type": file.type }, body: file });
-      if (!res.ok) throw new Error(`Upload failed (${res.status})`);
-      const { storageId } = await res.json();
-      const result = await publish({ kind, storageId });
+      const uploaded = (await startUpload([file]))?.[0];
+      if (!uploaded) throw new Error("Upload failed");
+      const result = await publish({ kind, url: uploaded.url, filename: uploaded.name, size: uploaded.size, mimeType: uploaded.type || file.type });
       if (result?.error) throw new Error(result.error);
       setMessage({ tone: "ok", text: `${kind.toUpperCase()} resume updated.` });
     } catch (err) {
