@@ -1,11 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 import { useFooterNavSections } from "@/components/page/links";
-import { Waves } from "lucide-react";
+import { Umbrella, Waves } from "lucide-react";
 import { BeachFigure } from "./beach-figure";
 import "./footer.css";
 
+// The social row follows Profile & Social → "Site footer pulls this order";
+// this list stands in until Convex answers.
 const SOCIAL = [
   { href: "https://x.com/cljwebdev", label: "X.com" },
   { href: "https://github.com/chrislanejones", label: "GitHub" },
@@ -13,6 +17,12 @@ const SOCIAL = [
   { href: "https://www.linkedin.com/in/chrislanejones", label: "LinkedIn" },
   { href: "https://codepen.io/chrislanejones", label: "CodePen" },
 ];
+
+function useSocial() {
+  const rows = useQuery(api.socialLinks.getForFooter);
+  if (!rows?.length) return SOCIAL;
+  return [...rows].sort((a, b) => (a.footerOrder ?? 999) - (b.footerOrder ?? 999)).map((row) => ({ href: row.href, label: row.label }));
+}
 
 // The three columns come from the admin (Pages & Menu → Footer Sections);
 // the "01 /" numbering is the magazine's and is added here. Events exists only
@@ -50,12 +60,16 @@ function Directory() {
 
 // The coastal-magazine footer: a send-off, then the whole site in three columns.
 export function SiteFooter() {
+  const social = useSocial();
   return (
     <footer id="coastal-footer" aria-label="Site footer">
       <div className="footer-sendoff">
         <div>
           <p className="footer-kicker">THE COASTAL EDITION / UNTIL NEXT TIME</p>
-          <h2>See you<br /><em>out there.</em></h2>
+          <h2>
+            See you<br /><em>out there.</em>
+            <span className="footer-umbrella" aria-hidden="true"><Umbrella size={32} strokeWidth={2.25} /></span>
+          </h2>
         </div>
         <Link className="footer-contact" href="/contact">LET’S MAKE SOMETHING <span aria-hidden="true">↗</span></Link>
       </div>
@@ -68,7 +82,7 @@ export function SiteFooter() {
           <p className="footer-role">Senior web engineer</p>
           <p>I consult, design, and develop web interfaces for businesses and government agencies.</p>
           <nav className="footer-social" aria-label="Social profiles">
-            {SOCIAL.map((link) => (
+            {social.map((link) => (
               <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">
                 {link.label} ↗<span className="sr-only"> (opens in a new tab)</span>
               </a>

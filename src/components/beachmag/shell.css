@@ -105,17 +105,13 @@ body .site-shell:has(> [data-beachmag]) {
   #beach-offline .radio-notes .skill-sticker { margin: 30px 0 8px; }
 }
 
-/* Ramblings: the card holds still. All quotes share one cell; the hidden
-   ones keep their space (visibility, not display) so the height never changes. */
+/* Ramblings: one quote shows at a time (the others are [hidden]), so the
+   card is as tall as the current quote and grows for a long one. */
 #beach-offline .ramble blockquote.quote-stack {
   display: grid;
 }
 #beach-offline .quote-stack > span {
   grid-area: 1 / 1;
-}
-#beach-offline .quote-stack > span[hidden] {
-  display: block;
-  visibility: hidden;
 }
 
 /* Hero sub line: the beach site's description on the left, "Explore my work" right. */
@@ -1743,4 +1739,59 @@ section#sandbox .sandbox-heading {
 /* The tape slider's hit area reaches 24px tall (WCAG 2.5.8); the track stays thin. */
 #beach-offline .radio-instruments .radio-seek {
   height: 24px;
+}
+
+/* "Wish you were here." on one line (the design capped it at 250px), and the
+   ramblings a size down: the two longest quotes ran 7 and 8 lines at 35px, and
+   the stack reserves the tallest, so they set the whole card's height. */
+#beach-offline .photos h3 {
+  max-width: none;
+}
+#beach-offline .ramble {
+  min-height: 0;
+}
+#beach-offline .ramble.text-only blockquote {
+  font-size: 29px;
+  line-height: 1.16;
+  padding: 8px 0;
+}
+/* The row no longer stretches the shorter card up to the taller one. */
+#beach-offline .two {
+  align-items: start;
+}
+
+/* The umbrella after "out there.": a round badge like the life preserver. */
+#coastal-footer .footer-umbrella {
+  display: inline-grid;
+  place-items: center;
+  width: 0.58em;
+  height: 0.58em;
+  margin-left: 0.14em;
+  vertical-align: 0.04em;
+  border: 2px solid var(--footer-ink);
+  border-radius: 50%;
+  background: repeating-conic-gradient(from -22.5deg, var(--footer-accent) 0deg 45deg, var(--footer-paper) 45deg 90deg);
+  box-shadow: 0 0 0 2px var(--footer-paper), 0 0 0 3px var(--footer-ink);
+  color: var(--footer-ink);
+  letter-spacing: 0;
+  transform: rotate(-8deg);
+}
+#coastal-footer .footer-umbrella::before {
+  content: "";
+  grid-area: 1 / 1;
+  width: 62%;
+  height: 62%;
+  border-radius: 50%;
+  background: var(--footer-paper);
+}
+#coastal-footer .footer-umbrella svg {
+  grid-area: 1 / 1;
+  width: 46%;
+  height: 46%;
+}
+/* Phones: 30px keeps "Wish you were here." on one line in the 310px card. */
+@media (max-width: 520px) {
+  #beach-offline .photos h3 {
+    font-size: 30px;
+  }
 }
