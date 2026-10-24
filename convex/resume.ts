@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import { internalMutation, mutation, query, type MutationCtx } from "./_generated/server";
 import type { Id } from "./_generated/dataModel";
 import { isAdmin, requireAdmin } from "./authz";
+import { assertStoredUrl } from "./storedUrls";
 
 // The resume is served from Convex storage so it stays out of the git repo.
 // Upload from Admin -> Career Timeline (owner only) or the CLI script,
@@ -88,6 +89,7 @@ export const publishUpload = mutation({
       return { error: `That isn't a ${args.kind === "pdf" ? "PDF" : "Word (.docx)"} file.` };
     }
     if (args.size > MAX_BYTES) return { error: "That file is over 10 MB." };
+    assertStoredUrl(args.url);
     const now = Date.now();
     const filename = `Chris_Lane_Jones_Resume.${args.kind}`;
     const existing = await ctx.db

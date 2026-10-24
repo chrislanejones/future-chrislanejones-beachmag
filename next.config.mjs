@@ -80,7 +80,8 @@ const directives = {
   // Favicons on /browser-tabs and the link page come from whatever site each
   // admin-entered link points at, so images stay open to any https host.
   "img-src": ["'self'", "data:", "blob:", "https:"],
-  "media-src": ["'self'"],
+  // Blog audio (and anything else from the Media Manager) streams from UploadThing.
+  "media-src": ["'self'", "https://utfs.io", "https://*.ufs.sh"],
   "font-src": ["'self'", ...(isPreview ? ["https://vercel.live", "https://assets.vercel.com"] : [])],
   "frame-src": ["https://fast.wistia.com", ...clerkProtect, ...vercelToolbar],
   // Clerk runs a blob: worker.
@@ -102,6 +103,8 @@ const serialize = (policy) =>
 const contentSecurityPolicy = serialize(directives);
 
 const securityHeaders = [
+  // Two years, with subdomains; "preload" is a one-way door, so it stays off until Chris asks.
+  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
   { key: "X-Frame-Options", value: "DENY" },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },

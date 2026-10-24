@@ -1,4 +1,5 @@
 import { v } from "convex/values";
+import { assertStoredUrl } from "./storedUrls";
 import { query, mutation } from "./_generated/server";
 
 import { requireAdmin as requireAuth, isAdmin } from "./authz";
@@ -112,6 +113,7 @@ export const create = mutation({
   },
   handler: async (ctx, args) => {
     await requireAuth(ctx);
+    assertStoredUrl(args.url, { allowRelative: true });
     return await ctx.db.insert("media", {
       ...args,
       uploadedAt: Date.now(),

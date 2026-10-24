@@ -10,6 +10,7 @@ import { Id } from "./_generated/dataModel";
 import { enforceRateLimits, requiredEmail, requiredText } from "./rateLimits";
 
 import { requireAdmin as requireAuth, isAdmin } from "./authz";
+import { assertStoredUrl } from "./storedUrls";
 
 // Helper to get media for a blog post
 async function getPostMedia(ctx: QueryCtx, postId: string) {
@@ -107,6 +108,7 @@ export const createPost = mutation({
   },
   handler: async (ctx, args) => {
     await requireAuth(ctx);
+    if (args.audioUrl) assertStoredUrl(args.audioUrl);
     // Slugs are the public URL and getPostBySlug uses .first(), so a duplicate
     // would make one post permanently unreachable. Reject the collision.
     const clash = await ctx.db
@@ -143,6 +145,7 @@ export const updatePost = mutation({
     await requireAuth(ctx);
     const { id, ...updateData } = args;
     if (updateData.audioUrl === "") updateData.audioUrl = undefined;
+    if (updateData.audioUrl) assertStoredUrl(updateData.audioUrl);
     // If the slug is changing, make sure no OTHER post already owns it.
     if (updateData.slug) {
       const clash = await ctx.db

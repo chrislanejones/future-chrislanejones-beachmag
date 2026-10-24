@@ -21,7 +21,7 @@ const KNOWN_PATHS = new Set([
   "/admin-showcase",
 ]);
 
-import { requireAdmin as requireAuth } from "./authz";
+import { requireAdmin as requireAuth, isAdmin } from "./authz";
 
 export const getAllSEO = query({
   args: {},
@@ -103,6 +103,7 @@ export const getStaleSEOPaths = query({
   args: {},
   returns: v.array(v.object({ path: v.string(), title: v.string() })),
   handler: async (ctx) => {
+    if (!(await isAdmin(ctx))) return [];
     const all = await ctx.db.query("seoMetadata").collect();
     return all
       .filter((entry) => !KNOWN_PATHS.has(entry.path))

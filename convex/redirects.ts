@@ -1,11 +1,18 @@
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 
-import { requireAdmin as requireAuth } from "./authz";
+import { requireAdmin as requireAuth, isAdmin } from "./authz";
+
+const REDIRECT_CODES = new Set([301, 302, 307, 308]);
+function assertStatusCode(code: number | undefined) {
+  if (code !== undefined && !REDIRECT_CODES.has(code)) throw new Error("Status code must be 301, 302, 307 or 308");
+}
 
 export const getAll = query({
   args: {},
   handler: async (ctx) => {
+    // The admin's list; the public site reads getActive through convex/http.ts.
+    if (!(await isAdmin(ctx))) return [];
     return ctx.db.query("redirects").order("desc").collect();
   },
 });
@@ -30,6 +37,7 @@ export const create = mutation({
   },
   handler: async (ctx, args) => {
     await requireAuth(ctx);
+    assertStatusCode(args.statusCode);
     return ctx.db.insert("redirects", {
       ...args,
       createdAt: Date.now(),
@@ -49,6 +57,7 @@ export const update = mutation({
   },
   handler: async (ctx, args) => {
     await requireAuth(ctx);
+    assertStatusCode(args.statusCode);
     const { id, ...fields } = args;
     return ctx.db.patch(id, { ...fields, updatedAt: Date.now() });
   },

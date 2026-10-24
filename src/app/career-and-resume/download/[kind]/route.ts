@@ -23,7 +23,17 @@ export async function GET(
   const file = await convex.query(api.resume.getDownload, { kind });
   if (!file) return new Response("Not found", { status: 404 });
 
-  const upstream = await fetch(file.url);
+  // The URL is admin-set, but the server still only fetches from UploadThing or Convex storage.
+  let host = "";
+  try {
+    host = new URL(file.url).hostname;
+  } catch {
+    return new Response("Resume unavailable", { status: 502 });
+  }
+  if (!/^(utfs\.io|[a-z0-9-]+\.ufs\.sh|[a-z0-9-]+\.convex\.cloud)$/i.test(host)) {
+    return new Response("Resume unavailable", { status: 502 });
+  }
+  const upstream = await fetch(file.url, { signal: AbortSignal.timeout(15_000) });
   if (!upstream.ok || !upstream.body) {
     return new Response("Resume unavailable", { status: 502 });
   }
