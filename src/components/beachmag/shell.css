@@ -2024,9 +2024,13 @@ html.dark #coastal-art .map-wrap .map-night {
   object-position: top center;
 }
 
-/* The TAPE lamp beside FM / AM shows only on phones (below). */
+/* A lit TAPE lamp beside the FM / AM lamp, at every width. */
 #beach-offline .band-label .tape-light {
-  display: none;
+  margin-left: 18px;
+}
+#beach-offline .band-label .tape-lamp {
+  background: var(--bm-lamp);
+  box-shadow: 0 0 7px var(--bm-lamp);
 }
 /* Phones: the tuner display gets the whole first row; the VU meter (with the
    tape counter) and the knobs share the second. */
@@ -2053,14 +2057,6 @@ html.dark #coastal-art .map-wrap .map-night {
   }
   #beach-offline .radio-instruments .knob-bank .band-label {
     margin: 0;
-  }
-  #beach-offline .radio-instruments .knob-bank .tape-light {
-    display: inline;
-    margin-left: 18px;
-  }
-  #beach-offline .radio-instruments .knob-bank .tape-lamp {
-    background: var(--bm-lamp);
-    box-shadow: 0 0 7px var(--bm-lamp);
   }
   #beach-offline .radio-instruments .knob-bank {
     grid-column: 2;
