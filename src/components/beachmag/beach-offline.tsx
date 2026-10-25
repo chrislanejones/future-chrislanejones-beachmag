@@ -47,25 +47,29 @@ function SkillSticker() {
   );
 }
 
+// "My ramblings." sits above the paper (and its tape), the way "Wish you
+// were here." sits above the postcards.
 function Ramblings() {
   const [quote, setQuote] = useState(0);
   return (
-    <article className="ramble text-only">
+    <div className="rambles">
       <h3>My ramblings.</h3>
-      {/* Every quote sits in the same grid cell and only the current one shows,
-          so the card is always as tall as the longest quote and never jumps. */}
-      <blockquote className="quote-stack" aria-live="polite">
-        {QUOTES.map((text, index) => (
-          <span key={index} hidden={index !== quote}>{text}</span>
-        ))}
-      </blockquote>
-      <div className="ramble-footer">
-        <span>CHRIS LANE JONES</span>
-        <button className="plain-button cursor-interaction" type="button" onClick={() => setQuote((quote + 1) % QUOTES.length)}>
-          Another thought ↗
-        </button>
-      </div>
-    </article>
+      <article className="ramble text-only">
+        {/* Every quote sits in the same grid cell and only the current one shows,
+            so the card is always as tall as the longest quote and never jumps. */}
+        <blockquote className="quote-stack" aria-live="polite">
+          {QUOTES.map((text, index) => (
+            <span key={index} hidden={index !== quote}>{text}</span>
+          ))}
+        </blockquote>
+        <div className="ramble-footer">
+          <span>CHRIS LANE JONES</span>
+          <button className="plain-button cursor-interaction" type="button" onClick={() => setQuote((quote + 1) % QUOTES.length)}>
+            Another thought ↗
+          </button>
+        </div>
+      </article>
+    </div>
   );
 }
 

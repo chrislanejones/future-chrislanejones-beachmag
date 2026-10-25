@@ -1768,10 +1768,44 @@ section#sandbox .sandbox-heading {
   line-height: 1.16;
   padding: 8px 0;
 }
-/* The ramblings card matches the postcards card's height; the quote sits
-   centered in it (beachmag.css: .text-only blockquote flex:1, centered). */
+/* The ramblings card matches the postcards card's height; the quote sits at
+   the top, right under "My ramblings." (beachmag.css centered it, which left
+   it floating in the middle of empty paper). */
 #beach-offline .two {
   align-items: stretch;
+}
+#beach-offline .ramble.text-only blockquote.quote-stack {
+  align-items: start;
+  align-content: start;
+}
+/* "My ramblings." above the paper and its tape, set like "Wish you were
+   here." and on the same line; the paper fills the rest of the column. */
+#beach-offline .rambles {
+  display: flex;
+  flex-direction: column;
+  padding-top: 12px;
+}
+#beach-offline .rambles > h3 {
+  font: italic 900 36px/1 var(--font-bodoni-moda), Georgia, serif;
+  letter-spacing: -1px;
+}
+/* Room under both headings: the ramblings' tape stands 10px above its paper
+   and the postcards' back sheets tilt up past their front. ".two" outranks
+   the coastal reset (#coastal-art h3:not(...) { margin: 0 }), which ties
+   with a plain id + class selector and loads later. */
+#beach-offline .two .rambles > h3 {
+  margin: 0 0 44px;
+}
+#beach-offline .two .photos > h3 {
+  margin: 0 0 34px;
+}
+#beach-offline .rambles > .ramble {
+  flex: 1;
+}
+@media (max-width: 520px) {
+  #beach-offline .rambles > h3 {
+    font-size: 30px;
+  }
 }
 
 /* The beach umbrella after "out there.": alternating accent and cream panels,
