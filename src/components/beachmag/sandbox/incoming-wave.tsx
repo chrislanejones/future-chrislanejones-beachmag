@@ -1,40 +1,45 @@
 import {useMemo,useRef,type RefObject} from 'react';
 import {useFrame} from '@react-three/fiber';
-import {Color,Vector3,type ShaderMaterial} from 'three';
+import {Color,Vector2,type ShaderMaterial} from 'three';
 import {beachWashAt} from './beach-wash';
+import {LEDGE_GLSL,type Spot} from './ledge';
 
-/** Matches the terrain's screen-space shoreline and washes over the castle silhouettes. */
-export function IncomingWave({startedAt,dark,clock}:{startedAt:number;dark:boolean;clock:RefObject<number>}){
+/**
+ * Matches the terrain's screen-space shoreline and washes over the castle
+ * silhouettes. A ground plane under the whole view, drawn on top of
+ * everything, so each pixel knows its spot on the sand and the wave stops at
+ * the flag box's rise.
+ */
+export function IncomingWave({startedAt,dark,clock,box}:{startedAt:number;dark:boolean;clock:RefObject<number>;box:Spot}){
  const uniforms=useMemo(()=>({
-  uWash:{value:0},uTime:{value:0},uDryCorner:{value:new Vector3()},
+  uWash:{value:0},uTime:{value:0},uFlagBox:{value:new Vector2()},
   uWater:{value:new Color(dark?'#2e6970':'#86bcbc')},
  }),[dark]);
  // Written through the material ref: the React Compiler treats memoized values as frozen.
  const material=useRef<ShaderMaterial>(null);
- useFrame(({camera})=>{
+ useFrame(()=>{
   const live=material.current?.uniforms;
   if(!live)return;
-  // The flag box's corner stays dry: the wave parts around it.
-  const dry=new Vector3(-5.8,0,4.3).project(camera);
-  live.uDryCorner.value.set(dry.x*.5+.5,dry.y*.5+.5,0);
   live.uWash.value=beachWashAt(performance.now()-startedAt).advance;
   live.uTime.value=clock.current;
+  live.uFlagBox.value.set(box.x,box.z);
  });
- return <mesh frustumCulled={false} renderOrder={1000}>
-  <planeGeometry args={[2,2]}/>
+ return <mesh frustumCulled={false} renderOrder={1000} rotation={[-Math.PI/2,0,0]}>
+  <planeGeometry args={[90,90]}/>
   <shaderMaterial ref={material} transparent depthTest={false} depthWrite={false} toneMapped={false} uniforms={uniforms}
    vertexShader={`
-    varying vec2 vScreen;
-    void main(){vScreen=position.xy*.5+.5;gl_Position=vec4(position.xy,0.,1.);}
+    varying vec2 vScreen;varying vec2 vWorld;
+    void main(){vec4 world=modelMatrix*vec4(position,1.);vWorld=world.xz;gl_Position=projectionMatrix*viewMatrix*world;vScreen=gl_Position.xy/gl_Position.w*.5+.5;}
    `}
    fragmentShader={`
-    varying vec2 vScreen;
-    uniform vec3 uDryCorner;uniform float uWash;uniform float uTime;uniform vec3 uWater;
+    varying vec2 vScreen;varying vec2 vWorld;
+    uniform float uWash;uniform float uTime;uniform vec3 uWater;
+    ${LEDGE_GLSL}
     void main(){
      vec2 p=vScreen;
      float coast=p.x+p.y*.7-1.22+sin(p.y*7.+uTime*.45)*.018;
      float tide=sin(uTime*.65+p.y*3.)*.022;
-     float protection=1.-smoothstep(.065,.15,distance(p,uDryCorner.xy));
+     float protection=1.-smoothstep(-.05,.2,ledgeDistance(vWorld));
      float shore=coast+tide+uWash-protection*2.;
      float water=smoothstep(-.018,.025,shore);
      float washing=smoothstep(0.,.1,uWash);

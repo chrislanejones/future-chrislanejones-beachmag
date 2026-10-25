@@ -2080,3 +2080,19 @@ html.dark #coastal-art .map-wrap .map-night {
     gap: 48px;
   }
 }
+
+/* Phones: the search field takes the full width and the count sits under it
+   (beside it, the placeholder cut off at "Events, cities o"). */
+@media (max-width: 640px) {
+  .interior .journal-search {
+    flex-direction: column;
+    gap: 8px;
+  }
+  /* interior.css loads after this file and centers the row's items. */
+  .interior .journal-search > * {
+    align-self: stretch;
+  }
+  .interior .journal-search p {
+    margin: 0;
+  }
+}

@@ -6,15 +6,15 @@ const play = (state: CastleState, ...moves: [CastleTool, number, number][]) =>
   moves.reduce((s, [tool, x, z]) => castleReducer(s, { type: "place", tool, x, z, rotated: false }), state);
 
 describe("the beach", () => {
-  test("is 9 by 7 spots", () => {
-    expect(onBeach(4, 3)).toBe(true);
-    expect(onBeach(-4, -3)).toBe(true);
-    expect(onBeach(5, 0)).toBe(false);
-    expect(onBeach(0, 4)).toBe(false);
+  test("reaches 17 by 13 spots at most", () => {
+    expect(onBeach(8, 6)).toBe(true);
+    expect(onBeach(-8, -6)).toBe(true);
+    expect(onBeach(9, 0)).toBe(false);
+    expect(onBeach(0, 7)).toBe(false);
     expect(onBeach(.5, 0)).toBe(false);
   });
   test("ignores taps off the sand", () => {
-    expect(play(empty, ["tower", 5, 0])).toBe(empty);
+    expect(play(empty, ["tower", 9, 0])).toBe(empty);
   });
 });
 

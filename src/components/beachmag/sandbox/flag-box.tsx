@@ -1,11 +1,12 @@
 import {useMemo} from 'react';
 import {DoubleSide,Shape} from 'three';
+import {LEDGE_HEIGHT,type Spot} from './ledge';
 
 /** A single physical supply: the crate stays after the fifth flag is taken. */
-export function FlagBox({available,dark,onPick}:{available:number;dark:boolean;onPick:()=>void}){
+export function FlagBox({at,available,dark,onPick}:{at:Spot;available:number;dark:boolean;onPick:()=>void}){
  const flag=useMemo(()=>{const s=new Shape();s.moveTo(0,0);s.lineTo(.31,-.1);s.lineTo(0,-.2);s.closePath();return s},[]);
  const wood=dark?'#98744d':'#bf935c',edge=dark?'#765b3c':'#97703e';
- return <group position={[-5.8,0,4.3]} rotation={[0,-.12,0]}
+ return <group position={[at.x,LEDGE_HEIGHT,at.z]} rotation={[0,-.12,0]}
   onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()}
   onPointerMove={e=>e.stopPropagation()}
   onClick={e=>{e.stopPropagation();onPick()}}>

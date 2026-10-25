@@ -1,15 +1,16 @@
 "use client";
 
 import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { BufferAttribute, BufferGeometry, Color, DoubleSide, OrthographicCamera, Shape, Vector3, type Group, type ShaderMaterial, type Texture } from "three";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { BufferAttribute, BufferGeometry, Color, DoubleSide, OrthographicCamera, Shape, Vector2, Vector3, type Camera, type Group, type ShaderMaterial, type Texture } from "three";
 import { FlagBox } from "./flag-box";
 import { IncomingWave } from "./incoming-wave";
 import { SandErosion } from "./sand-erosion";
 import { beachWashAt, erosionAt } from "./beach-wash";
 import { SandMold,moldHeight } from "./sand-molds";
 import { makeShellGeometries, makeShellTexture, type ShellKind } from "./shell-geometry";
-import { BEACH_COLUMNS, BEACH_ROWS, HALF_X, HALF_Z, MOAT_DEPTH, MOUND_HEIGHT, onBeach, pieceElevation, type CastlePiece, type CastleTool } from "./sandcastle-model";
+import { FLAG_BOX, flagBoxSpot, LEDGE_GLSL, ledgeDistance, ledgeHeight, type Spot as LedgeSpot } from "./ledge";
+import { BEACH_COLUMNS, BEACH_ROWS, HALF_X, HALF_Z, MOAT_DEPTH, MOUND_HEIGHT, onBeach, pieceElevation, VIEW_HALF_X, VIEW_HALF_Z, type CastlePiece, type CastleTool } from "./sandcastle-model";
 
 type Props = {
   pieces: CastlePiece[];
@@ -22,6 +23,8 @@ type Props = {
   onAim: (point: { x: number; z: number }) => void;
   flagsAvailable: number;
   onPickFlag: () => void;
+  /** Hands up the current "can you build here" test, for the keyboard marker. */
+  onReach?: (reachable: (x: number, z: number) => boolean) => void;
 };
 const SPACING = 1.05;
 
@@ -83,9 +86,9 @@ export function sandHeight(field: Field, px: number, pz: number) {
 
 /** Fine vertices across the beach, coarse ones out to the horizon. */
 function terrainAxis(half: number) {
-  const values = [-40, -22, -13, -9, -7];
+  const values = [-40, -22, -13].filter(v => v < -half - .5);
   for (let v = -half; v <= half + 1e-6; v += .07) values.push(+v.toFixed(3));
-  values.push(7, 9, 13, 22, 40);
+  values.push(...[13, 22, 40].filter(v => v > half + .5));
   return values;
 }
 const XS = terrainAxis(HALF_X * SPACING + 1.2);
@@ -95,7 +98,7 @@ function makeTerrain() {
   const positions = new Float32Array(XS.length * ZS.length * 3);
   const water = new Float32Array(XS.length * ZS.length);
   const indices: number[] = [];
-  ZS.forEach((z, row) => XS.forEach((x, col) => positions.set([x, 0, z], (row * XS.length + col) * 3)));
+  ZS.forEach((z, row) => XS.forEach((x, col) => positions.set([x, ledgeHeight(x, z, FLAG_BOX), z], (row * XS.length + col) * 3)));
   for (let row = 0; row < ZS.length - 1; row++) for (let col = 0; col < XS.length - 1; col++) {
     const a = row * XS.length + col, b = a + 1, c = a + XS.length, d = c + 1;
     indices.push(a, c, b, b, c, d);
@@ -109,10 +112,11 @@ function makeTerrain() {
 
 const sandVertex = `
   attribute float aWater;
-  varying vec2 vUv; varying vec2 vScreenUv; varying vec3 vNormal; varying float vHeight; varying float vWaterLevel;
+  varying vec2 vUv; varying vec2 vScreenUv; varying vec2 vWorld; varying vec3 vNormal; varying float vHeight; varying float vWaterLevel;
   uniform float uMoatDepth;
   void main() {
     vUv = position.xz / vec2(14.0, 11.0) + .5;
+    vWorld = position.xz;
     vNormal = normal;
     vHeight = position.y;
     // Empty moats sit below their floor; a full one stands just under the sand.
@@ -121,8 +125,8 @@ const sandVertex = `
     vScreenUv = gl_Position.xy / gl_Position.w * .5 + .5;
   }`;
 const sandFragment = `
-  varying vec2 vUv; varying vec2 vScreenUv; varying vec3 vNormal; varying float vHeight; varying float vWaterLevel;
-  uniform vec3 uDryCorner; uniform float uTime; uniform float uDetail; uniform float uWash; uniform float uDamp; uniform vec3 uSand; uniform vec3 uWater; uniform vec3 uLight;
+  varying vec2 vUv; varying vec2 vScreenUv; varying vec2 vWorld; varying vec3 vNormal; varying float vHeight; varying float vWaterLevel;
+  uniform float uTime; uniform float uDetail; uniform float uWash; uniform float uDamp; uniform vec3 uSand; uniform vec3 uWater; uniform vec3 uLight;
   void main() {
     // Soft value noise: gentle mottling instead of per-pixel grain, which aliased into stripes.
     vec2 cell = vUv * 260.0; vec2 i = floor(cell); vec2 f = fract(cell); f = f * f * (3.0 - 2.0 * f);
@@ -147,7 +151,8 @@ const sandFragment = `
     float coast = p.x + p.y * .7 - 1.22
       + sin(p.y * 7.0 + uTime * .45) * .018;
     float tide = sin(uTime * .65 + p.y * 3.0) * .022;
-    float protection=1.-smoothstep(.065,.15,distance(p,uDryCorner.xy));
+    // The water stops at the edge of the flag box's rise.
+    float protection=1.-smoothstep(-.05,.2,ledgeDistance(vWorld));
     float shore = coast + tide + uWash - protection*2.;
     float water = smoothstep(-.018, .025, shore);
     float wet = smoothstep(-.065, .02, shore);
@@ -163,7 +168,7 @@ const sandFragment = `
     color=mix(color,vec3(.87,.94,.9),clamp(foam + wash + waves, 0.0, .85));
     gl_FragColor=vec4(color,1.0);
     #include <colorspace_fragment>
-  }`;
+  }`.replace("void main() {", LEDGE_GLSL + "\n  void main() {");
 
 /* ---------- Animation: a shovel scoops, then water rises in a new moat ---------- */
 
@@ -175,7 +180,7 @@ type Dig = { x: number; z: number; start: number; moat: boolean };
  * Zooms so the whole beach, plus headroom for a castle at the back, fills the
  * canvas with a small margin, whatever its shape.
  */
-function CameraFit() {
+function CameraFit({ onFit }: { onFit: (box: LedgeSpot) => void }) {
   const { size, invalidate } = useThree();
   const getScene = useThree(state => state.get);
   useEffect(() => {
@@ -186,8 +191,8 @@ function CameraFit() {
     camera.updateProjectionMatrix();
     camera.updateMatrixWorld();
     // Include the flag box just outside the left build boundary.
-    const x = (HALF_X + .3) * SPACING, z = (HALF_Z + .3) * SPACING;
-    const left = -(HALF_X + 1.9) * SPACING;
+    const x = (VIEW_HALF_X + .3) * SPACING, z = (VIEW_HALF_Z + .3) * SPACING;
+    const left = -(VIEW_HALF_X + 1.9) * SPACING;
     let reach = 0;
     for (const [cx, cy, cz] of [[-x, 0, -z], [x, 0, -z], [-x, 0, z], [x, 0, z], [-x, 1.2, -z], [x, 1.2, -z], [left-.5,0,4.8], [left-.5,1.3,4.8]]) {
       const p = new Vector3(cx, cy, cz).project(camera);
@@ -195,8 +200,10 @@ function CameraFit() {
     }
     camera.zoom = .97 / reach;
     camera.updateProjectionMatrix();
+    // The flag box follows the frame's left edge, so it is placed once the zoom is set.
+    onFit(flagBoxSpot(camera));
     invalidate();
-  }, [getScene, size.width, size.height, invalidate]);
+  }, [getScene, size.width, size.height, invalidate, onFit]);
   return null;
 }
 
@@ -324,19 +331,40 @@ function SandPiece({ piece, texture, shells, dark, elevation = 0, born }: { piec
   );
 }
 
-function Beach({ pieces, tool, cursor, dark, moving, washStartedAt, onPlace, onAim, flagsAvailable,onPickFlag }: Props) {
+/**
+ * Whether a spot is open sand on screen: inside the build limit, inside the
+ * canvas with room above it for a tall tower, off the flag box's rise, and
+ * back from the waterline. The coast test mirrors sandFragment's
+ * screen-space shore (coast = u + .7v - 1.22), with a margin for the tide.
+ */
+function reachableOn(camera: Camera, box: LedgeSpot) {
+  const point = new Vector3();
+  return (x: number, z: number) => {
+    if (!onBeach(x, z)) return false;
+    const wx = x * SPACING, wz = z * SPACING;
+    if (ledgeDistance(wx, wz, box) < .35) return false;
+    point.set(wx, 0, wz).project(camera);
+    if (Math.abs(point.x) > .93 || point.y < -.9 || point.y > .9) return false;
+    if ((point.x * .5 + .5) + (point.y * .5 + .5) * .7 - 1.22 > -.11) return false;
+    return point.set(wx, 1.5, wz).project(camera).y < .97;
+  };
+}
+
+function Beach({ pieces, tool, cursor, dark, moving, washStartedAt, onPlace, onAim, flagsAvailable, onPickFlag, onReach, box }: Props & { box: LedgeSpot }) {
   const marker = useRef<Group>(null);
   const shader = useRef<ShaderMaterial>(null);
   const press = useRef<{ x: number; y: number } | null>(null);
   const clock = useRef(0);
-  const { invalidate } = useThree();
+  const { invalidate, camera } = useThree();
+  const reachable = useMemo(() => reachableOn(camera, box), [camera, box]);
+  useEffect(() => { onReach?.(reachable); }, [reachable, onReach]);
   const texture = useMemo(() => makeShellTexture(), []);
   const shells = useMemo(() => makeShellGeometries(), []);
   const terrain = useMemo(() => makeTerrain(), []);
   useEffect(() => () => { texture.dispose(); terrain.dispose(); Object.values(shells).forEach(geometry => geometry.dispose()); }, [texture, shells, terrain]);
   const uniforms = useMemo(() => ({
     uTime: { value: 0 }, uDetail: { value: dark ? .02 : .03 }, uMoatDepth: { value: MOAT_DEPTH },
-    uWash:{value:0},uDamp:{value:0},uDryCorner:{value:new Vector3()},
+    uWash:{value:0},uDamp:{value:0},uFlagBox:{value:new Vector2(FLAG_BOX.x,FLAG_BOX.z)},
     uSand: { value: new Color(dark ? "#756448" : "#ddc397") }, uWater: { value: new Color(dark ? "#2e6970" : "#86bcbc") },
     uLight: { value: [-4, 9, 5].map(v => v / Math.hypot(-4, 9, 5)) },
   }), [dark]);
@@ -377,18 +405,27 @@ function Beach({ pieces, tool, cursor, dark, moving, washStartedAt, onPlace, onA
     invalidate();
   }, [pieces, moving, invalidate,washStartedAt]);
 
+  // The rise under the flag box, per vertex: worked out once per box spot,
+  // since the wash reshapes every vertex each frame.
+  const rise = useMemo(() => {
+    const position = terrain.getAttribute("position") as BufferAttribute;
+    const heights = new Float32Array(position.count);
+    for (let i = 0; i < position.count; i++) heights[i] = ledgeHeight(position.getX(i), position.getZ(i), box);
+    return heights;
+  }, [terrain, box]);
+
   // Reshape the sand when mounds or moats change.
   const terrainTween=useRef<{from:Float32Array;to:Float32Array;start:number}|null>(null);
   useEffect(() => {
     const position = terrain.getAttribute("position") as BufferAttribute;
     const from=new Float32Array(position.count),to=new Float32Array(position.count);
-    for (let i = 0; i < position.count; i++){from[i]=position.getY(i);to[i]=sandHeight(field, position.getX(i), position.getZ(i));if(!moving||washStartedAt!==null)position.setY(i,to[i])}
+    for (let i = 0; i < position.count; i++){from[i]=position.getY(i);to[i]=sandHeight(field, position.getX(i), position.getZ(i))+rise[i];if(!moving||washStartedAt!==null)position.setY(i,to[i])}
     terrainTween.current=moving&&washStartedAt===null?{from,to,start:performance.now()}:null;
     position.needsUpdate = true;
     terrain.computeVertexNormals();
     terrain.computeBoundingSphere();
     invalidate();
-  }, [field, terrain, invalidate,moving,washStartedAt]);
+  }, [field, terrain, invalidate,moving,washStartedAt,rise]);
 
   const writeWater = () => {
     const position = terrain.getAttribute("position") as BufferAttribute;
@@ -407,11 +444,11 @@ function Beach({ pieces, tool, cursor, dark, moving, washStartedAt, onPlace, onA
   }, [cursor, field, invalidate,washStartedAt]);
 
   useFrame(({camera}, delta) => {
-    const dry=new Vector3(-5.8,0,4.3).project(camera);uniforms.uDryCorner.value.set(dry.x*.5+.5,dry.y*.5+.5,0);
-    if(washStartedAt!==null){const pos=terrain.getAttribute("position") as BufferAttribute;const advance=beachWashAt(Math.min(1800,performance.now()-washStartedAt)).advance;const screen=new Vector3();for(let i=0;i<pos.count;i++){const x=pos.getX(i),z=pos.getZ(i);screen.set(x,0,z).project(camera);pos.setY(i,sandHeight(field,x,z)*(1-erosionAt(advance,screen.x*.5+.5,screen.y*.5+.5)))}pos.needsUpdate=true;terrain.computeVertexNormals()}
+    if(washStartedAt!==null){const pos=terrain.getAttribute("position") as BufferAttribute;const advance=beachWashAt(Math.min(1800,performance.now()-washStartedAt)).advance;const screen=new Vector3();for(let i=0;i<pos.count;i++){const x=pos.getX(i),z=pos.getZ(i);screen.set(x,0,z).project(camera);pos.setY(i,sandHeight(field,x,z)*(1-erosionAt(advance,screen.x*.5+.5,screen.y*.5+.5))+rise[i])}pos.needsUpdate=true;terrain.computeVertexNormals()}
     const tween=terrainTween.current;
     if(tween){const progress=smooth(.3,.75,(performance.now()-tween.start)/DIG_MS),position=terrain.getAttribute("position") as BufferAttribute;for(let i=0;i<position.count;i++)position.setY(i,tween.from[i]+(tween.to[i]-tween.from[i])*progress);position.needsUpdate=true;terrain.computeVertexNormals();if(progress===1){terrain.computeBoundingSphere();terrainTween.current=null}}
     if (shader.current) {
+      shader.current.uniforms.uFlagBox.value.set(box.x,box.z);
       if(moving||washStartedAt!==null)clock.current += Math.min(delta,.05);
       shader.current.uniforms.uTime.value=clock.current;
       const wash=washStartedAt===null?{advance:0,damp:0}:beachWashAt(performance.now()-washStartedAt);
@@ -432,7 +469,7 @@ function Beach({ pieces, tool, cursor, dark, moving, washStartedAt, onPlace, onA
   });
 
   const spot = (event: ThreeEvent<PointerEvent>) => ({ x: Math.round(event.point.x / SPACING), z: Math.round(event.point.z / SPACING) });
-  const valid = ({ x, z }: { x: number; z: number }) => onBeach(x, z);
+  const valid = ({ x, z }: { x: number; z: number }) => reachable(x, z);
   return <>
     <mesh geometry={terrain}>
       <shaderMaterial ref={shader} uniforms={uniforms} vertexShader={sandVertex} fragmentShader={sandFragment} toneMapped={false} />
@@ -444,8 +481,8 @@ function Beach({ pieces, tool, cursor, dark, moving, washStartedAt, onPlace, onA
     {molds.map(mold=><BucketMold key={mold.piece.id} mold={mold} onDone={()=>setMolds(current=>current.filter(m=>m!==mold))}/>)}
     {digs.map(dig => <Shovel key={`${dig.x},${dig.z},${dig.start}`} dig={dig} height={Math.max(0,sandHeight(field, dig.x * SPACING, dig.z * SPACING))}
       onDone={() => setDigs(current => current.filter(d => d !== dig))} />)}
-    <FlagBox available={flagsAvailable} dark={dark} onPick={onPickFlag}/>
-    {washStartedAt!==null&&<IncomingWave startedAt={washStartedAt} dark={dark} clock={clock}/>}
+    <FlagBox at={box} available={flagsAvailable} dark={dark} onPick={onPickFlag}/>
+    {washStartedAt!==null&&<IncomingWave startedAt={washStartedAt} dark={dark} clock={clock} box={box}/>}
     <group ref={marker}>
       <mesh rotation={[-Math.PI / 2, 0, 0]}><ringGeometry args={[.43, .47, 48]} /><meshBasicMaterial color={tool === "erase" ? "#ed9c84" : "#fff4d9"} transparent opacity={.85} depthWrite={false} /></mesh>
     </group>
@@ -474,15 +511,17 @@ function Beach({ pieces, tool, cursor, dark, moving, washStartedAt, onPlace, onA
 }
 
 export default function SandcastleScene(props: Props) {
+  const [box, setBox] = useState<LedgeSpot>(FLAG_BOX);
+  const onFit = useCallback((next: LedgeSpot) => setBox(current => current.x === next.x && current.z === next.z ? current : next), []);
   return <Canvas shadows orthographic camera={{ position: [7, 9, 11], zoom: 60, near: .1, far: 60 }}
     dpr={[1, 1.5]} frameloop={props.moving || props.washStartedAt!==null ? "always" : "demand"}
     gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
     style={{ touchAction: "pan-y" }} fallback={<p>The 3D beach needs WebGL enabled in your browser.</p>}>
-    <CameraFit />
+    <CameraFit onFit={onFit} />
     <ambientLight intensity={props.dark ? 1.3 : 1.7} />
     <directionalLight position={[-4, 9, 5]} intensity={2.3} color="#fff1d6" castShadow shadow-mapSize={[1024, 1024]}
       shadow-camera-left={-9} shadow-camera-right={9} shadow-camera-top={9} shadow-camera-bottom={-9} shadow-normalBias={.04} />
-    <Beach {...props} />
+    <Beach {...props} box={box} />
   </Canvas>;
 }
 

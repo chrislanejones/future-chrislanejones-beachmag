@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Component, useEffect, useReducer, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { Component, useCallback, useEffect, useReducer, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { useTheme } from "@/lib/theme-store";
 import { ToolArt } from "./tool-art";
 import { ToolKnob } from "./tool-knob";
@@ -169,8 +169,12 @@ export function Sandbox() {
     }
   }
 
+  // The scene says which spots are open sand on screen; the keys stay on them.
+  const reachable = useRef<(x: number, z: number) => boolean>(() => true);
+  const onReach = useCallback((test: (x: number, z: number) => boolean) => { reachable.current = test; }, []);
   function aimAt(x: number, z: number) {
     const point = { x: Math.max(-HALF_X, Math.min(HALF_X, x)), z: Math.max(-HALF_Z, Math.min(HALF_Z, z)) };
+    if (!reachable.current(point.x, point.z)) return;
     aim.current = point;
     setCursor(point);
   }
@@ -252,6 +256,7 @@ export function Sandbox() {
             onAim={(point) => {
               aim.current = point;
             }}
+            onReach={onReach}
           />}
         </Boundary>
       </div>

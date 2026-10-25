@@ -13,6 +13,8 @@ Status: pushed to `main`, which deploys chrislanejones.com.
 - Phones and tablets: the radio's tuner gets its own row, the three tool groups sit above the icons, and the ramblings stack above the postcards.
 - "Past & present." and the About page's conference trail share one paged logo board (`logo-board.tsx`); its page dots follow the screen width. Conference logos on /conferences are larger.
 - The footer's beach umbrella is redrawn with domed panels and a scalloped edge.
+- Sand game: any dry sand on screen is buildable (up to 17 by 13 spots, not just the 9 by 7 middle). The flag box sits on a low rise near the frame's left edge, and the wash stops along the rise's curved edge (`sandbox/ledge.ts`).
+- /conferences and the blog: the search field takes the full width on phones.
 
 Validation: TypeScript, ESLint and the CSS drift check (`pnpm check:css`) passed; layouts checked at 344, 390, 768 and 1280px.
 

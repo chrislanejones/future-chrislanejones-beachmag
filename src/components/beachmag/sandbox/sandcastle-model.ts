@@ -18,12 +18,20 @@ export type CastleAction =
   | { type: "clear" }
   | { type: "build" };
 
-export const BEACH_COLUMNS = 9;
-export const BEACH_ROWS = 7;
+/**
+ * The outer limit of the sand you can build on. The camera frames the 9 by 7
+ * middle (VIEW_HALF_*); the scene opens every spot beyond it that is on
+ * screen and dry, so a wide stage is buildable edge to edge.
+ */
+export const BEACH_COLUMNS = 17;
+export const BEACH_ROWS = 13;
 export const MAX_FLAGS = 5;
 /** Spots run from -HALF_X..HALF_X and -HALF_Z..HALF_Z, centered on the beach. */
 export const HALF_X = (BEACH_COLUMNS - 1) / 2;
 export const HALF_Z = (BEACH_ROWS - 1) / 2;
+/** The middle the camera always shows in full, whatever the stage's shape. */
+export const VIEW_HALF_X = 4;
+export const VIEW_HALF_Z = 3;
 export function onBeach(x: number, z: number) {
   return Number.isInteger(x) && Number.isInteger(z) && Math.abs(x) <= HALF_X && Math.abs(z) <= HALF_Z;
 }
