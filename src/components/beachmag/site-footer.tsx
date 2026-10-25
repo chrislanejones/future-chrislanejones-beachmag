@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useFooterNavSections } from "@/components/page/links";
-import { Waves } from "lucide-react";
+import { Heart, Waves } from "lucide-react";
 import { BeachFigure } from "./beach-figure";
 import "./footer.css";
 
@@ -110,7 +110,12 @@ export function SiteFooter({ offline = false }: { offline?: boolean }) {
         </div>
       </div>
       <div className="footer-colophon">
-        <p>© {new Date().getFullYear()} Chris Lane Jones. All rights reserved.</p>
+        <p>
+          <span className="footer-love">
+            Made with love from Jax <Heart className="footer-heart" size={13} strokeWidth={0} aria-label="heart" />
+          </span>{" "}
+          <span aria-hidden="true">·</span> © {new Date().getFullYear()} Chris Lane Jones. All rights reserved.
+        </p>
         <a href="#site-nav">Back to top ↑</a>
       </div>
     </footer>

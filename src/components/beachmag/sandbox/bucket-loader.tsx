@@ -7,9 +7,9 @@ import { useEffect, useRef, useState } from "react";
 // counting 1% to 100%. Styles: sandbox.css (.bucket-loader).
 
 /** Every fill takes at least this long, even when the scene is already cached. */
-const MIN_FILL_MS = 400;
+const MIN_FILL_MS = 1000;
 /** After the download lands, the last stretch to 100% takes at least this long. */
-const FINISH_MS = 200;
+const FINISH_MS = 450;
 
 // Bucket and shovel drawn once, used twice: as the colored fill and as the outline.
 const BUCKET_BODY = "M26 42 L34 99 Q35 105 41 105 L79 105 Q85 105 86 99 L94 42 Z";
@@ -47,7 +47,7 @@ export function BucketLoader({ running, ready, onFull }: { running: boolean; rea
       let next: number;
       if (readyAt.current === null) {
         // Waiting: a quick start that slows as it nears 90%.
-        next = 1 + 89 * (1 - Math.exp(-elapsed / 900));
+        next = 1 + 89 * (1 - Math.exp(-elapsed / 1400));
         from = next;
       } else {
         const end = Math.max(start + MIN_FILL_MS, readyAt.current + FINISH_MS);

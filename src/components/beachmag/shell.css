@@ -2201,3 +2201,13 @@ html.dark #coastal-art .map-wrap .map-night {
   justify-content: space-between;
   word-spacing: 0;
 }
+
+/* Footer bottom line: "Made with love from Jax" and a filled heart before the copyright. */
+#coastal-footer .footer-love {
+  white-space: nowrap;
+}
+#coastal-footer .footer-heart {
+  display: inline-block;
+  vertical-align: -2px;
+  fill: var(--footer-accent);
+}
