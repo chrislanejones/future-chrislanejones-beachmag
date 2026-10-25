@@ -14,7 +14,7 @@ export function ConferenceTile({ conference, priority = false }: { conference: C
       <small>{conferenceDates(conference)}</small>
       {conference.logo && (
         <span className="tile-logo">
-          <Image src={conference.logo} alt={conference.logoAlt ?? `${conference.name} logo`} fill sizes="(max-width: 640px) 80vw, 400px" priority={priority} />
+          <Image src={conference.logo} alt={conference.logoAlt ?? `${conference.name} logo`} fill sizes="(max-width: 640px) 90vw, 560px" priority={priority} />
         </span>
       )}
       <strong>{conference.name} <span aria-hidden="true">↗</span></strong>

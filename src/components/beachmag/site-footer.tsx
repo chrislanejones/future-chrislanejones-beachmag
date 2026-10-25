@@ -69,12 +69,19 @@ export function SiteFooter({ offline = false }: { offline?: boolean }) {
           <p className="footer-kicker">THE COASTAL EDITION / UNTIL NEXT TIME</p>
           <h2>
             See you<br /><em>out there.</em>
+            {/* A beach umbrella: six domed panels in the preserver's two colors with
+                a scalloped valance, on a pole planted in a little drift of sand. */}
             <svg className="footer-umbrella" viewBox="0 0 64 64" aria-hidden="true">
-              
-<path d="M32 34 L5.0 34.0 A27 27 0 0 1 8.6 20.5 Z" fill="var(--footer-accent)" />              <path d="M32 34 L8.6 20.5 A27 27 0 0 1 18.5 10.6 Z" fill="var(--footer-ink)" />              <path d="M32 34 L18.5 10.6 A27 27 0 0 1 32.0 7.0 Z" fill="var(--footer-accent)" />              <path d="M32 34 L32.0 7.0 A27 27 0 0 1 45.5 10.6 Z" fill="var(--footer-ink)" />              <path d="M32 34 L45.5 10.6 A27 27 0 0 1 55.4 20.5 Z" fill="var(--footer-accent)" />              <path d="M32 34 L55.4 20.5 A27 27 0 0 1 59.0 34.0 Z" fill="var(--footer-ink)" />
-              <path d="M5 34 A27 27 0 0 1 59 34" fill="none" stroke="var(--footer-paper)" strokeWidth="2.5" strokeLinecap="round" />
-              <path d="M32 34 V58 a4 4 0 0 0 8 0" fill="none" stroke="var(--footer-ink)" strokeWidth="3" strokeLinecap="round" />
-              <circle cx="32" cy="6" r="2.5" fill="var(--footer-ink)" />
+              <path d="M32 30 V57" stroke="var(--footer-ink)" strokeWidth="2.6" strokeLinecap="round" />
+              <path d="M22 58.5 Q32 53 42 58.5Z" fill="var(--footer-accent)" />
+              <path d="M32 9 Q4.6 10 4 30 Q8.7 35.5 13.3 30 Q13.7 10 32 9Z" fill="var(--footer-accent)" />
+              <path d="M32 9 Q13.7 10 13.3 30 Q18 35.5 22.7 30 Q22.9 10 32 9Z" fill="var(--footer-ink)" />
+              <path d="M32 9 Q22.9 10 22.7 30 Q27.3 35.5 32 30 Q32 10 32 9Z" fill="var(--footer-accent)" />
+              <path d="M32 9 Q32 10 32 30 Q36.7 35.5 41.3 30 Q41.1 10 32 9Z" fill="var(--footer-ink)" />
+              <path d="M32 9 Q41.1 10 41.3 30 Q46 35.5 50.7 30 Q50.3 10 32 9Z" fill="var(--footer-accent)" />
+              <path d="M32 9 Q50.3 10 50.7 30 Q55.3 35.5 60 30 Q59.4 10 32 9Z" fill="var(--footer-ink)" />
+              <path d="M32 9 V4" stroke="var(--footer-ink)" strokeWidth="2.6" strokeLinecap="round" />
+              <circle cx="32" cy="3.6" r="2.2" fill="var(--footer-accent)" />
             </svg>
           </h2>
         </div>

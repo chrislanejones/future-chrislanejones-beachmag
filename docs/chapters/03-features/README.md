@@ -9,7 +9,7 @@ The beach version brings the 2026 move back to Florida into the portfolio: St. A
 | Route | Purpose |
 | --- | --- |
 | `/` | Hero, clients, selected projects, music, ramblings, photos, latest posts, technology and sandcastle |
-| `/about` | Background, interests and conference slider |
+| `/about` | Background, interests and the conference trail (a paged logo board, four across and two down) |
 | `/projects`, `/projects/[slug]` | Work index and individual project pages |
 | `/blog`, `/blog/[slug]` | Writing and articles |
 | `/conferences`, `/conferences/[year]`, `/conferences/[year]/[slug]` | Conference index, years and event details |

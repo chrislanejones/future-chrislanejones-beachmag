@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { EndNote } from "@/components/beachmag/interior-parts";
-import { LogoStrip } from "@/components/beachmag/logo-strip";
+import { LogoBoard } from "@/components/beachmag/logo-board";
 import { conferenceHref, sortConferences, type Conference } from "@/lib/conferences";
 import { aboutSections } from "@/data/about-data";
 
@@ -60,12 +60,12 @@ export default function AboutPage({ conferences }: { conferences: Conference[] }
         );
       })}
       {conferences.length > 0 && (
-        <LogoStrip
+        <LogoBoard
           id="conference-trail"
           kicker="ON THE ROAD / TECH CONFERENCES"
-          title="The conference trail."
+          title={<>The conference <em>trail.</em></>}
           label="Conference logos"
-          footer="EVENTS, PLACES & GOOD IDEAS."
+          pageLabel="conferences"
           items={sortConferences(conferences)
             .filter((conference) => conference.logo)
             .map((conference) => ({

@@ -711,18 +711,21 @@ html.dark .interior {
   color: var(--paper);
 }
 /* Logos sit on their own cream plate in both editions, so dark artwork
-   (navy, black) stays visible after dark. */
+   (navy, black) stays visible after dark. The plate keeps the tile's shape
+   and the logo fills most of it, as big as on About's conference trail. */
 .interior .resource-tile .tile-logo {
   position: relative;
   display: block;
-  height: 150px;
-  padding: 18px 24px;
+  /* The set width keeps min-height from widening the plate through the ratio. */
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  min-height: 170px;
   background: #f8f1e4;
   box-shadow: inset 0 0 0 1px color-mix(in srgb, #173437 12%, transparent);
 }
 .interior a.resource-tile .tile-logo img {
   object-fit: contain;
-  padding: 16px 24px;
+  padding: 14px 6%;
   background: transparent;
 }
 /* Dates: readable small caps in the full ink color. */
@@ -736,6 +739,8 @@ html.dark .interior {
 /* Hover: the card lifts with a soft shadow and an orange top edge, instead
    of the design's hard offset shadow (which turns cream after dark). */
 .interior a.resource-tile {
+  /* A grid item may shrink below the logo plate's own minimum width. */
+  min-width: 0;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 .interior a.resource-tile:hover,
@@ -1588,6 +1593,13 @@ section#sandbox .sandbox-heading {
 .interior .client-board-tile .client-name {
   opacity: 0.7;
 }
+/* A full-color logo (the conference trail) fills the tile the same way. */
+:is(#coastal-art, .interior) .client-board-tile .client-picture {
+  flex: 1 1 0;
+  width: 94%;
+  height: auto;
+  min-height: 0;
+}
 .interior a.client-board-tile:hover,
 .interior a.client-board-tile:focus-visible {
   transform: translateY(-4px);
@@ -1763,14 +1775,15 @@ section#sandbox .sandbox-heading {
 }
 
 /* The beach umbrella after "out there.": alternating accent and cream panels,
-   the way the life preserver is segmented, with no ring around it. */
+   the way the life preserver is segmented, planted in a little sand. */
 #coastal-footer .footer-umbrella {
   display: inline-block;
-  width: 0.72em;
-  height: 0.72em;
-  margin-left: 0.1em;
-  vertical-align: -0.08em;
-  transform: rotate(-12deg);
+  width: 1em;
+  height: 1em;
+  margin-left: 0.12em;
+  vertical-align: -0.14em;
+  transform: rotate(-14deg);
+  overflow: visible;
   letter-spacing: 0;
 }
 /* Phones: 30px keeps "Wish you were here." on one line in the 310px card. */
@@ -2005,5 +2018,65 @@ html.dark #coastal-art .map-wrap .map-night {
 @media (min-width: 521px) and (max-width: 899px) {
   #beach-offline .radio-unit {
     margin-top: 116px;
+  }
+}
+
+/* Phones: the three tool groups sit in a row above the icons instead of as
+   sideways tabs down the left, so the icons get the full width. */
+@media (max-width: 560px) {
+  #coastal-art #tool-gallery .gallery-body {
+    display: block;
+    min-height: 0;
+  }
+  #coastal-art #tool-gallery .category-rail {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-right: 0;
+    border-bottom: 2px solid var(--ink);
+  }
+  #coastal-art #tool-gallery .category {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    text-align: left;
+    gap: 10px;
+    padding: 14px 10px 12px;
+    min-height: 96px;
+  }
+  #coastal-art #tool-gallery .category .caption {
+    writing-mode: horizontal-tb;
+    transform: none;
+    white-space: normal;
+    font-size: 19px;
+    line-height: 1.05;
+  }
+  #coastal-art #tool-gallery .category .arrow {
+    font-size: 18px;
+    order: 1;
+  }
+  #coastal-art #tool-gallery .icon-panel {
+    padding-left: 0;
+  }
+  #coastal-art #tool-gallery .icon-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 390px) {
+  #coastal-art #tool-gallery .category .caption {
+    font-size: 17px;
+  }
+  #coastal-art #tool-gallery .icon-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Phones and tablets: the ramblings on top, the postcards card under them.
+   Side by side the ramblings stretched to the photo card's height and the
+   quote floated in empty paper. */
+@media (max-width: 899px) {
+  #beach-offline .two {
+    grid-template-columns: minmax(0, 560px);
+    justify-content: center;
+    align-items: start;
+    gap: 48px;
   }
 }
