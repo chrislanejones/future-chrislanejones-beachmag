@@ -8,10 +8,12 @@ import { ToolKnob } from "./tool-knob";
 import { BeachFigure } from "../beach-figure";
 import { WASH_CLEAR_MS, WASH_END_MS } from "./beach-wash";
 import { castleReducer, initialCastle, MAX_FLAGS, HALF_X, HALF_Z, type CastleTool } from "./sandcastle-model";
+import { BucketLoader } from "./bucket-loader";
 import "./sandbox.css";
 
 // Three.js stays out of the server render and the first bundle.
-const Scene = dynamic(() => import("./sandcastle-scene"), { ssr: false, loading: () => null });
+const loadScene = () => import("./sandcastle-scene");
+const Scene = dynamic(loadScene, { ssr: false, loading: () => null });
 
 class Boundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   state = { failed: false };
@@ -109,6 +111,20 @@ export function Sandbox() {
     if (host.current) observer.observe(host.current);
     return () => observer.disconnect();
   }, []);
+
+  // The loading bucket counts to 100% once the game is on screen, finishing
+  // after the scene's code has arrived, or failed to: on failure the Boundary
+  // shows its message, so the bucket must step aside either way.
+  const [settled, setSettled] = useState(false);
+  const [filled, setFilled] = useState(false);
+  const onFull = useCallback(() => setFilled(true), []);
+  useEffect(() => {
+    if (!near) return;
+    let live = true;
+    const settle = () => { if (live) setSettled(true); };
+    loadScene().then(settle, settle);
+    return () => { live = false; };
+  }, [near]);
 
   function pickFlag() {
     if (busy) return;
@@ -242,6 +258,7 @@ export function Sandbox() {
           }
         }}
       >
+        {near && !filled && <BucketLoader running={visible} ready={settled} onFull={onFull} />}
         <Boundary>
           {near && <Scene
             pieces={state.pieces}

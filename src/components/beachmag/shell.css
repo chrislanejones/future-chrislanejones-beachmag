@@ -1799,8 +1799,11 @@ section#sandbox .sandbox-heading {
 #beach-offline .two .photos > h3 {
   margin: 0 0 34px;
 }
-#beach-offline .rambles > .ramble {
-  flex: 1;
+/* Side by side, the paper stops short of the postcards' full height. */
+@media (min-width: 900px) {
+  #beach-offline .rambles > .ramble {
+    min-height: 400px;
+  }
 }
 @media (max-width: 520px) {
   #beach-offline .rambles > h3 {
@@ -2164,4 +2167,41 @@ html.dark #coastal-art .map-wrap .map-night {
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.004 0.55' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.16'/%3E%3C/svg%3E") 0 0 / 320px 320px,
     linear-gradient(180deg, var(--bm-silver-hi), var(--bm-silver) 38%, var(--bm-silver-hi) 62%, var(--bm-silver-lo));
+}
+
+/* Large screens: a stereo boombox, a speaker either side of the deck
+   ("COASTAL" left, "stereo" right). Smaller screens keep the mono radio. */
+#beach-offline .woofer-right {
+  display: none;
+}
+@media (min-width: 1280px) {
+  #beach-offline .radio-scene {
+    grid-template-columns: minmax(0, 780px) minmax(0, 1fr);
+  }
+  #beach-offline .mono-radio {
+    max-width: 780px;
+  }
+  #beach-offline .hardware-face {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr);
+  }
+  #beach-offline .woofer-right {
+    display: block;
+  }
+  #beach-offline .speaker-label .mono-word {
+    display: none;
+  }
+  /* "stereo" set like "COASTAL": the small italic serif blurred at this size. */
+  #beach-offline .woofer-right .speaker-label i {
+    font: 900 10px/1 Arial, sans-serif;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+}
+
+/* The tuner's FM numbers spread across the whole display at every width
+   (as one spaced line of text they stopped partway across). */
+#beach-offline .frequency-scale {
+  display: flex;
+  justify-content: space-between;
+  word-spacing: 0;
 }

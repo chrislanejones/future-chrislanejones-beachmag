@@ -137,6 +137,11 @@
   --bm-silver: #cfd2cb;        /* the radio's silver body */
   --bm-silver-lo: #b5b9b5;     /* the radio's silver, shaded edge */
   --bm-lamp: #ff5a30;          /* a lit lamp on the radio */
+  --bm-toy-teal: #4fa3a5;      /* the sand game's loading bucket */
+  --bm-toy-teal-deep: #3d8e91; /* its rim */
+  --bm-toy-coral: #e0573f;     /* its shovel */
+  --bm-toy-sand: #ead39f;      /* the sand heaped in it */
+  --bm-toy-handle: #f4f6f2;    /* its handle */
   --bm-font-display: var(--font-bodoni-moda), Georgia, serif;
   --bm-font-body: var(--font-dm-sans), Arial, sans-serif;
   --ease-pop: cubic-bezier(0.2, 1.5, 0.4, 1);   /* the bouncy press (keys, knobs, the preserver) */

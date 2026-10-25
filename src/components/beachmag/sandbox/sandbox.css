@@ -28,3 +28,17 @@
 #sandbox .game-status{font-size:12px;min-height:36px;line-height:1.5;padding-top:14px;border-top:1px solid}
 #sandbox #game-help{font-size:11px;line-height:1.7;max-width:80ch}
 @media(max-width:640px){#sandbox{padding:30px 18px}#sandbox .sandbox-heading{grid-template-columns:1fr;gap:12px}#sandbox h2{font-size:48px}#sandbox .game-toolbar{grid-template-columns:repeat(4,1fr)}#sandbox .game-stage{height:390px}#sandbox .game-bottom{flex-direction:column;align-items:start}}
+
+/* The loading bucket (bucket-loader.tsx): over the stage until the beach is ready. */
+#sandbox .bucket-loader{position:absolute;inset:0;z-index:2;display:grid;place-content:center;justify-items:center;gap:10px;background:inherit;font-size:12px;text-align:center}
+#sandbox .bucket-loader p{margin:0}
+#sandbox .bucket-loader-art{width:112px;height:112px;overflow:visible}
+#sandbox .bucket-loader-fill{transform-box:fill-box;transform-origin:bottom}
+#sandbox .bucket-loader-count{display:inline-block;min-width:4ch;text-align:right;font-variant-numeric:tabular-nums}
+#sandbox .toy-bucket{fill:var(--bm-toy-teal)}
+#sandbox .toy-rim{fill:var(--bm-toy-teal-deep)}
+#sandbox .toy-shine{stroke:color-mix(in srgb,white 35%,transparent)}
+#sandbox .toy-sand{fill:var(--bm-toy-sand)}
+#sandbox .toy-handle{stroke:var(--bm-toy-handle)}
+#sandbox .toy-shovel{fill:var(--bm-toy-coral)}
+html.dark #sandbox .bucket-loader-colors{filter:brightness(.85) saturate(.9)}

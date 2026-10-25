@@ -17,6 +17,9 @@ Status: pushed to `main`, which deploys chrislanejones.com.
 - /conferences and the blog: the search field takes the full width on phones.
 - Radio: the silver body uses a soft brushed grain instead of 1px stripes that banded on phones; volume runs through a gain node (iOS ignores an audio element's volume) and starts at 70 on touch screens; on phones the knobs spread across their row with FM / AM and a lit TAPE lamp just above them.
 - Homepage: "My ramblings." sits above its paper like "Wish you were here.", with the quote at the top of the card.
+- Large screens (1280px and up): the radio becomes a stereo boombox with a speaker either side of the deck ("COASTAL" and "STEREO"). The tuner's FM numbers span the whole display. The ramblings card is shorter on desktop.
+- Sand game: the loading bucket from the beach site is back, counting 1% to 100% and filling for at least 400ms.
+- Blog: the beach-town post shows the radio on desktop, tablet and phone.
 
 Validation: TypeScript, ESLint and the CSS drift check (`pnpm check:css`) passed; layouts checked at 344, 390, 768 and 1280px.
 
