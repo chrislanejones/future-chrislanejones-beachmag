@@ -15,6 +15,8 @@ Status: pushed to `main`, which deploys chrislanejones.com.
 - The footer's beach umbrella is redrawn with domed panels and a scalloped edge.
 - Sand game: any dry sand on screen is buildable (up to 17 by 13 spots, not just the 9 by 7 middle). The flag box sits on a low rise near the frame's left edge, and the wash stops along the rise's curved edge (`sandbox/ledge.ts`).
 - /conferences and the blog: the search field takes the full width on phones.
+- Radio: the silver body uses a soft brushed grain instead of 1px stripes that banded on phones; volume runs through a gain node (iOS ignores an audio element's volume) and starts at 70 on touch screens; on phones the knobs spread across their row with FM / AM and a lit TAPE lamp just above them.
+- Homepage: "My ramblings." sits above its paper like "Wish you were here.", with the quote at the top of the card.
 
 Validation: TypeScript, ESLint and the CSS drift check (`pnpm check:css`) passed; layouts checked at 344, 390, 768 and 1280px.
 

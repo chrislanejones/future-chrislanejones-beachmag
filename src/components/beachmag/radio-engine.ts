@@ -41,6 +41,9 @@ export function mountRadio(root: HTMLElement): () => void {
   let samples: Uint8Array<ArrayBuffer> | undefined;
   let meterFrame = 0;
   const filters: Partial<Record<Tone, BiquadFilterNode>> = {};
+  // Volume runs through a gain node: iOS ignores an audio element's own volume.
+  let level: GainNode | undefined;
+  let volume = 0;
   const tones: Partial<Record<Tone, Dial>> = {};
 
   function graph() {
@@ -59,9 +62,13 @@ export function mountRadio(root: HTMLElement): () => void {
     filters.treble = treble;
     bass.gain.value = tones.bass?.get() ?? 0;
     treble.gain.value = tones.treble?.get() ?? 0;
+    level = context.createGain();
+    level.gain.value = volume;
+    audio.volume = 1;
     context.createMediaElementSource(audio).connect(bass);
     bass.connect(treble);
-    treble.connect(analyser);
+    treble.connect(level);
+    level.connect(analyser);
     analyser.connect(context.destination);
   }
 
@@ -202,11 +209,15 @@ export function mountRadio(root: HTMLElement): () => void {
   });
 
   const volumeReadout = $<HTMLElement>(".volume-readout");
+  // Phone and tablet speakers are quieter than a laptop's, so touch screens start louder.
+  const touch = matchMedia("(pointer: coarse)").matches;
   dial($(".volume-knob"), {
-    min: 0, max: 100, value: 35, step: 5, big: 10,
+    min: 0, max: 100, value: touch ? 70 : 35, step: 5, big: 10,
     text: (v) => Math.round(v) + " percent",
     change: (v) => {
-      audio.volume = v / 100;
+      volume = v / 100;
+      if (context && level) level.gain.setTargetAtTime(volume, context.currentTime, 0.03);
+      else audio.volume = volume;
       volumeReadout.textContent = String(Math.round(v));
     },
   });

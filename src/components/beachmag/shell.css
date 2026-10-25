@@ -2021,6 +2021,10 @@ html.dark #coastal-art .map-wrap .map-night {
   object-position: top center;
 }
 
+/* The TAPE lamp beside FM / AM shows only on phones (below). */
+#beach-offline .band-label .tape-light {
+  display: none;
+}
 /* Phones: the tuner display gets the whole first row; the VU meter (with the
    tape counter) and the knobs share the second. */
 @media (max-width: 520px) {
@@ -2038,9 +2042,30 @@ html.dark #coastal-art .map-wrap .map-night {
     grid-row: 2;
     align-self: center;
   }
+  /* Above the knobs, level with the meter: the FM / AM lamp and a lit TAPE lamp. */
+  #beach-offline .radio-instruments .knob-bank {
+    align-self: center;
+    grid-template-rows: auto auto;
+    row-gap: 4px;
+  }
+  #beach-offline .radio-instruments .knob-bank .band-label {
+    margin: 0;
+  }
+  #beach-offline .radio-instruments .knob-bank .tape-light {
+    display: inline;
+    margin-left: 18px;
+  }
+  #beach-offline .radio-instruments .knob-bank .tape-lamp {
+    background: var(--bm-lamp);
+    box-shadow: 0 0 7px var(--bm-lamp);
+  }
   #beach-offline .radio-instruments .knob-bank {
     grid-column: 2;
     grid-row: 2;
+    /* The three knobs spread across the row beside the meter. */
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: stretch;
+    justify-items: center;
   }
   /* The carry handle and antenna stand up to 72px above the radio's box; on
      phones that landed on "A few things that don't fit on a résumé." */
@@ -2129,4 +2154,14 @@ html.dark #coastal-art .map-wrap .map-night {
   .interior .journal-search p {
     margin: 0;
   }
+}
+
+/* The radio's silver body. The design painted 1px stripes every 3px; tilted
+   2 degrees and scaled on phones they aliased into wide bands. A soft
+   brushed grain (stretched noise, no hard pixel edges) over a smooth silver
+   gradient reads as the same metal at any size or angle. */
+#beach-offline .mono-radio {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.004 0.55' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.16'/%3E%3C/svg%3E") 0 0 / 320px 320px,
+    linear-gradient(180deg, var(--bm-silver-hi), var(--bm-silver) 38%, var(--bm-silver-hi) 62%, var(--bm-silver-lo));
 }
