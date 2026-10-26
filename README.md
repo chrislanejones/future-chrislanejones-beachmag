@@ -13,6 +13,19 @@ A coastal home for my work, writing, and life beyond the browser. The 2026 beach
 
 </details>
 
+## Convex admin
+
+The Events manager uses the same list-and-detail layout as Conferences. Choose an event to upload photos, add captions and credits, label stock images, and arrange the gallery.
+
+![Convex Events admin in light mode, with the administration sidebar and photo editor.](docs/images/admin-events-light.webp)
+
+<details>
+<summary>View admin in dark mode</summary>
+
+![Convex Events admin in dark mode, with the administration sidebar and photo editor.](docs/images/admin-events-dark.webp)
+
+</details>
+
 ## Read the book
 
 Start at chapter 1 or open the area you are working on. Each chapter has its own README, source references, and links to the previous and next chapters.
