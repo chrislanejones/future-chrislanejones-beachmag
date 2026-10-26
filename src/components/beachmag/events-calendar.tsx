@@ -68,17 +68,21 @@ function Month({ year, month, today, events }: { year: number; month: number; to
   );
 }
 
-// /events: a wall calendar from this month to the last event on the books,
-// one month at a time, then the full list beside it.
+// Every month from January 2026 through the current/last event year is reachable.
+// Open on the current month, with the upcoming list beside it.
 export function EventsCalendar() {
-  const [shown, setShown] = useState(0);
+  const [shown, setShown] = useState(() => {
+    const today = new Date();
+    return Math.max(0, (today.getFullYear() - 2026) * 12 + today.getMonth());
+  });
   const now = new Date();
   const today = localDay(now);
   const events = upcomingEvents(now, Infinity);
   const last = events.at(-1);
-  const end = last ? new Date(Number(last.start.slice(0, 4)), Number(last.start.slice(5, 7)) - 1, 1) : now;
+  const endYear = Math.max(2026, now.getFullYear(), Number(last?.start.slice(0, 4) ?? 2026));
+  const end = new Date(endYear, 11, 1);
   const months: { year: number; month: number }[] = [];
-  const cursor = new Date(now.getFullYear(), now.getMonth(), 1);
+  const cursor = new Date(2026, 0, 1);
   while (cursor <= end) {
     months.push({ year: cursor.getFullYear(), month: cursor.getMonth() });
     cursor.setMonth(cursor.getMonth() + 1);

@@ -2,8 +2,9 @@
 import Image from "next/image";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { Briefcase, Download, MapPin } from "lucide-react";
+import { Download, MapPin } from "lucide-react";
 import { timelineEvents } from "@/data/career-timeline";
+import { getCareerIcon } from "@/lib/career-icons";
 import styles from "@/components/coastal/interior.module.css";
 
 export default function CareerPage({ offline = false }: { offline?: boolean }) {
@@ -27,7 +28,7 @@ export default function CareerPage({ offline = false }: { offline?: boolean }) {
             style={{ objectPosition: "50% 0%" }}
           />
           <div className={styles.galleryCaption}>
-            <h2>Coding at Bold Bean</h2>
+            <h2>Coding at Bold Bean in Jacksonville, 2017</h2>
           </div>
         </div>
         <div className={styles.panel}>
@@ -55,24 +56,27 @@ export default function CareerPage({ offline = false }: { offline?: boolean }) {
       <section className={styles.section}>
         <h2>Career journey</h2>
         <ol className={styles.timeline}>
-          {events.map((event, index) => (
-            <li key={`${event.year}-${index}`}>
-              <time>{event.year}</time>
-              <div className={styles.timelineIcon}>
-                <Briefcase size={20} aria-hidden="true" />
-              </div>
-              <div>
-                <h3>{event.title}</h3>
-                <p>{event.description}</p>
-                {event.location && (
-                  <small>
-                    <MapPin size={15} aria-hidden="true" />
-                    {event.location}
-                  </small>
-                )}
-              </div>
-            </li>
-          ))}
+          {events.map((event, index) => {
+            const Icon = getCareerIcon(event.iconName);
+            return (
+              <li key={`${event.year}-${index}`}>
+                <time>{event.year}</time>
+                <div className={styles.timelineIcon}>
+                  <Icon size={20} aria-hidden="true" />
+                </div>
+                <div>
+                  <h3>{event.title}</h3>
+                  <p>{event.description}</p>
+                  {event.location && (
+                    <small>
+                      <MapPin size={15} aria-hidden="true" />
+                      {event.location}
+                    </small>
+                  )}
+                </div>
+              </li>
+            );
+          })}
         </ol>
       </section>
     </>

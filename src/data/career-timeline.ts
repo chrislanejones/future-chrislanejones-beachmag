@@ -1,22 +1,12 @@
 // src/data/career-timeline.ts
-import React from "react";
-import {
-  GraduationCap,
-  Video,
-  Star,
-  Lightbulb,
-  Mountain,
-  Home,
-  Users,
-  Code2,
-} from "lucide-react";
+import type { CareerIconName } from "@/lib/career-icons";
 
 export type TimelineEvent = {
   year: string;
   title: string;
   description: string;
   location?: string;
-  icon: React.ReactNode;
+  iconName: CareerIconName;
 };
 
 export const timelineEvents: TimelineEvent[] = [
@@ -26,14 +16,14 @@ export const timelineEvents: TimelineEvent[] = [
     description:
       "Graduated from University of North Florida with Bachelor of Arts with a concentration in Multimedia Journalism & Production",
     location: "Jacksonville, FL",
-    icon: React.createElement(GraduationCap, { className: "w-6 h-6" }),
+    iconName: "GraduationCap",
   },
   {
     year: "2013-2016",
     title: "Lights, Camera, Action",
     description: "I Started a Career in Video Editing and Production",
     location: "Jacksonville, FL",
-    icon: React.createElement(Video, { className: "w-6 h-6" }),
+    iconName: "Video",
   },
   {
     year: "2016",
@@ -41,7 +31,7 @@ export const timelineEvents: TimelineEvent[] = [
     description:
       "Decided to switch from video production to web design after designing personal website",
     location: "Jacksonville, FL",
-    icon: React.createElement(Star, { className: "w-6 h-6" }),
+    iconName: "Star",
   },
   {
     year: "2017",
@@ -49,7 +39,7 @@ export const timelineEvents: TimelineEvent[] = [
     description:
       "Began working with WordPress Theme and Plugin Development, JavaScript, jQuery, and the MERN Stack",
     location: "Jacksonville, FL",
-    icon: React.createElement(Lightbulb, { className: "w-6 h-6" }),
+    iconName: "Lightbulb",
   },
   {
     year: "2018",
@@ -57,7 +47,7 @@ export const timelineEvents: TimelineEvent[] = [
     description:
       "Relocated to Harrisonburg, Virginia in the Shenandoah Mountains",
     location: "Harrisonburg, VA",
-    icon: React.createElement(Mountain, { className: "w-6 h-6" }),
+    iconName: "Mountain",
   },
   {
     year: "2019",
@@ -65,7 +55,7 @@ export const timelineEvents: TimelineEvent[] = [
     description:
       "Picked Living Among the Cows to Be Near the Mountains and Richmond, VA.",
     location: "Louisa, VA",
-    icon: React.createElement(Home, { className: "w-6 h-6" }),
+    iconName: "Home",
   },
   {
     year: "2023",
@@ -73,7 +63,7 @@ export const timelineEvents: TimelineEvent[] = [
     description:
       "Started leading Richmond's local WordPress meetup with monthly sessions.",
     location: "Louisa, VA",
-    icon: React.createElement(Users, { className: "w-6 h-6" }),
+    iconName: "Users",
   },
   {
     year: "2024",
@@ -81,7 +71,7 @@ export const timelineEvents: TimelineEvent[] = [
     description:
       "98% React Developer these days - I still do WordPress from time to time",
     location: "Louisa, VA",
-    icon: React.createElement(Code2, { className: "w-6 h-6" }),
+    iconName: "Code2",
   },
   {
     year: "2026",
@@ -89,6 +79,6 @@ export const timelineEvents: TimelineEvent[] = [
     description:
       "Left Central Virginia after eight years and moved back to Jacksonville, FL. Still remote, still building for the Commonwealth.",
     location: "Jacksonville, FL",
-    icon: React.createElement(Home, { className: "w-6 h-6" }),
+    iconName: "Home",
   },
 ];

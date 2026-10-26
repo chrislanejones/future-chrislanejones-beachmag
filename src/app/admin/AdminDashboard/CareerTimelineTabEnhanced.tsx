@@ -8,20 +8,6 @@ import {
   Save,
   GripVertical,
   Calendar,
-  Briefcase,
-  GraduationCap,
-  Video,
-  Star,
-  Lightbulb,
-  Mountain,
-  Home,
-  Users,
-  Code2,
-  Award,
-  BookOpen,
-  Coffee,
-  Rocket,
-  Target,
 } from "lucide-react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
@@ -32,28 +18,12 @@ import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/dialog";
 import { ResumeFilesPanel } from "../components/ResumeFilesPanel";
+import { CAREER_ICONS, getCareerIcon } from "@/lib/career-icons";
 
 // Derived from the Convex schema (SSOT) instead of a hand-rolled shape.
 type CareerEvent = Doc<"careerTimeline">;
 
-const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
-  GraduationCap,
-  Video,
-  Star,
-  Lightbulb,
-  Mountain,
-  Home,
-  Users,
-  Code2,
-  Briefcase,
-  Award,
-  BookOpen,
-  Coffee,
-  Rocket,
-  Target,
-};
-
-const VALID_ICONS = Object.keys(ICON_MAP);
+const VALID_ICONS = Object.keys(CAREER_ICONS);
 
 const CareerTimelineTabEnhanced = () => {
   // Keep the raw result: undefined means Convex is still loading.
@@ -220,7 +190,7 @@ const CareerTimelineTabEnhanced = () => {
   };
 
   const renderIcon = (iconName: string, className?: string) => {
-    const IconComponent = ICON_MAP[iconName] || Briefcase;
+    const IconComponent = getCareerIcon(iconName);
     return <IconComponent className={className} />;
   };
 
