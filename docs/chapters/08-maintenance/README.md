@@ -16,6 +16,18 @@ The tests cover backend authorization and rate limits, blog sanitization, projec
 
 If diagnosing bundler behavior, `pnpm exec next build --webpack` is an explicit alternative. Production builds need valid frontend configuration and access to the selected Convex deployment. Building the frontend does not deploy backend functions.
 
+## Accessibility checks
+
+Start the site with `pnpm run dev`, then run `pnpm run check:a11y`. On a new machine, install the test browser first with `pnpm exec playwright install chromium`.
+
+The Playwright/axe audit checks 18 public routes in desktop and mobile viewports, each in light and dark mode, using WCAG A/AA rules through 2.2. It also detects page-level horizontal overflow. Results, including incomplete checks that require review, are written to ignored `output/accessibility/report.json`. The only excluded element is Next.js's development toolbar.
+
+Override `A11Y_BASE_URL` to scan a deployed site, `A11Y_PATHS` for comma-separated paths, `A11Y_MODES` for comma-separated modes (`desktop-light`, `desktop-dark`, `mobile-light`, `mobile-dark`), and `A11Y_OUTPUT` for the report path.
+
+On October 26, 2026, all 72 page/theme checks passed after correcting the calendar's accessible button labels and group semantics. Playwright MCP also verified mobile menu initial focus, forward/reverse focus containment and Escape restoration; desktop dropdown keyboard operation; skip-to-content; calendar Enter activation and whole-square pointer activation at 390, 768 and 1440 pixels; invalid contact-form focus and errors; radio slider arrow keys; theme switching; and paused ramblings with manual advance. The menu's open state also passed the axe scan. Invalid form checks send no messages.
+
+These results do **not** establish full WCAG conformance. Textures, gradients and overlapping artwork leave some automated contrast checks inconclusive. Review those findings against the rendered backgrounds, and perform a real screen-reader pass (such as NVDA with Chrome), zoom/text-spacing checks and authenticated admin testing before making a conformance claim. Accessibility snapshots are not a substitute for screen-reader testing.
+
 ## Dependency updates
 
 Use pnpm only. Keep `package.json` and `pnpm-lock.yaml` together. `pnpm outdated` checks available releases; `pnpm update --latest` may introduce major-version changes. Review peer ranges and migration notes, then run the gates above. Never use an unconstrained security override that can silently replace a dependency with an incompatible major version.

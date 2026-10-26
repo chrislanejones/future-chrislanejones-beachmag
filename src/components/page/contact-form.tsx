@@ -1,7 +1,7 @@
 // src/components/page/contact-form.tsx
 "use client";
-import { useState, useMemo } from "react"; // Added useMemo
-import { motion } from "framer-motion";
+import { useState, useMemo, useRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 import Card from "@/components/page/card";
 import { Button } from "@/components/ui/button";
@@ -39,6 +39,8 @@ const ContactForm: React.FC<ContactFormProps> = ({
   id,
 }) => {
   const createMessage = useMutation(api.contactMessages.create);
+  const formRef = useRef<HTMLFormElement>(null);
+  const reducedMotion = useReducedMotion();
 
   const defaultBasicMessage = `I'm interested in your ${serviceType} maintenance services. Could you tell me more?`;
   const defaultPlusMessage = `I'm interested in "The Action Plan (With ${plusPlanLabel})" for your ${serviceType} maintenance services. Could you tell me more?`;
@@ -114,6 +116,8 @@ const ContactForm: React.FC<ContactFormProps> = ({
       newErrors.phone = "Please enter a valid phone number";
     }
     setErrors(newErrors);
+    const firstInvalid = formRef.current?.elements.namedItem(Object.keys(newErrors)[0] ?? "");
+    if (firstInvalid instanceof HTMLElement) firstInvalid.focus();
     return Object.keys(newErrors).length === 0;
   };
 
@@ -144,9 +148,6 @@ const ContactForm: React.FC<ContactFormProps> = ({
         message: initialMessage, // CORRECTED: Use the memoized initialMessage here
       });
       setErrors({});
-      setTimeout(() => {
-        setSubmitStatus(null);
-      }, 5000);
     } catch (error) {
       console.error("Failed to send message:", error);
       // Server validation and rate-limit errors carry a readable message.
@@ -174,13 +175,13 @@ const ContactForm: React.FC<ContactFormProps> = ({
   return (
     <motion.div
       id={id} // PASSED HERE: id prop
-      initial={{ opacity: 0, y: 20 }}
+      initial={false}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay }}
       className={`${variant === "full" ? "mt-8" : ""} ${className || ""}`}
     >
       <Card size="full">
-        <form onSubmit={handleSubmitInternal} className="space-y-6">
+        <form ref={formRef} noValidate onSubmit={handleSubmitInternal} className="space-y-6" aria-busy={isSubmitting}>
           <div>
             <label htmlFor="name" className="block mb-2">
               Name *
@@ -189,6 +190,8 @@ const ContactForm: React.FC<ContactFormProps> = ({
               type="text"
               id="name"
               name="name"
+              autoComplete="name"
+              aria-required="true"
               value={formData.name}
               onChange={handleChange}
               className={errors.name ? "border-(color:--color-danger)" : ""}
@@ -206,6 +209,8 @@ const ContactForm: React.FC<ContactFormProps> = ({
               type="email"
               id="email"
               name="email"
+              autoComplete="email"
+              aria-required="true"
               value={formData.email}
               onChange={handleChange}
               className={errors.email ? "border-(color:--color-danger)" : ""}
@@ -227,6 +232,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                 type="tel"
                 id="phone"
                 name="phone"
+                autoComplete="tel"
                 value={formData.phone}
                 onChange={handleChange}
                 className={errors.phone ? "border-(color:--color-danger)" : ""}
@@ -242,8 +248,8 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
           {/* Plan selection for maintenance forms */}
           {variant === "maintenance" && serviceType && plusPlanLabel && (
-            <div>
-              <label className="block mb-2">Choose An Action Plan</label>
+            <fieldset>
+              <legend className="block mb-2">Choose An Action Plan</legend>
               <div className="space-y-2">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -270,7 +276,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                   </span>
                 </label>
               </div>
-            </div>
+            </fieldset>
           )}
 
           <div>
@@ -280,6 +286,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
             <Textarea
               id="message"
               name="message"
+              aria-required="true"
               value={formData.message}
               onChange={handleChange}
               rows={variant === "full" ? 6 : 3} // Dynamic rows based on variant
@@ -317,28 +324,32 @@ const ContactForm: React.FC<ContactFormProps> = ({
             {isSubmitting ? "Sending..." : "Send Message"}
           </Button>
 
-          {submitStatus === "success" && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-2 text-(--color-accent)"
-            >
-              <CheckCircle className="w-5 h-5" />
-              <span className="">Message sent successfully!</span>
-            </motion.div>
-          )}
-          {submitStatus === "error" && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-2 text-(--color-danger)"
-            >
-              <AlertCircle className="w-5 h-5" />
-              <span className="">
-                {submitError ?? "Failed to send message. Please try again."}
-              </span>
-            </motion.div>
-          )}
+          <div role="status" aria-atomic="true">
+            {submitStatus === "success" && (
+              <motion.div
+                initial={reducedMotion ? false : { opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="flex items-center gap-2 text-(--color-accent)"
+              >
+                <CheckCircle className="w-5 h-5" />
+                <span className="">Message sent successfully!</span>
+              </motion.div>
+            )}
+          </div>
+          <div role="alert" aria-atomic="true">
+            {submitStatus === "error" && (
+              <motion.div
+                initial={reducedMotion ? false : { opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="flex items-center gap-2 text-(--color-danger)"
+              >
+                <AlertCircle className="w-5 h-5" />
+                <span className="">
+                  {submitError ?? "Failed to send message. Please try again."}
+                </span>
+              </motion.div>
+            )}
+          </div>
         </form>
       </Card>
     </motion.div>

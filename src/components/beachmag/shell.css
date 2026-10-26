@@ -26,6 +26,25 @@ body .site-shell:has(> [data-beachmag]) {
 [data-beachmag] :focus-visible {
   outline: 3px solid var(--bm-focus);
   outline-offset: 4px;
+  /* Paired light/dark rings stay visible on paper, photos and radio metal. */
+  box-shadow: 0 0 0 4px var(--bm-cream);
+}
+
+body.menu-open #site-nav .life-toggle { visibility: hidden; }
+#site-takeover .menu-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 2px solid var(--nav-paper);
+  border-radius: 50%;
+  background: var(--nav-ink);
+  color: var(--nav-paper);
+  font: 32px/1 var(--font-dm-sans), sans-serif;
+  cursor: pointer;
 }
 
 /* Skip link: hidden above the header until a keyboard reaches it. */
@@ -1449,7 +1468,7 @@ section#sandbox .sandbox-heading {
   background: none;
 }
 #sandbox .tool-knob-turn:focus-visible {
-  outline: 3px solid #e5583a;
+  outline: 3px solid var(--bm-focus);
   outline-offset: 2px;
 }
 /* The chicken-head knob, big: a black bakelite bar with tapered ends, a
@@ -2250,11 +2269,14 @@ html.dark #coastal-art .map-wrap .map-night {
 #coastal-art .calendar-legend { display: flex; align-items: center; gap: 8px; margin: 16px 0; font-size: 12px; }
 #coastal-art .calendar-event-dot { width: 7px; height: 7px; flex: 0 0 7px; border-radius: 50%; background: var(--color-tag-red); }
 #coastal-art .calendar-year-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-#coastal-art .calendar-mini { display: flex; flex-direction: column; aspect-ratio: 1; padding: 9px; border: 1px solid var(--line); background: transparent; color: var(--ink); text-align: left; cursor: pointer; transition: background .15s; }
+#coastal-art .calendar-mini { position: relative; display: flex; flex-direction: column; aspect-ratio: 1; padding: 9px; border: 1px solid var(--line); background: transparent; color: var(--ink); text-align: left; cursor: pointer; transition: background .15s; }
 #coastal-art .calendar-mini:hover { background: color-mix(in srgb, var(--ink) 5%, transparent); }
-#coastal-art .calendar-mini[aria-pressed="true"] { outline: 2px solid var(--orange); outline-offset: -2px; }
-#coastal-art .calendar-mini:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
-#coastal-art .calendar-mini-title { font: italic 900 clamp(16px, 4cqi, 23px)/1.1 var(--font-bodoni-moda), Georgia, serif; margin-bottom: 10px; }
+#coastal-art .calendar-mini[data-selected="true"] { outline: 2px solid var(--orange); outline-offset: -2px; }
+#coastal-art .calendar-mini:has(:focus-visible) { outline: 3px solid var(--ink); outline-offset: 3px; }
+#coastal-art .calendar-mini-title { font: italic 900 clamp(16px, 4cqi, 23px)/1.1 var(--font-bodoni-moda), Georgia, serif; margin-bottom: 10px; padding: 0; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; }
+/* Keep the entire square clickable, with only the month title as its label. */
+#coastal-art .calendar-mini-title::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+#coastal-art .calendar-mini-title:focus-visible { outline: none; }
 #coastal-art .calendar-mini-weekdays, #coastal-art .calendar-mini-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
 #coastal-art .calendar-mini-weekdays { text-align: center; font-size: 9px; margin-bottom: 5px; opacity: .65; }
 #coastal-art .calendar-mini-days { grid-template-rows: repeat(6, minmax(0, 1fr)); flex: 1; }

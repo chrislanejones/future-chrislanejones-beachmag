@@ -22,7 +22,7 @@ export function ToolGallery() {
   const [moved, setMoved] = useState(false);
   return (
     <div className="viz-dotted-background">
-      <div id="tool-gallery" aria-label="Technology gallery">
+      <div id="tool-gallery" role="group" aria-label="Technology gallery">
         <p className="eyebrow">THE TOOLS BEHIND THE WORK</p>
         <h2>A good set<br />of <em>tools.</em></h2>
         <div className="gallery-body">

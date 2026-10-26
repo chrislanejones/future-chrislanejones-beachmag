@@ -14,7 +14,7 @@ export function EditionButtons() {
     setTheme(side === "light" || side === "dark" ? side : dark ? "light" : "dark");
   }
   return (
-    <button type="button" role="switch" aria-checked={dark} aria-label="After dark" className="edition-switch" onClick={choose}>
+    <button type="button" role="switch" aria-checked={dark} aria-label="Sunlit / After dark" className="edition-switch" onClick={choose}>
       <span className="edition-side" data-side="light" aria-hidden="true">☀ SUNLIT</span>
       <span className="edition-dial" aria-hidden="true">
         <span className="edition-scale"></span>

@@ -74,10 +74,10 @@ function MiniMonth({ year, month, selected, today, events, onSelect }: {
   const cells = monthWeeks(year, month).flat();
   while (cells.length < 42) cells.push(null);
   return (
-    <button type="button" className="calendar-mini" aria-pressed={selected}
-      aria-label={`${MONTH_NAMES[month]} ${year}, ${monthEvents.length} ${monthEvents.length === 1 ? "event" : "events"}`}
-      aria-controls="selected-month" onClick={onSelect}>
-      <span className="calendar-mini-title">{MONTH_NAMES[month]}</span>
+    <div className="calendar-mini" data-selected={selected}>
+      <button type="button" className="calendar-mini-title" aria-pressed={selected}
+        aria-label={`${MONTH_NAMES[month]} ${year}, ${monthEvents.length} ${monthEvents.length === 1 ? "event" : "events"}`}
+        aria-controls="selected-month" onClick={onSelect}>{MONTH_NAMES[month]}</button>
       <span className="calendar-mini-weekdays" aria-hidden="true">
         {WEEKDAYS.map((day) => <span key={day.long}>{day.short}</span>)}
       </span>
@@ -90,7 +90,7 @@ function MiniMonth({ year, month, selected, today, events, onSelect }: {
             title={day ? `${MONTH_NAMES[month]} ${day}${onDay.length ? `: ${onDay.map((event) => event.name).join("; ")}` : ""}` : undefined}>{day}</span>;
         })}
       </span>
-    </button>
+    </div>
   );
 }
 

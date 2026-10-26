@@ -12,7 +12,8 @@
     "seed-seo": "node scripts/seed-seo.js",
     "check-seo": "node scripts/check-seo.js",
     "audio:render": "node design/work/render_tracks.mjs",
-    "design:css": "cd design && python3 work/build_site_css.py"
+    "design:css": "cd design && python3 work/build_site_css.py",
+    "check:a11y": "node scripts/audit-accessibility.mjs"
   },
   "dependencies": {
     "@clerk/nextjs": "7.9.18",
@@ -61,10 +62,12 @@
     "@types/sanitize-html": "^2.16.2",
     "@types/three": "^0.186.0",
     "autoprefixer": "^10.6.1",
+    "axe-core": "^4.14.0",
     "bckgrnd-msc-mcp": "0.2.0",
     "convex-test": "^0.0.63",
     "eslint": "^10.13.0",
     "eslint-config-next": "16.4.2",
+    "playwright": "^1.64.1",
     "postcss": "^8.5.31",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.3",

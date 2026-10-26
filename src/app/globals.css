@@ -132,7 +132,7 @@
   --bm-accent: #a6321c;       /* rust orange (light) */
   --bm-accent-dark: #ffab80;  /* peach (dark) */
   --bm-accent-deep: #a33620;  /* the footer's top rule */
-  --bm-focus: #d47a40;
+  --bm-focus: var(--bm-ink);
   --bm-silver-hi: #e0e1d8;     /* the radio's brushed silver, light edge */
   --bm-silver: #cfd2cb;        /* the radio's silver body */
   --bm-silver-lo: #b5b9b5;     /* the radio's silver, shaded edge */

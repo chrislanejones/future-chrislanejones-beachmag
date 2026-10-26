@@ -82,6 +82,7 @@ export function SiteNav({ offline = false }: { offline?: boolean }) {
     else setGroup(null);
   };
   const toggleRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   // The last `open` the effect saw. Comparing values instead of counting runs
   // keeps a remount (Strict Mode runs effects twice) from moving focus on load.
@@ -94,7 +95,7 @@ export function SiteNav({ offline = false }: { offline?: boolean }) {
     if (content) content.inert = open;
     if (lastOpen.current === open) return;
     lastOpen.current = open;
-    toggleRef.current?.focus({ preventScroll: true });
+    (open ? closeRef : toggleRef).current?.focus({ preventScroll: true });
     if (open) {
       body.classList.remove("menu-closing");
       return;
@@ -111,11 +112,14 @@ export function SiteNav({ offline = false }: { offline?: boolean }) {
         event.preventDefault();
         setOpen(false);
       }
-      if (event.key !== "Tab" || !menuRef.current || !toggleRef.current) return;
-      const nodes = [toggleRef.current, ...menuRef.current.querySelectorAll<HTMLElement>("a,button")];
+      if (event.key !== "Tab" || !menuRef.current) return;
+      const nodes = [...menuRef.current.querySelectorAll<HTMLElement>("a,button")];
       const first = nodes[0];
       const last = nodes[nodes.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
+      if (!menuRef.current.contains(document.activeElement)) {
+        event.preventDefault();
+        first.focus();
+      } else if (event.shiftKey && document.activeElement === first) {
         event.preventDefault();
         last.focus();
       } else if (!event.shiftKey && document.activeElement === last) {
@@ -149,6 +153,8 @@ export function SiteNav({ offline = false }: { offline?: boolean }) {
 
   useEffect(() => () => {
     document.body.classList.remove("menu-open", "menu-closing");
+    const content = document.getElementById("page-content");
+    if (content) content.inert = false;
     clearTimeout(groupTimer.current);
   }, []);
 
@@ -181,6 +187,8 @@ export function SiteNav({ offline = false }: { offline?: boolean }) {
         <button
           ref={toggleRef}
           className="life-toggle"
+          inert={open}
+          aria-hidden={open}
           type="button"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
@@ -210,6 +218,9 @@ export function SiteNav({ offline = false }: { offline?: boolean }) {
         aria-hidden={!open}
         inert={!open}
       >
+        <button ref={closeRef} type="button" className="menu-close" aria-label="Close menu" onClick={() => setOpen(false)}>
+          <span aria-hidden="true">×</span>
+        </button>
         <p className="menu-label">CHRIS LANE JONES / MENU</p>
         <nav aria-label="Site pages">
           {/* Groups show their name, then each subpage on its own line after a
