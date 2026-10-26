@@ -66,6 +66,27 @@ export const HOME_EVENTS: HomeEvent[] = [
     url: "https://www.meetup.com/the-code-alliance-incubator/events/316841340/",
   },
   {
+    slug: "jitc-breakfast-meeting-2026-10-27",
+    start: "2026-10-27T07:30",
+    end: "2026-10-27T09:30",
+    name: "Jacksonville IT Council (JITC) Breakfast Meeting",
+    place: "Keiser University · Jacksonville, FL · 7:30–9:30 AM ET",
+    venue: "Keiser University, 6430 Southpoint Parkway, Jacksonville, FL 32216",
+    description: "The Jacksonville IT Council's monthly breakfast. Dr. Jorge Sefair of the University of Florida presents Data-Driven Workforce Optimization and Queue Management: Applications to TSA Security Screening.",
+    organizer: "Jacksonville IT Council (JITC), with the JAX Chamber",
+    speaker: "Jorge A. Sefair, Ph.D., Associate Professor, Industrial and Systems Engineering, University of Florida",
+    schedule: [
+      { time: "7:30 AM", activity: "Registration, networking & breakfast" },
+      { time: "8 AM", activity: "Presenting sponsor and keynote" },
+      { time: "9:30 AM", activity: "Meeting adjourns" },
+    ],
+    details: [
+      "Free for JITC members, $10 for Chamber members, $12 for non-Chamber members.",
+      "Register on the JAX Chamber IT Council page.",
+    ],
+    url: "https://jacksonvilleitcouncil.com/about-jitc/#meetings",
+  },
+  {
     slug: "st-augustine-cowork-coffee-2026-10-29",
     start: "2026-10-29T09:00",
     name: "Saint Augustine Cowork and Coffee",

@@ -3,7 +3,7 @@ import { HOME_EVENTS, calendarEvents, eventHref, findEvent, pastEvents, upcoming
 
 test("homepage has only the three nearest upcoming events while the archive keeps attended events", () => {
   const today = new Date(2026, 9, 26, 12);
-  expect(upcomingEvents(today).map((event) => event.start.slice(0, 10))).toEqual(["2026-10-26", "2026-10-29", "2026-11-10"]);
+  expect(upcomingEvents(today).map((event) => event.start.slice(0, 10))).toEqual(["2026-10-26", "2026-10-27", "2026-10-29"]);
   expect(pastEvents(today).map((event) => event.start.slice(0, 10))).toEqual(["2026-10-20", "2026-10-19"]);
   expect(calendarEvents()).toHaveLength(HOME_EVENTS.length);
 });
