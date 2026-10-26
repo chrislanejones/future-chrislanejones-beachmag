@@ -5,6 +5,7 @@ import { motion, AnimatePresence, MotionConfig, type PanInfo } from "framer-moti
 import Image from "next/image";
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerHeader,
@@ -387,9 +388,12 @@ export default function GalleryDrawer({
       </DrawerTrigger>
 
       {/* Portaled outside the page, so it carries the fonts and its own palette (shell.css). */}
-      <DrawerContent className={`gallery-drawer h-[72vh] ${bodoniModa.variable} ${dmSans.variable}`}>
+      <DrawerContent className={`gallery-drawer h-[90dvh] overflow-y-auto ${bodoniModa.variable} ${dmSans.variable}`}>
         <div className="mx-auto w-full max-w-7xl">
-          <DrawerHeader className="pb-2">
+          <div className="flex justify-end px-4 pt-2">
+            <DrawerClose asChild><button type="button" className="gallery-close">Close gallery <span aria-hidden="true">×</span></button></DrawerClose>
+          </div>
+          <DrawerHeader className="pt-2 pb-2">
             <DrawerTitle className="text-center">
               {title}
             </DrawerTitle>

@@ -13,6 +13,7 @@ The beach version brings the 2026 move back to Florida into the portfolio: St. A
 | `/projects`, `/projects/[slug]` | Work index and individual project pages |
 | `/blog`, `/blog/[slug]` | Writing and articles |
 | `/conferences`, `/conferences/[year]`, `/conferences/[year]/[slug]` | Conference index, years and event details |
+| `/events`, `/events/[slug]` | Calendar, upcoming and past events, individual pages with a main photo and optional gallery |
 | `/career-and-resume` | Career timeline and PDF/Word download routes |
 | `/browser-tabs` | Searchable, grouped developer resources |
 | `/contact` | Contact form backed by Convex |

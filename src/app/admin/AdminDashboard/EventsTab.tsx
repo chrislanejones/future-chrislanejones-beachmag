@@ -26,6 +26,8 @@ const eventDate = (event: HomeEvent) => new Date(`${event.start}Z`).toLocaleDate
 
 function EventPhotoEditor({ event }: { event: HomeEvent }) {
   const photos = useQuery(api.eventPhotos.list, { eventSlug: event.slug });
+  const mainPhoto = photos?.[0];
+  const additionalPhotos = photos?.slice(1) ?? [];
   const save = useMutation(api.eventPhotos.save);
   const remove = useMutation(api.eventPhotos.remove);
   const move = useMutation(api.eventPhotos.move);
@@ -37,6 +39,8 @@ function EventPhotoEditor({ event }: { event: HomeEvent }) {
   const [message, setMessage] = useState("");
   const [error, setError] = useState<Error | null>(null);
   const [removing, setRemoving] = useState<Doc<"eventPhotos">["_id"]>();
+  const editingMain = editing ? editing === mainPhoto?._id : !mainPhoto;
+  const photoLabel = editingMain ? "Main Photo" : "Additional Photo";
   const reset = () => { setDraft(blank); setEditing(undefined); setEditorOpen(false); };
   const addPhoto = () => { reset(); setEditorOpen(true); setMessage(""); setError(null); };
 
@@ -46,6 +50,21 @@ function EventPhotoEditor({ event }: { event: HomeEvent }) {
     catch (err) { setError(err instanceof Error ? err : new Error("Could not save. Please try again.")); }
     finally { setBusy(false); }
   }
+
+  const renderPhoto = (photo: Doc<"eventPhotos">, index: number) => (<div key={photo._id} className="flex flex-wrap items-center gap-4 rounded-xl border border-(--color-border) p-4">
+          <div className="relative h-24 w-28 shrink-0 rounded-lg overflow-hidden bg-(--color-muted-accent)"><Image src={photo.url} alt={photo.alt} fill sizes="112px" className="object-contain p-1" /></div>
+          <div className="min-w-0 flex-1"><p className="text-sm font-medium text-ink break-words">{photo.caption || photo.alt}</p><p className="mt-1 text-xs text-muted">{[photo.stock ? "Stock image" : "", photo.credit].filter(Boolean).join(" · ")}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Button type="button" variant="secondary" size="sm" disabled={busy} onClick={() => { setEditing(photo._id); setEditorOpen(true); setDraft({ url: photo.url, alt: photo.alt, caption: photo.caption, credit: photo.credit, stock: photo.stock }); setMessage(""); setError(null); }} aria-label={index === 0 ? "Edit Main Photo" : `Edit additional photo ${index}`}><Edit2 className="w-4 h-4" />Edit</Button>
+              {index > 0 && <Button type="button" variant="secondary" size="sm" disabled={busy} onClick={() => void run(async () => {
+                for (let step = 0; step < index; step++) await move({ id: photo._id, direction: "up" });
+              }, "Main photo updated.")}>Make Main Photo</Button>}
+              {index > 0 && <Button type="button" variant="secondary" size="icon-sm" aria-label={`Move additional photo ${index} earlier`} disabled={busy || index === 1} onClick={() => void run(() => move({ id: photo._id, direction: "up" }), "Gallery order updated.")}><ArrowUp className="w-4 h-4" /></Button>}
+              {index > 0 && <Button type="button" variant="secondary" size="icon-sm" aria-label={`Move additional photo ${index} later`} disabled={busy || index === (photos?.length ?? 0) - 1} onClick={() => void run(() => move({ id: photo._id, direction: "down" }), "Gallery order updated.")}><ArrowDown className="w-4 h-4" /></Button>}
+              <Button type="button" variant="secondary" size="icon-sm" aria-label={`Remove photo ${index + 1}`} className="text-(--color-danger) hover:text-(--color-danger) hover:bg-red-500/10" disabled={busy} onClick={() => setRemoving(photo._id)}><Trash2 className="w-4 h-4" /></Button>
+            </div>
+          </div>
+        </div>);
 
   return <section aria-label="Event details" className="min-w-0 lg:col-span-2 bg-(--color-panel) border border-(--color-border) rounded-2xl overflow-hidden flex flex-col">
     <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 bg-(--color-muted-accent) shrink-0">
@@ -58,7 +77,7 @@ function EventPhotoEditor({ event }: { event: HomeEvent }) {
         {editorOpen ? <>
           <Button type="button" variant="secondary" size="sm" disabled={busy} onClick={reset}>Cancel</Button>
           <Button type="submit" form="event-photo-form" variant="primary" size="sm" disabled={busy || !draft.url}><Save className="w-4 h-4" />{busy ? "Saving…" : "Save"}</Button>
-        </> : <Button type="button" variant="primary" size="sm" onClick={addPhoto}><Plus className="w-4 h-4" />Add Photo</Button>}
+        </> : <Button type="button" variant="primary" size="sm" disabled={busy || photos === undefined} onClick={addPhoto}><Plus className="w-4 h-4" />{mainPhoto ? "Add Gallery Photo" : "Add Main Photo"}</Button>}
         <Link href={eventHref(event)} target="_blank" rel="noopener noreferrer" aria-label="View event page" title="View event page" className="p-2 text-muted hover:text-ink transition rounded-lg hover:bg-(--color-muted-accent) focus-ring"><ExternalLink className="w-4 h-4" /></Link>
       </div>
     </div>
@@ -70,9 +89,9 @@ function EventPhotoEditor({ event }: { event: HomeEvent }) {
         void run(async () => { await save({ ...draft, id: editing, eventSlug: event.slug }); reset(); }, "Photo saved to the event page.");
       }}>
         <fieldset disabled={busy} className="min-w-0 space-y-5">
-          <div><h3 className="font-semibold text-ink">{editing ? "Edit Photo" : "New Photo"}</h3><p className="mt-1 text-sm text-muted">Add photos before or after the event. Saving publishes them in its gallery.</p></div>
+          <div><h3 className="font-semibold text-ink">{`${editing ? "Edit" : "New"} ${photoLabel}`}</h3><p className="mt-1 text-sm text-muted">{editingMain ? "The main photo appears in the event page header. Saving publishes it." : "Add photos before or after the event. Saving publishes them in its gallery."}</p></div>
           <div className="space-y-2">
-            <Label className="block text-sm font-medium text-ink">Photo</Label>
+            <Label className="block text-sm font-medium text-ink">{photoLabel}</Label>
             <button type="button" onClick={() => setDrawer(true)} className={`relative w-full h-48 rounded-xl bg-(--color-muted-accent) flex items-center justify-center transition-all focus-ring ${draft.url ? "border border-(--color-border) overflow-hidden group" : "border-2 border-dashed border-(--color-border) hover:border-accent hover:bg-accent/5"}`}>
               {draft.url ? <>
                 <Image src={draft.url} alt={draft.alt || "Selected photo preview"} fill sizes="(max-width: 1024px) 90vw, 600px" className="object-contain p-4" />
@@ -88,22 +107,23 @@ function EventPhotoEditor({ event }: { event: HomeEvent }) {
           <div className="flex items-center justify-between gap-4 rounded-xl border border-(--color-border) p-4"><div><Label htmlFor="event-photo-stock" className="text-sm font-medium text-ink">Stock Image</Label><p className="mt-1 text-xs text-muted">Show a stock-image label alongside the credit.</p></div><Switch id="event-photo-stock" checked={draft.stock} onCheckedChange={(stock) => setDraft({ ...draft, stock })} /></div>
         </fieldset>
       </form>}
-      <section aria-label="Saved photos" className={editorOpen ? "border-t border-(--color-border) pt-6 space-y-4" : "space-y-4"}>
-        <div className="flex items-center justify-between"><h3 className="font-semibold text-ink">Photo Gallery</h3><span className="text-xs text-muted">{photos ? `${photos.length} ${photos.length === 1 ? "photo" : "photos"}` : "Loading…"}</span></div>
-        {photos === undefined ? <p className="py-8 text-center text-sm text-muted" role="status">Loading photos…</p> : !photos.length ? <div className="py-10 text-center text-muted"><ImageIcon className="w-12 h-12 mx-auto opacity-40 mb-4" /><p className="text-sm">No photos yet.</p><p className="text-xs mt-1">Your event photos and stock images will appear here.</p>{!editorOpen && <Button type="button" variant="secondary" size="sm" className="mt-4" onClick={addPhoto}><Plus className="w-4 h-4" />Add First Photo</Button>}</div> : photos.map((photo, index) => <div key={photo._id} className="flex flex-wrap items-center gap-4 rounded-xl border border-(--color-border) p-4">
-          <div className="relative h-24 w-28 shrink-0 rounded-lg overflow-hidden bg-(--color-muted-accent)"><Image src={photo.url} alt={photo.alt} fill sizes="112px" className="object-contain p-1" /></div>
-          <div className="min-w-0 flex-1"><p className="text-sm font-medium text-ink break-words">{photo.caption || photo.alt}</p><p className="mt-1 text-xs text-muted">{[photo.stock ? "Stock image" : "", photo.credit].filter(Boolean).join(" · ")}</p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <Button type="button" variant="secondary" size="sm" disabled={busy} onClick={() => { setEditing(photo._id); setEditorOpen(true); setDraft({ url: photo.url, alt: photo.alt, caption: photo.caption, credit: photo.credit, stock: photo.stock }); setMessage(""); setError(null); }}><Edit2 className="w-4 h-4" />Edit</Button>
-              <Button type="button" variant="secondary" size="icon-sm" aria-label={`Move photo ${index + 1} earlier`} disabled={busy || index === 0} onClick={() => void run(() => move({ id: photo._id, direction: "up" }), "Gallery order updated.")}><ArrowUp className="w-4 h-4" /></Button>
-              <Button type="button" variant="secondary" size="icon-sm" aria-label={`Move photo ${index + 1} later`} disabled={busy || index === photos.length - 1} onClick={() => void run(() => move({ id: photo._id, direction: "down" }), "Gallery order updated.")}><ArrowDown className="w-4 h-4" /></Button>
-              <Button type="button" variant="secondary" size="icon-sm" aria-label={`Remove photo ${index + 1}`} className="text-(--color-danger) hover:text-(--color-danger) hover:bg-red-500/10" disabled={busy} onClick={() => setRemoving(photo._id)}><Trash2 className="w-4 h-4" /></Button>
-            </div>
-          </div>
-        </div>)}
+      <section aria-label="Main Photo" className="space-y-4">
+        <h3 className="font-semibold text-ink">Main Photo</h3>
+        <p className="text-sm text-muted">Shown in the event page header.</p>
+        {photos === undefined ? <p role="status">Loading photos…</p> : mainPhoto ? renderPhoto(mainPhoto, 0) : <div className="py-8 text-center text-muted">
+          <ImageIcon className="w-10 h-10 mx-auto mb-3 opacity-40" /><p>No main photo yet.</p>
+          {!editorOpen && <Button type="button" variant="secondary" size="sm" className="mt-4" onClick={addPhoto}>Add Main Photo</Button>}
+        </div>}
+      </section>
+      <section aria-label="Photo Gallery (Additional Photos)" className="border-t border-(--color-border) pt-6 space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-2"><h3 className="font-semibold text-ink">Photo Gallery (Additional Photos)</h3><span className="text-xs text-muted">{photos ? `${additionalPhotos.length} ${additionalPhotos.length === 1 ? "photo" : "photos"}` : "Loading…"}</span></div>
+        <p className="text-sm text-muted">Additional photos appear in the gallery opened below the main photo.</p>
+        {photos !== undefined && !additionalPhotos.length && <p className="text-sm text-muted">No additional photos yet.</p>}
+        {additionalPhotos.map((photo, index) => renderPhoto(photo, index + 1))}
+        {mainPhoto && !editorOpen && <Button type="button" variant="secondary" size="sm" disabled={busy} onClick={addPhoto}><Plus className="w-4 h-4" />Add Gallery Photo</Button>}
       </section>
     </div>
-    <ConfirmDialog open={!!removing} onOpenChange={(open) => !open && setRemoving(undefined)} title="Remove Event Photo?" description="This removes the photo from this event. The original file stays in your media library." confirmLabel="Remove Photo" onConfirm={async () => {
+    <ConfirmDialog open={!!removing} onOpenChange={(open) => !open && setRemoving(undefined)} title="Remove Event Photo?" description={removing === mainPhoto?._id && additionalPhotos.length ? "The next gallery photo will become the main photo. The original file stays in your media library." : "This removes the photo from this event. The original file stays in your media library."} confirmLabel="Remove Photo" onConfirm={async () => {
       if (!removing) return;
       await run(async () => { await remove({ id: removing }); if (editing === removing) reset(); setRemoving(undefined); }, "Photo removed from this event.");
     }} />
