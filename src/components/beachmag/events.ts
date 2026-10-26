@@ -28,7 +28,7 @@ export const HOME_EVENTS: HomeEvent[] = [
     name: "BuildWeek //02 Jacksonville Kickoff",
     place: "Overkill Gaming · Jacksonville Beach, FL · 5:30–7:30 PM ET",
     venue: "Overkill Gaming, 1250 Shetter Ave. STE 4, Jacksonville Beach, FL",
-    description: "Night one of BuildWeek Jacksonville. Builders could arrive solo or with a team, find collaborators, join a project, or take part in the community build with Kady Yellow. A free event for builders ready to compete, with experts available to help begin planning.",
+    description: "BuildWeek Jacksonville was epic. Night one brought builders together to find collaborators, join a project, or take part in the community build with Kady Yellow. A free event for builders ready to compete, with experts available to help begin planning.",
     organizer: "The Code Alliance Incubator · Hosted by Lucas W. and Brendan L.",
     details: [
       "Bring your idea: an invention, product, or something you can build and demo.",
@@ -44,9 +44,9 @@ export const HOME_EVENTS: HomeEvent[] = [
     name: "NLP Logix hosts AI Connect: Intelligent Tech in Inpatient & Critical Care",
     place: "Legacy Ale Works · Jacksonville, FL · 5:30–7 PM ET",
     venue: "Legacy Ale Works, Jacksonville, FL",
-    description: "Transforming Inpatient & Critical Care with Intelligent Technology. An AI Connect presentation hosted by NLP Logix, with The King Tide Foundation.",
+    description: "Spent Tuesday evening at AI Connect Jax listening to Dr. Dileep Raman, co-founder of Cloudphysician, discuss how AI, computer vision, and ambient intelligence are being used in inpatient and critical care.",
     organizer: "NLP Logix (AI Connect), with The King Tide Foundation",
-    speaker: "Dileep Raman, Co-Founder and Chief of Healthcare, Cloudphysicians",
+    speaker: "Dr. Dileep Raman, Co-Founder and Chief of Healthcare, Cloudphysician",
     schedule: [
       { time: "5:30–6 PM", activity: "Socializing & beers" },
       { time: "6–6:45 PM", activity: "Presentation" },
