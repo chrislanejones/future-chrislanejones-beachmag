@@ -82,8 +82,8 @@ const directives = {
   // Favicons on /browser-tabs and the link page come from whatever site each
   // admin-entered link points at, so images stay open to any https host.
   "img-src": ["'self'", "data:", "blob:", "https:"],
-  // Blog audio (and anything else from the Media Manager) streams from UploadThing.
-  "media-src": ["'self'", "https://utfs.io", "https://*.ufs.sh"],
+  // Blog audio streams from UploadThing; the radio's LOAD button uses local blobs.
+  "media-src": ["'self'", "blob:", "https://utfs.io", "https://*.ufs.sh"],
   "font-src": ["'self'", ...(isPreview ? ["https://vercel.live", "https://assets.vercel.com"] : [])],
   "frame-src": ["https://fast.wistia.com", ...clerkProtect, ...vercelToolbar],
   // Clerk runs a blob: worker.

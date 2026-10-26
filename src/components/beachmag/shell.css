@@ -144,13 +144,17 @@ body .site-shell:has(> [data-beachmag]) {
   }
 }
 
-/* Radio lights follow the source: FM / AM glows while a station plays, TAPE
-   while your own LOADed file plays (the engine marks that .off-dial). The
-   design's rule lights every LED when playing; these turn the other one off. */
-#beach-offline .is-playing.off-dial .band-label .power-led,
-#beach-offline .is-playing:not(.off-dial) .tape-led {
+/* Start with every lamp off, then light only the source that is playing.
+   A LOADed file marks the chassis .off-dial; station presets leave tape mode. */
+#beach-offline .mono-radio .power-led {
   background: #5c302b;
   box-shadow: none;
+}
+#beach-offline .is-playing:not(.off-dial) .band-label > .power-led,
+#beach-offline .is-playing.off-dial .tape-led,
+#beach-offline .is-playing.off-dial .tape-lamp {
+  background: var(--bm-lamp);
+  box-shadow: 0 0 7px var(--bm-lamp);
 }
 
 /* Hero map: taller than the design's 220px strip; scales with the column. */
@@ -2030,13 +2034,9 @@ html.dark #coastal-art .map-wrap .map-night {
   object-position: top center;
 }
 
-/* A lit TAPE lamp beside the FM / AM lamp, at every width. */
+/* The TAPE lamp sits beside FM / AM at every width; source rules above light it. */
 #beach-offline .band-label .tape-light {
   margin-left: 18px;
-}
-#beach-offline .band-label .tape-lamp {
-  background: var(--bm-lamp);
-  box-shadow: 0 0 7px var(--bm-lamp);
 }
 /* Phones: the tuner display gets the whole first row; the VU meter (with the
    tape counter) and the knobs share the second. */
