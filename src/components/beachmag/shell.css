@@ -45,6 +45,8 @@ body.menu-open #site-nav .life-toggle { visibility: hidden; }
   color: var(--nav-paper);
   font: 32px/1 var(--font-dm-sans), sans-serif;
   cursor: pointer;
+  /* Do not transition inherited visibility, including in reduced-motion mode. */
+  transition: none;
 }
 
 /* Skip link: hidden above the header until a keyboard reaches it. */

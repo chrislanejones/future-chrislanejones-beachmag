@@ -95,14 +95,21 @@ export function SiteNav({ offline = false }: { offline?: boolean }) {
     if (content) content.inert = open;
     if (lastOpen.current === open) return;
     lastOpen.current = open;
-    (open ? closeRef : toggleRef).current?.focus({ preventScroll: true });
+    // Let the browser apply visibility/inert changes before moving focus.
+    // On the first production render, synchronous focus can otherwise be lost.
+    const focusFrame = requestAnimationFrame(() => {
+      (open ? closeRef : toggleRef).current?.focus({ preventScroll: true });
+    });
     if (open) {
       body.classList.remove("menu-closing");
-      return;
+      return () => cancelAnimationFrame(focusFrame);
     }
     body.classList.add("menu-closing");
     const timer = setTimeout(() => body.classList.remove("menu-closing"), 720);
-    return () => clearTimeout(timer);
+    return () => {
+      cancelAnimationFrame(focusFrame);
+      clearTimeout(timer);
+    };
   }, [open]);
 
   useEffect(() => {
