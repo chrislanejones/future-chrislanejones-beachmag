@@ -54,7 +54,7 @@ function Month({ year, month, today, events }: { year: number; month: number; to
                 <td key={column} className={classes || undefined}>
                   <time dateTime={date}>{day}</time>
                   {onDay.map((event) => (
-                    <Link key={event.slug} href={eventHref(event)}>{event.name}</Link>
+                    <Link key={event.slug} href={eventHref(event)} aria-label={event.name} title={event.name}>{event.name}</Link>
                   ))}
                 </td>
               );

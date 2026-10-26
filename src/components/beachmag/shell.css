@@ -498,8 +498,8 @@ body.menu-open #site-takeover nav a {
 #coastal-art .events-calendar .event:target {
   background: color-mix(in srgb, var(--orange) 14%, transparent);
 }
-/* Phones: the day keeps its orange tile; the name moves to the list below. */
-@media (max-width: 520px) {
+/* Compact calendar columns use event dots; names remain in the event list. */
+@container event-calendar (max-width: 500px) {
   #coastal-art .calendar-month td {
     height: 46px;
     padding: 4px 2px;
@@ -2024,7 +2024,7 @@ section#sandbox .sandbox-heading {
   .interior .read-link,
   .interior .work-actions a,
   .interior .end-note a,
-  #coastal-art .columns article a {
+  #coastal-art .columns article a:not(.calendar-month a) {
     position: relative;
   }
   #site-nav .desktop-links > a::after,
@@ -2033,7 +2033,7 @@ section#sandbox .sandbox-heading {
   .interior .read-link::after,
   .interior .work-actions a::after,
   .interior .end-note a::after,
-  #coastal-art .columns article a::after {
+  #coastal-art .columns article a:not(.calendar-month a)::after {
     content: "";
     position: absolute;
     inset: -12px -6px;
@@ -2262,7 +2262,7 @@ html.dark #coastal-art .map-wrap .map-night {
 #coastal-art .calendar-mini-day.is-blank { border-color: transparent; }
 #coastal-art .calendar-mini-day.is-today { background: color-mix(in srgb, var(--ink) 12%, transparent); font-weight: 800; }
 #coastal-art .calendar-mini-day.has-event::after { content: ""; position: absolute; bottom: 2px; left: calc(50% - 2px); width: 4px; height: 4px; border-radius: 50%; background: var(--color-tag-red); }
-#coastal-art #selected-month { scroll-margin-top: 24px; }
+#coastal-art #selected-month { container: event-calendar / inline-size; scroll-margin-top: 24px; }
 #coastal-art .events h2.past-events-heading { margin-top: 36px; }
 
 /* Event details: a perforated date ticket, with the address next to the time. */
@@ -2317,4 +2317,10 @@ html.dark #coastal-art .map-wrap .map-night {
 /* Narrow calendar columns keep the miniature dates legible. */
 @container (max-width: 420px) {
   #coastal-art .calendar-year-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@container (max-width: 280px) {
+  #coastal-art .calendar-mini { padding: 5px; }
+  #coastal-art .calendar-mini-days,
+  #coastal-art .calendar-mini-weekdays { gap: 1px; }
 }
