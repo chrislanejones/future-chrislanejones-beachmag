@@ -387,6 +387,14 @@ body.menu-open #site-takeover nav a {
   }
 }
 
+/* Home and /events: keep the date centered beside the whole details block. */
+#coastal-art .event {
+  align-items: center;
+}
+#coastal-art .event strong a {
+  margin-top: 0;
+}
+
 /* /events: the calendar sits on the torn-paper card, the list beside it. */
 #coastal-art .direction:has(.events-calendar) {
   min-height: 0;
@@ -1811,15 +1819,13 @@ section#sandbox .sandbox-heading {
   }
 }
 
-/* The beach umbrella after "out there.": alternating accent and cream panels,
-   the way the life preserver is segmented, planted in a little sand. */
+/* The wide beach canopy leans inside the SVG; its sand stays level. */
 #coastal-footer .footer-umbrella {
   display: inline-block;
-  width: 1em;
+  width: 1.12em;
   height: 1em;
   margin-left: 0.12em;
   vertical-align: -0.14em;
-  transform: rotate(-14deg);
   overflow: visible;
   letter-spacing: 0;
 }
@@ -2202,7 +2208,7 @@ html.dark #coastal-art .map-wrap .map-night {
   word-spacing: 0;
 }
 
-/* Footer bottom line: "Made with love from Jax" and a filled heart before the copyright. */
+/* Footer bottom line: a filled heart in "Made with love from Jax, FL" before the copyright. */
 #coastal-footer .footer-love {
   white-space: nowrap;
 }

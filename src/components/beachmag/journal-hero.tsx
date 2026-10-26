@@ -85,7 +85,7 @@ export function JournalHero() {
             start the OS theme's still early. Stills only, no video yet. */}
         <Image className="map map-day" src={HERO.day} alt={HERO.alt} width={1520} height={739} sizes={HERO_SIZES} />
         <Image className="map map-night" src={HERO.night} alt={HERO.alt} width={1520} height={739} sizes={HERO_SIZES} />
-        <span className="edge">JACKSONVILLE, FL</span>
+        <span className="edge">JACKSONVILLE, FL • ST AUGUSTINE BEACH, FL</span>
         <span className="sticker">Still making things.</span>
       </div>
       <div className="columns">

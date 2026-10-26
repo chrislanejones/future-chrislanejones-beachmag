@@ -12,6 +12,12 @@ export type HomeEvent = {
 
 export const HOME_EVENTS: HomeEvent[] = [
   {
+    start: "2026-10-26T17:30",
+    name: "BuildWeek //02 Proof Night: Live Demos and Winners",
+    place: "1250 Shetter Ave · Jacksonville Beach, FL 32250 · 5:30–8 PM ET · Free, RSVP required",
+    url: "https://www.meetup.com/the-code-alliance-incubator/events/316841340/",
+  },
+  {
     start: "2026-10-29T09:00",
     name: "Saint Augustine Cowork and Coffee",
     place: "Dos Coffee & Wine · St. Augustine · 9 AM · I'm hosting",

@@ -1,5 +1,7 @@
 // next.config.mjs
 
+import { networkInterfaces } from "node:os";
+
 const isDev = process.env.NODE_ENV !== "production";
 // Vercel sets VERCEL_ENV at build time; preview builds get the Vercel Toolbar.
 const isPreview = process.env.VERCEL_ENV === "preview";
@@ -117,6 +119,13 @@ const securityHeaders = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Windows can reach WSL by its current IP when localhost forwarding fails.
+  // Allow only this machine's IPv4 addresses, refreshed on each dev startup.
+  allowedDevOrigins: isDev
+    ? Object.values(networkInterfaces()).flatMap((addresses) =>
+        (addresses ?? []).filter((address) => address.family === "IPv4").map((address) => address.address),
+      )
+    : [],
   pageExtensions: ["js", "jsx", "ts", "tsx"],
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

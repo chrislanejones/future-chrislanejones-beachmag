@@ -69,19 +69,18 @@ export function SiteFooter({ offline = false }: { offline?: boolean }) {
           <p className="footer-kicker">THE COASTAL EDITION / UNTIL NEXT TIME</p>
           <h2>
             See you<br /><em>out there.</em>
-            {/* A beach umbrella: six domed panels in the preserver's two colors with
-                a scalloped valance, on a pole planted in a little drift of sand. */}
-            <svg className="footer-umbrella" viewBox="0 0 64 64" aria-hidden="true">
-              <path d="M32 30 V57" stroke="var(--footer-ink)" strokeWidth="2.6" strokeLinecap="round" />
-              <path d="M22 58.5 Q32 53 42 58.5Z" fill="var(--footer-accent)" />
-              <path d="M32 9 Q4.6 10 4 30 Q8.7 35.5 13.3 30 Q13.7 10 32 9Z" fill="var(--footer-accent)" />
-              <path d="M32 9 Q13.7 10 13.3 30 Q18 35.5 22.7 30 Q22.9 10 32 9Z" fill="var(--footer-ink)" />
-              <path d="M32 9 Q22.9 10 22.7 30 Q27.3 35.5 32 30 Q32 10 32 9Z" fill="var(--footer-accent)" />
-              <path d="M32 9 Q32 10 32 30 Q36.7 35.5 41.3 30 Q41.1 10 32 9Z" fill="var(--footer-ink)" />
-              <path d="M32 9 Q41.1 10 41.3 30 Q46 35.5 50.7 30 Q50.3 10 32 9Z" fill="var(--footer-accent)" />
-              <path d="M32 9 Q50.3 10 50.7 30 Q55.3 35.5 60 30 Q59.4 10 32 9Z" fill="var(--footer-ink)" />
-              <path d="M32 9 V4" stroke="var(--footer-ink)" strokeWidth="2.6" strokeLinecap="round" />
-              <circle cx="32" cy="3.6" r="2.2" fill="var(--footer-accent)" />
+            {/* A low, wide beach canopy with broad stripes and a leaning sand pole. */}
+            <svg className="footer-umbrella" viewBox="0 0 80 72" aria-hidden="true">
+              <path d="M32 67 Q48 59 65 67Z" fill="var(--footer-accent)" />
+              <g transform="rotate(-15 40 32)">
+                <path d="M40 27 V64" stroke="var(--footer-ink)" strokeWidth="3" strokeLinecap="round" />
+                <path d="M40 10 V6" stroke="var(--footer-ink)" strokeWidth="2" strokeLinecap="round" />
+                <path d="M4 32 Q17 14 40 10 Q63 14 76 32Z" fill="var(--footer-accent)" />
+                <path d="M40 10 Q30 18 26 32 H54 Q50 18 40 10Z" fill="var(--footer-ink)" />
+                <path d="M4 32 H26 V36 L4 34Z M54 32 H76 V34 L54 36Z" fill="var(--footer-accent)" />
+                <path d="M26 32 H54 V36 H26Z" fill="var(--footer-ink)" />
+                <path d="M5 32 H75" stroke="var(--footer-paper)" strokeWidth="1" opacity="0.25" />
+              </g>
             </svg>
           </h2>
         </div>
@@ -112,7 +111,7 @@ export function SiteFooter({ offline = false }: { offline?: boolean }) {
       <div className="footer-colophon">
         <p>
           <span className="footer-love">
-            Made with love from Jax <Heart className="footer-heart" size={13} strokeWidth={0} aria-label="heart" />
+            Made with <Heart className="footer-heart" size={13} strokeWidth={0} role="img" aria-label="love" /> from Jax, FL
           </span>{" "}
           <span aria-hidden="true">·</span> © {new Date().getFullYear()} Chris Lane Jones. All rights reserved.
         </p>

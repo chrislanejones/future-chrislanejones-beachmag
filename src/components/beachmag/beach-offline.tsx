@@ -51,20 +51,32 @@ function SkillSticker() {
 // were here." sits above the postcards.
 function Ramblings() {
   const [quote, setQuote] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused || QUOTES.length < 2) return;
+    // Give the marquee three passes; manual advances restart the reading time.
+    const timer = setTimeout(() => setQuote((current) => (current + 1) % QUOTES.length), quote === 0 ? 21000 : 18000);
+    return () => clearTimeout(timer);
+  }, [quote, paused]);
+
   return (
     <div className="rambles">
       <h3>My ramblings.</h3>
       <article className="ramble text-only">
         {/* Every quote sits in the same grid cell and only the current one shows,
             so the card is always as tall as the longest quote and never jumps. */}
-        <blockquote className="quote-stack" aria-live="polite">
+        <blockquote className="quote-stack" aria-live={paused ? "polite" : "off"}>
           {QUOTES.map((text, index) => (
             <span key={index} hidden={index !== quote}>{text}</span>
           ))}
         </blockquote>
         <div className="ramble-footer">
           <span>CHRIS LANE JONES</span>
-          <button className="plain-button cursor-interaction" type="button" onClick={() => setQuote((quote + 1) % QUOTES.length)}>
+          <button className="plain-button cursor-interaction" type="button" aria-pressed={paused} onClick={() => setPaused((current) => !current)}>
+            Pause rotation
+          </button>
+          <button className="plain-button cursor-interaction" type="button" onClick={() => setQuote((current) => (current + 1) % QUOTES.length)}>
             Another thought ↗
           </button>
         </div>
