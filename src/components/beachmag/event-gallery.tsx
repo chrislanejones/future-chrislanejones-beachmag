@@ -28,7 +28,7 @@ function LiveEventHero(props: EventHeroProps) {
 function EventHeroContent({ name, description, photos }: Pick<EventHeroProps, "name" | "description"> & { photos: Doc<"eventPhotos">[] }) {
   // Gallery order is shared with the admin: the first photo is the main photo.
   const main = photos[0];
-  const gallery = photos.map((photo) => ({ src: photo.url, alt: photo.alt,
+  const gallery = photos.slice(0, 5).map((photo) => ({ src: photo.url, alt: photo.alt,
     description: [photo.caption || photo.alt, photo.stock ? "Stock image" : "", photo.credit].filter(Boolean).join(" · ") }));
   return <header className={`event-detail-heading${main ? " has-photo" : ""}`}>
     <div>

@@ -5,9 +5,13 @@ import { afterEach, expect, test, vi } from "vitest";
 import type { Doc } from "../../../convex/_generated/dataModel";
 
 const query = vi.hoisted(() => vi.fn(() => undefined as Doc<"eventPhotos">[] | undefined));
+const galleryPhotos = vi.hoisted(() => vi.fn());
 vi.mock("convex/react", () => ({ useQuery: query }));
 vi.mock("next/image", () => ({ default: ({ src, alt }: { src: string; alt: string }) => createElement("img", { src, alt }) }));
-vi.mock("./gallery-drawer", () => ({ default: ({ children }: { children: ReactNode }) => children }));
+vi.mock("./gallery-drawer", () => ({ default: ({ children, photos }: { children: ReactNode; photos: unknown[] }) => {
+  galleryPhotos(photos);
+  return children;
+} }));
 import { EventHero } from "./event-gallery";
 
 const photos = ["Presentation", "Networking"].map((alt, order) => ({
@@ -44,4 +48,10 @@ test("live reordering or removal replaces the server's initial main photo", () =
   expect(render(photos)).toContain('alt="Networking"');
   query.mockReturnValue([]);
   expect(render(photos)).not.toContain("<img");
+});
+
+test("the popup receives at most five photos, in their saved order", () => {
+  const many = Array.from({ length: 7 }, (_, index) => ({ ...photos[0], url: `/photo-${index}.jpg`, order: index }));
+  render(many);
+  expect(galleryPhotos.mock.lastCall?.[0].map((photo: { src: string }) => photo.src)).toEqual(many.slice(0, 5).map((photo) => photo.url));
 });

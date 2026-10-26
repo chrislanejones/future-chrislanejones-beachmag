@@ -22,6 +22,8 @@ In `/admin?tab=events`, **Main Photo** controls the event header and **Photo Gal
 
 Public event pages show one main photo beside the title and recap, with an **Open gallery** button underneath only when there is more than one photo. Empty events retain a text header. Photos include their saved alt text, captions and credits. The initial server-rendered photo list is refreshed by the live Convex query.
 
+The event popup shows the first five ordered photos (the main photo and four additional photos), on both mobile and desktop. The admin explains this limit; extra saved photos remain available for reordering into those first five positions. Desktop fans are centered using the actual number of displayed photos.
+
 ## Resume files
 
 PDF and DOCX resume files live in Convex storage, referenced by `resumeFiles`. The same-origin download route streams the selected file under a readable filename. Replacing a resume can delete the prior storage object; resume binaries should not be committed to Git. Use the admin upload workflow described by [ADR-006](../../adr/006-admin-resume-upload.md). Inspect [upload-resume.sh](../../../scripts/upload-resume.sh) carefully before use because it targets production.

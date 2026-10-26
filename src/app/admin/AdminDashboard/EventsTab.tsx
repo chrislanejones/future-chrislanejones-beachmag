@@ -117,7 +117,7 @@ function EventPhotoEditor({ event }: { event: HomeEvent }) {
       </section>
       <section aria-label="Photo Gallery (Additional Photos)" className="border-t border-(--color-border) pt-6 space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-2"><h3 className="font-semibold text-ink">Photo Gallery (Additional Photos)</h3><span className="text-xs text-muted">{photos ? `${additionalPhotos.length} ${additionalPhotos.length === 1 ? "photo" : "photos"}` : "Loading…"}</span></div>
-        <p className="text-sm text-muted">Additional photos appear in the gallery opened below the main photo.</p>
+        <p className="text-sm text-muted">The popup gallery shows up to 5 photos: the main photo plus 4 additional photos. Move photos earlier to choose which appear.</p>
         {photos !== undefined && !additionalPhotos.length && <p className="text-sm text-muted">No additional photos yet.</p>}
         {additionalPhotos.map((photo, index) => renderPhoto(photo, index + 1))}
         {mainPhoto && !editorOpen && <Button type="button" variant="secondary" size="sm" disabled={busy} onClick={addPhoto}><Plus className="w-4 h-4" />Add Gallery Photo</Button>}

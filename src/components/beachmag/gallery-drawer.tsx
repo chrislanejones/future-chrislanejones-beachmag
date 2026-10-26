@@ -133,21 +133,21 @@ const PhotoGallery = ({
 
 
   /* ---------------------- Photo positions for desktop ---------------------- */
-  // Calculate responsive spacing - wider spread for laptop/desktop
-  const photoSpacing = photoSize.width * 0.6; // Increased from /2 to *0.8 for wider spacing
-  const positions = [...Array(Math.min(photos.length, 5)).keys()].map((i) => ({
+  // Center the actual photo count, rather than reserving five positions.
+  const count = Math.min(photos.length, 5);
+  const midpoint = (count - 1) / 2;
+  const maxAngle = midpoint * 4 * Math.PI / 180;
+  const cardWidth = photoSize.width + 20;
+  const cardHeight = photoSize.height + 60;
+  const rotatedWidth = cardWidth * Math.cos(maxAngle) + cardHeight * Math.sin(maxAngle);
+  const availableWidth = Math.min(viewport.width, 1280) - 96;
+  const photoSpacing = count > 1 ? Math.min(photoSize.width * 0.6, Math.max(0, (availableWidth - rotatedWidth) / (count - 1))) : 0;
+  const positions = [...Array(count).keys()].map((i) => ({
     id: i + 1,
     order: i,
-    x:
-      [
-        `-${photoSpacing * 2}px`,
-        `-${photoSpacing}px`,
-        "0px",
-        `${photoSpacing}px`,
-        `${photoSpacing * 2}px`,
-      ][i] || "0px",
-    y: ["-10px", "5px", "-15px", "0px", "15px"][i] || "0px",
-    rotate: [-8, 5, -3, 7, -5][i] || 0,
+    x: `${(i - midpoint) * photoSpacing}px`,
+    y: `${Math.abs(i - midpoint) * 6}px`,
+    rotate: (i - midpoint) * 4,
     zIndex: 50 - i * 10,
     direction: (i % 2 === 0 ? "left" : "right") as Direction,
   }));
@@ -285,7 +285,6 @@ const PhotoGallery = ({
   // Calculate container dimensions based on photo size and spacing
   // Desktop scattered polaroid layout
   const containerHeight = photoSize.height + 60;
-  const containerWidth = photoSpacing * 4 + photoSize.width + 80;
 
   return (
     <div
@@ -293,20 +292,18 @@ const PhotoGallery = ({
       style={{ height: `clamp(400px, ${containerHeight + 150}px, 600px)` }}
     >
       <motion.div
-        className="relative"
+        className="relative w-full"
         initial={{ opacity: 0 }}
         animate={{ opacity: isVisible ? 1 : 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
         <motion.div
-          className="relative left-1/2 overflow-visible"
+          className="relative w-full overflow-visible"
           variants={containerVariants}
           initial="hidden"
           animate={isLoaded ? "visible" : "hidden"}
           style={{
             height: `${containerHeight}px`,
-            width: `${containerWidth}px`,
-            transform: "translateX(-60%)",
           }}
         >
           {[...positions].reverse().map((position, index) => {
@@ -315,9 +312,9 @@ const PhotoGallery = ({
             return (
               <motion.div
                 key={position.id}
-                className="absolute" // Removed left-1/2 top-1/2
+                className="absolute"
                 style={{
-                  left: "45%",
+                  left: `calc(50% - ${cardWidth / 2}px)`,
                   top: "0%",
                   zIndex:
                     clickedPhotoId === position.id ? 100 : position.zIndex,
