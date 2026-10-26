@@ -10,7 +10,7 @@ import { EditionRow, type Crumb } from "./edition-row";
 export function ScenePolaroid({ path, caption, className = "" }: { path: string; caption: ReactNode; className?: string }) {
   const scene = BANNER_SCENES[path] ?? BANNER_SCENES["/about"];
   return (
-    <figure className={`page-polaroid ${className}`.trim()}>
+    <figure className={`page-polaroid ${className}`.trim()} data-scene-path={path}>
       <div className="polaroid-scene" style={{ "--scene-focus": scene.focus } as CSSProperties}>
         <SceneLoop scene={scene} sizes="(max-width: 640px) 90vw, 520px" preload />
       </div>

@@ -161,6 +161,17 @@ body .site-shell:has(> [data-beachmag]) {
 #coastal-art .map {
   height: clamp(240px, 34vw, 420px);
 }
+#coastal-art .edge {
+  white-space: nowrap;
+}
+@media (max-width: 1024px) {
+  #coastal-art .edge {
+    top: 24px;
+    font-size: 9px;
+    line-height: 1;
+    letter-spacing: 0.08em;
+  }
+}
 
 /* The open menu tilts #page-content 4deg. On a tall page the tilted bottom
    pokes out sideways, which widens a phone's layout viewport and pushes the
@@ -528,6 +539,19 @@ html.dark .interior {
   .interior .polaroid-scene {
     aspect-ratio: 1.6;
   }
+}
+/* Leave room for the contact card's tilt and shadow inside the clipped page. */
+.interior .page-polaroid[data-scene-path="/contact"] {
+  width: calc(100% - 40px);
+  min-width: 0;
+  margin-inline: 20px;
+}
+.interior [data-scene-path="/contact"] .polaroid-scene {
+  aspect-ratio: 16 / 9;
+}
+.interior [data-scene-path="/contact"] .polaroid-scene :is(img, video) {
+  object-fit: contain;
+  object-position: center;
 }
 .interior .archive-crumbs > span {
   display: inline-flex;
