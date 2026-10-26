@@ -56,3 +56,21 @@ test("invalid URLs, empty alt text and edits against the wrong event are rejecte
   const id = await admin.mutation(api.eventPhotos.save, photo);
   await expect(admin.mutation(api.eventPhotos.save, { ...photo, id, eventSlug: "another-event" })).rejects.toThrow("Photo not found");
 });
+
+test("a full gallery rejects extra photos but still allows edits and space to be reused", async () => {
+  const t = convexTest(schema, modules);
+  const admin = t.withIdentity({ subject: owner });
+  const ids = await t.run(async (ctx) => {
+    const result = [];
+    for (let order = 0; order < 60; order++) result.push(await ctx.db.insert("eventPhotos", { ...photo, order }));
+    return result;
+  });
+  await expect(admin.mutation(api.eventPhotos.save, photo)).rejects.toThrow("60 photos");
+  await admin.mutation(api.eventPhotos.save, { ...photo, id: ids[0], caption: "Still editable" });
+  await admin.mutation(api.eventPhotos.remove, { id: ids[30] });
+  const newId = await admin.mutation(api.eventPhotos.save, photo);
+  const gallery = await t.query(api.eventPhotos.list, { eventSlug: photo.eventSlug });
+  expect(gallery).toHaveLength(60);
+  expect(gallery[0].caption).toBe("Still editable");
+  expect(gallery.at(-1)?._id).toBe(newId);
+});

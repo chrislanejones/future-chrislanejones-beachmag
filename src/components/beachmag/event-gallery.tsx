@@ -3,9 +3,16 @@
 import Image from "next/image";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
+import { ContentBoundary } from "@/components/coastal/live-content";
 import GalleryDrawer from "./gallery-drawer";
 
 export function EventGallery({ slug, name }: { slug: string; name: string }) {
+  return <ContentBoundary key={slug} fallback={<p className="event-detail-note" role="status">The gallery couldn&apos;t load. Please refresh to try again.</p>}>
+    <LiveEventGallery slug={slug} name={name} />
+  </ContentBoundary>;
+}
+
+function LiveEventGallery({ slug, name }: { slug: string; name: string }) {
   const photos = useQuery(api.eventPhotos.list, { eventSlug: slug });
   if (!photos?.length) return null;
   const gallery = photos.map((photo) => ({ src: photo.url, alt: photo.alt,
