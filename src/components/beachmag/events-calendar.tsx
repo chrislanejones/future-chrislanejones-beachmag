@@ -141,25 +141,6 @@ export function EventsCalendar() {
         <span>Meetups, coworking mornings and the odd conference around Northeast Florida. Come say hi.</span>
         <Link href="/conferences">Past conferences ↗</Link>
       </div>
-      <section className="calendar-year" aria-label={`${current.year} year overview`}>
-        <div className="calendar-year-head">
-          <h2>{current.year}<span> / THE YEAR AT A GLANCE</span></h2>
-          <div className="client-controls">
-            <button type="button" aria-label="Previous year" disabled={current.year === 2026} onClick={() => setShown(shown - 12)}>←</button>
-            <button type="button" aria-label="Next year" disabled={current.year === endYear} onClick={() => setShown(shown + 12)}>→</button>
-          </div>
-        </div>
-        <p className="calendar-legend"><span className="calendar-event-dot" aria-hidden="true" /> An event on that day. Choose a month to explore.</p>
-        <div className="calendar-year-grid">
-          {MONTH_NAMES.map((name, month) => <MiniMonth key={name} year={current.year} month={month}
-            selected={month === current.month} today={today} events={allEvents}
-            onSelect={() => {
-              setShown((current.year - 2026) * 12 + month);
-              detail.current?.focus({ preventScroll: true });
-              detail.current?.scrollIntoView({ block: "start", behavior: "instant" });
-            }} />)}
-        </div>
-      </section>
       <div className="columns events-calendar">
         <article id="selected-month" ref={detail} tabIndex={-1} aria-label="Selected month calendar">
           <div className="label">THE CALENDAR</div>
@@ -172,6 +153,26 @@ export function EventsCalendar() {
             </div>
           </div>
           <Month year={current.year} month={current.month} today={today} events={allEvents} />
+
+          <section className="calendar-year" aria-label={`${current.year} year overview`}>
+            <div className="calendar-year-head">
+              <h2>{current.year}<span> / THE YEAR AT A GLANCE</span></h2>
+              <div className="client-controls">
+                <button type="button" aria-label="Previous year" disabled={current.year === 2026} onClick={() => setShown(shown - 12)}>←</button>
+                <button type="button" aria-label="Next year" disabled={current.year === endYear} onClick={() => setShown(shown + 12)}>→</button>
+              </div>
+            </div>
+            <p className="calendar-legend"><span className="calendar-event-dot" aria-hidden="true" /> An event on that day. Choose a month to explore.</p>
+            <div className="calendar-year-grid">
+              {MONTH_NAMES.map((name, month) => <MiniMonth key={name} year={current.year} month={month}
+                selected={month === current.month} today={today} events={allEvents}
+                onSelect={() => {
+                  setShown((current.year - 2026) * 12 + month);
+                  detail.current?.focus({ preventScroll: true });
+                  detail.current?.scrollIntoView({ block: "start", behavior: "instant" });
+                }} />)}
+            </div>
+          </section>
         </article>
         <aside className="events">
           <h2>Coming up.</h2>
