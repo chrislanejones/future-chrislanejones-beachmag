@@ -46,6 +46,7 @@ import MessagesTabEnhanced from "./MessagesTabEnhanced";
 import EngagementTabEnhanced from "./EngagementTabEnhanced";
 import ProjectsTabEnhanced from "./ProjectsTabEnhanced";
 import ClientsTabEnhanced from "./ClientsTabEnhanced";
+import EventsTab from "./EventsTab";
 import ConferencesTabEnhanced from "./ConferencesTabEnhanced";
 import ProfileSocialTabEnhanced, {
   profileSocialSubsections,
@@ -240,6 +241,7 @@ const AdminDashboard = () => {
     { id: "media", label: "Media Manager", icon: Image },
     { id: "projects", label: "Projects", icon: Briefcase },
     { id: "clients", label: "Clients", icon: Users },
+    { id: "events", label: "Events", icon: Calendar },
     { id: "conferences", label: "Conferences", icon: Globe },
     { id: "career", label: "Career Timeline", icon: Calendar },
     { id: "links", label: "Links Manager", icon: Link },
@@ -262,6 +264,8 @@ const AdminDashboard = () => {
         return <ProjectsTabEnhanced />;
       case "clients":
         return <ClientsTabEnhanced />;
+      case "events":
+        return <EventsTab />;
       case "conferences":
         return <ConferencesTabEnhanced />;
       case "career":

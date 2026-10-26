@@ -4,6 +4,8 @@ import { api } from '../../convex/_generated/api'
 import { projectHref } from '@/lib/projects'
 import { SITE_URL } from '@/lib/structured-data'
 
+import { HOME_EVENTS, eventHref } from '@/components/beachmag/events'
+
 const BASE_URL = SITE_URL
 const CONVEX_SITE_URL = process.env.NEXT_PUBLIC_CONVEX_SITE_URL
 
@@ -36,6 +38,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: path === '/' ? BASE_URL : `${BASE_URL}${path}`,
     changeFrequency: 'weekly',
     priority: path === '/' ? 1 : 0.8,
+  }))
+
+  const eventUrls: MetadataRoute.Sitemap = HOME_EVENTS.map((event) => ({
+    url: `${BASE_URL}${eventHref(event)}`, changeFrequency: 'weekly', priority: 0.6,
   }))
 
   let conferenceUrls: MetadataRoute.Sitemap = []
@@ -81,7 +87,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   if (!CONVEX_SITE_URL) {
-    return [...staticUrls, ...conferenceUrls, ...projectUrls]
+    return [...staticUrls, ...eventUrls, ...conferenceUrls, ...projectUrls]
   }
 
   try {
@@ -100,9 +106,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }))
 
-    return [...staticUrls, ...conferenceUrls, ...projectUrls, ...blogUrls]
+    return [...staticUrls, ...eventUrls, ...conferenceUrls, ...projectUrls, ...blogUrls]
   } catch (error) {
     console.error('Error generating sitemap dynamic entries:', error)
-    return [...staticUrls, ...conferenceUrls, ...projectUrls]
+    return [...staticUrls, ...eventUrls, ...conferenceUrls, ...projectUrls]
   }
 }

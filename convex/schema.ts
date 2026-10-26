@@ -157,6 +157,16 @@ export default defineSchema({
     updatedAt: v.number(),
   }).index("by_kind", ["kind"]),
 
+  eventPhotos: defineTable({
+    eventSlug: v.string(),
+    url: v.string(),
+    alt: v.string(),
+    caption: v.string(),
+    credit: v.string(),
+    stock: v.boolean(),
+    order: v.number(),
+  }).index("by_eventSlug_and_order", ["eventSlug", "order"]),
+
   media: defineTable({
     url: v.string(),
     filename: v.string(),

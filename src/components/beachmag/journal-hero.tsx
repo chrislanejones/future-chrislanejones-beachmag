@@ -9,7 +9,7 @@ import { ContentBoundary } from "@/components/coastal/live-content";
 import { ClientStrip } from "./client-strip";
 import { BeachFigure } from "./beach-figure";
 import { EditionButtons } from "./edition-buttons";
-import { upcomingEvents } from "./events";
+import { eventHref, upcomingEvents } from "./events";
 
 type Entry = { title: string; excerpt: string; href: string; date?: number };
 
@@ -100,13 +100,7 @@ export function JournalHero() {
                 <time dateTime={event.start}>{event.month}<b>{event.day}</b></time>
                 <div>
                   <strong>
-                    {event.url ? (
-                      <a href={event.url} target="_blank" rel="noopener noreferrer">
-                        {event.name}<span className="sr-only"> (opens in a new tab)</span>
-                      </a>
-                    ) : (
-                      event.name
-                    )}
+                    <Link href={eventHref(event)}>{event.name}</Link>
                   </strong>
                   <small>{event.place}</small>
                 </div>

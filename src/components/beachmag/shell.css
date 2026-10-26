@@ -2241,3 +2241,78 @@ html.dark #coastal-art .map-wrap .map-night {
   vertical-align: -2px;
   fill: var(--footer-accent);
 }
+
+/* The year as twelve pocket calendars. Each whole month is one keyboard target. */
+#coastal-art .calendar-year { margin: 34px 0 40px; }
+#coastal-art .calendar-year-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+#coastal-art .calendar-year-head h2 { font: italic 900 42px/1 var(--font-bodoni-moda), Georgia, serif; }
+#coastal-art .calendar-year-head h2 span { font: 700 10px/1.5 var(--font-dm-sans), sans-serif; letter-spacing: .12em; vertical-align: middle; }
+#coastal-art .calendar-legend { display: flex; align-items: center; gap: 8px; margin: 16px 0; font-size: 12px; }
+#coastal-art .calendar-event-dot { width: 7px; height: 7px; flex: 0 0 7px; border-radius: 50%; background: var(--color-tag-red); }
+#coastal-art .calendar-year-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+#coastal-art .calendar-mini { display: flex; flex-direction: column; aspect-ratio: 1; padding: 14px; border: 1px solid var(--line); background: transparent; color: var(--ink); text-align: left; cursor: pointer; transition: background .15s; }
+#coastal-art .calendar-mini:hover { background: color-mix(in srgb, var(--ink) 5%, transparent); }
+#coastal-art .calendar-mini[aria-pressed="true"] { outline: 2px solid var(--orange); outline-offset: -2px; }
+#coastal-art .calendar-mini:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+#coastal-art .calendar-mini-title { font: italic 900 clamp(19px, 2.4vw, 30px)/1.1 var(--font-bodoni-moda), Georgia, serif; margin-bottom: 10px; }
+#coastal-art .calendar-mini-weekdays, #coastal-art .calendar-mini-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
+#coastal-art .calendar-mini-weekdays { text-align: center; font-size: 9px; margin-bottom: 5px; opacity: .65; }
+#coastal-art .calendar-mini-days { grid-template-rows: repeat(6, minmax(0, 1fr)); flex: 1; }
+#coastal-art .calendar-mini-day { position: relative; display: grid; place-items: center; border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent); font: 500 11px/1 var(--font-dm-sans), sans-serif; padding-bottom: 4px; }
+#coastal-art .calendar-mini-day.is-blank { border-color: transparent; }
+#coastal-art .calendar-mini-day.is-today { background: color-mix(in srgb, var(--ink) 12%, transparent); font-weight: 800; }
+#coastal-art .calendar-mini-day.has-event::after { content: ""; position: absolute; bottom: 2px; left: calc(50% - 2px); width: 4px; height: 4px; border-radius: 50%; background: var(--color-tag-red); }
+#coastal-art #selected-month { scroll-margin-top: 24px; }
+#coastal-art .events h2.past-events-heading { margin-top: 36px; }
+
+/* Event details: a perforated date ticket, with the address next to the time. */
+#coastal-art .event-detail-heading { padding: 42px 0 28px; max-width: 1000px; }
+#coastal-art .event-detail-heading h1 { margin: 14px 0 0; font: 900 clamp(36px, 5vw, 70px)/1.04 var(--font-bodoni-moda), Georgia, serif; letter-spacing: -.045em; overflow-wrap: anywhere; }
+#coastal-art .event-ticket { display: grid; grid-template-columns: 130px 1fr 1fr; align-items: stretch; border: 1px solid var(--line); border-top: 4px solid var(--orange); margin: 12px 0 38px; }
+#coastal-art .event-ticket-stamp { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 22px 12px; color: var(--orange); border-right: 1px dashed var(--line); text-transform: uppercase; font: 700 13px/1.2 var(--font-dm-sans), sans-serif; letter-spacing: .12em; }
+#coastal-art .event-ticket-stamp b { font: 900 68px/1 var(--font-bodoni-moda), Georgia, serif; letter-spacing: -.07em; margin: 5px 0; }
+#coastal-art .event-ticket-when, #coastal-art .event-ticket-where { padding: 28px; align-content: center; }
+#coastal-art .event-ticket-where { border-left: 1px solid var(--line); }
+#coastal-art .event-ticket .label { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+#coastal-art .event-ticket h2 { font: 700 19px/1.35 var(--font-dm-sans), sans-serif; margin: 0 0 8px; }
+#coastal-art .event-ticket p, #coastal-art .event-ticket a { font-size: 13px; line-height: 1.6; }
+#coastal-art .event-ticket a, #coastal-art .event-source, #coastal-art .event-back { text-decoration: underline; text-underline-offset: 4px; }
+#coastal-art .event-detail-copy { display: grid; grid-template-columns: 2fr 1fr; gap: 48px; font: 400 16px/1.7 var(--font-dm-sans), sans-serif; }
+#coastal-art .event-detail-copy p { margin: 0 0 22px; }
+#coastal-art .event-detail-copy .event-detail-intro { font-size: 20px; line-height: 1.65; }
+#coastal-art .event-detail-copy h2, #coastal-art .event-gallery h2 { font: italic 900 32px/1.1 var(--font-bodoni-moda), Georgia, serif; margin: 28px 0 16px; }
+#coastal-art .event-detail-copy ol { list-style: decimal; padding-left: 22px; }
+#coastal-art .event-detail-copy li { padding-left: 6px; margin-bottom: 12px; }
+#coastal-art .event-detail-copy aside { border-left: 1px solid var(--line); padding-left: 28px; font-size: 14px; }
+#coastal-art .event-detail-copy aside .label { margin-bottom: 10px; }
+#coastal-art .event-detail-copy .event-detail-note { margin-top: 22px; font-size: 12px; }
+#coastal-art .event-schedule > div { display: grid; grid-template-columns: 130px 1fr; border-bottom: 1px solid var(--line); padding: 10px 0; gap: 16px; }
+#coastal-art .event-schedule dt { font-weight: 700; }
+#coastal-art .event-gallery { border-top: 1px solid var(--line); padding-top: 28px; margin-top: 40px; }
+#coastal-art .event-gallery-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; }
+#coastal-art .event-gallery-heading h2 { margin: 10px 0 0; }
+#coastal-art .event-gallery-heading button { border: 1px solid var(--line); padding: 12px 16px; font-size: 13px; cursor: pointer; }
+#coastal-art .event-photo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; align-items: start; }
+#coastal-art .event-photo-grid img { width: 100%; height: auto; }
+#coastal-art .event-photo-grid figcaption { margin-top: 10px; font-size: 13px; line-height: 1.5; }
+#coastal-art .event-photo-grid small { display: block; margin-top: 4px; opacity: .75; }
+#coastal-art .event-back { display: inline-block; margin-top: 40px; font-size: 13px; }
+@media (max-width: 760px) {
+  #coastal-art .calendar-year-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  #coastal-art .calendar-mini { padding: 10px; }
+  #coastal-art .calendar-mini-title { font-size: 23px; }
+  #coastal-art .event-ticket { grid-template-columns: 85px 1fr; }
+  #coastal-art .event-ticket-stamp { grid-row: 1 / 3; }
+  #coastal-art .event-ticket-stamp b { font-size: 52px; }
+  #coastal-art .event-ticket-when, #coastal-art .event-ticket-where { padding: 20px; }
+  #coastal-art .event-ticket-where { border-left: 0; border-top: 1px dashed var(--line); }
+  #coastal-art .event-detail-copy { grid-template-columns: 1fr; gap: 24px; }
+  #coastal-art .event-detail-copy aside { padding: 24px 0 0; border-left: 0; border-top: 1px solid var(--line); }
+  #coastal-art .event-photo-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 380px) {
+  #coastal-art .calendar-mini { padding: 7px; }
+  #coastal-art .calendar-mini-title { font-size: 19px; margin-bottom: 6px; }
+  #coastal-art .calendar-mini-day { font-size: 9px; }
+  #coastal-art .calendar-year-head h2 span { display: block; margin-top: 8px; }
+}
