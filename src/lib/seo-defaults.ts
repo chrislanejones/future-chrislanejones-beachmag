@@ -29,6 +29,12 @@ export const DEFAULT_SEO: Record<string, Metadata> = {
       "Get in touch about web projects, WordPress maintenance, React consulting, or speaking at a meetup. Based in Jacksonville, FL, and available for remote work.",
     alternates: { canonical: `${SITE_URL}/contact` },
   },
+  "/lets-meet": {
+    title: "Let's Meet: Book a Call with Chris Lane Jones",
+    description:
+      "Pick a time for a video call with Chris Lane Jones about a web project, WordPress or React help, or a role on your team. Based in Jacksonville, FL.",
+    alternates: { canonical: `${SITE_URL}/lets-meet` },
+  },
   "/events": {
     title: "Events: Meetups & Coworking in Northeast Florida",
     description:

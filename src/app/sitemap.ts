@@ -21,6 +21,7 @@ const staticPages = [
   '/conferences',
   '/contact',
   '/events',
+  '/lets-meet',
   '/link-page',
   '/logo-page',
   '/projects',

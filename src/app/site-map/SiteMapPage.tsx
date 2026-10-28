@@ -12,6 +12,7 @@ const sitemapSections = [
       { label: "Career", href: "/career-and-resume" },
       { label: "Projects", href: "/projects" },
       { label: "Contact", href: "/contact" },
+      { label: "Let's Meet", href: "/lets-meet" },
     ],
   },
   {

@@ -271,12 +271,10 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
   `/favicon.ico` (404). Edit it in Admin or run `browserLinks:update --prod`.
 - **10-21-2026 — Missing blog image.** `/blog/rust-vs-gc.webp` 404s on
   /blog/rust-borrow-checker-vs-garbage-collector (live and local); the file isn't in `public/blog/`.
-- **10-23-2026 — A booking page of my own ("my own Calendly").** Recommended route: a `/book`
-  page in the beachmag style (month calendar like /events, time slots, a short form) on top of
-  Cal.com's API, so time zones, calendar sync and reminders are theirs. The front end can be
-  built here with sample slots; the API key goes in `.env.local` (Chris's), and any Convex
-  tables or functions belong on `-beach`, never deployed from this repo. Waiting on Chris:
-  route A/B/C and whether he already uses a scheduler.
+- **10-23-2026 — A booking page of my own ("my own Calendly").** Decided 10-28-2026: `/lets-meet`
+  embeds a Google Calendar appointment schedule (Chris chose it over the Cal.com custom picker).
+  The schedule ("Website Calendar", 60 min) is in `BOOKING_URL` in `src/app/lets-meet/page.tsx`. `convex/seo.ts` `KNOWN_PATHS` lacks `/lets-meet`, so an
+  admin SEO row for it would be swept by the daily cleanup; add it with the next Convex deploy.
 - **10-23-2026 — Beachmag footer kicker.** Still reads "THE COASTAL EDITION / UNTIL NEXT TIME"
   after the top row lost "THE COASTAL EDITION".
 - **10-24-2026 — Before connecting beachmag to its own Convex.** Read-only survey; nothing

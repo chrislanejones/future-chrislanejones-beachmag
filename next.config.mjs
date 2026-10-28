@@ -85,7 +85,8 @@ const directives = {
   // Blog audio streams from UploadThing; the radio's LOAD button uses local blobs.
   "media-src": ["'self'", "blob:", "https://utfs.io", "https://*.ufs.sh"],
   "font-src": ["'self'", ...(isPreview ? ["https://vercel.live", "https://assets.vercel.com"] : [])],
-  "frame-src": ["https://fast.wistia.com", ...clerkProtect, ...vercelToolbar],
+  // /lets-meet embeds a Google Calendar appointment schedule.
+  "frame-src": ["https://fast.wistia.com", "https://calendar.google.com", ...clerkProtect, ...vercelToolbar],
   // Clerk runs a blob: worker.
   "worker-src": ["'self'", "blob:"],
   "object-src": ["'none'"],

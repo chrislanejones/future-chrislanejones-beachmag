@@ -17,6 +17,7 @@ const SECTION_LABELS: Record<string, string> = {
   "site-map": "Site Map",
   "color-guide": "Color Guide",
   "admin-showcase": "Admin Showcase",
+  "lets-meet": "Let’s Meet",
 };
 
 const titleCase = (slug: string) => slug.replace(/-/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());

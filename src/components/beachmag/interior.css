@@ -76,6 +76,11 @@
 .interior .contact-services h3{font:900 25px var(--font-bodoni-moda),Georgia,serif;margin:0 0 10px}
 .interior .contact-services p{font-size:12px;margin:0}
 .interior .contact-services>a:hover{box-shadow:4px 4px 0 var(--ink)}
+/* /lets-meet: the contact letter holds the Google Calendar booking embed, laid flat so the picker reads straight. */
+.interior .meet-letter{transform:none}
+.interior .meet-frame{display:block;width:100%;height:680px;border:0;margin-top:18px}
+.interior .meet-fallback{font-size:12px;margin:14px 0 0}
+.interior .meet-list{font-size:13px;line-height:1.6;margin:0 0 20px;padding-left:18px;list-style:disc}
 @media(max-width:640px){.interior{padding:22px 20px 35px}
 .interior .edition-row{flex-wrap:wrap}
 .interior .page-hero{grid-template-columns:1fr;padding-top:32px;gap:35px}
@@ -94,6 +99,7 @@
 .interior .contact-grid,.interior .contact-services{grid-template-columns:1fr}
 .interior .contact-aside{border-left:0;border-top:1px solid;padding:25px 0 0}
 .interior .contact-letter{padding:24px}
+.interior .meet-frame{height:760px}
 .interior .end-note{align-items:flex-start;flex-direction:column}
 .interior .journal-search{gap:12px}
 .interior .section-rule{align-items:flex-start}}
