@@ -2358,3 +2358,78 @@ html.dark #coastal-art .map-wrap .map-night {
   #coastal-art .calendar-mini-days,
   #coastal-art .calendar-mini-weekdays { gap: 1px; }
 }
+
+/* Toasts (components/ui/sonner.tsx) portal to <body>, outside the magazine
+   shell, so they bring the paper and ink with them. */
+/* Sonner styles itself with [data-sonner-*] attribute selectors, so these
+   match on the same attributes to outrank them. */
+[data-sonner-toaster].site-toaster[data-sonner-theme] {
+  --normal-bg: var(--bm-cream-2);
+  --normal-text: var(--bm-ink-3);
+  --normal-border: var(--bm-ink-3);
+}
+[data-sonner-toaster].site-toaster[data-sonner-theme="dark"] {
+  --normal-bg: var(--bm-deep);
+  --normal-text: var(--bm-cream-2);
+  --normal-border: var(--bm-cream-2);
+}
+.site-toaster [data-sonner-toast].site-toast {
+  border-width: 2px;
+  border-radius: 0;
+  box-shadow: 4px 4px 0 var(--normal-border);
+  font: 500 15px/1.35 var(--font-dm-sans), Arial, sans-serif;
+}
+.site-toaster [data-sonner-toast].site-toast [data-description] { color: inherit; opacity: .8; }
+
+/* The skill sticker is just a label now; the button under it copies. */
+#beach-offline .skill-sticker:hover { transform: none; }
+#beach-offline .skill-copy {
+  /* Centered under the sticker on phones; left-aligned beside the radio from 900px. */
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin: 6px auto 0;
+  padding: 0 18px;
+  border: 2px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  font: 700 12px/1 var(--font-dm-sans), Arial, sans-serif;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color .15s, color .15s;
+}
+#beach-offline .skill-copy:hover { background: var(--ink); color: var(--paper); }
+#beach-offline .skill-copy:focus-visible { outline: 2px dashed var(--accent); outline-offset: 3px; }
+@media (min-width: 900px) {
+  #beach-offline .skill-copy { margin-inline: 0; }
+}
+
+/* The homepage ribbon (ribbon.tsx) on inner pages, which sit outside
+   #coastal-art: same orange, Bodoni italic and tilt as "Still making things." */
+.interior .sticker {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--paper);
+  font: italic 900 28px/1.15 var(--font-bodoni-moda), Georgia, serif;
+  padding: 17px 22px;
+  transform: rotate(7deg);
+}
+/* Inline: in the text flow under a headline, for a longer line. A gentler
+   tilt keeps three sentences readable. */
+:is(#coastal-art, .interior) .sticker.sticker-inline {
+  position: relative;
+  right: auto;
+  bottom: auto;
+  max-width: 44ch;
+  margin-top: 26px;
+  padding: 14px 20px;
+  font-size: 20px;
+  line-height: 1.35;
+  transform: rotate(-1.5deg);
+}
+@media (max-width: 640px) {
+  :is(#coastal-art, .interior) .sticker.sticker-inline { font-size: 17px; padding: 12px 16px; }
+}

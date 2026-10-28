@@ -1,8 +1,9 @@
 // src/components/page/contact-form.tsx
 "use client";
 import { useState, useMemo, useRef } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { Send, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import Card from "@/components/page/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,7 +41,6 @@ const ContactForm: React.FC<ContactFormProps> = ({
 }) => {
   const createMessage = useMutation(api.contactMessages.create);
   const formRef = useRef<HTMLFormElement>(null);
-  const reducedMotion = useReducedMotion();
 
   const defaultBasicMessage = `I'm interested in your ${serviceType} maintenance services. Could you tell me more?`;
   const defaultPlusMessage = `I'm interested in "The Action Plan (With ${plusPlanLabel})" for your ${serviceType} maintenance services. Could you tell me more?`;
@@ -81,10 +81,6 @@ const ContactForm: React.FC<ContactFormProps> = ({
     message: initialMessage, // Initialized correctly
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(
-    null
-  );
-  const [submitError, setSubmitError] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Reset the message when the caller swaps in a new one (e.g. plan selection
@@ -116,9 +112,16 @@ const ContactForm: React.FC<ContactFormProps> = ({
       newErrors.phone = "Please enter a valid phone number";
     }
     setErrors(newErrors);
+    const problems = Object.values(newErrors);
+    // The toast sums it up; each field still keeps its own message for screen readers.
+    if (problems.length) {
+      toast.error(problems.length === 1 ? problems[0] : `Please fix ${problems.length} fields`, {
+        description: problems.length === 1 ? undefined : problems.join(" · "),
+      });
+    }
     const firstInvalid = formRef.current?.elements.namedItem(Object.keys(newErrors)[0] ?? "");
     if (firstInvalid instanceof HTMLElement) firstInvalid.focus();
-    return Object.keys(newErrors).length === 0;
+    return problems.length === 0;
   };
 
   const handleSubmitInternal = async (e: React.FormEvent) => {
@@ -128,7 +131,6 @@ const ContactForm: React.FC<ContactFormProps> = ({
     }
 
     setIsSubmitting(true);
-    setSubmitStatus(null);
 
     try {
       const finalSource = getSource(variant, serviceType);
@@ -140,7 +142,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
         message: formData.message.trim(), // Use the current formData.message, which is kept in sync
         source: finalSource,
       });
-      setSubmitStatus("success");
+      toast.success("Message sent", { description: "Thanks for reaching out. I’ll get back to you soon." });
       setFormData({
         name: "",
         email: "",
@@ -151,12 +153,12 @@ const ContactForm: React.FC<ContactFormProps> = ({
     } catch (error) {
       console.error("Failed to send message:", error);
       // Server validation and rate-limit errors carry a readable message.
-      setSubmitError(
-        error instanceof ConvexError && typeof error.data === "string"
-          ? error.data
-          : null
-      );
-      setSubmitStatus("error");
+      toast.error("Message not sent", {
+        description:
+          error instanceof ConvexError && typeof error.data === "string"
+            ? error.data
+            : "Something went wrong. Please try again.",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -323,33 +325,6 @@ const ContactForm: React.FC<ContactFormProps> = ({
             )}
             {isSubmitting ? "Sending..." : "Send Message"}
           </Button>
-
-          <div role="status" aria-atomic="true">
-            {submitStatus === "success" && (
-              <motion.div
-                initial={reducedMotion ? false : { opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="flex items-center gap-2 text-(--color-accent)"
-              >
-                <CheckCircle className="w-5 h-5" />
-                <span className="">Message sent successfully!</span>
-              </motion.div>
-            )}
-          </div>
-          <div role="alert" aria-atomic="true">
-            {submitStatus === "error" && (
-              <motion.div
-                initial={reducedMotion ? false : { opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="flex items-center gap-2 text-(--color-danger)"
-              >
-                <AlertCircle className="w-5 h-5" />
-                <span className="">
-                  {submitError ?? "Failed to send message. Please try again."}
-                </span>
-              </motion.div>
-            )}
-          </div>
         </form>
       </Card>
     </motion.div>

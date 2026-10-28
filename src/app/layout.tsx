@@ -5,6 +5,7 @@ import "./globals.css";
 import { ConvexClientProvider } from "@/providers/ConvexClientProvider";
 import { MotionProvider } from "@/providers/MotionProvider";
 import { DeferredAnalytics } from "@/providers/DeferredAnalytics";
+import { Toaster } from "@/components/ui/sonner";
 import { Suspense } from "react";
 import { PERSON, SITE_URL, jsonLd, siteGraph } from "@/lib/structured-data";
 
@@ -116,6 +117,8 @@ export default function RootLayout({
             <div className="site-shell mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
               <MotionProvider>{children}</MotionProvider>
             </div>
+            {/* Copy confirmations and form feedback. */}
+            <Toaster />
           </ConvexClientProvider>
         </body>
       </html>

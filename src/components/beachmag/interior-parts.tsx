@@ -3,6 +3,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { BANNER_SCENES } from "@/components/coastal/scene-banner";
 import { SceneLoop } from "@/components/coastal/scene-loop";
 import { EditionRow, type Crumb } from "./edition-row";
+import { Ribbon } from "./ribbon";
 
 // The pieces inner pages are built from (design/site). Styles: interior.css.
 
@@ -21,7 +22,8 @@ export function ScenePolaroid({ path, caption, className = "" }: { path: string;
 
 /** Main pages: kicker, headline and intro beside the scene polaroid. Blog
  *  posts use it too, with their breadcrumbs in the top row and `article`
- *  set so a long title steps down a size. */
+ *  set so a long title steps down a size and the teaser rides the homepage
+ *  ribbon. */
 export function PageHero({ kicker, title, intro, path, caption, crumbs, article = false }: {
   kicker: string;
   title: ReactNode;
@@ -38,7 +40,7 @@ export function PageHero({ kicker, title, intro, path, caption, crumbs, article 
         <div>
           <p className="page-kicker">{kicker}</p>
           <h1>{title}</h1>
-          <p className="page-intro">{intro}</p>
+          {article ? <p><Ribbon inline>{intro}</Ribbon></p> : <p className="page-intro">{intro}</p>}
         </div>
         <ScenePolaroid path={path} caption={caption} />
       </header>

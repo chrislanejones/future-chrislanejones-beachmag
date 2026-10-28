@@ -37,3 +37,4 @@ Written on 2026-10-21 from the current implementation. Draft records do not impl
 | [020](020-separate-frontend-and-backend-deployments.md) | Release the frontend and Convex backend as separate targets | draft | 2026-10-21 |
 | [021](021-resume-files-move-to-uploadthing.md) | Resume files move from Convex storage to UploadThing | draft | 2026-10-24 |
 | [022](022-blog-audio-tracks-on-uploadthing.md) | A blog post may carry one MP3 on UploadThing, played with the browser's audio control | draft | 2026-10-24 |
+| [023](023-sonner-toasts-for-copy-and-form-feedback.md) | Sonner, wrapped as shadcn's Toaster on the site's theme store, carries copy confirmations and form feedback | draft | 2026-10-27 |

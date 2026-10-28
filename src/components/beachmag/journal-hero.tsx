@@ -9,6 +9,7 @@ import { ContentBoundary } from "@/components/coastal/live-content";
 import { ClientStrip } from "./client-strip";
 import { BeachFigure } from "./beach-figure";
 import { EditionButtons } from "./edition-buttons";
+import { Ribbon } from "./ribbon";
 import { eventHref, upcomingEvents } from "./events";
 
 type Entry = { title: string; excerpt: string; href: string; date?: number };
@@ -85,8 +86,8 @@ export function JournalHero() {
             start the OS theme's still early. Stills only, no video yet. */}
         <Image className="map map-day" src={HERO.day} alt={HERO.alt} width={1520} height={739} sizes={HERO_SIZES} />
         <Image className="map map-night" src={HERO.night} alt={HERO.alt} width={1520} height={739} sizes={HERO_SIZES} />
-        <span className="edge">JACKSONVILLE, FL • ST AUGUSTINE BEACH, FL</span>
-        <span className="sticker">Still making things.</span>
+        <span className="edge">JACKSONVILLE, FL • FIRST COAST FLORIDA</span>
+        <Ribbon>Still making things.</Ribbon>
       </div>
       <div className="columns">
         <ContentBoundary fallback={<EntryView entry={FALLBACK_ENTRY} />}>

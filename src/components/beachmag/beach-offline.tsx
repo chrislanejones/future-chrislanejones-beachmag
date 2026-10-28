@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "convex/react";
+import { Copy } from "lucide-react";
+import { toast } from "sonner";
 import { api } from "../../../convex/_generated/api";
 import { ContentBoundary, photos as fallbackPhotos } from "@/components/coastal/live-content";
 import type { GalleryPhoto } from "@/components/coastal/gallery-panel";
@@ -13,10 +15,9 @@ import { RadioMarkup } from "./radio-markup";
 
 const SKILL_COMMAND = "npx skills add https://github.com/chrislanejones/bckgrnd-msc-mcp --skill background-music";
 
+// The sticker shows the command; the button under it copies it, and a toast
+// says whether that worked.
 function SkillSticker() {
-  const [hint, setHint] = useState("Click to copy");
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  useEffect(() => () => clearTimeout(timer.current), []);
   async function copy() {
     let copied = false;
     try {
@@ -34,16 +35,20 @@ function SkillSticker() {
       } catch {}
       field.remove();
     }
-    setHint(copied ? "Copied. Paste it in a terminal." : "Select the line above to copy it.");
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => setHint("Click to copy"), 2600);
+    if (copied) toast.success("Copied to clipboard", { description: "Paste it in your terminal or agent." });
+    else toast.error("Couldn’t copy that", { description: "Select the command on the sticker and copy it by hand." });
   }
   return (
-    <button type="button" className="skill-sticker" onClick={copy}>
-      <span className="sticker-label">Put it in your agent.</span>
-      <code>npx skills add https://github.com/chrislanejones/bckgrnd-msc-mcp <span className="nowrap">--skill background-music</span></code>
-      <span className="sticker-hint" aria-live="polite">{hint}</span>
-    </button>
+    <>
+      <div className="skill-sticker">
+        <span className="sticker-label">Put it in your agent.</span>
+        <code>npx skills add https://github.com/chrislanejones/bckgrnd-msc-mcp <span className="nowrap">--skill background-music</span></code>
+      </div>
+      <button type="button" className="skill-copy" onClick={copy}>
+        <Copy size={16} strokeWidth={2.25} aria-hidden="true" />
+        Copy to clipboard
+      </button>
+    </>
   );
 }
 
