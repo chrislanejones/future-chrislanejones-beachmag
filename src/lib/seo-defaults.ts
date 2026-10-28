@@ -32,7 +32,7 @@ export const DEFAULT_SEO: Record<string, Metadata> = {
   "/events": {
     title: "Events: Meetups & Coworking in Northeast Florida",
     description:
-      "Where I'll be: meetups, coworking mornings and conferences around St. Augustine and Jacksonville. Come say hi.",
+      "Where I'll be: meetups, coworking mornings and conferences around Jacksonville and the First Coast. Come say hi.",
     alternates: { canonical: `${SITE_URL}/events` },
   },
   "/projects": {

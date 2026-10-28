@@ -8,21 +8,41 @@ import { HOME_EVENTS, findEvent, eventHref } from "@/components/beachmag/events"
 import { EventHero } from "@/components/beachmag/event-gallery";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../../../convex/_generated/api";
-import { SITE_URL } from "@/lib/structured-data";
+import { DEFAULT_OG_IMAGE, metaDescription } from "@/lib/seo";
+import { PERSON, SITE_URL, jsonLd } from "@/lib/structured-data";
 
 export const revalidate = 60;
 type Props = { params: Promise<{ slug: string }> };
 export const generateStaticParams = () => HOME_EVENTS.map(({ slug }) => ({ slug }));
 
+const eventPhotos = (slug: string) => new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!)
+  .query(api.eventPhotos.list, { eventSlug: slug }).catch(() => []);
+const absolute = (url: string) => (url.startsWith("/") ? `${SITE_URL}${url}` : url);
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const event = findEvent((await params).slug);
   if (!event) return {};
+  const url = `${SITE_URL}${eventHref(event)}`;
+  const description = metaDescription(event.description);
+  // The event's first gallery photo is its social card.
+  const photo = (await eventPhotos(event.slug))[0];
+  const images = [{ url: photo?.url ?? DEFAULT_OG_IMAGE, alt: photo?.alt ?? event.name }];
   return {
     title: event.name,
-    description: event.description,
-    alternates: { canonical: `${SITE_URL}${eventHref(event)}` },
-    openGraph: { title: event.name, description: event.description, url: `${SITE_URL}${eventHref(event)}` },
+    description,
+    alternates: { canonical: url },
+    // Unannounced events stay out of search until they have details.
+    robots: event.secret ? { index: false, follow: true } : undefined,
+    openGraph: { title: event.name, description, url, type: "website", images },
+    twitter: { card: "summary_large_image", title: event.name, description, images },
   };
+}
+
+// schema.org dates need an offset; the registry stores Eastern wall-clock time.
+function easternIso(local: string) {
+  const offset = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", timeZoneName: "longOffset" })
+    .formatToParts(new Date(`${local}Z`)).find((part) => part.type === "timeZoneName")?.value.replace("GMT", "");
+  return `${local}:00${offset || "-05:00"}`;
 }
 
 // Dates in the event registry are Eastern wall-clock values. Format the parts
@@ -37,10 +57,21 @@ const timeLabel = (start: string) => new Date(`${start}Z`).toLocaleTimeString("e
 export default async function EventPage({ params }: Props) {
   const event = findEvent((await params).slug);
   if (!event) notFound();
-  const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
-  const photos = await convex.query(api.eventPhotos.list, { eventSlug: event.slug }).catch(() => []);
+  const photos = await eventPhotos(event.slug);
   const mapsUrl = event.venue ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.venue)}` : undefined;
+  const schema = event.secret ? null : {
+    "@context": "https://schema.org", "@type": "Event",
+    name: event.name, description: event.description,
+    startDate: easternIso(event.start), endDate: event.end ? easternIso(event.end) : undefined,
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    location: event.venue ? { "@type": "Place", name: event.venue.split(",")[0], address: event.venue } : undefined,
+    image: photos.length ? photos.map((photo) => absolute(photo.url)) : undefined,
+    organizer: event.organizer ? { "@type": event.organizer === PERSON.name ? "Person" : "Organization", name: event.organizer } : undefined,
+    url: `${SITE_URL}${eventHref(event)}`,
+  };
   return <BeachmagShell><CoastalArt>
+    {schema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />}
     <article className="event-detail">
       <nav className="top" aria-label="Breadcrumb"><Link href="/events">← ALL EVENTS</Link><span>NORTHEAST FLORIDA / FIELD NOTES</span></nav>
       <EventHero slug={event.slug} name={event.name} description={event.description} initialPhotos={photos} />

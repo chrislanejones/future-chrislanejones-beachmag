@@ -7,7 +7,7 @@ import BlogPostPage from "./BlogPostPage";
 import { CoastalPageShell } from "@/components/coastal/page-shell";
 import { ContentBoundary } from "@/components/coastal/live-content";
 import { jsonLd as toJsonLd } from "@/lib/structured-data";
-import { DEFAULT_OG_IMAGE } from "@/lib/seo";
+import { DEFAULT_OG_IMAGE, metaDescription } from "@/lib/seo";
 import { renderPostHtml, withSectionIds } from "@/lib/blog-content";
 import { SITE_URL } from "@/lib/structured-data";
 
@@ -42,13 +42,14 @@ export async function generateMetadata({
     const canonical = `${SITE_URL}/blog/${slug}`;
     const ogImage = absoluteImage(post.coverImage);
     const images = [{ url: ogImage ?? `${SITE_URL}${DEFAULT_OG_IMAGE}`, alt: post.title }];
+    const description = metaDescription(post.excerpt);
     return {
       title: post.title,
-      description: post.excerpt,
+      description,
       alternates: { canonical },
       openGraph: {
         title: post.title,
-        description: post.excerpt,
+        description,
         url: canonical,
         type: "article",
         publishedTime: new Date(post.createdAt).toISOString(),
@@ -60,7 +61,7 @@ export async function generateMetadata({
       twitter: {
         card: "summary_large_image",
         title: post.title,
-        description: post.excerpt,
+        description,
         images,
       },
     };

@@ -40,7 +40,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: path === '/' ? 1 : 0.8,
   }))
 
-  const eventUrls: MetadataRoute.Sitemap = HOME_EVENTS.map((event) => ({
+  // Unannounced events are noindex until they have details.
+  const eventUrls: MetadataRoute.Sitemap = HOME_EVENTS.filter((event) => !event.secret).map((event) => ({
     url: `${BASE_URL}${eventHref(event)}`, changeFrequency: 'weekly', priority: 0.6,
   }))
 
