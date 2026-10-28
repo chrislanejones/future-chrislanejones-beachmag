@@ -60,7 +60,7 @@ export const HOME_EVENTS: HomeEvent[] = [
     name: "BuildWeek //02 Proof Night: Live Demos and Winners",
     place: "1250 Shetter Ave · Jacksonville Beach, FL 32250 · 5:30–8 PM ET · Free, RSVP required",
     venue: "1250 Shetter Ave, Jacksonville Beach, FL 32250",
-    description: "The final night of BuildWeek Jacksonville, from The Code Alliance Incubator. Every team gives a live demo, and the winners are announced on stage. Free, with RSVP.",
+    description: "Monday night was Proof Night at a maker shop: graffiti on every wall, a honeycomb of lights on the ceiling, and a chrome robot parked by the stage like it was waiting for its turn to pitch. People got up in front of a packed room and showed what they'd built, live, on a big screen, which is the bravest way to demo anything. \"Proof\" is the right word for it. A slide can say whatever you want. A working app in front of a full room has to actually work.",
     organizer: "The Code Alliance Incubator",
     note: "The Meetup header lists 5:30–7:30 PM and its description lists 6–8 PM. This calendar uses 5:30–8 PM to cover both.",
     url: "https://www.meetup.com/the-code-alliance-incubator/events/316841340/",
@@ -72,7 +72,7 @@ export const HOME_EVENTS: HomeEvent[] = [
     name: "Jacksonville IT Council (JITC) Breakfast Meeting",
     place: "Keiser University · Jacksonville, FL · 7:30–9:30 AM ET",
     venue: "Keiser University, 6430 Southpoint Parkway, Jacksonville, FL 32216",
-    description: "The Jacksonville IT Council's monthly breakfast. Dr. Jorge Sefair of the University of Florida presents Data-Driven Workforce Optimization and Queue Management: Applications to TSA Security Screening.",
+    description: "Tuesday morning was the Jacksonville IT Council breakfast: drop ceiling, projector, coffee in hand, about as far from the night before's lighting as you can get. Two talks stuck with me. One was about renting event space at VyStar Ballpark, home of the Jumbo Shrimp, a team named after an oxymoron and somehow better for it. The other came from the team at Phoenix Sky Harbor airport. They count people walking up to security on the camera feeds, then feed those counts to a model that predicts how many passengers are coming, so the lanes are open before the line reaches the parking garage. That's machine learning you can explain to anyone stuck in that line: count the people, guess the rush, open the lanes.",
     organizer: "Jacksonville IT Council (JITC), with the JAX Chamber",
     speaker: "Jorge A. Sefair, Ph.D., Associate Professor, Industrial and Systems Engineering, University of Florida",
     schedule: [
