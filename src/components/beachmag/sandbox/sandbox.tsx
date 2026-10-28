@@ -128,18 +128,13 @@ export function Sandbox() {
 
   function pickFlag() {
     if (busy) return;
-    if (held) {
-      setTool("flag");
-      setNotice("You’re holding a flag. Tap a spot to plant it.");
-      return;
-    }
-    if (available <= 0) {
+    if (!held && available <= 0) {
       setNotice("All five flags are planted. Remove one or undo to use it again.");
       return;
     }
     setHeld(true);
     setTool("flag");
-    setNotice("Flag picked up. Tap the sand or a castle to plant it.");
+    setNotice("Flags in hand. Tap the sand or a castle to plant each one.");
   }
 
   function select(next: CastleTool) {
@@ -170,15 +165,21 @@ export function Sandbox() {
     aim.current = { x, z };
     setCursor({ x, z });
     setNotice("");
-    if (tool === "flag" && !held) {
-      setNotice("Pick up one of the five flags first.");
+    if (tool === "flag" && !held && available <= 0) {
+      setNotice("All five flags are planted. Remove one or undo to use it again.");
       return;
     }
     const action = { type: "place" as const, tool, x, z, rotated };
     const next = castleReducer(state, action);
     dispatch(action);
     if (next.pieces === state.pieces) return;
-    if (tool === "flag") setHeld(false);
+    // One trip to the box is enough: the next flag comes to hand by itself
+    // until all five are planted.
+    if (tool === "flag") {
+      const left = MAX_FLAGS - used - 1;
+      setHeld(left > 0);
+      setNotice(left > 0 ? `Flag planted. ${left} left: tap to plant the next one.` : "All five flags are planted.");
+    }
     if (moving && ["tower", "bucket", "wall", "pile", "moat"].includes(tool)) {
       setBusy(true);
       timer.current = setTimeout(() => setBusy(false), tool === "moat" ? 2900 : 1450);
@@ -206,7 +207,7 @@ export function Sandbox() {
           <h2>Leave a little<br /><em>castle.</em></h2>
           <p>A small patch of coast to make your own. Pick a mold, press the sand, lift the bucket. Five flags. One very good afternoon.</p>
           {/* The how-to lives here; the stage points at it by id. */}
-          <p id="game-help">Build it for me makes a whole castle; Undo brings back your beach. Tap the sand to build. Tap the wooden flag box or choose Pick up flag, then plant it. The box holds five flags; removing one returns it to the box. Dig neighboring spots to join the water channels. Use arrow keys to move the marker, Enter to build, or Delete to remove the top piece.</p>
+          <p id="game-help">Build it for me makes a whole castle; Undo brings back your beach. Tap the sand to build. Tap the wooden flag box or choose Pick up flag once, then tap to plant all five. Removing a flag returns it to the box. Dig neighboring spots to join the water channels. Use arrow keys to move the marker, Enter to build, or Delete to remove the top piece.</p>
           {/* The line that changes as you play, under the how-to. */}
           <p className="game-status" role="status">{notice || state.message}{busy && washStartedAt === null ? " · Let the sand settle…" : ""}</p>
         </div>

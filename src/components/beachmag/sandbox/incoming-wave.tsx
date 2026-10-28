@@ -10,6 +10,15 @@ import {LEDGE_GLSL,type Spot} from './ledge';
  * everything, so each pixel knows its spot on the sand and the wave stops at
  * the flag box's rise.
  */
+const WAVE_ORDER=1000;
+/**
+ * For thin, tall things the wave must not paint over: a flag's tip stands
+ * higher on screen than its base, so the water would reach it first and
+ * slice it off. Use with a `transparent` material, since the wave is drawn in
+ * the transparent pass.
+ */
+export const ABOVE_WAVE=WAVE_ORDER+1;
+
 export function IncomingWave({startedAt,dark,clock,box}:{startedAt:number;dark:boolean;clock:RefObject<number>;box:Spot}){
  const uniforms=useMemo(()=>({
   uWash:{value:0},uTime:{value:0},uFlagBox:{value:new Vector2()},
@@ -24,7 +33,7 @@ export function IncomingWave({startedAt,dark,clock,box}:{startedAt:number;dark:b
   live.uTime.value=clock.current;
   live.uFlagBox.value.set(box.x,box.z);
  });
- return <mesh frustumCulled={false} renderOrder={1000} rotation={[-Math.PI/2,0,0]}>
+ return <mesh frustumCulled={false} renderOrder={WAVE_ORDER} rotation={[-Math.PI/2,0,0]}>
   <planeGeometry args={[90,90]}/>
   <shaderMaterial ref={material} transparent depthTest={false} depthWrite={false} toneMapped={false} uniforms={uniforms}
    vertexShader={`

@@ -1,6 +1,7 @@
 import {useMemo} from 'react';
 import {DoubleSide,Shape} from 'three';
 import {LEDGE_HEIGHT,type Spot} from './ledge';
+import {ABOVE_WAVE} from './incoming-wave';
 
 /** A single physical supply: the crate stays after the fifth flag is taken. */
 export function FlagBox({at,available,dark,onPick}:{at:Spot;available:number;dark:boolean;onPick:()=>void}){
@@ -23,8 +24,8 @@ export function FlagBox({at,available,dark,onPick}:{at:Spot;available:number;dar
    <mesh position={[0,.04,.004]} scale={.4}><shapeGeometry args={[flag]}/><meshStandardMaterial color="#763f2b" side={DoubleSide}/></mesh>
   </group>
   {Array.from({length:available},(_,i)=><group key={i} position={[-.47+i*.22,.105,i%2?.11:-.09]} rotation={[0,-.12+i*.08,(2-i)*.045]}>
-   <mesh position={[0,.51,0]} castShadow><cylinderGeometry args={[.018,.018,1.02,8]}/><meshStandardMaterial color="#765235" roughness={.8}/></mesh>
-   <mesh position={[.018,1.02,0]} castShadow><shapeGeometry args={[flag]}/><meshStandardMaterial color="#d3684b" side={DoubleSide} roughness={.8}/></mesh>
+   <mesh position={[0,.51,0]} castShadow renderOrder={ABOVE_WAVE}><cylinderGeometry args={[.018,.018,1.02,8]}/><meshStandardMaterial color="#765235" roughness={.8} transparent/></mesh>
+   <mesh position={[.018,1.02,0]} castShadow renderOrder={ABOVE_WAVE}><shapeGeometry args={[flag]}/><meshStandardMaterial color="#d3684b" side={DoubleSide} roughness={.8} transparent/></mesh>
   </group>)}
   {/* Generous tap target, including the empty crate, without building beneath it. */}
   <mesh position={[.05,.58,0]}><boxGeometry args={[1.5,1.2,.8]}/><meshBasicMaterial transparent opacity={0} depthWrite={false}/></mesh>

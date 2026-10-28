@@ -4,7 +4,7 @@ import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BufferAttribute, BufferGeometry, Color, DoubleSide, OrthographicCamera, Shape, Vector2, Vector3, type Camera, type Group, type ShaderMaterial, type Texture } from "three";
 import { FlagBox } from "./flag-box";
-import { IncomingWave } from "./incoming-wave";
+import { ABOVE_WAVE, IncomingWave } from "./incoming-wave";
 import { SandErosion } from "./sand-erosion";
 import { beachWashAt, erosionAt } from "./beach-wash";
 import { SandMold,moldHeight } from "./sand-molds";
@@ -322,9 +322,9 @@ function SandPiece({ piece, texture, shells, dark, elevation = 0, born }: { piec
         <mesh position={[0, .08, 0]} scale={[1.2, .1, .55]} receiveShadow><sphereGeometry args={[.55, 20, 8]} />{material}</mesh>
       </group>}
       {piece.kind === "flag" && <group position={[0, elevation, 0]}>
-        <mesh position={[0, .46, 0]} castShadow><cylinderGeometry args={[.025, .025, .92, 10]} /><meshStandardMaterial color="#785139" /></mesh>
-        <mesh position={[.02, .9, 0]} castShadow>
-          <shapeGeometry args={[flag]} /><meshStandardMaterial color="#da7960" side={DoubleSide} roughness={.85} />
+        <mesh position={[0, .46, 0]} castShadow renderOrder={ABOVE_WAVE}><cylinderGeometry args={[.025, .025, .92, 10]} /><meshStandardMaterial color="#785139" transparent /></mesh>
+        <mesh position={[.02, .9, 0]} castShadow renderOrder={ABOVE_WAVE}>
+          <shapeGeometry args={[flag]} /><meshStandardMaterial color="#da7960" side={DoubleSide} roughness={.85} transparent />
         </mesh>
       </group>}
     </group>
