@@ -150,6 +150,15 @@ const nextConfig = {
         destination: "/career-and-resume",
         permanent: true,
       },
+      // URLs from the old site that Google still crawls (Search Console, 10-25-2026).
+      { source: "/home", destination: "/", permanent: true },
+      { source: "/logo", destination: "/logo-page", permanent: true },
+      { source: "/career-files/:file*", destination: "/career-and-resume", permanent: true },
+      {
+        source: "/wcus-2023-recap-the-largest-and-most-incredible-wordcamp-conference-to-date",
+        destination: "/conferences/2023/wordcamp-us-2023",
+        permanent: true,
+      },
       {
         source: "/projects/apps",
         destination: "/projects",
