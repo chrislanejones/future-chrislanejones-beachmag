@@ -10,6 +10,7 @@ import { ClientStrip } from "./client-strip";
 import { BeachFigure } from "./beach-figure";
 import { EditionButtons } from "./edition-buttons";
 import { Ribbon } from "./ribbon";
+import { SeeAll } from "./see-all";
 import { eventHref, upcomingEvents } from "./events";
 
 type Entry = { title: string; excerpt: string; href: string; date?: number };
@@ -94,7 +95,10 @@ export function JournalHero() {
           <LiveEntry />
         </ContentBoundary>
         <aside className="events">
-          <h2>See you out there.</h2>
+          <div className="events-head">
+            <h2>See you out there.</h2>
+            <SeeAll href="/events">See events</SeeAll>
+          </div>
           {events.length ? (
             events.map((event) => (
               <div className={event.secret ? "event is-secret" : "event"} key={event.start + event.name}>

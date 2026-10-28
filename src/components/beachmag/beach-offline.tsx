@@ -15,8 +15,8 @@ import { RadioMarkup } from "./radio-markup";
 
 const SKILL_COMMAND = "npx skills add https://github.com/chrislanejones/bckgrnd-msc-mcp --skill background-music";
 
-// The sticker shows the command; the button under it copies it, and a toast
-// says whether that worked.
+// The ribbon is the button: one tap copies the install command, and a toast
+// says whether that worked (with the command to copy by hand if it didn't).
 function SkillSticker() {
   async function copy() {
     let copied = false;
@@ -36,19 +36,13 @@ function SkillSticker() {
       field.remove();
     }
     if (copied) toast.success("Copied to clipboard", { description: "Paste it in your terminal or agent." });
-    else toast.error("Couldn’t copy that", { description: "Select the command on the sticker and copy it by hand." });
+    else toast.error("Couldn’t copy that", { description: SKILL_COMMAND });
   }
   return (
-    <>
-      <div className="skill-sticker">
-        <span className="sticker-label">Put it in your agent.</span>
-        <code>npx skills add https://github.com/chrislanejones/bckgrnd-msc-mcp <span className="nowrap">--skill background-music</span></code>
-      </div>
-      <button type="button" className="skill-copy" onClick={copy}>
-        <Copy size={16} strokeWidth={2.25} aria-hidden="true" />
-        Copy to clipboard
-      </button>
-    </>
+    <button type="button" className="skill-sticker" onClick={copy} title={SKILL_COMMAND}>
+      <span className="sticker-label">Put it in your agent.</span>
+      <span className="skill-copy"><Copy size={16} strokeWidth={2.25} aria-hidden="true" /> Copy to clipboard</span>
+    </button>
   );
 }
 

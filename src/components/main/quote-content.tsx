@@ -15,7 +15,7 @@ const FALLBACK_AVATAR = "/Professional-Photo-of-Chris-Lane-Jones.webp";
 
 // Helper component for inline code styling
 const Code = ({ children }: { children: ReactNode }) => (
-  <code className="bg-black/20 px-1.5 py-0.5 rounded text-sm font-mono">
+  <code className="bg-black/20 px-1.5 py-0.5 rounded font-mono">
     {children}
   </code>
 );

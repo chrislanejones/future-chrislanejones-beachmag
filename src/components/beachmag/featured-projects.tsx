@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { SeeAll } from "./see-all";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { ContentBoundary } from "@/components/coastal/live-content";
@@ -95,7 +96,7 @@ export function FeaturedProjects({ initialRows = [] }: { initialRows?: ProjectRo
           <p className="projects-eyebrow">SELECTED WORK / BUILT WITH CURIOSITY</p>
           <h2 id="featured-projects-title">Made on<br /><em>the shore.</em></h2>
         </div>
-        <Link className="projects-all" href="/projects">All projects <span aria-hidden="true">↗</span></Link>
+        <SeeAll href="/projects">All projects</SeeAll>
       </div>
       <ContentBoundary fallback={<Spread rows={initialRows.length ? initialRows : snapshot} />}>
         <LiveSpread initialRows={initialRows} />
