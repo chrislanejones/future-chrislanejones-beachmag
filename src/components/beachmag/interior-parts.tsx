@@ -19,17 +19,30 @@ export function ScenePolaroid({ path, caption, className = "" }: { path: string;
   );
 }
 
-/** Main pages: kicker, headline and intro beside the scene polaroid. */
-export function PageHero({ kicker, title, intro, path, caption }: { kicker: string; title: ReactNode; intro: ReactNode; path: string; caption: ReactNode }) {
+/** Main pages: kicker, headline and intro beside the scene polaroid. Blog
+ *  posts use it too, with their breadcrumbs in the top row and `article`
+ *  set so a long title steps down a size. */
+export function PageHero({ kicker, title, intro, path, caption, crumbs, article = false }: {
+  kicker: string;
+  title: ReactNode;
+  intro: ReactNode;
+  path: string;
+  caption: ReactNode;
+  crumbs?: Crumb[];
+  article?: boolean;
+}) {
   return (
-    <header className="page-hero">
-      <div>
-        <p className="page-kicker">{kicker}</p>
-        <h1>{title}</h1>
-        <p className="page-intro">{intro}</p>
-      </div>
-      <ScenePolaroid path={path} caption={caption} />
-    </header>
+    <>
+      {crumbs && <EditionRow crumbs={crumbs} className="hero-row" />}
+      <header className={article ? "page-hero article-hero" : "page-hero"}>
+        <div>
+          <p className="page-kicker">{kicker}</p>
+          <h1>{title}</h1>
+          <p className="page-intro">{intro}</p>
+        </div>
+        <ScenePolaroid path={path} caption={caption} />
+      </header>
+    </>
   );
 }
 

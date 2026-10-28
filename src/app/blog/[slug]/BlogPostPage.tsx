@@ -11,7 +11,7 @@ import { createRoot, type Root } from "react-dom/client";
 import { STEPPER_CONFIGS } from "@/components/blog/stepper-configs";
 import { CoastalPageShell } from "@/components/coastal/page-shell";
 import { PostAudio } from "@/components/beachmag/post-audio";
-import { ArchiveHero, ArchiveLayout, type IndexEntry } from "@/components/beachmag/interior-parts";
+import { ArchiveLayout, PageHero, type IndexEntry } from "@/components/beachmag/interior-parts";
 import styles from "@/components/coastal/interior.module.css";
 import { Card } from "@/components/page/card";
 import { Button } from "@/components/ui/button";
@@ -226,11 +226,15 @@ export default function BlogPostPage({
   const published = new Date(post.createdAt);
   return (
     <CoastalPageShell>
-      <ArchiveHero
+      {/* The About page's banner: title and intro beside the large polaroid. */}
+      <PageHero
         crumbs={[{ href: "/", label: "Home" }, { href: "/blog", label: "Blog" }, { label: post.title }]}
         kicker="BLOG / CHRIS LANE JONES"
         title={post.title}
+        intro={post.excerpt}
         path="/blog"
+        caption="A little world. A big rabbit hole."
+        article
       />
       <ArchiveLayout index={sections}>
         <p><Link href="/blog">Back to Blog</Link></p>

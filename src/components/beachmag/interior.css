@@ -14,6 +14,8 @@
 .interior h1{font:900 clamp(56px,7.6vw,76px)/.94 var(--font-bodoni-moda),Georgia,serif;letter-spacing:-3.5px;margin:0}
 .interior h1 em,.interior h2 em{color:var(--accent)}
 .interior .page-intro{max-width:36ch;margin-top:25px;font-size:14px;line-height:1.8}
+/* Blog posts in the About-page banner: a post title is a sentence, not two words, so it steps down. */
+.interior .article-hero h1{font-size:clamp(40px,5.2vw,58px);line-height:1.02;letter-spacing:-2px;overflow-wrap:anywhere}
 .interior .page-polaroid{background:var(--sheet);padding:9px 9px 19px;transform:rotate(4deg);margin:0 5px;box-shadow:5px 7px 0 var(--ink);position:relative;transition:transform 350ms}
 .interior .page-polaroid:before{content:"";position:absolute;top:-12px;left:37%;width:75px;height:24px;transform:rotate(-8deg);background:light-dark(#b8aa87aa,#8b9f94aa)}
 .interior .page-polaroid img{display:block;width:100%;aspect-ratio:1.3;object-fit:cover}
