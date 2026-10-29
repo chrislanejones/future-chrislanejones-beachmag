@@ -9,9 +9,12 @@ export const revalidate = 60;
 // schedule → Share → Website embed → Inline, and paste the iframe's src here
 // (https://calendar.google.com/calendar/appointments/schedules/…?gv=true).
 // Until it's set, the page points people at /contact instead.
-// Share link: https://calendar.app.google/h9oaxhkZPt28rqEd8
 const BOOKING_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ0eGlpqT2RsH-3c6yd0SgzSNDY3PeSVCazfKX0N1mc18Jp-7i_45iR6stKtkjNE0ZKfUYWoFqdJ?gv=true";
+// The schedule's share link. Phones get a button to it instead of the embed:
+// a scrolling frame inside a scrolling page fights the thumb, and Google's own
+// page works well with the whole screen.
+const BOOKING_LINK = "https://calendar.app.google/h9oaxhkZPt28rqEd8";
 
 export async function generateMetadata() {
   return await getPageSEO("/lets-meet");
@@ -38,9 +41,12 @@ export default function LetsMeetPage() {
           {BOOKING_URL ? (
             <>
               <p>Choose an open slot and Google sends us both an invite with the Meet link.</p>
-              <iframe className="meet-frame" src={BOOKING_URL} title="Open times on Chris Lane Jones’s calendar" />
+              <a className="action-link meet-button" href={BOOKING_LINK} target="_blank" rel="noopener noreferrer">
+                Pick a time <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span>
+              </a>
+              <iframe className="meet-frame" src={BOOKING_URL} loading="lazy" title="Open times on Chris Lane Jones’s calendar" />
               <p className="meet-fallback">
-                Calendar not loading? <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">Open it in a new tab ↗</a>
+                Calendar not loading? <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer">Open it in a new tab ↗</a>
               </p>
             </>
           ) : (
