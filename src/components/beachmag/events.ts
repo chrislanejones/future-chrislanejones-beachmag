@@ -95,10 +95,10 @@ export const HOME_EVENTS: HomeEvent[] = [
   {
     slug: "st-augustine-cowork-coffee-2026-10-29",
     start: "2026-10-29T09:00",
-    name: "Cowork and Coffee",
-    place: "Dos Coffee & Wine · Northeast Florida · 9 AM · I'm hosting",
-    venue: "Dos Coffee & Wine",
-    description: "A coworking and coffee morning in Northeast Florida, hosted by Chris Lane Jones.",
+    name: "Saint Augustine Cowork and Coffee",
+    place: "Dos Coffee & Wine · St. Augustine · 9 AM · I'm hosting",
+    venue: "Dos Coffee & Wine, St. Augustine, FL",
+    description: "A coworking and coffee morning in St. Augustine, hosted by Chris Lane Jones.",
     organizer: "Chris Lane Jones",
   },
   {
