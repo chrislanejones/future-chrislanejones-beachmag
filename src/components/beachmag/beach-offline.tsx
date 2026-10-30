@@ -47,8 +47,11 @@ function SkillSticker() {
 }
 
 // "My ramblings." sits above the paper (and its tape), the way "Wish you
-// were here." sits above the postcards.
-function Ramblings() {
+// were here." sits above the postcards. The round headshot is the profile
+// avatar from the admin's Profile & Social tab; offline it's the /public photo.
+const FALLBACK_AVATAR = "/Professional-Photo-of-Chris-Lane-Jones.webp";
+
+function Ramblings({ avatar = FALLBACK_AVATAR }: { avatar?: string }) {
   const [quote, setQuote] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -71,7 +74,10 @@ function Ramblings() {
           ))}
         </blockquote>
         <div className="ramble-footer">
-          <span>CHRIS LANE JONES</span>
+          <span className="ramble-author">
+            <Image src={avatar} alt="" width={36} height={36} />
+            CHRIS LANE JONES
+          </span>
           <button className="plain-button cursor-interaction" type="button" aria-pressed={paused} onClick={() => setPaused((current) => !current)}>
             Pause rotation
           </button>
@@ -105,6 +111,11 @@ function Postcards({ photos, ramble }: { photos: GalleryPhoto[]; ramble: React.R
       </div>
     </div>
   );
+}
+
+function LiveRamblings() {
+  const profile = useQuery(api.siteSettings.getProfile);
+  return <Ramblings avatar={profile?.avatar || undefined} />;
 }
 
 function LivePostcards({ ramble }: { ramble: React.ReactNode }) {
@@ -141,7 +152,7 @@ export function BeachOffline() {
         <input type="file" className="radio-file" accept="audio/*" hidden />
       </div>
       <ContentBoundary fallback={<Postcards photos={fallbackPhotos} ramble={<Ramblings />} />}>
-        <LivePostcards ramble={<Ramblings />} />
+        <LivePostcards ramble={<LiveRamblings />} />
       </ContentBoundary>
     </section>
   );

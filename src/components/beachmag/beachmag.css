@@ -85,6 +85,8 @@ body.menu-open #page-content{transform:translate(-18px,15px) rotate(-4deg) scale
 #beach-offline .ramble h3,#beach-offline .photos h3{font:italic 900 30px/1 var(--font-bodoni-moda),Georgia,serif;letter-spacing:-1px;margin:0 0 19px}
 #beach-offline blockquote{font:900 25px/1.2 var(--font-bodoni-moda),Georgia,serif;letter-spacing:-.7px;margin:0;min-height:125px}
 #beach-offline .ramble-footer{margin-top:17px;border-top:1px solid var(--line);padding-top:13px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:10px}
+#beach-offline .ramble-author{display:flex;align-items:center;gap:10px}
+#beach-offline .ramble-author img{width:36px;height:36px;border-radius:50%;object-fit:cover;flex:none}
 #beach-offline .plain-button{background:transparent;border:1px solid var(--ink);color:var(--ink);font:700 12px var(--font-dm-sans),sans-serif;padding:10px 13px;min-height:44px}
 #beach-offline .ramble.flip{animation:paper-turn 480ms ease both}
 #beach-offline .photos{padding-top:12px}#beach-offline .photo-stack{position:relative;background:transparent;border:0;display:block;width:100%;color:var(--ink);padding:0;margin:26px 0 20px;text-align:left}
