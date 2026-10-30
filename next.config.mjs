@@ -160,6 +160,23 @@ const nextConfig = {
         destination: "/conferences/2023/wordcamp-us-2023",
         permanent: true,
       },
+      // The rest of old.chrislanejones.com (the WordPress site), which now
+      // redirects here path for path. Pages with no match go to the closest page.
+      ...[
+        ["/3d-web-is-now-commonplace-on-the-web-it-is-no-longer-just-concept-art", "/blog/react-three-fiber-the-future-of-web-animation"],
+        ["/comparison-of-hosting-providers", "/wordpress-maintenance"],
+        ["/wordpress-site-maintenance", "/wordpress-maintenance"],
+        ["/pricing-for-services", "/contact"],
+        ["/i-built-my-first-website-in-2007", "/site-history"],
+        ["/in-2013-this-website-was-a-video-production-website", "/site-history"],
+        ["/march-2018-seo-speaking-engagement", "/conferences"],
+        ["/may-9th-2023-seo-presentation", "/conferences"],
+        ["/congrats", "/"],
+        ["/congrats-witt", "/"],
+        ["/happy-birthday", "/"],
+        ["/landing-page", "/"],
+        ["/stop-missing-my-house", "/"],
+      ].map(([source, destination]) => ({ source, destination, permanent: true })),
       {
         source: "/projects/apps",
         destination: "/projects",
