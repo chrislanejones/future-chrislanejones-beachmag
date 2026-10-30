@@ -47,7 +47,7 @@ export const aboutSections: AboutSection[] = [
   {
     title: "Back to Florida",
     description:
-      "After eight years in Virginia, we hit undo and traded mountains for beaches. We are back in Florida as of 2026. Our families are from here, and Jacksonville is where I graduated from UNF and edited video for a living — so it is not exactly new ground.\n\nI still work remotely for the Commonwealth of Virginia. Same job, different view out the window.",
+      "After eight years in Virginia, we hit undo and traded mountains for beaches. We are back in Florida as of 2026. Our families are from here, and Jacksonville is where I graduated from UNF and edited video for a living — so it is not exactly new ground. We live in St. Augustine now, just down the coast.\n\nI still work remotely for the Commonwealth of Virginia. Same job, different view out the window.",
     image: "/gallery/Florida-Coast-Aerial.webp",
     imageAlt: "Aerial view of the Florida coastline",
     imageDescription: "Back on the Florida coast",

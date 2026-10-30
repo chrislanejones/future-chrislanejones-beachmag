@@ -2329,6 +2329,8 @@ html.dark #coastal-art .map-wrap .map-night {
 #coastal-art .event-detail-copy aside { border-left: 1px solid var(--line); padding-left: 28px; font-size: 14px; }
 #coastal-art .event-detail-copy aside .label { margin-bottom: 10px; }
 #coastal-art .event-detail-copy .event-detail-note { margin-top: 22px; font-size: 12px; }
+#coastal-art .event-tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0 0 22px; padding: 0; }
+#coastal-art .event-tags li { border: 1px solid var(--line); padding: 4px 10px; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 #coastal-art .event-schedule > div { display: grid; grid-template-columns: 130px 1fr; border-bottom: 1px solid var(--line); padding: 10px 0; gap: 16px; }
 #coastal-art .event-schedule dt { font-weight: 700; }
 #coastal-art .event-back { display: inline-block; margin-top: 40px; font-size: 13px; }

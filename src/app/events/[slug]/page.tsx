@@ -67,6 +67,7 @@ export default async function EventPage({ params }: Props) {
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     location: event.venue ? { "@type": "Place", name: event.venue.split(",")[0], address: event.venue } : undefined,
     image: photos.length ? photos.map((photo) => absolute(photo.url)) : undefined,
+    keywords: event.tags?.join(", "),
     organizer: event.organizer ? { "@type": event.organizer === PERSON.name ? "Person" : "Organization", name: event.organizer } : undefined,
     url: `${SITE_URL}${eventHref(event)}`,
   };
@@ -87,6 +88,7 @@ export default async function EventPage({ params }: Props) {
           {event.schedule && <><h2>The evening</h2><dl className="event-schedule">{event.schedule.map((item) => <div key={item.time}><dt>{item.time}</dt><dd>{item.activity}</dd></div>)}</dl></>}
         </div>
         <aside>{event.organizer && <><p className="label">HOSTED BY</p><p>{event.organizer}</p></>}
+          {event.tags?.length ? <><p className="label">TAGS</p><ul className="event-tags">{event.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul></> : null}
           {event.url && <a className="event-source" href={event.url} target="_blank" rel="noopener noreferrer">Event website / RSVP ↗</a>}
           {event.note && <p className="event-detail-note">{event.note}</p>}
         </aside>

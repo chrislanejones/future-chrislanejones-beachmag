@@ -18,6 +18,8 @@ export type HomeEvent = {
   url?: string;
   /** Not announced yet: shown in its own color, with no details. */
   secret?: boolean;
+  /** Short labels shown on the event page, like the part of Jacksonville it's in ("Bayard"). */
+  tags?: string[];
 };
 
 export const HOME_EVENTS: HomeEvent[] = [
@@ -36,17 +38,19 @@ export const HOME_EVENTS: HomeEvent[] = [
       "Enhancement: meaningfully modify an existing physical or software product that can be demoed on Proof Night.",
     ],
     url: "https://buildweek.net",
+    tags: ["Jax Beach"],
   },
   {
     slug: "ai-connect-inpatient-critical-care-2026-10-20",
     start: "2026-10-20T17:30",
     end: "2026-10-20T19:00",
-    name: "NLP Logix hosts AI Connect: Intelligent Tech in Inpatient & Critical Care",
+    name: "AI Connect Jax: Intelligent Tech in Inpatient & Critical Care",
     place: "Legacy Ale Works · Jacksonville, FL · 5:30–7 PM ET",
-    venue: "Legacy Ale Works, Jacksonville, FL",
+    venue: "Legacy Ale Works, 14965 Old St Augustine Rd Ste 129-130, Jacksonville, FL 32258",
     description: "Spent Tuesday evening at AI Connect Jax listening to Dr. Dileep Raman, co-founder of Cloudphysician, discuss how AI, computer vision, and ambient intelligence are being used in inpatient and critical care.",
-    organizer: "NLP Logix (AI Connect), with The King Tide Foundation",
+    organizer: "Jennifer Robertson of The King Tide Foundation",
     speaker: "Dr. Dileep Raman, Co-Founder and Chief of Healthcare, Cloudphysician",
+    tags: ["Bayard"],
     schedule: [
       { time: "5:30–6 PM", activity: "Socializing & beers" },
       { time: "6–6:45 PM", activity: "Presentation" },
@@ -64,6 +68,7 @@ export const HOME_EVENTS: HomeEvent[] = [
     organizer: "The Code Alliance Incubator",
     note: "The Meetup header lists 5:30–7:30 PM and its description lists 6–8 PM. This calendar uses 5:30–8 PM to cover both.",
     url: "https://www.meetup.com/the-code-alliance-incubator/events/316841340/",
+    tags: ["Jax Beach"],
   },
   {
     slug: "jitc-breakfast-meeting-2026-10-27",
@@ -85,14 +90,15 @@ export const HOME_EVENTS: HomeEvent[] = [
       "Register on the JAX Chamber IT Council page.",
     ],
     url: "https://jacksonvilleitcouncil.com/about-jitc/#meetings",
+    tags: ["Southside"],
   },
   {
     slug: "st-augustine-cowork-coffee-2026-10-29",
     start: "2026-10-29T09:00",
-    name: "Saint Augustine Cowork and Coffee",
-    place: "Dos Coffee & Wine · St. Augustine · 9 AM · I'm hosting",
-    venue: "Dos Coffee & Wine, St. Augustine, FL",
-    description: "A coworking and coffee morning in St. Augustine, hosted by Chris Lane Jones.",
+    name: "Cowork and Coffee",
+    place: "Dos Coffee & Wine · Northeast Florida · 9 AM · I'm hosting",
+    venue: "Dos Coffee & Wine",
+    description: "A coworking and coffee morning in Northeast Florida, hosted by Chris Lane Jones.",
     organizer: "Chris Lane Jones",
   },
   {
@@ -111,10 +117,14 @@ export const HOME_EVENTS: HomeEvent[] = [
   {
     slug: "ai-connect-signals-closed-loops-2026-11-10",
     start: "2026-11-10T17:30",
-    name: "AI Connect Jax: From Signals to Closed Loops",
-    place: "Legacy Ale Works · Jacksonville · 5:30 PM",
-    venue: "Legacy Ale Works, Jacksonville, FL",
-    description: "AI Connect Jax: From Signals to Closed Loops, at Legacy Ale Works in Jacksonville.",
+    end: "2026-11-10T19:00",
+    name: "From Signals to Closed Loops: Building an AI Agent That Actually Fixes Your Data",
+    place: "AI Connect Jax · Legacy Ale Works · Jacksonville, FL · 5:30–7 PM ET",
+    venue: "Legacy Ale Works, 14965 Old St. Augustine Rd., Ste 129, Jacksonville, FL 32258",
+    description: "Daniel Fox, Technical Principal at Snowflake, gives a live demo: take a built-in Snowflake measurement and reporting feature, put an AI agent on top, and go from alerts that just sit there to a system that understands the problem, decides what to do and fixes it. AI Connect meets a week early in November.",
+    organizer: "Jennifer Robertson of The King Tide Foundation",
+    speaker: "Daniel Fox, Technical Principal, Snowflake. Before Snowflake he spent nine years at Fanatics building enterprise data products and agentic workflows.",
+    tags: ["Bayard"],
     url: "https://www.meetup.com/aiconnect/events/316373251/",
   },
   {

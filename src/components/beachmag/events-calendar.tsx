@@ -134,7 +134,7 @@ export function EventsCalendar() {
     <>
       <div className="top">
         <span>EVENTS / WHERE I&apos;LL BE</span>
-        <span>ST. AUGUSTINE · JACKSONVILLE</span>
+        <span>JACKSONVILLE, FL · FIRST COAST FLORIDA</span>
       </div>
       <h1 className="mast">See you<br /><em>out there.</em></h1>
       <div className="sub">

@@ -53,7 +53,7 @@ function LiveEntry() {
 const HERO = {
   day: "/hero/home-day.webp",
   night: "/hero/home-night.webp",
-  alt: "A 3D model of St. Augustine Beach: a white condo, beach cottages and the dune walkovers, with the pier and a sailboat down the shore",
+  alt: "A 3D model of a Northeast Florida beach town: a white condo, beach cottages and the dune walkovers, with the pier and a sailboat down the shore",
 };
 const HERO_SIZES = "(max-width: 1240px) 92vw, 1120px";
 
