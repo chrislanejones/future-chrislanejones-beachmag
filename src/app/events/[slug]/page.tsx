@@ -6,6 +6,7 @@ import { BeachmagShell } from "@/components/beachmag/shell";
 import { CoastalArt } from "@/components/beachmag/coastal-art";
 import { HOME_EVENTS, findEvent, eventHref } from "@/components/beachmag/events";
 import { EventHero } from "@/components/beachmag/event-gallery";
+import { EditionButtons } from "@/components/beachmag/edition-buttons";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../../../convex/_generated/api";
 import { DEFAULT_OG_IMAGE, metaDescription } from "@/lib/seo";
@@ -74,7 +75,7 @@ export default async function EventPage({ params }: Props) {
   return <BeachmagShell><CoastalArt>
     {schema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />}
     <article className="event-detail">
-      <nav className="top" aria-label="Breadcrumb"><Link href="/events">← ALL EVENTS</Link><span>NORTHEAST FLORIDA / FIELD NOTES</span></nav>
+      <div className="top"><nav aria-label="Breadcrumb"><Link href="/events">← ALL EVENTS</Link><span> / NORTHEAST FLORIDA / FIELD NOTES</span></nav><EditionButtons /></div>
       <EventHero slug={event.slug} name={event.name} description={event.description} initialPhotos={photos} />
       <section className="event-ticket" aria-label="Date and location">
         <time className="event-ticket-stamp" dateTime={event.start}><span>{new Date(`${event.start}Z`).toLocaleDateString("en-US", { month: "short", timeZone: "UTC" })}</span><b>{event.start.slice(8, 10)}</b><span>{event.start.slice(0, 4)}</span></time>

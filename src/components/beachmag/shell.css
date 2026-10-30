@@ -283,6 +283,9 @@ body.menu-open #site-takeover {
    link, orange-topped like the footer. */
 #site-nav .nav-group {
   position: relative;
+  /* A flex box, so the button centers with the plain links (a block line box sat it 2px high). */
+  display: flex;
+  align-items: center;
 }
 #site-nav .nav-group > button {
   display: inline-flex;
@@ -300,6 +303,26 @@ body.menu-open #site-takeover {
 #site-nav .nav-group > button[aria-expanded="true"] .nav-group-label {
   text-decoration: underline;
   text-underline-offset: 5px;
+}
+/* Each top-level link leads with its beach mark; only the word underlines. */
+#site-nav .desktop-links > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+#site-nav .desktop-links > a:hover {
+  text-decoration: none;
+}
+#site-nav .desktop-links > a:hover .nav-link-label {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+#site-nav .nav-group > button {
+  gap: 5px;
+}
+#site-nav .nav-head-mark {
+  flex-shrink: 0;
+  color: var(--nav-accent);
 }
 #site-nav .nav-caret {
   transition: transform 180ms ease;
@@ -1163,6 +1186,11 @@ html.dark .gallery-drawer {
 }
 #coastal-art .top > .edition-switch {
   flex-shrink: 0;
+}
+/* An event page's crumbs share the row with the knob: keep the link on the line. */
+#coastal-art .top nav a {
+  margin-top: 0;
+  font-size: inherit;
 }
 @media (max-width: 640px) {
   #coastal-art .top {

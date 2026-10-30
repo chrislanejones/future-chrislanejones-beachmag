@@ -46,11 +46,18 @@ export const buttonVariants = cva(
           "rounded-lg border border-transparent",
           "bg-(--color-danger) text-(--color-panel) hover:bg-(--color-danger)/85",
         ].join(" "),
-        // Coastal teal pill: lg is the home hero "Contact Me", md the
-        // interior page action. Geometry and hover live in compoundVariants.
-        pill: [
-          "rounded-(--radius-pill) bg-(--coast-accent) text-(--coast-on-accent)",
-          "font-semibold whitespace-nowrap no-underline",
+        // A silver key off the home page radio's transport row: brushed
+        // metal, a thick bottom edge, and it presses down when clicked. The
+        // one public-page button (2026-10-30: no more teal pills).
+        radio: [
+          "rounded-[3px] border border-(--bm-silver-rim) border-b-[5px] border-b-(--bm-silver-edge)",
+          "bg-[linear-gradient(100deg,var(--bm-silver-hi),var(--bm-silver-lo))] text-(--bm-ink)",
+          "shadow-[0_2px_2px_rgb(0_0_0/0.4)] font-bold uppercase tracking-[0.1em] whitespace-nowrap no-underline",
+          "transition-[translate,border-width] duration-100",
+          "hover:bg-none hover:bg-(--bm-silver-warm)",
+          "active:translate-y-[3px] active:border-b-2 active:bg-none active:bg-(--bm-silver-press)",
+          "aria-pressed:translate-y-[3px] aria-pressed:border-b-2 aria-pressed:bg-none aria-pressed:bg-(--bm-silver-press)",
+          "motion-reduce:active:translate-none",
         ].join(" "),
         // Coastal outlined circle (carousel arrows, new quote, next track).
         circle: [
@@ -71,23 +78,10 @@ export const buttonVariants = cva(
     // Compound rules come after size, so the coastal shapes own their geometry.
     compoundVariants: [
       {
-        variant: "pill",
-        size: ["sm", "md", "icon", "icon-sm"],
+        variant: "radio",
         className: [
-          "h-auto min-h-12 gap-3 px-[22px] py-3 text-[length:var(--type-body)]",
-          "transition-opacity duration-200 hover:opacity-85",
+          "h-auto min-h-12 gap-3 px-[22px] py-3 text-xs",
           "[&_svg]:size-[17px] [&_svg]:shrink-0",
-        ].join(" "),
-      },
-      {
-        variant: "pill",
-        size: "lg",
-        className: [
-          "h-auto gap-[22px] px-[25px] py-4 text-[length:var(--type-body)]",
-          "max-md:gap-[17px] max-md:px-5 max-md:py-3.5",
-          "transition-[translate,scale,box-shadow] duration-200",
-          "hover:-translate-y-[3px] hover:shadow-[0_6px_20px_color-mix(in_srgb,var(--coast-deep)_14%,transparent)]",
-          "active:scale-[0.98] motion-reduce:translate-none motion-reduce:scale-none",
         ].join(" "),
       },
       { variant: "circle", className: "p-0" },

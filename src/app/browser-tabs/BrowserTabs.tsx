@@ -137,7 +137,7 @@ export default function BrowserTabs({
               : "Useful links will appear here."}
           </p>
           {search && (
-            <Button variant="pill" onClick={() => setSearch("")}>
+            <Button variant="radio" onClick={() => setSearch("")}>
               Clear search
             </Button>
           )}

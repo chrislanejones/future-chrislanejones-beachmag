@@ -156,7 +156,7 @@ export default function BlogPostPage({
             <p className="text-muted mb-8">
               The blog post you&apos;re looking for doesn&apos;t exist.
             </p>
-            <Button asChild variant="secondary" size="sm">
+            <Button asChild variant="radio">
               <Link href="/blog">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Blog
@@ -274,8 +274,8 @@ export default function BlogPostPage({
             <div className="mb-8">
               <Button
                 onClick={handleLike}
-                variant={userLikeStatus?.liked ? "neutral" : "secondary"}
-                size="lg"
+                variant="radio"
+                aria-pressed={!!userLikeStatus?.liked}
                 className="gap-2"
               >
                 <Heart
@@ -296,8 +296,7 @@ export default function BlogPostPage({
                 <h2 className="text-2xl">Comments ({comments?.length || 0})</h2>
                 <Button
                   onClick={() => setShowCommentForm(!showCommentForm)}
-                  variant="secondary"
-                  size="sm"
+                  variant="radio"
                 >
                   Add Comment
                 </Button>
@@ -373,13 +372,12 @@ export default function BlogPostPage({
                       />
                     </div>
                     <div className="flex gap-2">
-                      <Button type="submit" size="sm">
+                      <Button type="submit" variant="radio">
                         Post Comment
                       </Button>
                       <Button
                         type="button"
-                        variant="secondary"
-                        size="sm"
+                        variant="radio"
                         onClick={() => setShowCommentForm(false)}
                       >
                         Cancel

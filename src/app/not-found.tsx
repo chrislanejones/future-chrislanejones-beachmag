@@ -28,7 +28,7 @@ export default function NotFound() {
             />
           </div>
           <div className={styles.actions}>
-            <Button asChild variant="pill">
+            <Button asChild variant="radio">
               <Link href="/">
                 Back home <ArrowUpRight aria-hidden="true" />
               </Link>

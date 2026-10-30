@@ -50,9 +50,6 @@
 .content input[type="radio"] {
   accent-color: var(--coast-accent);
 }
-.content :global(.focus-ring) {
-  border-radius: var(--radius-pill);
-}
 .section {
   margin-block: 0 64px;
 }
@@ -616,11 +613,6 @@
   }
 }
 
-.content button[type="submit"] {
-  background: var(--coast-accent);
-  color: var(--coast-on-accent);
-  border-radius: var(--radius-pill);
-}
 .content :global(.text-red-500) {
   color: var(--color-danger);
 }

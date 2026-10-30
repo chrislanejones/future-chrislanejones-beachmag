@@ -136,6 +136,10 @@
   --bm-silver-hi: #e0e1d8;     /* the radio's brushed silver, light edge */
   --bm-silver: #cfd2cb;        /* the radio's silver body */
   --bm-silver-lo: #b5b9b5;     /* the radio's silver, shaded edge */
+  --bm-silver-rim: #778174;    /* a radio key's outline */
+  --bm-silver-edge: #626d62;   /* a radio key's thick bottom edge */
+  --bm-silver-warm: #e2d7af;   /* a radio key under the pointer */
+  --bm-silver-press: #a9b99b;  /* a radio key pressed down */
   --bm-lamp: #ff5a30;          /* a lit lamp on the radio */
   --bm-toy-teal: #4fa3a5;      /* the sand game's loading bucket */
   --bm-toy-teal-deep: #3d8e91; /* its rim */

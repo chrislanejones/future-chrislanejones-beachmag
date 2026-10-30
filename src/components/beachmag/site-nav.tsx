@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { ChevronDown, Fish, Shell, TreePalm, Umbrella, Volleyball, Waves } from "lucide-react";
+import { createElement, useEffect, useRef, useState } from "react";
+import { Anchor, ChevronDown, Fish, Sailboat, Shell, Sun, Sunrise, TreePalm, Umbrella, Volleyball, Waves, type LucideIcon } from "lucide-react";
 import { useHeaderNavItems } from "@/components/page/links";
 import { setTheme, useTheme } from "@/lib/theme-store";
 
@@ -12,6 +12,22 @@ const EVENTS: NavItem = { label: "Events", href: "/events" };
 
 // The menu's subpage marks, in turn down the whole list.
 const BEACH_MARKS = [Volleyball, Shell, TreePalm, Fish, Umbrella];
+// Pages with a mark of their own, wherever they sit in the menu.
+const PAGE_MARKS: Record<string, LucideIcon> = { "/lets-meet": Sunrise };
+
+// The header's top-level links each keep their own mark, by address (or by
+// label for the dropdowns, which have none), so reordering the menu in the
+// admin doesn't shuffle them. Anything new gets the sun.
+const HEADER_MARKS: Record<string, LucideIcon> = {
+  "/": Waves,
+  About: TreePalm,
+  Work: Sailboat,
+  "/blog": Shell,
+  "/events": Umbrella,
+  "/contact": Anchor,
+  "/lets-meet": Sunrise,
+};
+const headerMark = (item: NavItem) => HEADER_MARKS[item.href ?? item.label] ?? HEADER_MARKS[item.label] ?? Sun;
 
 /**
  * The live site's header nav (Convex, editable in the admin; static copy as
@@ -23,6 +39,10 @@ function useNavItems(live: boolean): NavItem[] {
   const blog = items.findIndex((item) => item.href === "/blog");
   const at = blog < 0 ? items.length - 1 : blog + 1;
   return [...items.slice(0, at), EVENTS, ...items.slice(at)];
+}
+
+function HeaderMark({ item }: { item: NavItem }) {
+  return createElement(headerMark(item), { className: "nav-head-mark", size: 16, strokeWidth: 1.75, "aria-hidden": true });
 }
 
 /**
@@ -41,12 +61,13 @@ function NavGroup({ item, markStart, open, onOpen, onClose }: { item: NavItem; m
       onBlur={(event) => open && !event.currentTarget.contains(event.relatedTarget) && onClose(false)}
     >
       <button type="button" aria-expanded={open} aria-controls={id} onClick={() => (open ? onClose(false) : onOpen(false))}>
+        <HeaderMark item={item} />
         <span className="nav-group-label">{item.label}</span>
         <ChevronDown className="nav-caret" size={14} strokeWidth={2.5} aria-hidden="true" />
       </button>
       <div className="nav-dropdown" id={id} hidden={!open}>
         {item.children?.map((child, i) => {
-          const Mark = BEACH_MARKS[(markStart + i) % BEACH_MARKS.length];
+          const Mark = PAGE_MARKS[child.href ?? ""] ?? BEACH_MARKS[(markStart + i) % BEACH_MARKS.length];
           return (
             <Link key={child.href} href={child.href ?? "/"} onClick={() => onClose(false)}>
               <Mark className="nav-mark" size={18} strokeWidth={1.75} aria-hidden="true" />
@@ -187,7 +208,10 @@ export function SiteNav({ offline = false }: { offline?: boolean }) {
                 onClose={closeGroup}
               />
             ) : (
-              <Link key={item.label} href={item.href ?? "/"}>{item.href === "/contact" ? "Contact ↗" : item.label}</Link>
+              <Link key={item.label} href={item.href ?? "/"}>
+                <HeaderMark item={item} />
+                <span className="nav-link-label">{item.href === "/contact" ? "Contact ↗" : item.label}</span>
+              </Link>
             ),
           )}
         </nav>
@@ -236,7 +260,7 @@ export function SiteNav({ offline = false }: { offline?: boolean }) {
             .flatMap((item) => [item, ...(item.children ?? [])].map((entry) => ({ entry, sub: entry !== item, group: item })))
             .map((row, _i, rows) => ({ ...row, mark: rows.slice(0, _i).filter((earlier) => earlier.sub).length }))
             .map(({ entry, sub, group: parent, mark }, order) => {
-            const Mark = BEACH_MARKS[mark % BEACH_MARKS.length];
+            const Mark = PAGE_MARKS[entry.href ?? ""] ?? BEACH_MARKS[mark % BEACH_MARKS.length];
             const style = { "--order": String(order) } as React.CSSProperties;
             if (!sub && parent.children?.length) {
               return <p key={`group-${entry.label}`} className="menu-group" style={style}>{entry.label}</p>;

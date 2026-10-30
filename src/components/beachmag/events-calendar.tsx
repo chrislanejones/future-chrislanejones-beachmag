@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
+import { EditionButtons } from "./edition-buttons";
 import { calendarEvents, eventHref, localDay, pastEvents, upcomingEvents } from "./events";
 
 const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -132,9 +133,10 @@ export function EventsCalendar() {
 
   return (
     <>
+      {/* Same top row as home: the label on the left, the Sunlit / After dark knob on the right. */}
       <div className="top">
-        <span>EVENTS / WHERE I&apos;LL BE</span>
-        <span>JACKSONVILLE, FL · FIRST COAST FLORIDA</span>
+        <span>EVENTS / WHERE I&apos;LL BE · JACKSONVILLE, FL · FIRST COAST FLORIDA</span>
+        <EditionButtons />
       </div>
       <h1 className="mast">See you<br /><em>out there.</em></h1>
       <div className="sub">

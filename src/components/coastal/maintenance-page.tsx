@@ -54,7 +54,7 @@ export function MaintenancePage({
             {kind === "React" ? "application" : "website"}.
           </p>
           <div className={styles.actions}>
-            <Button asChild variant="pill">
+            <Button asChild variant="radio">
               <a href="#plans">
                 Explore the plans <ArrowUpRight aria-hidden="true" />
               </a>
@@ -103,7 +103,7 @@ export function MaintenancePage({
                   </li>
                 ))}
               </ul>
-              <Button asChild variant="pill">
+              <Button asChild variant="radio">
                 <a href="#contact">
                   Discuss a plan <ArrowUpRight aria-hidden="true" />
                 </a>
