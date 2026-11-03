@@ -41,7 +41,7 @@ export default function LetsMeetPage() {
       />
       <div className="section-rule">
         <p>OPEN TIMES</p>
-        <p>VIDEO CALL / GOOGLE MEET</p>
+        <p>{CAL_LINK ? "VIDEO CALL / CAL VIDEO" : "VIDEO CALL / GOOGLE MEET"}</p>
       </div>
       <div className={CAL_LINK ? "contact-grid meet-grid" : "contact-grid"}>
         <section className="contact-letter meet-letter" aria-labelledby="meet-title">
