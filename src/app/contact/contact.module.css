@@ -1,7 +1,7 @@
 .phoneGuy {
   display: block;
-  width: min(100%, 300px);
-  aspect-ratio: 2 / 3;
+  width: min(100%, 360px);
+  aspect-ratio: 4 / 5;
   margin: 32px auto 0;
   color: var(--coast-ink);
 }
