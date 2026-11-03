@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 
-export type BeachFigureName = "beach-girl" | "lifeguard-stand" | "surfer-guy";
+export type BeachFigureName = "beach-girl" | "lifeguard-stand" | "surfer-guy" | "broken-surfboard";
 
 // Bump when the files in public/art change, so browsers fetch the new ones.
 const ART_VERSION = "5";

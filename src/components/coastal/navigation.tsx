@@ -156,7 +156,7 @@ export function CoastalFooter() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  // The 404 Music Lounge is the not-found page: a prefetch of it always returns 404.
+                  // The 404 link opens the not-found page: a prefetch of it always returns 404.
                   prefetch={link.href === "/404" ? false : undefined}
                   target={link.isExternal ? "_blank" : undefined}
                   rel={link.isExternal ? "noopener noreferrer" : undefined}

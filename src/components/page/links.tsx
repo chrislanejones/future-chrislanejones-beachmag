@@ -160,12 +160,21 @@ export function useFooterNavSections(live = true) {
             { href: "/logo-page", label: "About The Logo", order: 1 },
             { href: "/site-map", label: "Change Log / Site Map", order: 2 },
             { href: "/admin-showcase", label: "Admin Showcase", order: 3 },
-            { href: "/404", label: "404 Music Lounge", order: 4 },
+            { href: "/404", label: "404 / Wipeout", order: 4 },
           ],
         },
       ] as FooterNavSection[];
     }
-    return convexFooterSections as FooterNavSection[];
+    // Older CMS rows still call this the Music Lounge. Keep the retired
+    // page name out of the footer while preserving the admin's link order.
+    return convexFooterSections.map((section) => ({
+      ...section,
+      links: section.links.map((link) =>
+        link.href === "/404" && link.label === "404 Music Lounge"
+          ? { ...link, label: "404 / Wipeout" }
+          : link,
+      ),
+    })) as FooterNavSection[];
   }, [convexFooterSections]);
 }
 
@@ -232,7 +241,7 @@ export function NavLinkComponent({
     );
   }
   return (
-    // The 404 Music Lounge is the not-found page: a prefetch of it always returns 404.
+    // The 404 link opens the not-found page: a prefetch of it always returns 404.
     <Link href={link.href} prefetch={link.href === "/404" ? false : undefined} className={`nav-link ${className}`} onClick={onClick}>
       {link.label}
     </Link>

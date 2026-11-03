@@ -2,6 +2,15 @@
 
 [Documentation handbook](README.md) · [Project home](../README.md)
 
+## 2026-11-03 — Resume refresh and coastal sketches
+
+- Replaced the production Convex PDF and Word resumes with the supplied October 2026 DOCX and its three-page PDF conversion; verified both downloads against the source files and removed the two previous storage objects.
+- Replaced the 404 Music Lounge and embedded video with “This one wiped out,” a broken-surfboard ink sketch, and links home and to the site map. Updated the footer label, including older CMS labels.
+- Added the bald beach-shirt character with an oversized phone and rings below the contact page's “Elsewhere on the internet” social links. Both new illustrations follow the homepage sketches and use the current theme's ink.
+- Included the existing sandcastle-message apostrophe fix in this publication.
+
+Validation: production build, TypeScript, ESLint, CSS checks, and all 120 tests passed. The 404 and contact pages passed desktop/mobile checks in light and dark themes, with no horizontal overflow or serious/critical automated accessibility findings. [Artwork sources and prompts](art/ink-sketches.md).
+
 ## 2026-10-24 — Live on chrislanejones.com
 
 Status: pushed to `main`, which deploys chrislanejones.com.

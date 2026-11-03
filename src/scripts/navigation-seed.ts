@@ -70,7 +70,7 @@ export const staticFooterNavLinks: SeedFooterNavSection[] = [
       { href: "/logo-page", label: "About The Logo" },
       { href: "/site-map", label: "Change Log / Site Map" },
       { href: "/admin", label: "Admin" },
-      { href: "/404", label: "404 Music Lounge" },
+      { href: "/404", label: "404 / Wipeout" },
     ],
   },
 ];

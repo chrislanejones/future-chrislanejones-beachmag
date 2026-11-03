@@ -49,7 +49,7 @@ function Directory({ live }: { live: boolean }) {
         <nav key={column._id ?? column.title} aria-label={`Footer ${column.title.toLowerCase()}`}>
           <h3>{String(index + 1).padStart(2, "0")} / {column.title}</h3>
           {column.links.map((link) => (
-            // The 404 Music Lounge is the not-found page: a prefetch of it always returns 404.
+            // The 404 link opens the not-found page: a prefetch of it always returns 404.
             <Link key={link.href} href={link.href} prefetch={link.href === "/404" ? false : undefined}>{link.label}</Link>
           ))}
         </nav>

@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
 import ContactForm from "@/components/page/contact-form";
+import { InkSketch } from "@/components/beachmag/ink-sketch";
+import styles from "./contact.module.css";
 
 const ELSEWHERE = [
   { href: "https://www.linkedin.com/in/chrislanejones", label: "LinkedIn" },
@@ -35,6 +37,7 @@ export default function PageContactForm() {
               {link.label} ↗<span className="sr-only"> (opens in a new tab)</span>
             </a>
           ))}
+          <InkSketch src="/art/phone-guy.webp" width={800} height={1200} className={styles.phoneGuy} />
         </aside>
       </div>
       <div className="contact-services">
