@@ -7,7 +7,7 @@ import { ToolArt } from "./tool-art";
 import { ToolKnob } from "./tool-knob";
 import { BeachFigure } from "../beach-figure";
 import { WASH_CLEAR_MS, WASH_END_MS } from "./beach-wash";
-import { castleReducer, initialCastle, MAX_FLAGS, HALF_X, HALF_Z, type CastleTool } from "./sandcastle-model";
+import { castleReducer, initialCastle, MAX_FLAGS, HALF_X, HALF_Z, pickDesign, type CastleTool } from "./sandcastle-model";
 import { BucketLoader } from "./bucket-loader";
 import "./sandbox.css";
 
@@ -64,6 +64,8 @@ export function Sandbox() {
   const host = useRef<HTMLDivElement>(null);
   const aim = useRef(cursor);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // The castle Build it for me made last, so the next press makes another.
+  const lastDesign = useRef<number | null>(null);
   const used = state.pieces.filter((piece) => piece.kind === "flag").length;
   const available = MAX_FLAGS - used - (held ? 1 : 0);
 
@@ -207,7 +209,7 @@ export function Sandbox() {
           <h2>Leave a little<br /><em>castle.</em></h2>
           <p>A small patch of coast to make your own. Pick a mold, press the sand, lift the bucket. Five flags. One very good afternoon.</p>
           {/* The how-to lives here; the stage points at it by id. */}
-          <p id="game-help">Build it for me makes a whole castle; Undo brings back your beach. Tap the sand to build. Tap the wooden flag box or choose Pick up flag once, then tap to plant all five. Removing a flag returns it to the box. Dig neighboring spots to join the water channels. Use arrow keys to move the marker, Enter to build, or Delete to remove the top piece.</p>
+          <p id="game-help">Build it for me makes one of five castles, a different one each time; Undo brings back your beach. Tap the sand to build. Tap the wooden flag box or choose Pick up flag once, then tap to plant all five. Removing a flag returns it to the box. Dig neighboring spots to join the water channels. Use arrow keys to move the marker, Enter to build, or Delete to remove the top piece.</p>
           {/* The line that changes as you play, under the how-to. */}
           <p className="game-status" role="status">{notice || state.message}{busy && washStartedAt === null ? " · Let the sand settle…" : ""}</p>
         </div>
@@ -286,7 +288,9 @@ export function Sandbox() {
             className="auto-build"
             disabled={busy}
             onClick={() => {
-              dispatch({ type: "build" });
+              const design = pickDesign(lastDesign.current);
+              lastDesign.current = design;
+              dispatch({ type: "build", design });
               setHeld(false);
               setNotice("");
             }}

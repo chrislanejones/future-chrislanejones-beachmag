@@ -16,7 +16,8 @@ export type CastleAction =
   | { type: "rotate"; x: number; z: number }
   | { type: "undo" }
   | { type: "clear" }
-  | { type: "build" };
+  /** design picks one of CASTLE_DESIGNS; the component chooses it with pickDesign. */
+  | { type: "build"; design: number };
 
 /**
  * The outer limit of the sand you can build on. The camera frames the 9 by 7
@@ -64,6 +65,99 @@ export const initialCastle: CastleState = {
   message: "A little head start. Choose a tool and make it yours.",
 };
 
+/** One placement: tool, spot, and whether a wall runs front to back. */
+type Step = [CastleTool, number, number, boolean?];
+export type CastleDesign = { name: string; says: string; steps: Step[] };
+
+const row = (tool: CastleTool, xs: number[], z: number, rotated = false): Step[] => xs.map(x => [tool, x, z, rotated]);
+const column = (tool: CastleTool, x: number, zs: number[], rotated = false): Step[] => zs.map(z => [tool, x, z, rotated]);
+/** Bucket, bucket, tower: the tallest stack the sand holds. */
+const tall = (x: number, z: number): Step[] => [["bucket", x, z], ["bucket", x, z], ["tower", x, z]];
+const range = (from: number, to: number) => Array.from({ length: to - from + 1 }, (_, i) => from + i);
+
+/**
+ * What Build it for me can make. All of them stay in the middle of the beach
+ * (x -3..3, z -2..3), on screen and back from the water, and each plants all
+ * five flags. +z is toward the viewer; an unrotated wall runs left to right.
+ */
+export const CASTLE_DESIGNS: CastleDesign[] = [
+  {
+    name: "classic keep",
+    says: "four towers, a tall keep, a moat, and five flags.",
+    steps: [
+      ...[-2, 2].flatMap(x => column("tower", x, [-1, 1])),
+      ...row("wall", [-1, 0, 1], -1), ...row("wall", [-1, 1], 1),
+      ...column("wall", -2, [0], true), ...column("wall", 2, [0], true),
+      ["bucket", 0, 0], ["tower", 0, 0],
+      ...range(-3, 3).flatMap((x): Step[] => x === 0 ? [["moat", x, -2]] : [["moat", x, -2], ["moat", x, 2]]),
+      ...[-3, 3].flatMap(x => column("moat", x, [-1, 0, 1])),
+      ...[-2, 2].flatMap(x => column("flag", x, [-1, 1])), ["flag", 0, 0],
+      ["shell", -1, 3], ["shell", 1, 3],
+    ],
+  },
+  {
+    name: "gatehouse",
+    says: "a long wall, two tall gate towers, and a shell bridge over the moat to a guard post.",
+    steps: [
+      ...row("tower", [-3, 3], 0), ...row("wall", [-2, 2], 0),
+      ...tall(-1, 0), ...tall(1, 0),
+      ...row("moat", [-3, -2, -1, 1, 2, 3], 1),
+      ...column("shell", 0, [1, 2]),
+      // The guard post sits in front of the bridge: behind the gate the tall towers hid it.
+      ["bucket", 0, 3],
+      ...row("flag", [-3, -1, 1, 3], 0), ["flag", 0, 3],
+    ],
+  },
+  {
+    name: "lookout",
+    says: "one tall tower on a dune, four little dunes, and a moat all the way around.",
+    steps: [
+      ["pile", 0, 0], ["pile", 0, 0], ...tall(0, 0),
+      ...([[-1, 0], [1, 0], [0, -1], [0, 1]] as const).map(([x, z]): Step => ["pile", x, z]),
+      ...range(-2, 2).flatMap(x => Math.abs(x) === 2 ? column("moat", x, range(-2, 2)) : column("moat", x, [-2, 2])),
+      ...([[-1, -1], [1, -1], [-1, 1], [1, 1]] as const).map(([x, z]): Step => ["shell", x, z]),
+      ["flag", 0, 0], ...([[-1, 0], [1, 0], [0, -1], [0, 1]] as const).map(([x, z]): Step => ["flag", x, z]),
+    ],
+  },
+  {
+    name: "twin towers",
+    says: "two tall towers on dunes, joined by a wall with flags along it.",
+    // One row nearer the viewer than the rest: a row back, the left tower's
+    // flag left the top of the frame and the right tower stood at the water.
+    steps: [
+      ["pile", -2, 1], ...tall(-2, 1), ["pile", 2, 1], ...tall(2, 1),
+      ...row("wall", [-1, 0, 1], 1),
+      ...row("bucket", [-2, 2], 2),
+      ...row("moat", range(-3, 3), 3),
+      ...row("shell", [-1, 1], 2),
+      ...row("flag", [-2, -1, 0, 1, 2], 1),
+    ],
+  },
+  {
+    name: "wide fort",
+    says: "bucket corners, long low walls, and a moat channel running out the gate.",
+    steps: [
+      ...[-3, 3].flatMap(x => column("bucket", x, [-1, 1])),
+      ...row("wall", range(-2, 2), -1), ...row("wall", [-2, -1, 1, 2], 1),
+      ...column("wall", -3, [0], true), ...column("wall", 3, [0], true),
+      ...column("moat", 0, [0, 1, 2]), ...row("moat", [-3, -2, -1, 1, 2, 3], 2),
+      ...row("shell", [-2, 2], 0),
+      ...[-3, 3].flatMap(x => column("flag", x, [-1, 1])), ["flag", 0, -1],
+    ],
+  },
+];
+
+/**
+ * A random design that isn't the one just built. `random` returns 0..1
+ * (Math.random in the game, a fixed value in tests).
+ */
+export function pickDesign(previous: number | null, random: () => number = Math.random) {
+  const count = CASTLE_DESIGNS.length;
+  if (previous === null || previous < 0 || previous >= count) return Math.min(count - 1, Math.floor(random() * count));
+  const n = Math.min(count - 2, Math.floor(random() * (count - 1)));
+  return n >= previous ? n + 1 : n;
+}
+
 export function isStructure(kind: CastleKind) { return STRUCTURES.has(kind); }
 
 /** How many piles of sand are heaped on a spot (0 to 2). */
@@ -97,18 +191,12 @@ export function castleReducer(state: CastleState, action: CastleAction): CastleS
     pieces, message, nextId, history: [...state.history.slice(-49), state.pieces],
   });
   if (action.type === "build") {
-    let built: CastleState = {pieces:[],history:[],nextId:state.nextId,message:""};
-    const add=(tool:CastleTool,x:number,z:number,rotated=false)=>{built=castleReducer(built,{type:"place",tool,x,z,rotated})};
-    for(const x of [-2,2])for(const z of [-1,1])add("tower",x,z);
-    for(const x of [-1,0,1])add("wall",x,-1);
-    for(const x of [-1,1])add("wall",x,1);
-    for(const x of [-2,2])add("wall",x,0,true);
-    add("bucket",0,0);add("tower",0,0);
-    for(let x=-3;x<=3;x++){add("moat",x,-2);if(x!==0)add("moat",x,2)}
-    for(const x of [-3,3])for(const z of [-1,0,1])add("moat",x,z);
-    for(const x of [-2,2])for(const z of [-1,1])add("flag",x,z);
-    add("flag",0,0);add("shell",-1,3);add("shell",1,3);
-    return save(built.pieces,"Your castle is ready: four towers, a tall keep, a moat, and five flags. Make it yours, or Undo to restore your beach.",built.nextId);
+    const design = CASTLE_DESIGNS[((action.design % CASTLE_DESIGNS.length) + CASTLE_DESIGNS.length) % CASTLE_DESIGNS.length];
+    // Each step goes through the normal place rules on fresh sand, so a
+    // design can only build what a player could.
+    let built: CastleState = { pieces: [], history: [], nextId: state.nextId, message: "" };
+    for (const [tool, x, z, rotated = false] of design.steps) built = castleReducer(built, { type: "place", tool, x, z, rotated });
+    return save(built.pieces, `Your castle is ready: ${design.says} Make it yours, or Undo to restore your beach.`, built.nextId);
   }
   if (action.type === "undo") {
     const previous = state.history.at(-1);
