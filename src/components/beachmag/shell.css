@@ -2423,7 +2423,7 @@ html.dark #coastal-art .map-wrap .map-night {
 }
 
 /* The homepage ribbon (ribbon.tsx) on inner pages, which sit outside
-   #coastal-art: same orange, Bodoni italic and tilt as "Still making things." */
+   #coastal-art: same orange, Bodoni italic and tilt as "Now on the First Coast." */
 .interior .sticker {
   display: inline-block;
   background: var(--accent);
@@ -2453,3 +2453,69 @@ html.dark #coastal-art .map-wrap .map-night {
 #coastal-art .events-head { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 16px; margin: 0 0 20px; }
 #coastal-art .events-head h2 { margin: 0; }
 #coastal-art .events .see-all { margin-top: 0; }
+
+/* /lets-meet with Cal.com (hand-written: interior.css is generated).
+   The booking card takes the full row so Cal's month view sits side by side
+   instead of stacking into a tall strip; the notes move underneath. */
+.interior .cal-booking {
+  width: 100%;
+  min-height: 520px;
+  margin-top: 18px;
+}
+/* Two classes: interior.css loads later and sets .contact-grid's columns. */
+.interior .contact-grid.meet-grid {
+  grid-template-columns: 1fr;
+}
+.interior .contact-grid.meet-grid .contact-aside {
+  border-left: 0;
+  border-top: 1px solid;
+  padding: 25px 0 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 28px;
+}
+.interior .meet-grid .contact-aside > :not(a) {
+  grid-column: 1;
+}
+.interior .meet-grid .contact-aside > a {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+}
+.interior .meet-grid .contact-aside > a + a {
+  grid-row: 2;
+}
+@media (max-width: 640px) {
+  .interior .cal-booking {
+    min-height: 640px;
+  }
+  /* The phone rule hides .meet-fallback for the Google embed; keep Cal's. */
+  .interior .meet-fallback.cal-fallback {
+    display: block;
+  }
+  .interior .contact-grid.meet-grid .contact-aside {
+    display: block;
+  }
+}
+
+/* Footer: Let's meet sits under Let's make something. */
+#coastal-footer .footer-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+}
+#coastal-footer .footer-actions .footer-contact {
+  justify-content: space-between;
+}
+
+
+/* Homepage Latest entry card: the excerpt uses the card's width instead of
+   the design's 35ch, and a long title splits into even lines. */
+#coastal-art .columns article h2 {
+  text-wrap: balance;
+}
+#coastal-art .columns article .copy {
+  max-width: 60ch;
+  margin-top: 14px;
+}

@@ -368,3 +368,9 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
   the live site serves at /music/audio/* and the public repo carries. Nothing plays them:
   `src/components/coastal/music-player.tsx` is imported nowhere. Removing the files and the
   player takes them off the site; scrubbing them from git history is a history rewrite (Chris's call).
+- **11-03-2026 — /lets-meet rules hand-edited into a generated sheet.** `interior.css` says
+  "Do not edit by hand" (`pnpm design:css` rebuilds it), but the older Google-embed rules
+  (`.meet-frame`, `.meet-button`, `.meet-fallback`, `.meet-list`, `.meet-letter`) were added
+  there by hand and would be wiped by a rebuild. The new Cal.com rules live in `shell.css`.
+  Once Cal.com has proven itself, drop the Google fallback in `src/app/lets-meet/page.tsx`
+  and move or delete those rules.

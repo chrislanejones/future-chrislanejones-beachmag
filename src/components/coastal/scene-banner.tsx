@@ -47,6 +47,16 @@ export const BANNER_SCENES: Record<string, BannerScene> = {
     night: { still: "/banners/conferences-night.webp", video: "/banners/conferences-night.mp4", alt: "A 3D model of the pier reaching into the Atlantic at night, windows lit",
       blur: "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAABwAQCdASoQAAkAAoBCJYgCdAF1AAD+9vTyTNqPe/v3yXz6fRBugKWCw443DIUlhftpTlP0svVe+KeAZDPgxd8SO2QAAA==" },
   },
+  // Stills only: the beach chairs under the umbrella south of the pier
+  // (global camera at 19.7, 0.8, -10.4 looking at 24.8, 0.1, -16.5;
+  // 7.25 for day, 19.25 for night).
+  "/lets-meet": {
+    focus: "60% 70%",
+    day: { still: "/banners/lets-meet-day.webp", alt: "A 3D model of two beach chairs under an umbrella on the sand, the pier and swimmers down the beach in the morning",
+      blur: "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAADQAQCdASoQAAkAA4BaJQBOgB59JyxIAAD+6siPB02GJSYpOFanP1AFEBIc2uMywAA=" },
+    night: { still: "/banners/lets-meet-night.webp", alt: "A 3D model of two beach chairs under an umbrella on the sand, the pier and swimmers down the beach at night",
+      blur: "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAADQAQCdASoQAAkAA4BaJYwAAu0dpchAAAD+u1/RcvL9uZztQx6QwaAA" },
+  },
   "/career-and-resume": {
     focus: "60% 55%",
     day: { still: "/banners/career-and-resume-day.webp", video: "/banners/career-and-resume-day.mp4", alt: "A 3D model of a beachfront resort beside the pier, a sailboat offshore and the beach town along the shore at sunset",

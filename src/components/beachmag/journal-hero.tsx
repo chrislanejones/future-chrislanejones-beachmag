@@ -88,7 +88,7 @@ export function JournalHero() {
         <Image className="map map-day" src={HERO.day} alt={HERO.alt} width={1520} height={739} sizes={HERO_SIZES} />
         <Image className="map map-night" src={HERO.night} alt={HERO.alt} width={1520} height={739} sizes={HERO_SIZES} />
         <span className="edge">JACKSONVILLE, FL • FIRST COAST FLORIDA</span>
-        <Ribbon>Still making things.</Ribbon>
+        <Ribbon>Now on the First Coast.</Ribbon>
       </div>
       <div className="columns">
         <ContentBoundary fallback={<EntryView entry={FALLBACK_ENTRY} />}>

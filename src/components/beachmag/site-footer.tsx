@@ -84,7 +84,10 @@ export function SiteFooter({ offline = false }: { offline?: boolean }) {
             </svg>
           </h2>
         </div>
-        <Link className="footer-contact" href="/contact">LET’S MAKE SOMETHING <span aria-hidden="true">↗</span></Link>
+        <div className="footer-actions">
+          <Link className="footer-contact" href="/contact">LET’S MAKE SOMETHING <span aria-hidden="true">↗</span></Link>
+          <Link className="footer-contact" href="/lets-meet">LET’S MEET <span aria-hidden="true">↗</span></Link>
+        </div>
       </div>
       <div className="footer-directory">
         <div className="footer-bio">

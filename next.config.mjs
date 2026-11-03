@@ -55,6 +55,8 @@ const scriptHosts = [
   ...clerkProtect,
   // Google Analytics 4, per Google's tag CSP guide.
   "https://*.googletagmanager.com",
+  // /lets-meet loads Cal.com's embed script.
+  "https://app.cal.com",
   ...posthog,
   ...vercelToolbar,
 ];
@@ -85,8 +87,8 @@ const directives = {
   // Blog audio streams from UploadThing; the radio's LOAD button uses local blobs.
   "media-src": ["'self'", "blob:", "https://utfs.io", "https://*.ufs.sh"],
   "font-src": ["'self'", ...(isPreview ? ["https://vercel.live", "https://assets.vercel.com"] : [])],
-  // /lets-meet embeds a Google Calendar appointment schedule.
-  "frame-src": ["https://fast.wistia.com", "https://calendar.google.com", ...clerkProtect, ...vercelToolbar],
+  // /lets-meet embeds a Cal.com booking calendar (Google's schedule is the fallback).
+  "frame-src": ["https://fast.wistia.com", "https://app.cal.com", "https://cal.com", "https://calendar.google.com", ...clerkProtect, ...vercelToolbar],
   // Clerk runs a blob: worker.
   "worker-src": ["'self'", "blob:"],
   "object-src": ["'none'"],

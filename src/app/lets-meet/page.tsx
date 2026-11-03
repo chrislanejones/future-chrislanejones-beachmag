@@ -2,10 +2,19 @@ import Link from "next/link";
 import { CoastalPageShell } from "@/components/coastal/page-shell";
 import { PageHero } from "@/components/beachmag/interior-parts";
 import { getPageSEO } from "@/lib/seo";
+import { CalBooking } from "@/components/beachmag/cal-booking";
 
 export const revalidate = 60;
 
-// Google Calendar appointment schedule, embedded inline. In Calendar: open the
+// Cal.com event, embedded inline. Cal.com reads busy times from Google
+// Calendar and books onto it. The link is "<username>/<event slug>" from
+// app.cal.com/links; if the Cal.com username changes, change it here too.
+const CAL_LINK = "chris-lane-jones-n54ed8/30min";
+// Public page for the same event, for anyone whose browser blocks the embed.
+const CAL_PAGE = `https://cal.com/${CAL_LINK}`;
+
+// Google Calendar appointment schedule: the old embed, kept as the fallback
+// until CAL_LINK is set. In Calendar: open the
 // schedule → Share → Website embed → Inline, and paste the iframe's src here
 // (https://calendar.google.com/calendar/appointments/schedules/…?gv=true).
 // Until it's set, the page points people at /contact instead.
@@ -27,18 +36,26 @@ export default function LetsMeetPage() {
         kicker="PICK A TIME"
         title={<>Let’s<br /><em>meet up.</em></>}
         intro="Grab a spot on my calendar for a video call about a project, a website that needs help, or a role on your team. Times show in your time zone."
-        path="/conferences"
-        caption="Meet me at the end of the pier. ↙"
+        path="/lets-meet"
+        caption="Pull up a chair. ↙"
       />
       <div className="section-rule">
         <p>OPEN TIMES</p>
         <p>VIDEO CALL / GOOGLE MEET</p>
       </div>
-      <div className="contact-grid">
+      <div className={CAL_LINK ? "contact-grid meet-grid" : "contact-grid"}>
         <section className="contact-letter meet-letter" aria-labelledby="meet-title">
           <p className="page-kicker">TO: CHRIS LANE JONES</p>
           <h2 id="meet-title">Pick a day,<br />pick a time.</h2>
-          {BOOKING_URL ? (
+          {CAL_LINK ? (
+            <>
+              <p>Choose an open slot and you’ll both get an invite with the call link.</p>
+              <CalBooking calLink={CAL_LINK} title="Open times on Chris Lane Jones’s calendar" />
+              <p className="meet-fallback cal-fallback">
+                Calendar not loading? <a href={CAL_PAGE} target="_blank" rel="noopener noreferrer">Open it in a new tab ↗</a>
+              </p>
+            </>
+          ) : BOOKING_URL ? (
             <>
               <p>Choose an open slot and Google sends us both an invite with the Meet link.</p>
               <a className="action-link meet-button" href={BOOKING_LINK} target="_blank" rel="noopener noreferrer">
