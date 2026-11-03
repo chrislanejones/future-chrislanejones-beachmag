@@ -22,7 +22,7 @@ export const staticPageHeaders: Record<
     title: "Career",
     breadcrumbPage: "Career",
     description:
-      "Senior web engineering, enterprise CMS platforms, and AI automation. Explore my experience and download my October 2026 resume.",
+      "Senior web engineering, enterprise CMS platforms, and AI automation. Explore my experience and download my November 2026 resume.",
   },
   "/conferences": {
     title: "Conferences",

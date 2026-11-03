@@ -34,7 +34,7 @@ export default function CareerPage({ offline = false }: { offline?: boolean }) {
         <div className={styles.panel}>
           <h2>Resume</h2>
           <p>
-            October 2026 · Senior Web Engineer, AI Automation & CMS Architect.
+            November 2026 · Senior Web Engineer, AI Automation & CMS Architect.
             Download my latest experience, technical skills, and projects.
           </p>
           <div className={styles.actions}>

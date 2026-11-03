@@ -2,6 +2,12 @@
 
 [Documentation handbook](README.md) · [Project home](../README.md)
 
+## 2026-11-03 — Latest resume revision
+
+- Replaced both production resume downloads using the newly supplied PDF and a matching editable Word document, preserving the existing Word layout. Both include Craft CMS in Technical Skills and Independent Consulting.
+- Updated the career page's resume label and CMS header to November 2026.
+- Kept the resume files outside Git. Verified the complete Word text against the PDF, checked its three-page rendering, and downloaded both live files to confirm their checksums match the sources.
+
 ## 2026-11-03 — Resume refresh and coastal sketches
 
 - Replaced the production Convex PDF and Word resumes with the supplied October 2026 DOCX and its three-page PDF conversion; verified both downloads against the source files and removed the two previous storage objects.
