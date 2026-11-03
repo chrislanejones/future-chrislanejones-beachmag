@@ -72,3 +72,12 @@ describe("stacking still works", () => {
   });
 });
 
+describe("messages", () => {
+  test("apostrophes are real ones, not garbled bytes", () => {
+    const fort = play(empty, ...[-1, 1].flatMap(x => [-1, 1].map(z => ["tower", x, z] as [CastleTool, number, number])),
+      ["wall", 0, -1], ["wall", 0, 1], ["wall", -1, 0], ["wall", 1, 0]);
+    expect(fort.message).toContain("that’s a fort");
+    expect(play(fort, ["moat", 3, 3]).message).toContain("that’s a proper fort");
+    expect(play(empty, ["shell", 0, 0], ["shell", 0, 0]).message).toBe("There’s already a shell there. Pick another spot.");
+  });
+});

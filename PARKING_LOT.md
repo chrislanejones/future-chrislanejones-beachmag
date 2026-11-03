@@ -374,8 +374,3 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
   there by hand and would be wiped by a rebuild. The new Cal.com rules live in `shell.css`.
   Once Cal.com has proven itself, drop the Google fallback in `src/app/lets-meet/page.tsx`
   and move or delete those rules.
-- **11-03-2026 — Garbled apostrophes in sandcastle messages (live now).** Three strings in
-  `src/components/beachmag/sandbox/sandcastle-model.ts` were saved double-encoded, so the game's
-  status line shows "thatâ€™s a proper fort", "thatâ€™s a fort" and "Thereâ€™s already a flag
-  there" (lines ~184, 185 and 252 on `feat/five-random-castles`). Replace each `â€™` with `’`.
-  Found during the five-castles run; left out of that diff to keep it to one target.

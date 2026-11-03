@@ -181,8 +181,8 @@ export function pieceElevation(pieces: CastlePiece[], piece: CastlePiece) {
 function fortMessage(pieces: CastlePiece[], added: string) {
   const corners = pieces.filter(p => p.kind === "tower" || p.kind === "bucket").length;
   const walls = pieces.filter(p => p.kind === "wall").length;
-  if (corners >= 4 && walls >= 4 && pieces.some(p => p.kind === "moat")) return `${added} Towers, walls, and a moat: thatâ€™s a proper fort.`;
-  if (corners >= 4 && walls >= 4) return `${added} Four corners and four walls: thatâ€™s a fort. A moat would finish it.`;
+  if (corners >= 4 && walls >= 4 && pieces.some(p => p.kind === "moat")) return `${added} Towers, walls, and a moat: that’s a proper fort.`;
+  if (corners >= 4 && walls >= 4) return `${added} Four corners and four walls: that’s a fort. A moat would finish it.`;
   return added;
 }
 
@@ -249,7 +249,7 @@ export function castleReducer(state: CastleState, action: CastleAction): CastleS
   if (tool === "flag" || tool === "shell") {
     if (tool === "flag" && state.pieces.filter(piece => piece.kind === "flag").length >= MAX_FLAGS)
       return { ...state, message: "All five flags are planted. Remove one or undo to use it again." };
-    if (atSpot.some(piece => piece.kind === tool)) return { ...state, message: `Thereâ€™s already a ${tool} there. Pick another spot.` };
+    if (atSpot.some(piece => piece.kind === tool)) return { ...state, message: `There’s already a ${tool} there. Pick another spot.` };
     if (moat) return { ...state, message: `A ${tool} would sink in the moat. Try the sand or a castle.` };
     const on = topStructure ? ` on the ${LABEL[topStructure.kind].toLowerCase()}` : topMound ? " on the mound" : "";
     return add(tool, 0, `${LABEL[tool]} added${on}.`);
