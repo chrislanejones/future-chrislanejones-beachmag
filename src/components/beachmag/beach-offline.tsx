@@ -42,7 +42,7 @@ function SkillSticker() {
     <div className="skill-sticker">
       <span className="sticker-label">Put it in your agent.</span>
       <nav className="skill-actions" aria-label="Background music resources">
-        <button type="button" onClick={copy} title={SKILL_COMMAND}><Copy size={18} strokeWidth={2.25} aria-hidden="true" />Copy to clipboard</button>
+        <button type="button" onClick={copy} title={SKILL_COMMAND}><Copy size={18} strokeWidth={2.25} aria-hidden="true" />Copy NPX skill to Clipboard</button>
         <a href="https://skills.sh/chrislanejones/bckgrnd-msc-mcp/background-music" target="_blank" rel="noopener noreferrer"><Terminal size={18} aria-hidden="true" />skills.sh<span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>
         <a href="https://github.com/chrislanejones/bckgrnd-msc-mcp" target="_blank" rel="noopener noreferrer"><FaGithub size={18} aria-hidden="true" />GitHub<span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>
         <a href="https://bckgrnd-msc.netlify.app/" target="_blank" rel="noopener noreferrer"><CirclePlay size={18} aria-hidden="true" />Open player<span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>
