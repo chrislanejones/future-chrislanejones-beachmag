@@ -18,6 +18,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 
+import { currentEventQuarter, eventQuarter, eventQuarterOptions, quarterLabel } from "./event-quarters";
+
 const blank = { url: "", alt: "", caption: "", credit: "", stock: false };
 const eventsByDate = [...HOME_EVENTS].sort((a, b) => b.start.localeCompare(a.start));
 const eventDate = (event: HomeEvent) => new Date(`${event.start}Z`).toLocaleDateString("en-US", {
@@ -132,19 +134,41 @@ function EventPhotoEditor({ event }: { event: HomeEvent }) {
 }
 
 export default function EventsTab() {
-  const [slug, setSlug] = useState(HOME_EVENTS[0].slug);
-  const event = HOME_EVENTS.find((item) => item.slug === slug)!;
+  const [currentQuarter] = useState(() => currentEventQuarter(new Date()));
+  const [period, setPeriod] = useState<"current" | "other">("current");
+  const [otherQuarter, setOtherQuarter] = useState(currentQuarter - 1);
+  const [slug, setSlug] = useState<string>();
+  const selectedQuarter = period === "current" ? currentQuarter : otherQuarter;
+  const visibleEvents = eventsByDate.filter((item) => eventQuarter(item.start) === selectedQuarter);
+  const event = visibleEvents.find((item) => item.slug === slug) ?? visibleEvents[0];
+  const changePeriod = (value: "current" | "other") => { setPeriod(value); setSlug(undefined); };
   return <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:h-full">
     <section aria-label="Event list" className="min-w-0 bg-(--color-panel) border border-(--color-border) rounded-2xl p-4 flex flex-col">
-      <div className="flex items-center justify-between mb-3"><h3 className="font-semibold text-(--color-ink)">Events</h3><span className="text-xs text-muted">{HOME_EVENTS.length} events</span></div>
+      <div className="flex items-center justify-between mb-3"><h3 className="font-semibold text-(--color-ink)">Events</h3><span className="text-xs text-muted">{visibleEvents.length} of {HOME_EVENTS.length} events</span></div>
       <p className="text-xs text-muted mb-3">Sorted by date, most recent first</p>
+      <div role="group" aria-label="Event quarter filter" className="flex gap-1 mb-3 p-1 bg-(--color-muted-accent) rounded-lg">
+        {(["current", "other"] as const).map((value) => <button
+          type="button" key={value} aria-pressed={period === value} onClick={() => changePeriod(value)}
+          className={`flex-1 py-1 text-xs font-medium rounded-md transition-all focus-ring ${period === value ? "bg-(--color-panel) text-(--color-ink) shadow-sm" : "text-muted hover:text-(--color-ink)"}`}
+        >{value === "current" ? "Current quarter" : "Other quarters"}</button>)}
+      </div>
+      {period === "other" ? <div className="mb-3">
+        <Label htmlFor="event-quarter" className="block mb-2 text-sm text-ink">Choose quarter</Label>
+        <select id="event-quarter" value={otherQuarter} onChange={(e) => { setOtherQuarter(Number(e.target.value)); setSlug(undefined); }}
+          className="w-full px-4 py-3 bg-(--color-muted-accent) rounded-xl text-ink focus:ring-2 focus:ring-accent focus:outline-none">
+          {eventQuarterOptions(currentQuarter).filter((quarter) => quarter !== currentQuarter).map((quarter) => <option key={quarter} value={quarter}>{quarterLabel(quarter)}</option>)}
+        </select>
+      </div> : <p className="text-xs text-muted mb-3">{quarterLabel(currentQuarter)}</p>}
       <div className="flex-1 overflow-y-auto space-y-1.5 max-h-64 lg:max-h-none">
-        {eventsByDate.map((item) => <button type="button" key={item.slug} onClick={() => setSlug(item.slug)} aria-pressed={slug === item.slug} className={`w-full text-left flex items-center gap-2 p-2.5 rounded-lg transition-all border border-transparent focus-ring ${slug === item.slug ? "bg-(--color-foreground) text-(--color-panel)" : "bg-(--color-muted-accent) hover:bg-(--color-surface-hover) text-(--color-ink)"}`}>
+        {!visibleEvents.length && <p role="status" className="p-3 text-sm text-muted">No events in {quarterLabel(selectedQuarter)}.</p>}
+        {visibleEvents.map((item) => <button type="button" key={item.slug} onClick={() => setSlug(item.slug)} aria-pressed={event?.slug === item.slug} className={`w-full text-left flex items-center gap-2 p-2.5 rounded-lg transition-all border border-transparent focus-ring ${event?.slug === item.slug ? "bg-(--color-foreground) text-(--color-panel)" : "bg-(--color-muted-accent) hover:bg-(--color-surface-hover) text-(--color-ink)"}`}>
           <span className="w-8 h-8 shrink-0 rounded bg-(--color-border) flex items-center justify-center text-(--color-ink)"><Calendar className="w-4 h-4 opacity-50" /></span>
-          <span className="min-w-0 flex-1"><span className="block text-sm font-medium truncate" title={item.name}>{item.name}</span><span className={`block text-xs truncate ${slug === item.slug ? "" : "text-muted"}`}>{eventDate(item)}</span></span>
+          <span className="min-w-0 flex-1"><span className="block text-sm font-medium truncate" title={item.name}>{item.name}</span><span className={`block text-xs truncate ${event?.slug === item.slug ? "" : "text-muted"}`}>{eventDate(item)}</span></span>
         </button>)}
       </div>
     </section>
-    <EventPhotoEditor key={slug} event={event} />
+    {event ? <EventPhotoEditor key={event.slug} event={event} /> : <section aria-label="Event details" className="lg:col-span-2 rounded-2xl border border-(--color-border) bg-(--color-panel) p-6 text-muted">
+      Choose another quarter to manage event photos.
+    </section>}
   </div>;
 }
