@@ -16,8 +16,7 @@ import { RadioMarkup } from "./radio-markup";
 
 const SKILL_COMMAND = "npx skills add https://github.com/chrislanejones/bckgrnd-msc-mcp --skill background-music";
 
-// The ribbon is the button: one tap copies the install command, and a toast
-// says whether that worked (with the command to copy by hand if it didn't).
+// The torn-paper card groups the copy action and the three resource links.
 function SkillSticker() {
   async function copy() {
     let copied = false;
@@ -40,10 +39,15 @@ function SkillSticker() {
     else toast.error("Couldn’t copy that", { description: SKILL_COMMAND });
   }
   return (
-    <button type="button" className="skill-sticker" onClick={copy} title={SKILL_COMMAND}>
+    <div className="skill-sticker">
       <span className="sticker-label">Put it in your agent.</span>
-      <span className="skill-copy"><Copy size={16} strokeWidth={2.25} aria-hidden="true" /> Copy to clipboard</span>
-    </button>
+      <nav className="skill-actions" aria-label="Background music resources">
+        <button type="button" onClick={copy} title={SKILL_COMMAND}><Copy size={18} strokeWidth={2.25} aria-hidden="true" />Copy to clipboard</button>
+        <a href="https://skills.sh/chrislanejones/bckgrnd-msc-mcp/background-music" target="_blank" rel="noopener noreferrer"><Terminal size={18} aria-hidden="true" />skills.sh<span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>
+        <a href="https://github.com/chrislanejones/bckgrnd-msc-mcp" target="_blank" rel="noopener noreferrer"><FaGithub size={18} aria-hidden="true" />GitHub<span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>
+        <a href="https://bckgrnd-msc.netlify.app/" target="_blank" rel="noopener noreferrer"><CirclePlay size={18} aria-hidden="true" />Open player<span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>
+      </nav>
+    </div>
   );
 }
 
@@ -145,11 +149,6 @@ export function BeachOffline() {
             <p>Every station on this dial came out of bckgrnd-msc. The background-music skill gives your agent all eighteen tracks to render, or to tuck under a voiceover.</p>
           </div>
           <SkillSticker />
-          <nav className="skill-links" aria-label="Background music resources">
-            <a href="https://skills.sh/chrislanejones/bckgrnd-msc-mcp/background-music" target="_blank" rel="noopener noreferrer"><Terminal size={18} aria-hidden="true" />skills.sh<span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>
-            <a href="https://github.com/chrislanejones/bckgrnd-msc-mcp" target="_blank" rel="noopener noreferrer"><FaGithub size={18} aria-hidden="true" />GitHub<span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>
-            <a href="https://bckgrnd-msc.netlify.app/" target="_blank" rel="noopener noreferrer"><CirclePlay size={18} aria-hidden="true" />Open player<span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>
-          </nav>
         </div>
         <input type="file" className="radio-file" accept="audio/*" hidden />
       </div>
