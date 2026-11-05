@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "convex/react";
-import { Copy } from "lucide-react";
+import { CirclePlay, Copy, Terminal } from "lucide-react";
+import { FaGithub } from "react-icons/fa6";
 import { toast } from "sonner";
 import { api } from "../../../convex/_generated/api";
 import { ContentBoundary, photos as fallbackPhotos } from "@/components/coastal/live-content";
@@ -142,12 +143,13 @@ export function BeachOffline() {
         <div className="radio-notes">
           <div className="skill-note">
             <p>Every station on this dial came out of bckgrnd-msc. The background-music skill gives your agent all eighteen tracks to render, or to tuck under a voiceover.</p>
-            <p className="skill-links">
-              <a href="https://skills.sh/chrislanejones/bckgrnd-msc-mcp/background-music" target="_blank" rel="noopener noreferrer">background-music on skills.sh ↗<span className="sr-only"> (opens in a new tab)</span></a>
-              <a href="https://github.com/chrislanejones/bckgrnd-msc-mcp" target="_blank" rel="noopener noreferrer">Source on GitHub ↗<span className="sr-only"> (opens in a new tab)</span></a>
-            </p>
           </div>
           <SkillSticker />
+          <nav className="skill-links" aria-label="Background music resources">
+            <a href="https://skills.sh/chrislanejones/bckgrnd-msc-mcp/background-music" target="_blank" rel="noopener noreferrer"><Terminal size={18} aria-hidden="true" />skills.sh<span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>
+            <a href="https://github.com/chrislanejones/bckgrnd-msc-mcp" target="_blank" rel="noopener noreferrer"><FaGithub size={18} aria-hidden="true" />GitHub<span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>
+            <a href="https://bckgrnd-msc.netlify.app/" target="_blank" rel="noopener noreferrer"><CirclePlay size={18} aria-hidden="true" />Open player<span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>
+          </nav>
         </div>
         <input type="file" className="radio-file" accept="audio/*" hidden />
       </div>

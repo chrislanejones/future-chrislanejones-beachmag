@@ -126,6 +126,20 @@ body.menu-open #site-nav .life-toggle { visibility: hidden; }
   #beach-offline .radio-notes .skill-sticker { margin: 30px 0 8px; }
 }
 
+/* Resource links follow the copy ribbon, with matching icon-sized touch targets. */
+#beach-offline .radio-notes .skill-links {
+  gap: 4px 20px;
+  margin-top: 20px !important;
+  font: 700 12px/1.4 var(--font-dm-sans), Arial, sans-serif;
+}
+#beach-offline .skill-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+}
+#beach-offline .skill-links a svg { flex-shrink: 0; }
+
 /* Ramblings: one quote shows at a time (the others are [hidden]), so the
    card is as tall as the current quote and grows for a long one. */
 #beach-offline .ramble blockquote.quote-stack {
