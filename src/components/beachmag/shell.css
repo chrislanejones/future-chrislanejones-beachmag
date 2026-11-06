@@ -190,17 +190,157 @@ body.menu-open #site-nav .life-toggle { visibility: hidden; }
   }
 }
 
-/* Start with every lamp off, then light only the source that is playing.
-   A LOADed file marks the chassis .off-dial; station presets leave tape mode. */
+/* Start with every lamp off, then light only the source that is playing:
+   the lamp over the switch's position, and the deck's TAPE lamp on tape. */
 #beach-offline .mono-radio .power-led {
   background: #5c302b;
   box-shadow: none;
 }
-#beach-offline .is-playing:not(.off-dial) .band-label > .power-led,
-#beach-offline .is-playing.off-dial .tape-led,
-#beach-offline .is-playing.off-dial .tape-lamp {
+#beach-offline .is-playing .band-option input:checked + span .power-led,
+#beach-offline .is-playing[data-band="tape"] .tape-led {
   background: var(--bm-lamp);
   box-shadow: 0 0 7px var(--bm-lamp);
+}
+/* The cassette only turns on tape, and only tape has a position to wind. */
+#beach-offline .is-playing:not([data-band="tape"]) .physical-reel {
+  animation-play-state: paused;
+}
+/* The tuner reads top to bottom: FM numbers, the line with the station needle,
+   AM numbers, the four track keys, then the tape slider. The needle tunes FM
+   and AM only, and rests dim where it was left while on tape. */
+#beach-offline .radio-instruments .frequency-scale {
+  border: 0;
+  border-image: none;
+}
+#beach-offline .dial-line {
+  position: relative;
+  height: 14px;
+  margin: 2px 0;
+  background:
+    linear-gradient(var(--bm-dial-tick), var(--bm-dial-tick)) center / 100% 1px no-repeat,
+    repeating-linear-gradient(90deg, var(--bm-dial-tick) 0 1px, transparent 1px 8px) center / 100% 9px no-repeat;
+}
+#beach-offline .mono-radio .dial-needle {
+  top: 0;
+  bottom: 0;
+  height: auto;
+}
+#beach-offline .mono-radio[data-band="tape"] .dial-needle {
+  opacity: 0.35;
+}
+#beach-offline .mono-radio:not([data-band="tape"]).off-dial .dial-needle {
+  opacity: 1;
+}
+#beach-offline .hardware-tuner .station-presets {
+  margin-top: 6px;
+}
+/* A track key reads on one line: the number, then the track's name. */
+#beach-offline .hardware-tuner .station {
+  flex-direction: row;
+  gap: 4px;
+}
+#beach-offline .hardware-transport button:disabled {
+  opacity: 0.55;
+  cursor: default;
+  filter: none;
+  transform: none;
+}
+
+/* TAPE / FM / AM: a brushed-silver slide switch in a dark slot, with a lamp
+   over each position. Each label fills its column, so the slot under it is
+   clickable too; the thumb sits on top and can be dragged. */
+#beach-offline .band-switch {
+  position: relative;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  min-width: 132px;
+  max-width: 168px;
+  height: 36px;
+  margin: 0 auto 4px;
+  justify-self: center;
+}
+#beach-offline .band-option {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-top: 1px;
+  color: inherit;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1;
+  cursor: pointer;
+}
+#beach-offline .band-option input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+#beach-offline .band-option span {
+  display: inline-flex;
+  align-items: center;
+  height: 10px;
+}
+#beach-offline .band-option .power-led {
+  margin-right: 3px;
+}
+#beach-offline .band-option:has(input:focus-visible) {
+  outline: 2px solid var(--bm-lamp);
+  outline-offset: 1px;
+  border-radius: 2px;
+}
+#beach-offline .band-slot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 18px;
+  border: 1px solid var(--bm-slot-rim);
+  border-bottom-color: var(--bm-slot-lip);
+  border-radius: 2px;
+  background: linear-gradient(var(--bm-slot-top), var(--bm-slot-bottom));
+  box-shadow: var(--bm-slot-shadow);
+  pointer-events: none;
+}
+#beach-offline .band-thumb {
+  position: absolute;
+  top: 1px;
+  left: 16.667%;
+  width: 34px;
+  height: 14px;
+  transform: translateX(-50%);
+  border: 1px solid var(--bm-thumb-rim);
+  border-top-color: var(--bm-thumb-top);
+  border-bottom: 2px solid var(--bm-thumb-edge);
+  border-radius: 2px;
+  background:
+    repeating-linear-gradient(90deg, var(--bm-thumb-rib) 0 1px, var(--bm-thumb-rib-hi) 1px 2px, transparent 2px 4px),
+    var(--bm-thumb-face);
+  box-shadow: var(--bm-thumb-shadow);
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+  transition: left 90ms cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+#beach-offline .band-thumb:active {
+  cursor: grabbing;
+}
+#beach-offline .band-switch[data-pos="1"] .band-thumb {
+  left: 50%;
+}
+#beach-offline .band-switch[data-pos="2"] .band-thumb {
+  left: 83.333%;
+}
+@media (prefers-reduced-motion: reduce) {
+  #beach-offline .band-thumb {
+    transition: none;
+  }
 }
 
 /* Hero map: taller than the design's 220px strip; scales with the column. */
@@ -2136,10 +2276,6 @@ html.dark #coastal-art .map-wrap .map-night {
   object-position: top center;
 }
 
-/* The TAPE lamp sits beside FM / AM at every width; source rules above light it. */
-#beach-offline .band-label .tape-light {
-  margin-left: 18px;
-}
 /* Phones: the tuner display gets the whole first row; the VU meter (with the
    tape counter) and the knobs share the second. */
 @media (max-width: 520px) {
@@ -2157,14 +2293,14 @@ html.dark #coastal-art .map-wrap .map-night {
     grid-row: 2;
     align-self: center;
   }
-  /* Above the knobs, level with the meter: the FM / AM lamp and a lit TAPE lamp. */
+  /* Above the knobs, level with the meter: the TAPE / FM / AM switch. */
   #beach-offline .radio-instruments .knob-bank {
     align-self: center;
     grid-template-rows: auto auto;
     row-gap: 4px;
   }
-  #beach-offline .radio-instruments .knob-bank .band-label {
-    margin: 0;
+  #beach-offline .radio-instruments .knob-bank .band-switch {
+    margin: 0 auto;
   }
   #beach-offline .radio-instruments .knob-bank {
     grid-column: 2;

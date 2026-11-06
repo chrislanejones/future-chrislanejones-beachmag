@@ -1,5 +1,5 @@
-// The Coastal mono radio: four bckgrnd-msc stations, treble/bass/volume knobs,
-// a VU meter and LOAD for local files. Ported from the static design's script
+// The Coastal mono radio: four bckgrnd-msc tracks on tape, a TAPE / FM / AM
+// switch, treble/bass/volume knobs, a VU meter and LOAD for local files. Ported from the static design's script
 // (work/home-radio.js); it drives the radio's DOM directly, so the React
 // markup around it renders once and never re-renders.
 
@@ -9,6 +9,16 @@ const STATIONS = [
   ["southside", "Southside", "Garage", 132],
   ["study", "Study", "Chillhop", 76],
 ] as const;
+
+// FM and AM are recordings of static with the call letters breaking through
+// (pnpm audio:static). The dial prints both scales, and the two call frequencies
+// sit close together, so the needle only moves a little between the bands.
+const BANDS = ["tape", "fm", "am"] as const;
+type Band = (typeof BANDS)[number];
+const RADIO = {
+  fm: { src: "/audio/fm-static.mp3", label: "WCLJ · FM · 88.7 MHz", needle: "16.7%" },
+  am: { src: "/audio/am-static.mp3", label: "WCLJ · AM · 660 kHz", needle: "24.6%" },
+};
 
 type Dial = { set: (value: number) => void; get: () => number };
 type Tone = "treble" | "bass";
@@ -35,6 +45,13 @@ export function mountRadio(root: HTMLElement): () => void {
   let station = 0;
   let sourceLabel = "";
   let objectUrl: string | null = null;
+  const bandSwitch = $<HTMLElement>(".band-switch");
+  const bandInputs = [...bandSwitch.querySelectorAll<HTMLInputElement>("input")];
+  const tapeOnly = [$<HTMLButtonElement>(".real-rewind"), $<HTMLButtonElement>(".real-forward")];
+  let band: Band = "tape";
+  // Where the tape was when the switch left it, so flipping back picks it up again.
+  let tape = { src: "", time: 0, label: "", rolling: false };
+  let resumeAt = 0;
 
   let context: AudioContext | undefined;
   let analyser: AnalyserNode | undefined;
@@ -102,13 +119,57 @@ export function mountRadio(root: HTMLElement): () => void {
       graph();
       if (context) await context.resume();
       await audio.play();
-    } catch {
+    } catch (error) {
+      // Flipping the switch again while a clip loads cancels the earlier play().
+      if (error instanceof DOMException && error.name === "AbortError") return;
       status.textContent = "Playback could not start. Press PLAY again, or LOAD your own audio file.";
     }
   }
 
+  function moveSwitch(next: Band) {
+    bandSwitch.dataset.pos = String(BANDS.indexOf(next));
+    for (const input of bandInputs) input.checked = input.value === next;
+  }
+
+  function setBand(next: Band) {
+    band = next;
+    chassis.dataset.band = next;
+    audio.loop = next !== "tape";
+    for (const button of tapeOnly) button.disabled = next !== "tape";
+    moveSwitch(next);
+  }
+
+  function markTrack() {
+    presets.forEach((button, i) => button.setAttribute("aria-pressed", String(!objectUrl && i === station)));
+  }
+
+  function selectBand(next: Band) {
+    if (next === band) return moveSwitch(next);
+    const wasPlaying = !audio.paused;
+    if (band === "tape") tape = { src: audio.src, time: audio.currentTime, label: sourceLabel, rolling: wasPlaying };
+    setBand(next);
+    if (next === "tape") {
+      audio.src = tape.src;
+      resumeAt = tape.time;
+      sourceLabel = tape.label;
+      markTrack();
+      if (tape.rolling && wasPlaying) start();
+      else playback();
+    } else {
+      const { src, label, needle } = RADIO[next];
+      audio.src = src;
+      sourceLabel = label;
+      presets.forEach((button) => button.setAttribute("aria-pressed", "false"));
+      chassis.style.setProperty("--needle", needle);
+      // A radio has no PLAY step: flipping to a band turns it on.
+      start();
+    }
+    position();
+  }
+
   function tune(index: number, keepPlaying = !audio.paused) {
     station = (index + STATIONS.length) % STATIONS.length;
+    resumeAt = 0;
     const [id, name, style, bpm] = STATIONS[station];
     if (objectUrl) {
       URL.revokeObjectURL(objectUrl);
@@ -116,9 +177,8 @@ export function mountRadio(root: HTMLElement): () => void {
     }
     audio.src = `/audio/${id}.mp3`;
     sourceLabel = `${name} · ${style} · ${bpm} bpm`;
-    presets.forEach((button, i) => button.setAttribute("aria-pressed", String(i === station)));
+    markTrack();
     chassis.classList.remove("off-dial");
-    chassis.style.setProperty("--needle", ((station + 0.5) / STATIONS.length) * 100 + "%");
     if (keepPlaying) start();
     else playback();
   }
@@ -183,20 +243,55 @@ export function mountRadio(root: HTMLElement): () => void {
 
   function position() {
     const time = audio.currentTime || 0;
-    const known = Number.isFinite(audio.duration) && audio.duration > 0;
-    seek.disabled = !Number.isFinite(audio.duration);
+    const onTape = band === "tape";
+    const known = onTape && Number.isFinite(audio.duration) && audio.duration > 0;
+    seek.disabled = !onTape || !Number.isFinite(audio.duration);
     seek.value = String(known ? (time / audio.duration) * 100 : 0);
-    counter.textContent = String(Math.floor(time / 60)).padStart(2, "0") + ":" + String(Math.floor(time % 60)).padStart(2, "0");
+    // A live band has no elapsed time to count.
+    counter.textContent = !onTape ? "--:--" : String(Math.floor(time / 60)).padStart(2, "0") + ":" + String(Math.floor(time % 60)).padStart(2, "0");
   }
 
   function skip(seconds: number) {
-    if (!Number.isFinite(audio.duration)) return;
+    if (band !== "tape" || !Number.isFinite(audio.duration)) return;
     audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + seconds));
     position();
   }
 
   on(play, "click", () => (audio.paused ? start() : audio.pause()));
-  presets.forEach((button, i) => on(button, "click", () => tune(i)));
+  // The four keys are the tape's tracks, so pressing one flips the switch back to TAPE.
+  presets.forEach((button, i) =>
+    on(button, "click", () => {
+      const keepPlaying = !audio.paused;
+      setBand("tape");
+      tune(i, keepPlaying);
+    }),
+  );
+  for (const input of bandInputs) on(input, "change", () => selectBand(input.value as Band));
+  // The thumb also slides: it follows the finger and the band changes on release.
+  const thumb = $<HTMLElement>(".band-thumb");
+  const bandAt = (x: number) => {
+    const box = bandSwitch.getBoundingClientRect();
+    return BANDS[Math.max(0, Math.min(BANDS.length - 1, Math.floor(((x - box.left) / box.width) * BANDS.length)))];
+  };
+  let sliding = false;
+  on<"pointerdown">(thumb, "pointerdown", (event) => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+    thumb.setPointerCapture(event.pointerId);
+    sliding = true;
+  });
+  on<"pointermove">(thumb, "pointermove", (event) => {
+    if (sliding) bandSwitch.dataset.pos = String(BANDS.indexOf(bandAt(event.clientX)));
+  });
+  on<"pointerup">(thumb, "pointerup", (event) => {
+    if (!sliding) return;
+    sliding = false;
+    selectBand(bandAt(event.clientX));
+  });
+  on<"pointercancel">(thumb, "pointercancel", () => {
+    sliding = false;
+    moveSwitch(band);
+  });
   on(audio, "play", playback);
   on(audio, "pause", playback);
   // The radio keeps going: when a station's track ends, the dial moves on to the next one.
@@ -236,7 +331,11 @@ export function mountRadio(root: HTMLElement): () => void {
   }
 
   on(audio, "timeupdate", position);
-  on(audio, "loadedmetadata", position);
+  on(audio, "loadedmetadata", () => {
+    if (resumeAt && band === "tape") audio.currentTime = resumeAt;
+    resumeAt = 0;
+    position();
+  });
   on(audio, "emptied", position);
   on(seek, "input", () => {
     if (Number.isFinite(audio.duration)) audio.currentTime = (Number(seek.value) / 100) * audio.duration;
@@ -248,6 +347,8 @@ export function mountRadio(root: HTMLElement): () => void {
     const file = fileInput.files?.[0];
     if (!file) return;
     audio.pause();
+    setBand("tape");
+    resumeAt = 0;
     if (objectUrl) URL.revokeObjectURL(objectUrl);
     objectUrl = URL.createObjectURL(file);
     audio.src = objectUrl;
@@ -256,6 +357,7 @@ export function mountRadio(root: HTMLElement): () => void {
     chassis.classList.add("off-dial");
     playback();
   });
+  chassis.style.setProperty("--needle", RADIO.fm.needle);
   tune(0, false);
   position();
 

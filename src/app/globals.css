@@ -141,6 +141,19 @@
   --bm-silver-warm: #e2d7af;   /* a radio key under the pointer */
   --bm-silver-press: #a9b99b;  /* a radio key pressed down */
   --bm-lamp: #ff5a30;          /* a lit lamp on the radio */
+  --bm-dial-tick: #c8bf98;     /* the tuner's line and ticks */
+  --bm-slot-rim: #5d625c;      /* the source switch's slot, outline */
+  --bm-slot-lip: #c9ccc6;      /* its lit bottom lip */
+  --bm-slot-top: #0c110e;      /* its dark inside, top */
+  --bm-slot-bottom: #232a26;   /* its dark inside, bottom */
+  --bm-slot-shadow: inset 0 2px 3px #000c;
+  --bm-thumb-rim: #7d827c;     /* the switch's silver thumb, outline */
+  --bm-thumb-top: #ffffff;     /* its top edge */
+  --bm-thumb-edge: #6f746e;    /* its thick bottom edge */
+  --bm-thumb-rib: #5f645e;     /* its grip ribs */
+  --bm-thumb-rib-hi: #ffffffa0;
+  --bm-thumb-face: linear-gradient(180deg, #f7f8f5, #d9dcd6 40%, #b9bdb6 62%, #d2d5cf 100%);
+  --bm-thumb-shadow: 0 1px 2px #000a, inset 0 1px 0 #ffffffd0;
   --bm-toy-teal: #4fa3a5;      /* the sand game's loading bucket */
   --bm-toy-teal-deep: #3d8e91; /* its rim */
   --bm-toy-coral: #e0573f;     /* its shovel */

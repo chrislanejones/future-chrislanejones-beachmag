@@ -12,6 +12,7 @@
     "seed-seo": "node scripts/seed-seo.js",
     "check-seo": "node scripts/check-seo.js",
     "audio:render": "node design/work/render_tracks.mjs",
+    "audio:static": "node design/work/render_static.mjs",
     "design:css": "cd design && python3 work/build_site_css.py",
     "check:a11y": "node scripts/audit-accessibility.mjs",
     "check:seo": "node scripts/audit-seo.mjs"

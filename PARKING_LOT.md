@@ -14,6 +14,13 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
 - **design/ is a reference archive**: `design/outputs/coastal-site-preview.zip` predates the radio stations, and `coastal-demo.wav` plus `generate_radio_demo.py` are unused. The 10-22 evening zip (sand game update) has an older radio than this repo; only its sandbox source was ported.
 - **Codex's sandbox uses `active` as a GLSL name** (reserved in WebGL2), so its wave overlay never compiled there. Fixed here in `incoming-wave.tsx`; tell Codex if that design keeps going.
 
+## Radio TAPE / FM / AM switch (11-06-2026)
+
+- **"Every station on this dial came out of bckgrnd-msc"** beside the radio is no longer quite true: the four tracks do, but FM and AM are recorded static and voice. Chris's copy, left for him to reword.
+- **Touch drag on the switch's thumb isn't tested on a real phone.** Tapping a position is the safe path; on iPhone a drag's first play could be refused until PLAY is pressed.
+- **hangup-guard counts T3's always-running headless browser as busy**, so `heavy` jobs can wait out their 15-minute timeout while holding the shared lock. That blocked the local `pnpm build` for this change.
+- **`edge-tts` in `~/.local/bin` (7.2.8) gets a 403 from Microsoft.** `pnpm audio:static` uses smart-voice's local Kokoro voice instead, so nothing here depends on it.
+
 ## From the beach site
 
 - **2026-07-08 — Finish the Clerk production-instance migration (user-owned).** Security is
