@@ -146,7 +146,7 @@ export function BeachOffline() {
         </div>
         <div className="radio-notes">
           <div className="skill-note">
-            <p>Every station on this dial came out of bckgrnd-msc. The background-music skill gives your agent all eighteen tracks to render, or to tuck under a voiceover.</p>
+            <p>All four tapes in this deck came out of bckgrnd-msc. The background-music skill gives your agent all eighteen tracks to render, or to tuck under a voiceover.</p>
           </div>
           <SkillSticker />
         </div>
