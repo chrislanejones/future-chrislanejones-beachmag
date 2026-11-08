@@ -404,7 +404,7 @@ function EnlargedPhoto({ photo, onClose }: { photo: GalleryPhoto; onClose: () =>
           alt={photo.alt}
           width={photo.width ?? 1200}
           height={photo.height ?? 1200}
-          sizes="(max-width: 820px) 92vw, 760px"
+          sizes="(max-width: 600px) 92vw, 540px"
           onLoad={(event) => {
             const img = event.currentTarget;
             if (img.naturalWidth && img.naturalHeight) setRatio(img.naturalWidth / img.naturalHeight);

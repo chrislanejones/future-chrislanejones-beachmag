@@ -1126,7 +1126,7 @@ html.dark .gallery-drawer {
 }
 .gallery-drawer .gallery-close { min-height: 44px; padding: 8px 12px; border: 1px solid currentColor; background: transparent; color: inherit; font: 700 12px/1.4 var(--font-dm-sans), sans-serif; cursor: pointer; }
 /* A clicked polaroid, big and uncropped, over the drawer. Its width is the
-   smallest of: the screen, 760px, or what fits the drawer's height at the
+   smallest of: the screen, 540px, or what fits the drawer's height at the
    photo's own shape (--zoom-ratio, width over height). */
 .gallery-drawer .photo-zoom {
   position: absolute;
@@ -1146,11 +1146,11 @@ html.dark .gallery-drawer {
 }
 .gallery-drawer .photo-zoom img {
   display: block;
-  width: min(calc(100vw - 56px), 760px, calc((90dvh - 190px) * var(--zoom-ratio, 1)));
+  width: min(calc(100vw - 56px), 540px, calc((90dvh - 190px) * var(--zoom-ratio, 1)));
   height: auto;
 }
 .gallery-drawer .photo-zoom figcaption {
-  max-width: min(calc(100vw - 56px), 760px);
+  max-width: min(calc(100vw - 56px), 540px);
   padding: 14px 8px 18px;
   text-align: center;
   font-size: 20px;
