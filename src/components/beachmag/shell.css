@@ -1125,6 +1125,45 @@ html.dark .gallery-drawer {
   outline-offset: 4px;
 }
 .gallery-drawer .gallery-close { min-height: 44px; padding: 8px 12px; border: 1px solid currentColor; background: transparent; color: inherit; font: 700 12px/1.4 var(--font-dm-sans), sans-serif; cursor: pointer; }
+/* A clicked polaroid, big and uncropped, over the drawer. Its width is the
+   smallest of: the screen, 760px, or what fits the drawer's height at the
+   photo's own shape (--zoom-ratio, width over height). */
+.gallery-drawer .photo-zoom {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 64px 16px 24px;
+  background: color-mix(in srgb, var(--gd-paper) 90%, transparent);
+  cursor: zoom-out;
+}
+.gallery-drawer .photo-zoom figure {
+  margin: 0;
+  padding: 12px 12px 0;
+  background: var(--gd-card);
+  box-shadow: 5px 8px 0 color-mix(in srgb, var(--gd-ink) 22%, transparent), 0 20px 44px rgb(0 0 0 / 0.22);
+}
+.gallery-drawer .photo-zoom img {
+  display: block;
+  width: min(calc(100vw - 56px), 760px, calc((90dvh - 190px) * var(--zoom-ratio, 1)));
+  height: auto;
+}
+.gallery-drawer .photo-zoom figcaption {
+  max-width: min(calc(100vw - 56px), 760px);
+  padding: 14px 8px 18px;
+  text-align: center;
+  font-size: 20px;
+}
+.gallery-drawer .photo-zoom-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: var(--gd-paper);
+}
+
+/* The homepage postcard is wider than the photo, so keep the top where the faces are. */
+#beach-offline .photo-stack .photo-front img { object-position: 50% 18%; }
 
 /* Link page: each link is a full-width sage key with its icon. */
 .radio-key {

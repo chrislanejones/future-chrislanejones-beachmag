@@ -105,7 +105,7 @@ function Postcards({ photos, ramble }: { photos: GalleryPhoto[]; ramble: React.R
       {ramble}
       <div className="photos">
         <h3>Wish you were here.</h3>
-        <GalleryDrawer photos={photos} title="Postcards from here." description="Click a photo to bring it to the front.">
+        <GalleryDrawer photos={photos} title="Postcards from here." description="Click a photo to see it bigger.">
           <button className="photo-stack cursor-interaction" type="button" aria-label="Open the postcards gallery">
             <span className="photo-front">
               <Image src={cover.src} alt={cover.alt} width={600} height={400} sizes="(max-width: 640px) 90vw, 480px" />

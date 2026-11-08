@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 import { motion, AnimatePresence, MotionConfig, type PanInfo } from "framer-motion";
 import Image from "next/image";
 import {
@@ -45,6 +45,9 @@ interface PhotoProps extends GalleryPhoto {
   onClick: () => void;
 }
 
+// Group photos have faces in the top third, so crops keep the top and lose the floor.
+const FACE_POSITION = "50% 18%";
+
 interface GalleryDrawerProps {
   photos: GalleryPhoto[];
   title?: string;
@@ -74,7 +77,7 @@ const Photo = ({
     onClick={onClick}
     whileHover={{ scale: 1.02 }}
     whileTap={{ scale: 0.98 }}
-    aria-label={`View ${description}`}
+    aria-label={`View ${description} bigger`}
   >
     <div className="p-2.5 pb-0">
       <div
@@ -86,7 +89,8 @@ const Photo = ({
           alt={alt}
           width={width}
           height={height}
-          className="object-cover rounded-sm"
+          className="h-full w-full object-cover rounded-sm"
+          style={{ objectPosition: FACE_POSITION }}
           sizes={`${width}px`}
         />
       </div>
@@ -104,9 +108,11 @@ const Photo = ({
 const PhotoGallery = ({
   photos,
   animationDelay = 0.5,
+  onEnlarge,
 }: {
   photos: GalleryPhoto[];
   animationDelay?: number;
+  onEnlarge: (photo: GalleryPhoto) => void;
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -127,9 +133,13 @@ const PhotoGallery = ({
     };
   }, [animationDelay]);
 
-  const handlePhotoClick = (photoId: number) => {
-    setClickedPhotoId(clickedPhotoId === photoId ? null : photoId);
+  // A click brings the photo to the front of the fan and opens it big.
+  const handlePhotoClick = (photoId: number, photo: GalleryPhoto | undefined) => {
+    setClickedPhotoId(photoId);
+    if (photo) onEnlarge(photo);
   };
+  // On phones the polaroid is also swiped; a swipe shouldn't count as a tap.
+  const dragged = useRef(false);
 
 
   /* ---------------------- Photo positions for desktop ---------------------- */
@@ -222,6 +232,7 @@ const PhotoGallery = ({
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.8}
+            onDragStart={() => { dragged.current = true; }}
             onDragEnd={handleDragEnd}
           >
             <motion.button
@@ -232,7 +243,9 @@ const PhotoGallery = ({
               }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              aria-label={`View ${photos[currentIndex].description}`}
+              onPointerDown={() => { dragged.current = false; }}
+              onClick={() => { if (!dragged.current) onEnlarge(photos[currentIndex]); }}
+              aria-label={`View ${photos[currentIndex].description} bigger`}
             >
               <div className="p-2.5 pb-0">
                 <div
@@ -244,7 +257,8 @@ const PhotoGallery = ({
                     alt={photos[currentIndex].alt}
                     width={250}
                     height={250}
-                    className="object-cover rounded-sm"
+                    className="h-full w-full object-cover rounded-sm"
+                    style={{ objectPosition: FACE_POSITION }}
                     sizes="250px"
                   />
                 </div>
@@ -344,7 +358,7 @@ const PhotoGallery = ({
                   alt={photo?.alt || ""}
                   direction={position.direction}
                   description={photo?.description || ""}
-                  onClick={() => handlePhotoClick(position.id)}
+                  onClick={() => handlePhotoClick(position.id, photo)}
                 />
               </motion.div>
             );
@@ -356,26 +370,85 @@ const PhotoGallery = ({
 };
 
 /* -------------------------------------------------------------------------- */
+/*                                Enlarged photo                              */
+/* -------------------------------------------------------------------------- */
+
+// The whole photo, uncropped, as a big polaroid over the drawer. A click
+// anywhere, the close button or Escape puts it back.
+function EnlargedPhoto({ photo, onClose }: { photo: GalleryPhoto; onClose: () => void }) {
+  const [ratio, setRatio] = useState(photo.width && photo.height ? photo.width / photo.height : 1);
+  return (
+    <motion.div
+      className="photo-zoom"
+      role="dialog"
+      aria-modal="true"
+      aria-label={photo.description || photo.alt}
+      onClick={onClose}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      <button type="button" className="gallery-close photo-zoom-close" autoFocus onClick={onClose}>
+        Close photo <span aria-hidden="true">×</span>
+      </button>
+      <motion.figure
+        style={{ "--zoom-ratio": ratio } as CSSProperties}
+        initial={{ scale: 0.85, rotate: -4 }}
+        animate={{ scale: 1, rotate: -1 }}
+        exit={{ scale: 0.9, rotate: -3 }}
+        transition={{ type: "spring", stiffness: 260, damping: 24 }}
+      >
+        <Image
+          src={photo.src}
+          alt={photo.alt}
+          width={photo.width ?? 1200}
+          height={photo.height ?? 1200}
+          sizes="(max-width: 820px) 92vw, 760px"
+          onLoad={(event) => {
+            const img = event.currentTarget;
+            if (img.naturalWidth && img.naturalHeight) setRatio(img.naturalWidth / img.naturalHeight);
+          }}
+        />
+        {photo.description && <figcaption className="polaroid-caption">{photo.description}</figcaption>}
+      </motion.figure>
+    </motion.div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                Gallery Drawer                              */
 /* -------------------------------------------------------------------------- */
 
 export default function GalleryDrawer({
   photos,
   title = "Gallery Drawer",
-  description = "Click photos to bring them to the front",
+  description = "Click a photo to see it bigger.",
   animationDelay = 0.2,
   children,
 }: GalleryDrawerProps & { children?: ReactNode }) {
   const isMobile = useViewport().width < 768;
+  const [enlarged, setEnlarged] = useState<GalleryPhoto | null>(null);
+  // Focus goes back to the polaroid that opened the big photo.
+  const opener = useRef<HTMLElement | null>(null);
+
+  const enlarge = (photo: GalleryPhoto) => {
+    opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    setEnlarged(photo);
+  };
+  const shrink = () => {
+    setEnlarged(null);
+    opener.current?.focus();
+  };
 
   const adjustedDescription = isMobile
-    ? "Swipe left or right to view the next photo"
+    ? "Swipe for the next photo. Tap one to see it bigger."
     : description;
 
   return (
     // The drawer's framer-motion follows the visitor's reduced-motion setting.
     <MotionConfig reducedMotion="user">
-    <Drawer>
+    <Drawer onOpenChange={(open) => { if (!open) setEnlarged(null); }}>
       <DrawerTrigger asChild>
         {children ?? (
           <Button variant="neutral" size="icon" round aria-label="Open photo gallery">
@@ -384,8 +457,19 @@ export default function GalleryDrawer({
         )}
       </DrawerTrigger>
 
-      {/* Portaled outside the page, so it carries the fonts and its own palette (shell.css). */}
-      <DrawerContent className={`gallery-drawer h-[90dvh] overflow-y-auto ${bodoniModa.variable} ${dmSans.variable}`}>
+      {/* Portaled outside the page, so it carries the fonts and its own palette (shell.css).
+          The inner box scrolls, so the big photo can cover the drawer without scrolling away. */}
+      <DrawerContent
+        className={`gallery-drawer h-[90dvh] ${bodoniModa.variable} ${dmSans.variable}`}
+        onEscapeKeyDown={(event) => {
+          // Escape closes the big photo first, then the drawer.
+          if (enlarged) {
+            event.preventDefault();
+            shrink();
+          }
+        }}
+      >
+        <div className="isolate min-h-0 flex-1 overflow-y-auto">
         <div className="mx-auto w-full max-w-7xl">
           <div className="flex justify-end px-4 pt-2">
             <DrawerClose asChild><button type="button" className="gallery-close">Close gallery <span aria-hidden="true">×</span></button></DrawerClose>
@@ -400,9 +484,13 @@ export default function GalleryDrawer({
           </DrawerHeader>
 
           <div className="px-4 pb-4 pt-0 flex-1 overflow-hidden">
-            <PhotoGallery photos={photos} animationDelay={animationDelay} />
+            <PhotoGallery photos={photos} animationDelay={animationDelay} onEnlarge={enlarge} />
           </div>
         </div>
+        </div>
+        <AnimatePresence>
+          {enlarged && <EnlargedPhoto key={enlarged.src} photo={enlarged} onClose={shrink} />}
+        </AnimatePresence>
       </DrawerContent>
     </Drawer>
     </MotionConfig>
