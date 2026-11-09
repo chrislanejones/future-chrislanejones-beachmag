@@ -49,6 +49,19 @@ export const MOUND_HEIGHT = .28;
 export const MOAT_DEPTH = .3;
 /** How tall each piece is, so flags, shells, and stacked pieces know where to sit. */
 export const PIECE_HEIGHT: Record<CastleKind, number> = { tower: 1.4, bucket: 1.02, wall: .85, moat: 0, flag: 0, shell: 0, mound: MOUND_HEIGHT };
+/** How long the shovel takes, how long a new moat takes to fill after it, and how long a mold takes. */
+export const DIG_MS = 500;
+export const FILL_MS = 500;
+export const MOLD_MS = 700;
+/**
+ * How soon the next tap counts after this tool's animation starts. The sand
+ * has landed by then; the shovel or mold is still lifting away and the water
+ * keeps rising on its own. Tools with no animation don't wait.
+ */
+export function settleMs(tool: CastleTool) {
+  if (tool === "moat") return DIG_MS * .75;
+  return tool === "tower" || tool === "bucket" || tool === "wall" || tool === "pile" ? MOLD_MS * .75 : 0;
+}
 const LABEL: Record<CastleKind, string> = { tower: "Tower", bucket: "Bucket castle", wall: "Wall", moat: "Moat", flag: "Flag", shell: "Shell", mound: "Mound" };
 
 export const initialCastle: CastleState = {

@@ -10,7 +10,7 @@ import { beachWashAt, erosionAt } from "./beach-wash";
 import { SandMold,moldHeight } from "./sand-molds";
 import { makeShellGeometries, makeShellTexture, type ShellKind } from "./shell-geometry";
 import { FLAG_BOX, flagBoxSpot, LEDGE_GLSL, ledgeDistance, ledgeHeight, type Spot as LedgeSpot } from "./ledge";
-import { BEACH_COLUMNS, BEACH_ROWS, HALF_X, HALF_Z, MOAT_DEPTH, MOUND_HEIGHT, onBeach, pieceElevation, VIEW_HALF_X, VIEW_HALF_Z, type CastlePiece, type CastleTool } from "./sandcastle-model";
+import { BEACH_COLUMNS, BEACH_ROWS, DIG_MS, FILL_MS, HALF_X, HALF_Z, MOAT_DEPTH, MOLD_MS, MOUND_HEIGHT, onBeach, pieceElevation, VIEW_HALF_X, VIEW_HALF_Z, type CastlePiece, type CastleTool } from "./sandcastle-model";
 
 type Props = {
   pieces: CastlePiece[];
@@ -172,8 +172,6 @@ const sandFragment = `
 
 /* ---------- Animation: a shovel scoops, then water rises in a new moat ---------- */
 
-const DIG_MS = 1200;
-const FILL_MS = 1700;
 type Dig = { x: number; z: number; start: number; moat: boolean };
 
 /**
@@ -239,7 +237,6 @@ function Shovel({ dig, height, onDone }: { dig: Dig; height: number; onDone: () 
 
 const SHELL_KINDS: ShellKind[] = ["scallop", "clam", "spiral"];
 type Shells = Record<ShellKind, BufferGeometry>;
-const MOLD_MS=1450;
 type Mold={piece:CastlePiece;start:number;elevation:number};
 function BucketMold({mold,onDone}:{mold:Mold;onDone:()=>void}){
   const ref=useRef<Group>(null),done=useRef(false);

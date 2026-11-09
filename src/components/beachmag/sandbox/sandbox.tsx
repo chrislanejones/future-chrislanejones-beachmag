@@ -7,7 +7,7 @@ import { ToolArt } from "./tool-art";
 import { ToolKnob } from "./tool-knob";
 import { BeachFigure } from "../beach-figure";
 import { WASH_CLEAR_MS, WASH_END_MS } from "./beach-wash";
-import { castleReducer, initialCastle, MAX_FLAGS, HALF_X, HALF_Z, pickDesign, type CastleTool } from "./sandcastle-model";
+import { castleReducer, initialCastle, MAX_FLAGS, HALF_X, HALF_Z, pickDesign, settleMs, type CastleTool } from "./sandcastle-model";
 import { BucketLoader } from "./bucket-loader";
 import "./sandbox.css";
 
@@ -27,7 +27,7 @@ class Boundary extends Component<{ children: ReactNode }, { failed: boolean }> {
 
 const TOOLS: [CastleTool, string][] = [
   ["tower", "Tower"], ["bucket", "Bucket"], ["wall", "Wall"], ["pile", "Pile sand"],
-  ["moat", "Dig moat"], ["flag", "Pick up flag"], ["shell", "Shell"], ["erase", "Remove"],
+  ["moat", "Dig moat"], ["flag", "Flag"], ["shell", "Shell"], ["erase", "Remove"],
 ];
 
 // The names printed on the tool knob, where there's room for one word.
@@ -53,7 +53,6 @@ export function Sandbox() {
   const [state, dispatch] = useReducer(castleReducer, initialCastle);
   const [washStartedAt, setWashStartedAt] = useState<number | null>(null);
   const [tool, setTool] = useState<CastleTool>("bucket");
-  const [held, setHeld] = useState(false);
   const [rotated, setRotated] = useState(false);
   const [cursor, setCursor] = useState({ x: 0, z: 2 });
   const [busy, setBusy] = useState(false);
@@ -64,17 +63,17 @@ export function Sandbox() {
   const host = useRef<HTMLDivElement>(null);
   const aim = useRef(cursor);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // True for the moment after a tap while the sand lands. Only the next tap
+  // waits; the tools stay live, so they don't dim and blink on every placement.
+  const settling = useRef(false);
   // The castle Build it for me made last, so the next press makes another.
   const lastDesign = useRef<number | null>(null);
   const used = state.pieces.filter((piece) => piece.kind === "flag").length;
-  const available = MAX_FLAGS - used - (held ? 1 : 0);
+  const available = MAX_FLAGS - used;
 
   useEffect(() => {
     if (washStartedAt === null) return;
-    const clear = () => {
-      dispatch({ type: "clear" });
-      setHeld(false);
-    };
+    const clear = () => dispatch({ type: "clear" });
     const finish = () => {
       setWashStartedAt(null);
       setBusy(false);
@@ -130,13 +129,12 @@ export function Sandbox() {
 
   function pickFlag() {
     if (busy) return;
-    if (!held && available <= 0) {
+    if (available <= 0) {
       setNotice("All five flags are planted. Remove one or undo to use it again.");
       return;
     }
-    setHeld(true);
     setTool("flag");
-    setNotice("Flags in hand. Tap the sand or a castle to plant each one.");
+    setNotice(`Tap the sand or a castle to plant a flag. ${available} left.`);
   }
 
   function select(next: CastleTool) {
@@ -153,7 +151,6 @@ export function Sandbox() {
     // Reduced motion and a hidden tab skip the wave rather than leaving controls locked.
     if (!moving) {
       dispatch({ type: "clear" });
-      setHeld(false);
       setNotice("Fresh sand. All five flags are back in the box.");
       return;
     }
@@ -163,28 +160,22 @@ export function Sandbox() {
   }
 
   function place(x = aim.current.x, z = aim.current.z) {
-    if (busy) return;
+    if (busy || settling.current) return;
     aim.current = { x, z };
     setCursor({ x, z });
     setNotice("");
-    if (tool === "flag" && !held && available <= 0) {
-      setNotice("All five flags are planted. Remove one or undo to use it again.");
-      return;
-    }
     const action = { type: "place" as const, tool, x, z, rotated };
     const next = castleReducer(state, action);
     dispatch(action);
     if (next.pieces === state.pieces) return;
-    // One trip to the box is enough: the next flag comes to hand by itself
-    // until all five are planted.
     if (tool === "flag") {
-      const left = MAX_FLAGS - used - 1;
-      setHeld(left > 0);
-      setNotice(left > 0 ? `Flag planted. ${left} left: tap to plant the next one.` : "All five flags are planted.");
+      const left = available - 1;
+      setNotice(left > 0 ? `Flag planted. ${left} left.` : "All five flags are planted.");
     }
-    if (moving && ["tower", "bucket", "wall", "pile", "moat"].includes(tool)) {
-      setBusy(true);
-      timer.current = setTimeout(() => setBusy(false), tool === "moat" ? 2900 : 1450);
+    const wait = settleMs(tool);
+    if (moving && wait) {
+      settling.current = true;
+      timer.current = setTimeout(() => { settling.current = false; }, wait);
     }
   }
 
@@ -209,9 +200,9 @@ export function Sandbox() {
           <h2>Leave a little<br /><em>castle.</em></h2>
           <p>A small patch of coast to make your own. Pick a mold, press the sand, lift the bucket. Five flags. One very good afternoon.</p>
           {/* The how-to lives here; the stage points at it by id. */}
-          <p id="game-help">Build it for me makes one of five castles, a different one each time; Undo brings back your beach. Tap the sand to build. Tap the wooden flag box or choose Pick up flag once, then tap to plant all five. Removing a flag returns it to the box. Dig neighboring spots to join the water channels. Use arrow keys to move the marker, Enter to build, or Delete to remove the top piece.</p>
+          <p id="game-help">Build it for me makes one of five castles, a different one each time; Undo brings back your beach. Tap the sand to build. Choose Flag, then tap the sand or a castle to plant up to five. Removing a flag returns it to the box. Dig neighboring spots to join the water channels. Use arrow keys to move the marker, Enter to build, or Delete to remove the top piece.</p>
           {/* The line that changes as you play, under the how-to. */}
-          <p className="game-status" role="status">{notice || state.message}{busy && washStartedAt === null ? " · Let the sand settle…" : ""}</p>
+          <p className="game-status" role="status">{notice || state.message}</p>
         </div>
         <div className="sandbox-dial">
         <ToolKnob
@@ -219,8 +210,8 @@ export function Sandbox() {
             id,
             label,
             short: SHORT[id],
-            disabled: id === "flag" && available === 0 && !held,
-            note: id === "flag" ? (held ? "IN HAND" : `${available} LEFT`) : undefined,
+            disabled: id === "flag" && available === 0,
+            note: id === "flag" ? `${available} LEFT` : undefined,
           }))}
           value={tool}
           onSelect={select}
@@ -232,10 +223,10 @@ export function Sandbox() {
       {/* Phones: the knob gets too small to read, so the tools stay a button grid. */}
       <div className="game-toolbar" role="group" aria-label="Sandcastle tools">
         {TOOLS.map(([id, label]) => (
-          <button type="button" key={id} aria-pressed={tool === id} disabled={busy || (id === "flag" && available === 0 && !held)} onClick={() => select(id)}>
+          <button type="button" key={id} aria-pressed={tool === id} disabled={busy || (id === "flag" && available === 0)} onClick={() => select(id)}>
             <ToolArt tool={id} />
             {label}
-            {id === "flag" && <small>{held ? "IN HAND" : available + " LEFT"}</small>}
+            {id === "flag" && <small>{available} LEFT</small>}
           </button>
         ))}
       </div>
@@ -291,7 +282,6 @@ export function Sandbox() {
               const design = pickDesign(lastDesign.current);
               lastDesign.current = design;
               dispatch({ type: "build", design });
-              setHeld(false);
               setNotice("");
             }}
           >
@@ -304,7 +294,6 @@ export function Sandbox() {
             disabled={busy || !state.history.length}
             onClick={() => {
               dispatch({ type: "undo" });
-              setHeld(false);
               setNotice("");
             }}
           >

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { castleReducer, moundsAt, MOUND_HEIGHT, onBeach, pieceElevation, PIECE_HEIGHT, type CastleState, type CastleTool } from "./sandcastle-model";
+import { castleReducer, DIG_MS, FILL_MS, MOLD_MS, moundsAt, MOUND_HEIGHT, onBeach, pieceElevation, PIECE_HEIGHT, settleMs, type CastleState, type CastleTool } from "./sandcastle-model";
 
 const empty: CastleState = { pieces: [], history: [], nextId: 1, message: "" };
 const play = (state: CastleState, ...moves: [CastleTool, number, number][]) =>
@@ -69,6 +69,20 @@ describe("stacking still works", () => {
   test("undo restores the sand too", () => {
     const s = play(empty, ["pile", 0, 0], ["pile", 0, 0]);
     expect(moundsAt(castleReducer(s, { type: "undo" }).pieces, 0, 0)).toBe(1);
+  });
+});
+
+describe("pacing", () => {
+  test("the next spot of a moat opens before the shovel and water finish", () => {
+    expect(settleMs("moat")).toBeLessThan(DIG_MS);
+    expect(DIG_MS + FILL_MS).toBeLessThanOrEqual(1000);
+  });
+  test.each(["tower", "bucket", "wall", "pile"] as const)("%s opens the next tap before its mold has lifted away", tool => {
+    expect(settleMs(tool)).toBeLessThan(MOLD_MS);
+    expect(settleMs(tool)).toBeGreaterThan(0);
+  });
+  test.each(["flag", "shell", "erase"] as const)("%s has no animation, so it never waits", tool => {
+    expect(settleMs(tool)).toBe(0);
   });
 });
 
