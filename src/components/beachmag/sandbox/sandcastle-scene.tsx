@@ -2,7 +2,7 @@
 
 import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BufferAttribute, BufferGeometry, Color, DoubleSide, OrthographicCamera, Shape, Vector2, Vector3, type Camera, type Group, type ShaderMaterial, type Texture } from "three";
+import { BufferAttribute, BufferGeometry, Color, DoubleSide, OrthographicCamera, Plane, Raycaster, Shape, Vector2, Vector3, type Camera, type Group, type ShaderMaterial, type Texture } from "three";
 import { FlagBox } from "./flag-box";
 import { ABOVE_WAVE, IncomingWave } from "./incoming-wave";
 import { SandErosion } from "./sand-erosion";
@@ -25,6 +25,8 @@ type Props = {
   onPickFlag: () => void;
   /** Hands up the current "can you build here" test, for the keyboard marker. */
   onReach?: (reachable: (x: number, z: number) => boolean) => void;
+  /** Hands up "which open spot is under this screen point", for the right-click menu. */
+  onPick?: (pick: (clientX: number, clientY: number) => { x: number; z: number } | null) => void;
 };
 const SPACING = 1.05;
 
@@ -347,14 +349,26 @@ function reachableOn(camera: Camera, box: LedgeSpot) {
   };
 }
 
-function Beach({ pieces, tool, cursor, dark, moving, washStartedAt, onPlace, onAim, flagsAvailable, onPickFlag, onReach, box }: Props & { box: LedgeSpot }) {
+function Beach({ pieces, tool, cursor, dark, moving, washStartedAt, onPlace, onAim, flagsAvailable, onPickFlag, onReach, onPick, box }: Props & { box: LedgeSpot }) {
   const marker = useRef<Group>(null);
   const shader = useRef<ShaderMaterial>(null);
   const press = useRef<{ x: number; y: number } | null>(null);
   const clock = useRef(0);
-  const { invalidate, camera } = useThree();
+  const { invalidate, camera, gl } = useThree();
   const reachable = useMemo(() => reachableOn(camera, box), [camera, box]);
   useEffect(() => { onReach?.(reachable); }, [reachable, onReach]);
+  const pick = useMemo(() => {
+    const ray = new Raycaster(), ndc = new Vector2(), sand = new Plane(new Vector3(0, 1, 0), 0), hit = new Vector3();
+    return (clientX: number, clientY: number) => {
+      const rect = gl.domElement.getBoundingClientRect();
+      ndc.set(((clientX - rect.left) / rect.width) * 2 - 1, -((clientY - rect.top) / rect.height) * 2 + 1);
+      ray.setFromCamera(ndc, camera);
+      if (!ray.ray.intersectPlane(sand, hit)) return null;
+      const x = Math.round(hit.x / SPACING), z = Math.round(hit.z / SPACING);
+      return reachable(x, z) ? { x, z } : null;
+    };
+  }, [gl, camera, reachable]);
+  useEffect(() => { onPick?.(pick); }, [pick, onPick]);
   const texture = useMemo(() => makeShellTexture(), []);
   const shells = useMemo(() => makeShellGeometries(), []);
   const terrain = useMemo(() => makeTerrain(), []);
@@ -485,7 +499,10 @@ function Beach({ pieces, tool, cursor, dark, moving, washStartedAt, onPlace, onA
     </group>
     {/* An invisible plane over the beach handles taps consistently through every piece. */}
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, .01, 0]}
-      onPointerDown={event => { press.current = { x: event.clientX, y: event.clientY }; }}
+      onPointerDown={event => {
+        // The right button opens the menu; only the primary button taps.
+        press.current = event.nativeEvent.button === 0 ? { x: event.clientX, y: event.clientY } : null;
+      }}
       onPointerMove={event => {
         const point = spot(event);
         if (valid(point)) onAim(point);

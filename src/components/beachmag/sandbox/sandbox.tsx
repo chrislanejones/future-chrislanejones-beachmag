@@ -9,6 +9,7 @@ import { BeachFigure } from "../beach-figure";
 import { WASH_CLEAR_MS, WASH_END_MS } from "./beach-wash";
 import { castleReducer, initialCastle, MAX_FLAGS, HALF_X, HALF_Z, pickDesign, settleMs, type CastleTool } from "./sandcastle-model";
 import { BucketLoader } from "./bucket-loader";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuLabel, ContextMenuSeparator, ContextMenuShortcut, ContextMenuTrigger } from "@/components/ui/context-menu";
 import "./sandbox.css";
 
 // Three.js stays out of the server render and the first bundle.
@@ -24,6 +25,8 @@ class Boundary extends Component<{ children: ReactNode }, { failed: boolean }> {
     return this.state.failed ? <p className="game-error">The 3D beach couldn’t start. Enable WebGL and reload to play.</p> : this.props.children;
   }
 }
+
+type Spot = { x: number; z: number };
 
 const TOOLS: [CastleTool, string][] = [
   ["tower", "Tower"], ["bucket", "Bucket"], ["wall", "Wall"], ["pile", "Pile sand"],
@@ -159,24 +162,59 @@ export function Sandbox() {
     setWashStartedAt(performance.now());
   }
 
-  function place(x = aim.current.x, z = aim.current.z) {
+  function place(x = aim.current.x, z = aim.current.z, use = tool) {
     if (busy || settling.current) return;
     aim.current = { x, z };
     setCursor({ x, z });
     setNotice("");
-    const action = { type: "place" as const, tool, x, z, rotated };
+    const action = { type: "place" as const, tool: use, x, z, rotated };
     const next = castleReducer(state, action);
     dispatch(action);
     if (next.pieces === state.pieces) return;
-    if (tool === "flag") {
+    if (use === "flag") {
       const left = available - 1;
       setNotice(left > 0 ? `Flag planted. ${left} left.` : "All five flags are planted.");
     }
-    const wait = settleMs(tool);
+    const wait = settleMs(use);
     if (moving && wait) {
       settling.current = true;
       timer.current = setTimeout(() => { settling.current = false; }, wait);
     }
+  }
+
+  function undo() {
+    dispatch({ type: "undo" });
+    setNotice("");
+  }
+
+  // The right-click menu (press and hold on a phone, or Shift+F10 / the menu
+  // key at the marker) acts on one spot. Whichever event opens it notes the
+  // spot first; open sand only, so the water and the flag box get no menu.
+  const pick = useRef<(clientX: number, clientY: number) => Spot | null>(() => null);
+  const onPick = useCallback((next: (clientX: number, clientY: number) => Spot | null) => { pick.current = next; }, []);
+  const pending = useRef<Spot | null>(null);
+  const keyboardMenu = useRef(false);
+  // A press that opened the menu (press and hold) isn't also a tap when it lifts.
+  const menuThisPress = useRef(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuSpot, setMenuSpot] = useState<Spot | null>(null);
+  const [section, setSection] = useState<HTMLElement | null>(null);
+  const here = menuSpot ? state.pieces.filter((piece) => piece.x === menuSpot.x && piece.z === menuSpot.z) : [];
+  function openMenu(open: boolean) {
+    if (!open) return setMenuOpen(false);
+    const spot = pending.current;
+    pending.current = null;
+    if (!spot || busy) return;
+    menuThisPress.current = true;
+    aim.current = spot;
+    setCursor(spot);
+    setMenuSpot(spot);
+    setMenuOpen(true);
+  }
+  function build(next: CastleTool) {
+    if (!menuSpot) return;
+    setTool(next);
+    place(menuSpot.x, menuSpot.z, next);
   }
 
   // The scene says which spots are open sand on screen; the keys stay on them.
@@ -190,7 +228,7 @@ export function Sandbox() {
   }
 
   return (
-    <section id="sandbox" aria-label="Sandcastle sandbox">
+    <section id="sandbox" ref={setSection} aria-label="Sandcastle sandbox">
       {/* Top row: the words (with the status line last), then the tool
           knob, then the surfer from the beach line drawing. The beach is
           the next row. */}
@@ -200,7 +238,7 @@ export function Sandbox() {
           <h2>Leave a little<br /><em>castle.</em></h2>
           <p>A small patch of coast to make your own. Pick a mold, press the sand, lift the bucket. Five flags. One very good afternoon.</p>
           {/* The how-to lives here; the stage points at it by id. */}
-          <p id="game-help">Build it for me makes one of five castles, a different one each time; Undo brings back your beach. Tap the sand to build. Choose Flag, then tap the sand or a castle to plant up to five. Removing a flag returns it to the box. Dig neighboring spots to join the water channels. Use arrow keys to move the marker, Enter to build, or Delete to remove the top piece.</p>
+          <p id="game-help">Build it for me makes one of five castles, a different one each time; Undo brings back your beach. Tap the sand to build. Choose Flag, then tap the sand or a castle to plant up to five. Removing a flag returns it to the box. Right-click the sand, or press and hold on a phone, to build any piece on that spot, turn a wall, or remove the top piece. Dig neighboring spots to join the water channels. Use arrow keys to move the marker, Enter to build, Delete to remove the top piece, or Shift+F10 for the menu.</p>
           {/* The line that changes as you play, under the how-to. */}
           <p className="game-status" role="status">{notice || state.message}</p>
         </div>
@@ -230,6 +268,8 @@ export function Sandbox() {
           </button>
         ))}
       </div>
+      <ContextMenu open={menuOpen} onOpenChange={openMenu} modal={false}>
+      <ContextMenuTrigger asChild>
       <div
         className="game-stage"
         ref={host}
@@ -237,7 +277,23 @@ export function Sandbox() {
         aria-label="Interactive 3D sandcastle beach"
         aria-describedby="game-help"
         tabIndex={0}
+        onContextMenu={(event) => {
+          const keyboard = keyboardMenu.current;
+          keyboardMenu.current = false;
+          pending.current = busy ? null : keyboard ? aim.current : pick.current(event.clientX, event.clientY);
+          // No open sand here: no menu, and no browser menu over the game either.
+          if (!pending.current) event.preventDefault();
+        }}
+        onPointerDown={(event) => {
+          menuThisPress.current = false;
+          // A press and hold opens the menu without a contextmenu event (iOS), so note the spot now.
+          if (event.pointerType !== "mouse") pending.current = busy ? null : pick.current(event.clientX, event.clientY);
+        }}
         onKeyDown={(event) => {
+          if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) {
+            keyboardMenu.current = true;
+            return;
+          }
           const steps: Record<string, [number, number]> = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
           if (steps[event.key]) {
             event.preventDefault();
@@ -263,14 +319,58 @@ export function Sandbox() {
             washStartedAt={washStartedAt}
             flagsAvailable={available}
             onPickFlag={pickFlag}
-            onPlace={place}
+            onPlace={(x, z) => {
+              if (!menuThisPress.current) place(x, z);
+            }}
             onAim={(point) => {
               aim.current = point;
             }}
             onReach={onReach}
+            onPick={onPick}
           />}
         </Boundary>
       </div>
+      </ContextMenuTrigger>
+      <ContextMenuContent
+        container={section}
+        className="sand-menu"
+        aria-label="Sand at this spot"
+        // Lifting a long press can hand focus back to the stage; only a press
+        // outside the menu (or Escape) should close it.
+        onFocusOutside={(event) => event.preventDefault()}
+      >
+        <ContextMenuLabel className="sand-menu-label">Build here</ContextMenuLabel>
+        {TOOLS.filter(([id]) => id !== "erase").map(([id, label]) => (
+          <ContextMenuItem key={id} disabled={id === "flag" && available === 0} onSelect={() => build(id)}>
+            <ToolArt tool={id} />
+            {label}
+            {id === "flag" && <ContextMenuShortcut>{available} left</ContextMenuShortcut>}
+          </ContextMenuItem>
+        ))}
+        <ContextMenuSeparator />
+        <ContextMenuItem
+          disabled={!here.some((piece) => piece.kind === "wall")}
+          onSelect={() => {
+            if (!menuSpot) return;
+            dispatch({ type: "rotate", ...menuSpot });
+            setNotice("");
+          }}
+        >
+          Rotate wall <ContextMenuShortcut>↻</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem
+          disabled={!here.length}
+          onSelect={() => {
+            if (!menuSpot) return;
+            dispatch({ type: "place", tool: "erase", ...menuSpot, rotated });
+            setNotice("");
+          }}
+        >
+          Remove top piece <ContextMenuShortcut>Del</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem disabled={!state.history.length} onSelect={undo}>Undo</ContextMenuItem>
+      </ContextMenuContent>
+      </ContextMenu>
       <div className="game-bottom">
         <span>{used} / 5 flags planted · {state.pieces.length} pieces</span>
         <div>
@@ -292,10 +392,7 @@ export function Sandbox() {
           <button
             type="button"
             disabled={busy || !state.history.length}
-            onClick={() => {
-              dispatch({ type: "undo" });
-              setNotice("");
-            }}
+            onClick={undo}
           >
             Undo
           </button>
