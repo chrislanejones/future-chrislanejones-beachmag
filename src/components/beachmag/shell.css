@@ -190,6 +190,13 @@ body.menu-open #site-nav .life-toggle { visibility: hidden; }
   }
 }
 
+/* The spinning reels and the VU needle get their own layers, so playing
+   music doesn't repaint the whole radio on every frame. */
+#beach-offline .physical-reel,
+#beach-offline .vu-needle {
+  will-change: transform;
+}
+
 /* Start with every lamp off, then light only the source that is playing:
    the lamp over the switch's position, and the deck's TAPE lamp on tape. */
 #beach-offline .mono-radio .power-led {
@@ -2412,13 +2419,15 @@ html.dark #coastal-art .map-wrap .map-night {
 
 /* Phones and tablets: the ramblings on top, the postcards card under them.
    Side by side the ramblings stretched to the photo card's height and the
-   quote floated in empty paper. */
+   quote floated in empty paper. Stacked, the radio's note, "My ramblings."
+   and "Wish you were here." each get clear room (they were 70px and 48px). */
 @media (max-width: 899px) {
   #beach-offline .two {
     grid-template-columns: minmax(0, 560px);
     justify-content: center;
     align-items: start;
-    gap: 48px;
+    margin-top: 96px;
+    gap: 88px;
   }
 }
 

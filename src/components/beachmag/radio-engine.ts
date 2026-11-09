@@ -65,7 +65,10 @@ export function mountRadio(root: HTMLElement): () => void {
 
   function graph() {
     if (context) return;
-    context = new AudioContext();
+    // "playback" asks for a bigger output buffer than the low-latency default,
+    // so a busy moment on a phone doesn't empty it (each empty buffer is a pop).
+    // The knobs answer a few tens of milliseconds later, which nobody hears.
+    context = new AudioContext({ latencyHint: "playback" });
     analyser = context.createAnalyser();
     analyser.fftSize = 256;
     samples = new Uint8Array(analyser.fftSize);
@@ -89,17 +92,33 @@ export function mountRadio(root: HTMLElement): () => void {
     analyser.connect(context.destination);
   }
 
+  // The meter writes its angle on the two needles only: set on the chassis,
+  // it restyled every part of the radio each frame (183ms a second on a
+  // throttled phone). About 15 readings a second, eased by the needles' own
+  // transition, and none while the radio is scrolled out of view.
+  const needles = [...root.querySelectorAll<HTMLElement | SVGElement>(".vu-needle, .meter-pointer")];
+  const setVu = (angle: string) => needles.forEach((needle) => needle.style.setProperty("--vu", angle));
+  let onScreen = true;
+  let lastReading = 0;
+  const watch = new IntersectionObserver(([entry]) => {
+    onScreen = entry.isIntersecting;
+    if (onScreen) meter();
+  });
+  watch.observe(chassis);
   function meter() {
     cancelAnimationFrame(meterFrame);
     if (audio.paused) {
-      chassis.style.setProperty("--vu", "-40deg");
+      setVu("-40deg");
       return;
     }
-    if (analyser && samples) {
+    if (!onScreen) return;
+    const now = performance.now();
+    if (analyser && samples && now - lastReading >= 66) {
+      lastReading = now;
       analyser.getByteTimeDomainData(samples);
       let sum = 0;
       for (const sample of samples) sum += ((sample - 128) / 128) ** 2;
-      chassis.style.setProperty("--vu", -40 + Math.min(1, Math.sqrt(sum / samples.length) * 5) * 80 + "deg");
+      setVu(-40 + Math.min(1, Math.sqrt(sum / samples.length) * 5) * 80 + "deg");
     }
     meterFrame = requestAnimationFrame(meter);
   }
@@ -363,6 +382,7 @@ export function mountRadio(root: HTMLElement): () => void {
 
   return () => {
     abort.abort();
+    watch.disconnect();
     cancelAnimationFrame(meterFrame);
     audio.pause();
     if (objectUrl) URL.revokeObjectURL(objectUrl);
