@@ -378,3 +378,13 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
   there by hand and would be wiped by a rebuild. The new Cal.com rules live in `shell.css`.
   Once Cal.com has proven itself, drop the Google fallback in `src/app/lets-meet/page.tsx`
   and move or delete those rules.
+
+## Homepage and /events hydration mismatch after 7–8 PM Eastern (found 11-10-2026)
+
+React error #418 on `/` and `/events` (not on event pages). `upcomingEvents(new Date())`
+in `journal-hero.tsx` and `events-calendar.tsx` runs on the server (UTC) and again in the
+browser (Eastern). Once UTC has rolled to the next day, the server drops tonight's event
+and the browser keeps it, so the text differs and React re-renders on the client. Visitors
+see the right list; it costs a client re-render and a console error. Fix: compute "today"
+in America/New_York on both sides (the event times are Eastern wall-clock already), or
+render the upcoming list after mount. Since 6993ef1 (10-22-2026).
