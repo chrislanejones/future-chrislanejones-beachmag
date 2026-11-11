@@ -11,7 +11,8 @@ import {
   Layout,
   AlertTriangle,
 } from "lucide-react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSiteMutation } from "@/app/admin/hooks/useSiteMutation";
 import { api } from "../../../../convex/_generated/api";
 import { Doc } from "../../../../convex/_generated/dataModel";
 import { MediaDrawer } from "../components/MediaDrawer";
@@ -43,11 +44,11 @@ export const SeoTabEnhanced = () => {
   const seoEntries = useQuery(api.seo.getAllSEO);
   const pageHeaders = useQuery(api.pageHeaders.getAllPageHeaders);
   const stalePaths = useQuery(api.seo.getStaleSEOPaths) ?? [];
-  const updateSEO = useMutation(api.seo.updateSEO);
-  const updatePageHeader = useMutation(api.pageHeaders.updatePageHeader);
-  const deleteSEO = useMutation(api.seo.deleteSEO);
-  const deletePageHeader = useMutation(api.pageHeaders.deletePageHeader);
-  const cleanupStale = useMutation(api.seo.cleanupStaleSEOPublic);
+  const updateSEO = useSiteMutation(api.seo.updateSEO);
+  const updatePageHeader = useSiteMutation(api.pageHeaders.updatePageHeader);
+  const deleteSEO = useSiteMutation(api.seo.deleteSEO);
+  const deletePageHeader = useSiteMutation(api.pageHeaders.deletePageHeader);
+  const cleanupStale = useSiteMutation(api.seo.cleanupStaleSEOPublic);
 
   const [selectedPage, setSelectedPage] = useState<PageEntry | null>(null);
   const [searchQuery, setSearchQuery] = useState("");

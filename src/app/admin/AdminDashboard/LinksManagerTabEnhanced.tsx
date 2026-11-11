@@ -9,7 +9,8 @@ import {
   GripVertical,
   ExternalLink,
 } from "lucide-react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSiteMutation } from "@/app/admin/hooks/useSiteMutation";
 import { api } from "../../../../convex/_generated/api";
 import { Id, Doc } from "../../../../convex/_generated/dataModel";
 import { ErrorDisplay } from "../components/ErrorDisplay";
@@ -33,10 +34,10 @@ const LinksManagerTabEnhanced = () => {
   const categories = (useQuery(api.browserLinks.getCategories) ??
     []) as Category[];
 
-  const createLink = useMutation(api.browserLinks.create);
-  const updateLink = useMutation(api.browserLinks.update);
-  const deleteLink = useMutation(api.browserLinks.deleteLink);
-  const deleteCategory = useMutation(api.browserLinks.deleteCategory);
+  const createLink = useSiteMutation(api.browserLinks.create);
+  const updateLink = useSiteMutation(api.browserLinks.update);
+  const deleteLink = useSiteMutation(api.browserLinks.deleteLink);
+  const deleteCategory = useSiteMutation(api.browserLinks.deleteCategory);
 
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [showModal, setShowModal] = useState(false);

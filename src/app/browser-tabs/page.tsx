@@ -5,7 +5,7 @@ import { BeachmagShell } from "@/components/beachmag/shell";
 import { BrowserTabsArchive } from "@/components/beachmag/browser-tabs-archive";
 import "@/components/beachmag/browser-tabs.css";
 
-export const revalidate = 60;
+export const revalidate = 86400; // once a day; admin saves refresh it at once (api/revalidate)
 
 export async function generateMetadata() {
   return await getPageSEO("/browser-tabs");

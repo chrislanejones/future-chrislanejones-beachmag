@@ -10,7 +10,8 @@ import {
   Image as ImageIcon,
   ExternalLink,
 } from "lucide-react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSiteMutation } from "@/app/admin/hooks/useSiteMutation";
 import { api } from "../../../../convex/_generated/api";
 import type { Id, Doc } from "../../../../convex/_generated/dataModel";
 import { MediaDrawer } from "../components/MediaDrawer";
@@ -32,10 +33,10 @@ const ClientsTabEnhanced = () => {
   const rawClients = useQuery(api.clients.getAll);
   const clientList: Client[] = (rawClients ?? []) as Client[];
 
-  const createClient = useMutation(api.clients.create);
-  const updateClient = useMutation(api.clients.update);
-  const deleteClientMutation = useMutation(api.clients.deleteClient);
-  const reorderClients = useMutation(api.clients.reorder);
+  const createClient = useSiteMutation(api.clients.create);
+  const updateClient = useSiteMutation(api.clients.update);
+  const deleteClientMutation = useSiteMutation(api.clients.deleteClient);
+  const reorderClients = useSiteMutation(api.clients.reorder);
 
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [isCreating, setIsCreating] = useState(false);

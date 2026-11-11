@@ -8,7 +8,7 @@ import { getPageSEO } from "@/lib/seo";
 
 const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
-export const revalidate = 60;
+export const revalidate = 86400; // once a day; admin saves refresh it at once (api/revalidate)
 
 export async function generateMetadata() {
   return await getPageSEO("/blog");

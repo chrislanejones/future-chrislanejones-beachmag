@@ -3,7 +3,7 @@ import styles from "@/components/coastal/interior.module.css";
 import LinkGrid from "./LinkGrid";
 import { getPageSEO } from "@/lib/seo";
 
-export const revalidate = 60;
+export const revalidate = 86400; // once a day; admin saves refresh it at once (api/revalidate)
 
 export async function generateMetadata() {
   const metadata = await getPageSEO("/link-page");

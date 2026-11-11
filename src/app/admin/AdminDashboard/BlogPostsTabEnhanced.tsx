@@ -15,7 +15,8 @@ import {
   Image as ImageIcon,
   Calendar as CalendarIcon,
 } from "lucide-react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSiteMutation } from "@/app/admin/hooks/useSiteMutation";
 import { api } from "../../../../convex/_generated/api";
 import type { Id, Doc } from "../../../../convex/_generated/dataModel";
 import { HtmlEditorEnhanced } from "../components/HtmlEditorEnhanced";
@@ -44,9 +45,9 @@ const nowMs = () => Date.now();
 
 const BlogPostsTabEnhanced = () => {
   const posts = useQuery(api.blogPosts.getAllPostsAdmin) ?? [];
-  const createPost = useMutation(api.blogPosts.createPost);
-  const updatePost = useMutation(api.blogPosts.updatePost);
-  const deletePost = useMutation(api.blogPosts.deletePost);
+  const createPost = useSiteMutation(api.blogPosts.createPost);
+  const updatePost = useSiteMutation(api.blogPosts.updatePost);
+  const deletePost = useSiteMutation(api.blogPosts.deletePost);
 
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -70,7 +71,7 @@ const BlogPostsTabEnhanced = () => {
     published: false,
     createdAt: Date.now(),
   }));
-  const createMedia = useMutation(api.media.create);
+  const createMedia = useSiteMutation(api.media.create);
   const [audioBusy, setAudioBusy] = useState(false);
   const { startUpload: startAudioUpload } = useUploadThing("audioUploader");
 

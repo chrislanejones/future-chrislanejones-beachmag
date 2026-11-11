@@ -8,7 +8,7 @@ import ConferenceDetailPage from "./ConferenceDetailPage";
 import { SITE_URL } from "@/lib/structured-data";
 
 type Params = Promise<{ year: string; slug: string }>;
-export const revalidate = 60;
+export const revalidate = 86400; // once a day; admin saves refresh it at once (api/revalidate)
 export async function generateStaticParams() {
   return (await getConferences()).map((conf) => ({ year: String(conf.year), slug: conf.slug }));
 }

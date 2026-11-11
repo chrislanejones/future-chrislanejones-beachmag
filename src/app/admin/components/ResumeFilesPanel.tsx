@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSiteMutation } from "@/app/admin/hooks/useSiteMutation";
 import { useUploadThing } from "@/utils/uploadthing";
 import { Download, FileText, Upload } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
@@ -27,7 +28,7 @@ const day = (ms: number) =>
 // file then shows under Documents in the Media Manager.
 export function ResumeFilesPanel() {
   const status = useQuery(api.resume.getAdminStatus);
-  const publish = useMutation(api.resume.publishUpload);
+  const publish = useSiteMutation(api.resume.publishUpload);
   const { startUpload } = useUploadThing("documentUploader");
   const [busy, setBusy] = useState<Kind | null>(null);
   const [message, setMessage] = useState<{ tone: "ok" | "error"; text: string } | null>(null);

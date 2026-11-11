@@ -9,7 +9,7 @@ import { HOME_EVENTS, eventHref } from '@/components/beachmag/events'
 const BASE_URL = SITE_URL
 const CONVEX_SITE_URL = process.env.NEXT_PUBLIC_CONVEX_SITE_URL
 
-export const revalidate = 60
+export const revalidate = 86400 // once a day; admin saves refresh it at once (api/revalidate)
 
 const staticPages = [
   '/',

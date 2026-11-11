@@ -10,7 +10,7 @@ import ProjectDetailPage from "./ProjectDetailPage";
 
 type Params = Promise<{ slug: string }>;
 
-export const revalidate = 60;
+export const revalidate = 86400; // once a day; admin saves refresh it at once (api/revalidate)
 
 // Prerender every known project; new ones render on demand and then cache.
 export async function generateStaticParams() {

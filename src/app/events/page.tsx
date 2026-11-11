@@ -4,7 +4,7 @@ import { EventsCalendar } from "@/components/beachmag/events-calendar";
 import { getPageSEO } from "@/lib/seo";
 
 // Like the other pages: SEO edits in the admin show up within a minute.
-export const revalidate = 60;
+export const revalidate = 86400; // once a day; admin saves refresh it at once (api/revalidate)
 
 export async function generateMetadata() {
   return await getPageSEO("/events");

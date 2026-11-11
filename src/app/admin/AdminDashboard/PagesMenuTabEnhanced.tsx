@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSiteMutation } from "@/app/admin/hooks/useSiteMutation";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { GripVertical, Trash2, Plus, ExternalLink } from "lucide-react";
@@ -412,12 +413,12 @@ const PagesMenuTabEnhanced = () => {
   const headerItems = useQuery(api.navigation.getHeaderNavItems) as HeaderNavItem[] | undefined;
   const footerSections = useQuery(api.navigation.getFooterNavSections) as FooterNavSection[] | undefined;
 
-  const addHeaderNavItem = useMutation(api.navigation.addHeaderNavItem);
-  const deleteHeaderNavItem = useMutation(api.navigation.deleteHeaderNavItem);
-  const addFooterNavSection = useMutation(api.navigation.addFooterNavSection);
-  const deleteFooterNavSection = useMutation(api.navigation.deleteFooterNavSection);
-  const addFooterNavLink = useMutation(api.navigation.addFooterNavLink);
-  const deleteFooterNavLink = useMutation(api.navigation.deleteFooterNavLink);
+  const addHeaderNavItem = useSiteMutation(api.navigation.addHeaderNavItem);
+  const deleteHeaderNavItem = useSiteMutation(api.navigation.deleteHeaderNavItem);
+  const addFooterNavSection = useSiteMutation(api.navigation.addFooterNavSection);
+  const deleteFooterNavSection = useSiteMutation(api.navigation.deleteFooterNavSection);
+  const addFooterNavLink = useSiteMutation(api.navigation.addFooterNavLink);
+  const deleteFooterNavLink = useSiteMutation(api.navigation.deleteFooterNavLink);
 
   // External links palette (session-scoped; drag to nav to persist)
   const [externalLinks, setExternalLinks] = useState<ExternalLinkItem[]>([]);

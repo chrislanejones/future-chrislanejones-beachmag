@@ -3,7 +3,7 @@ import { PageHero } from "@/components/beachmag/interior-parts";
 import ContactForm from "./ContactForm";
 import { getPageSEO } from "@/lib/seo";
 
-export const revalidate = 60;
+export const revalidate = 86400; // once a day; admin saves refresh it at once (api/revalidate)
 
 export async function generateMetadata() {
   return await getPageSEO("/contact");
