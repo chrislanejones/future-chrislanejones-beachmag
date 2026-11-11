@@ -2742,3 +2742,15 @@ html.dark #coastal-art .map-wrap .map-night {
   max-width: 60ch;
   margin-top: 14px;
 }
+
+/* A recurring meetup's name ("AI Connect Jax") sits as a small label over
+   that month's episode title, in the homepage list and on /events. */
+#coastal-art .event .event-series {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--orange);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}

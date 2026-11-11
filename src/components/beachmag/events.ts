@@ -6,7 +6,10 @@ export type HomeEvent = {
   slug: string;
   start: string;
   end?: string;
+  /** This event's own title. For a recurring meetup it's that month's episode. */
   name: string;
+  /** The recurring meetup it belongs to, like "AI Connect Jax". Shown as a small label above `name`. */
+  series?: string;
   place: string;
   venue?: string;
   description: string;
@@ -44,7 +47,8 @@ export const HOME_EVENTS: HomeEvent[] = [
     slug: "ai-connect-inpatient-critical-care-2026-10-20",
     start: "2026-10-20T17:30",
     end: "2026-10-20T19:00",
-    name: "AI Connect Jax: Intelligent Tech in Inpatient & Critical Care",
+    series: "AI Connect Jax",
+    name: "Intelligent Tech in Inpatient & Critical Care",
     place: "Legacy Ale Works · Jacksonville, FL · 5:30–7 PM ET",
     venue: "Legacy Ale Works, 14965 Old St Augustine Rd Ste 129-130, Jacksonville, FL 32258",
     description: "Spent Tuesday evening at AI Connect Jax listening to Dr. Dileep Raman, co-founder of Cloudphysician, discuss how AI, computer vision, and ambient intelligence are being used in inpatient and critical care.",
@@ -118,7 +122,8 @@ export const HOME_EVENTS: HomeEvent[] = [
     slug: "jaxjug-ai-agents-tools-mcp-2026-11-02",
     start: "2026-11-02T18:00",
     end: "2026-11-02T19:30",
-    name: "JaxJUG: Next-level AI Concepts for Devs: Agents, Tools, and MCP",
+    series: "JaxJUG",
+    name: "Next-level AI Concepts for Devs: Agents, Tools, and MCP",
     place: "Interactive Resources · Jacksonville, FL · 6–7:30 PM ET · Hybrid",
     venue: "Interactive Resources LLC, 4901 Belfort Rd #130, Jacksonville, FL 32256",
     description: "Jennifer Reif, a Developer Advocate at Neo4j, covers AI agents, tool integrations, and MCP with code and demos at the Jacksonville Java User Group.",
@@ -131,8 +136,9 @@ export const HOME_EVENTS: HomeEvent[] = [
     slug: "ai-connect-signals-closed-loops-2026-11-10",
     start: "2026-11-10T17:30",
     end: "2026-11-10T19:00",
+    series: "AI Connect Jax",
     name: "From Signals to Closed Loops: Building an AI Agent That Actually Fixes Your Data",
-    place: "AI Connect Jax · Legacy Ale Works · Jacksonville, FL · 5:30–7 PM ET",
+    place: "Legacy Ale Works · Jacksonville, FL · 5:30–7 PM ET",
     venue: "Legacy Ale Works, 14965 Old St. Augustine Rd., Ste 129, Jacksonville, FL 32258",
     description: "Daniel Fox, Technical Principal at Snowflake, gives a live demo: take a built-in Snowflake measurement and reporting feature, put an AI agent on top, and go from alerts that just sit there to a system that understands the problem, decides what to do and fixes it. AI Connect meets a week early in November.",
     organizer: "Jennifer Robertson of The King Tide Foundation",
@@ -153,6 +159,9 @@ export const HOME_EVENTS: HomeEvent[] = [
 const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
 export const eventHref = (event: Pick<HomeEvent, "slug">) => `/events/${event.slug}`;
+/** The full title for tabs, search and screen readers: "Series: Episode". */
+export const eventTitle = (event: Pick<HomeEvent, "name" | "series">) =>
+  event.series ? `${event.series}: ${event.name}` : event.name;
 export const findEvent = (slug: string) => HOME_EVENTS.find((event) => event.slug === slug);
 
 export function calendarEvents() {

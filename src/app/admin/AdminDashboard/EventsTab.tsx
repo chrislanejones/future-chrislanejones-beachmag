@@ -71,6 +71,7 @@ function EventPhotoEditor({ event }: { event: HomeEvent }) {
   return <section aria-label="Event details" className="min-w-0 lg:col-span-2 bg-(--color-panel) border border-(--color-border) rounded-2xl overflow-hidden flex flex-col">
     <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 bg-(--color-muted-accent) shrink-0">
       <div className="min-w-0 flex-1">
+        {event.series && <p className="text-xs font-semibold uppercase tracking-wide text-accent">{event.series}</p>}
         <h2 className="font-bold text-ink" title={event.name}>{event.name}</h2>
         <p className="mt-1 text-sm text-muted flex items-start gap-1"><MapPin className="w-3 h-3 mt-1 shrink-0" />{event.venue ?? "Location to be announced"}</p>
         <p className="mt-1 text-xs text-muted">{eventDate(event)}</p>
@@ -163,7 +164,7 @@ export default function EventsTab() {
         {!visibleEvents.length && <p role="status" className="p-3 text-sm text-muted">No events in {quarterLabel(selectedQuarter)}.</p>}
         {visibleEvents.map((item) => <button type="button" key={item.slug} onClick={() => setSlug(item.slug)} aria-pressed={event?.slug === item.slug} className={`w-full text-left flex items-center gap-2 p-2.5 rounded-lg transition-all border border-transparent focus-ring ${event?.slug === item.slug ? "bg-(--color-foreground) text-(--color-panel)" : "bg-(--color-muted-accent) hover:bg-(--color-surface-hover) text-(--color-ink)"}`}>
           <span className="w-8 h-8 shrink-0 rounded bg-(--color-border) flex items-center justify-center text-(--color-ink)"><Calendar className="w-4 h-4 opacity-50" /></span>
-          <span className="min-w-0 flex-1"><span className="block text-sm font-medium truncate" title={item.name}>{item.name}</span><span className={`block text-xs truncate ${event?.slug === item.slug ? "" : "text-muted"}`}>{eventDate(item)}</span></span>
+          <span className="min-w-0 flex-1">{item.series && <span className={`block text-[11px] font-semibold uppercase tracking-wide truncate ${event?.slug === item.slug ? "" : "text-accent"}`}>{item.series}</span>}<span className="block text-sm font-medium truncate" title={item.name}>{item.name}</span><span className={`block text-xs truncate ${event?.slug === item.slug ? "" : "text-muted"}`}>{eventDate(item)}</span></span>
         </button>)}
       </div>
     </section>

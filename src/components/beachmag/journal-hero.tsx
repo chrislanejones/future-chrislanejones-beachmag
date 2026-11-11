@@ -11,7 +11,7 @@ import { BeachFigure } from "./beach-figure";
 import { EditionButtons } from "./edition-buttons";
 import { Ribbon } from "./ribbon";
 import { SeeAll } from "./see-all";
-import { eventHref, upcomingEvents } from "./events";
+import { eventHref, eventTitle, upcomingEvents } from "./events";
 
 type Entry = { title: string; excerpt: string; href: string; date?: number };
 
@@ -104,8 +104,9 @@ export function JournalHero() {
               <div className={event.secret ? "event is-secret" : "event"} key={event.start + event.name}>
                 <time dateTime={event.start}>{event.month}<b>{event.day}</b></time>
                 <div>
+                  {event.series && <span className="event-series">{event.series}</span>}
                   <strong>
-                    <Link href={eventHref(event)}>{event.name}</Link>
+                    <Link href={eventHref(event)} aria-label={eventTitle(event)}>{event.name}</Link>
                   </strong>
                   <small>{event.place}</small>
                 </div>

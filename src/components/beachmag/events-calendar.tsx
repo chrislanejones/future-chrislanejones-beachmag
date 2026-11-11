@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { EditionButtons } from "./edition-buttons";
-import { calendarEvents, eventHref, localDay, pastEvents, upcomingEvents } from "./events";
+import { calendarEvents, eventHref, eventTitle, localDay, pastEvents, upcomingEvents } from "./events";
 
 const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const WEEKDAYS = [
@@ -55,7 +55,7 @@ function Month({ year, month, today, events }: { year: number; month: number; to
                 <td key={column} className={classes || undefined}>
                   <time dateTime={date}>{day}</time>
                   {onDay.map((event) => (
-                    <Link key={event.slug} href={eventHref(event)} aria-label={event.name} title={event.name}>{event.name}</Link>
+                    <Link key={event.slug} href={eventHref(event)} aria-label={eventTitle(event)} title={eventTitle(event)}>{event.name}</Link>
                   ))}
                 </td>
               );
@@ -88,7 +88,7 @@ function MiniMonth({ year, month, selected, today, events, onSelect }: {
           const onDay = day ? monthEvents.filter((event) => event.start.startsWith(date)) : [];
           return <span key={index} data-date={date || undefined}
             className={["calendar-mini-day", !day && "is-blank", day && onDay.length && "has-event", date === today && "is-today"].filter(Boolean).join(" ")}
-            title={day ? `${MONTH_NAMES[month]} ${day}${onDay.length ? `: ${onDay.map((event) => event.name).join("; ")}` : ""}` : undefined}>{day}</span>;
+            title={day ? `${MONTH_NAMES[month]} ${day}${onDay.length ? `: ${onDay.map(eventTitle).join("; ")}` : ""}` : undefined}>{day}</span>;
         })}
       </span>
     </div>
@@ -100,7 +100,8 @@ function EventList({ events }: { events: Upcoming[] }) {
     <div className={event.secret ? "event is-secret" : "event"} key={event.slug}>
       <time dateTime={event.start}>{event.month}<b>{event.day}</b></time>
       <div>
-        <strong><Link href={eventHref(event)}>{event.name}</Link></strong>
+        {event.series && <span className="event-series">{event.series}</span>}
+        <strong><Link href={eventHref(event)} aria-label={eventTitle(event)}>{event.name}</Link></strong>
         <small>{event.place}</small>
       </div>
     </div>

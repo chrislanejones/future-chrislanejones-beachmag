@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { HOME_EVENTS, calendarEvents, eventHref, findEvent, pastEvents, upcomingEvents } from "./events";
+import { HOME_EVENTS, calendarEvents, eventHref, eventTitle, findEvent, pastEvents, upcomingEvents } from "./events";
 
 test("homepage has only the three nearest upcoming events while the archive keeps attended events", () => {
   const today = new Date(2026, 9, 26, 12);
@@ -22,4 +22,14 @@ test("past events drop from upcoming without disappearing from the calendar", ()
   expect(upcomingEvents(later)).toHaveLength(0);
   expect(pastEvents(later)).toHaveLength(HOME_EVENTS.length);
   expect(calendarEvents().some((event) => event.start.startsWith("2026-10-19"))).toBe(true);
+});
+
+test("a recurring meetup keeps its series apart from the month's episode title", () => {
+  const tonight = findEvent("ai-connect-signals-closed-loops-2026-11-10")!;
+  expect(tonight.series).toBe("AI Connect Jax");
+  expect(tonight.name).toBe("From Signals to Closed Loops: Building an AI Agent That Actually Fixes Your Data");
+  expect(eventTitle(tonight)).toBe("AI Connect Jax: From Signals to Closed Loops: Building an AI Agent That Actually Fixes Your Data");
+  // The series is only the label: no event repeats it inside its own title.
+  for (const event of HOME_EVENTS) if (event.series) expect(event.name.startsWith(event.series)).toBe(false);
+  expect(eventTitle({ name: "Saint Augustine Cowork and Coffee" })).toBe("Saint Augustine Cowork and Coffee");
 });

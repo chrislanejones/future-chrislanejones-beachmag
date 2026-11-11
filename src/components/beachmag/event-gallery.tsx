@@ -10,6 +10,7 @@ import GalleryDrawer from "./gallery-drawer";
 type EventHeroProps = {
   slug: string;
   name: string;
+  series?: string;
   description: string;
   initialPhotos: Doc<"eventPhotos">[];
 };
@@ -25,14 +26,15 @@ function LiveEventHero(props: EventHeroProps) {
   return <EventHeroContent {...props} photos={photos ?? props.initialPhotos} />;
 }
 
-function EventHeroContent({ name, description, photos }: Pick<EventHeroProps, "name" | "description"> & { photos: Doc<"eventPhotos">[] }) {
+function EventHeroContent({ name, series, description, photos }: Pick<EventHeroProps, "name" | "series" | "description"> & { photos: Doc<"eventPhotos">[] }) {
   // Gallery order is shared with the admin: the first photo is the main photo.
   const main = photos[0];
   const gallery = photos.slice(0, 5).map((photo) => ({ src: photo.url, alt: photo.alt,
     description: [photo.caption || photo.alt, photo.stock ? "Stock image" : "", photo.credit].filter(Boolean).join(" · ") }));
   return <header className={`event-detail-heading${main ? " has-photo" : ""}`}>
     <div>
-      <p className="label">ON THE CALENDAR</p>
+      {/* A recurring meetup names itself here; the title is that month's episode. */}
+      <p className="label">{series ? series.toUpperCase() : "ON THE CALENDAR"}</p>
       <h1>{name}</h1>
       <p className="event-detail-intro">{description}</p>
     </div>
@@ -45,7 +47,7 @@ function EventHeroContent({ name, description, photos }: Pick<EventHeroProps, "n
           {(main.stock || main.credit) && <small>{[main.stock ? "Stock image" : "", main.credit].filter(Boolean).join(" · ")}</small>}
         </figcaption>}
       </figure>
-      {photos.length > 1 && <GalleryDrawer photos={gallery} title={name} description="Photos from this event.">
+      {photos.length > 1 && <GalleryDrawer photos={gallery} title={series ? `${series}: ${name}` : name} description="Photos from this event.">
         <button type="button" className="event-gallery-open">Open gallery <span aria-hidden="true">↗</span></button>
       </GalleryDrawer>}
     </div>}

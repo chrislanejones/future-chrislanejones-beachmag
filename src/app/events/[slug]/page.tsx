@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { CalendarDays, MapPin } from "lucide-react";
 import { BeachmagShell } from "@/components/beachmag/shell";
 import { CoastalArt } from "@/components/beachmag/coastal-art";
-import { HOME_EVENTS, findEvent, eventHref } from "@/components/beachmag/events";
+import { HOME_EVENTS, findEvent, eventHref, eventTitle } from "@/components/beachmag/events";
 import { EventHero } from "@/components/beachmag/event-gallery";
 import { EditionButtons } from "@/components/beachmag/edition-buttons";
 import { ConvexHttpClient } from "convex/browser";
@@ -27,15 +27,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = metaDescription(event.description);
   // The event's first gallery photo is its social card.
   const photo = (await eventPhotos(event.slug))[0];
-  const images = [{ url: photo?.url ?? DEFAULT_OG_IMAGE, alt: photo?.alt ?? event.name }];
+  const images = [{ url: photo?.url ?? DEFAULT_OG_IMAGE, alt: photo?.alt ?? eventTitle(event) }];
   return {
-    title: event.name,
+    title: eventTitle(event),
     description,
     alternates: { canonical: url },
     // Unannounced events stay out of search until they have details.
     robots: event.secret ? { index: false, follow: true } : undefined,
-    openGraph: { title: event.name, description, url, type: "website", images },
-    twitter: { card: "summary_large_image", title: event.name, description, images },
+    openGraph: { title: eventTitle(event), description, url, type: "website", images },
+    twitter: { card: "summary_large_image", title: eventTitle(event), description, images },
   };
 }
 
@@ -62,7 +62,7 @@ export default async function EventPage({ params }: Props) {
   const mapsUrl = event.venue ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.venue)}` : undefined;
   const schema = event.secret ? null : {
     "@context": "https://schema.org", "@type": "Event",
-    name: event.name, description: event.description,
+    name: eventTitle(event), description: event.description,
     startDate: easternIso(event.start), endDate: event.end ? easternIso(event.end) : undefined,
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
@@ -76,7 +76,7 @@ export default async function EventPage({ params }: Props) {
     {schema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />}
     <article className="event-detail">
       <div className="top"><nav aria-label="Breadcrumb"><Link href="/events">← ALL EVENTS</Link><span> / NORTHEAST FLORIDA / FIELD NOTES</span></nav><EditionButtons /></div>
-      <EventHero slug={event.slug} name={event.name} description={event.description} initialPhotos={photos} />
+      <EventHero slug={event.slug} name={event.name} series={event.series} description={event.description} initialPhotos={photos} />
       <section className="event-ticket" aria-label="Date and location">
         <time className="event-ticket-stamp" dateTime={event.start}><span>{new Date(`${event.start}Z`).toLocaleDateString("en-US", { month: "short", timeZone: "UTC" })}</span><b>{event.start.slice(8, 10)}</b><span>{event.start.slice(0, 4)}</span></time>
         <div className="event-ticket-when"><p className="label"><CalendarDays size={16} aria-hidden="true" /> WHEN</p><h2>{dateLabel(event.start)}</h2><p>{timeLabel(event.start)}{event.end ? ` – ${timeLabel(event.end)}` : ""} Eastern</p></div>
