@@ -31,6 +31,11 @@ body .site-shell:has(> [data-beachmag]) {
 }
 
 body.menu-open #site-nav .life-toggle { visibility: hidden; }
+/* Closing: the circle shrinks back into the preserver, so the preserver is
+   already its plain self (no X turning back into lines) and the menu's own
+   close button goes at once instead of riding the circle down. */
+body.menu-closing #site-nav .life-toggle span { transition: none; }
+body:not(.menu-open) #site-takeover .menu-close { visibility: hidden; }
 #site-takeover .menu-close {
   position: absolute;
   top: 16px;
@@ -1419,6 +1424,34 @@ html.dark .gallery-drawer {
   background: var(--nav-ink);
   color: var(--nav-paper);
 }
+/* The menu signs off with Let's meet, dressed like the footer's buttons. */
+#site-takeover .menu-meet {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  margin-top: 22px;
+  padding: 12px 16px;
+  min-height: 48px;
+  border: 1px solid;
+  color: inherit;
+  font: 700 12px var(--font-dm-sans), sans-serif;
+  letter-spacing: .06em;
+  text-decoration: none;
+  transform: rotate(-3deg);
+  transition: transform 200ms;
+}
+#site-takeover .menu-meet span {
+  font-size: 27px;
+}
+#site-takeover .menu-meet:hover {
+  transform: rotate(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  #site-takeover .menu-meet {
+    transition: none;
+  }
+}
 
 /* The logo strip inside inner pages (About's conference trail) borrows the
    sheet's palette under the names the strip uses. */
@@ -2254,19 +2287,11 @@ section#sandbox .sandbox-heading {
   }
 }
 
-/* The life preserver opens the menu on phones only. From 641px the header
-   shows every link, so the button gives way to a plain ring: the same
-   striped preserver, no menu lines, not focusable, not a control. */
-#site-nav .life-badge {
-  display: none;
-}
+/* The life preserver is a phone thing: from 641px the header shows every
+   link, so there's no ring at all. */
 @media (min-width: 641px) {
-  #site-nav .life-toggle:not(.life-badge) {
+  #site-nav .life-toggle {
     display: none;
-  }
-  #site-nav .life-badge {
-    display: grid;
-    cursor: default;
   }
 }
 
