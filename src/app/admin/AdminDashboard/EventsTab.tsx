@@ -7,7 +7,7 @@ import { ArrowDown, ArrowUp, Calendar, Edit2, ExternalLink, Image as ImageIcon, 
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import type { Doc } from "../../../../convex/_generated/dataModel";
-import { HOME_EVENTS, eventHref, type HomeEvent } from "@/components/beachmag/events";
+import { HOME_EVENTS, applyTitles, eventHref, eventTitle, findEvent, type HomeEvent } from "@/components/beachmag/events";
 import { MediaDrawer } from "../components/MediaDrawer";
 import { ErrorDisplay } from "../components/ErrorDisplay";
 import { SuccessDisplay } from "../components/SuccessDisplay";
@@ -26,7 +26,60 @@ const eventDate = (event: HomeEvent) => new Date(`${event.start}Z`).toLocaleDate
   month: "short", day: "numeric", year: "numeric", timeZone: "UTC",
 });
 
-function EventPhotoEditor({ event }: { event: HomeEvent }) {
+// Titles: the code holds each event's defaults; saving here overrides them on
+// the live site. "Has its own title each time" is for a recurring meetup like
+// AI Connect Jax, where every month's talk has a name. Off: one title only.
+function EventTitleEditor({ event, saved }: { event: HomeEvent; saved: Doc<"eventTitles"> | null | undefined }) {
+  const save = useMutation(api.eventTitles.save);
+  const reset = useMutation(api.eventTitles.reset);
+  const [recurring, setRecurring] = useState(!!event.series);
+  const [series, setSeries] = useState(event.series ?? "");
+  const [name, setName] = useState(event.name);
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState<Error | null>(null);
+  const nextSeries = recurring ? series.trim() : "";
+  const dirty = nextSeries !== (event.series ?? "") || name.trim() !== event.name;
+
+  async function run(action: () => Promise<unknown>, success: string) {
+    setBusy(true); setMessage(""); setError(null);
+    try { await action(); setMessage(success); }
+    catch (err) { setError(err instanceof Error ? err : new Error("Could not save. Please try again.")); }
+    finally { setBusy(false); }
+  }
+
+  return <section aria-label="Event titles" className="space-y-4">
+    <div><h3 className="font-semibold text-ink">Titles</h3><p className="mt-1 text-sm text-muted">Saving publishes the new titles. The page address stays the same.</p></div>
+    {message && <div role="status"><SuccessDisplay message={message} onDismiss={() => setMessage("")} compact /></div>}
+    {error && <div role="alert"><ErrorDisplay error={error} onDismiss={() => setError(null)} compact /></div>}
+    <form className="space-y-4" onSubmit={(e) => {
+      e.preventDefault();
+      void run(() => save({ eventSlug: event.slug, series: nextSeries, name }), "Titles saved to the event.");
+    }}>
+      <fieldset disabled={busy} className="min-w-0 space-y-4">
+        <div className="flex items-center justify-between gap-4 rounded-xl border border-(--color-border) p-4">
+          <div><Label htmlFor="event-recurring" className="text-sm font-medium text-ink">Has its own title each time</Label><p className="mt-1 text-xs text-muted">On for a recurring meetup like AI Connect Jax, where each month&apos;s talk has a name. Off for one-offs, and for repeats without one, like Cowork and Coffee.</p></div>
+          <Switch id="event-recurring" checked={recurring} onCheckedChange={setRecurring} />
+        </div>
+        <div className={`grid grid-cols-1 gap-4 ${recurring ? "sm:grid-cols-2" : ""}`}>
+          {recurring && <div className="space-y-2"><Label htmlFor="event-series" className="block text-sm font-medium text-ink">Recurring event name <span className="text-(--color-danger)">*</span></Label><Input id="event-series" required maxLength={80} placeholder="e.g. AI Connect Jax" value={series} onChange={(e) => setSeries(e.target.value)} /></div>}
+          <div className="space-y-2"><Label htmlFor="event-name" className="block text-sm font-medium text-ink">{recurring ? "This time's title" : "Event title"} <span className="text-(--color-danger)">*</span></Label><Input id="event-name" required maxLength={200} value={name} onChange={(e) => setName(e.target.value)} /></div>
+        </div>
+        <p className="text-xs text-muted">Browser tab and search: <span className="text-ink">{eventTitle({ series: nextSeries || undefined, name: name.trim() || "…" })}</span></p>
+        <div className="flex flex-wrap gap-2">
+          <Button type="submit" variant="primary" size="sm" disabled={!dirty || !name.trim() || (recurring && !series.trim())}><Save className="w-4 h-4" />{busy ? "Saving…" : "Save Titles"}</Button>
+          {saved && <Button type="button" variant="secondary" size="sm" onClick={() => void run(async () => {
+            await reset({ eventSlug: event.slug });
+            const coded = findEvent(event.slug);
+            setRecurring(!!coded?.series); setSeries(coded?.series ?? ""); setName(coded?.name ?? event.name);
+          }, "Titles reset to the defaults.")}>Reset to Default</Button>}
+        </div>
+      </fieldset>
+    </form>
+  </section>;
+}
+
+function EventPhotoEditor({ event, saved }: { event: HomeEvent; saved: Doc<"eventTitles"> | null | undefined }) {
   const photos = useQuery(api.eventPhotos.list, { eventSlug: event.slug });
   const mainPhoto = photos?.[0];
   const additionalPhotos = photos?.slice(1) ?? [];
@@ -85,6 +138,8 @@ function EventPhotoEditor({ event }: { event: HomeEvent }) {
       </div>
     </div>
     <div className="flex-1 lg:min-h-0 lg:overflow-y-auto p-6 space-y-6">
+      {/* Wait for saved titles, so the form starts from what's live. */}
+      {saved === undefined ? <p role="status" className="text-sm text-muted">Loading titles…</p> : <EventTitleEditor event={event} saved={saved} />}
       {message && <div role="status"><SuccessDisplay message={message} onDismiss={() => setMessage("")} compact /></div>}
       {error && <div role="alert"><ErrorDisplay error={error} onDismiss={() => setError(null)} compact /></div>}
       {editorOpen && <form id="event-photo-form" onSubmit={(e) => {
@@ -110,7 +165,7 @@ function EventPhotoEditor({ event }: { event: HomeEvent }) {
           <div className="flex items-center justify-between gap-4 rounded-xl border border-(--color-border) p-4"><div><Label htmlFor="event-photo-stock" className="text-sm font-medium text-ink">Stock Image</Label><p className="mt-1 text-xs text-muted">Show a stock-image label alongside the credit.</p></div><Switch id="event-photo-stock" checked={draft.stock} onCheckedChange={(stock) => setDraft({ ...draft, stock })} /></div>
         </fieldset>
       </form>}
-      <section aria-label="Main Photo" className="space-y-4">
+      <section aria-label="Main Photo" className="border-t border-(--color-border) pt-6 space-y-4">
         <h3 className="font-semibold text-ink">Main Photo</h3>
         <p className="text-sm text-muted">Shown in the event page header.</p>
         {photos === undefined ? <p role="status">Loading photos…</p> : mainPhoto ? renderPhoto(mainPhoto, 0) : <div className="py-8 text-center text-muted">
@@ -140,7 +195,8 @@ export default function EventsTab() {
   const [otherQuarter, setOtherQuarter] = useState(currentQuarter - 1);
   const [slug, setSlug] = useState<string>();
   const selectedQuarter = period === "current" ? currentQuarter : otherQuarter;
-  const visibleEvents = eventsByDate.filter((item) => eventQuarter(item.start) === selectedQuarter);
+  const titleRows = useQuery(api.eventTitles.list);
+  const visibleEvents = applyTitles(eventsByDate, titleRows).filter((item) => eventQuarter(item.start) === selectedQuarter);
   const event = visibleEvents.find((item) => item.slug === slug) ?? visibleEvents[0];
   const changePeriod = (value: "current" | "other") => { setPeriod(value); setSlug(undefined); };
   return <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:h-full">
@@ -168,7 +224,7 @@ export default function EventsTab() {
         </button>)}
       </div>
     </section>
-    {event ? <EventPhotoEditor key={event.slug} event={event} /> : <section aria-label="Event details" className="lg:col-span-2 rounded-2xl border border-(--color-border) bg-(--color-panel) p-6 text-muted">
+    {event ? <EventPhotoEditor key={event.slug} event={event} saved={titleRows === undefined ? undefined : titleRows.find((row) => row.eventSlug === event.slug) ?? null} /> : <section aria-label="Event details" className="lg:col-span-2 rounded-2xl border border-(--color-border) bg-(--color-panel) p-6 text-muted">
       Choose another quarter to manage event photos.
     </section>}
   </div>;

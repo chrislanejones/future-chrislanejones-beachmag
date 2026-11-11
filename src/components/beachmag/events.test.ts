@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { HOME_EVENTS, calendarEvents, eventHref, eventTitle, findEvent, pastEvents, upcomingEvents } from "./events";
+import { HOME_EVENTS, applyTitles, calendarEvents, eventHref, eventTitle, findEvent, pastEvents, upcomingEvents } from "./events";
 
 test("homepage has only the three nearest upcoming events while the archive keeps attended events", () => {
   const today = new Date(2026, 9, 26, 12);
@@ -32,4 +32,17 @@ test("a recurring meetup keeps its series apart from the month's episode title",
   // The series is only the label: no event repeats it inside its own title.
   for (const event of HOME_EVENTS) if (event.series) expect(event.name.startsWith(event.series)).toBe(false);
   expect(eventTitle({ name: "Saint Augustine Cowork and Coffee" })).toBe("Saint Augustine Cowork and Coffee");
+});
+
+test("titles saved in the admin replace the code's series and title, nothing else", () => {
+  const coded = findEvent("ai-connect-signals-closed-loops-2026-11-10")!;
+  const cowork = findEvent("st-augustine-cowork-coffee-2026-11-05")!;
+  const [renamed, untouched] = applyTitles([coded, cowork], [{ eventSlug: coded.slug, series: "AI Connect", name: "Closed Loops" }]);
+  expect(renamed).toEqual({ ...coded, series: "AI Connect", name: "Closed Loops" });
+  expect(untouched).toBe(cowork);
+  // Switched off in the admin: an empty series means a single title.
+  const [single] = applyTitles([coded], [{ eventSlug: coded.slug, series: "", name: "Signals night" }]);
+  expect(single.series).toBeUndefined();
+  expect(eventTitle(single)).toBe("Signals night");
+  expect(applyTitles([coded], undefined)[0]).toBe(coded);
 });

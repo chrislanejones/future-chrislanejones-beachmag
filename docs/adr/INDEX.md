@@ -39,3 +39,4 @@ Written on 2026-10-21 from the current implementation. Draft records do not impl
 | [022](022-blog-audio-tracks-on-uploadthing.md) | A blog post may carry one MP3 on UploadThing, played with the browser's audio control | draft | 2026-10-24 |
 | [023](023-sonner-toasts-for-copy-and-form-feedback.md) | Sonner, wrapped as shadcn's Toaster on the site's theme store, carries copy confirmations and form feedback | draft | 2026-10-27 |
 | [024](024-radix-context-menu-for-the-sandcastle.md) | The sandcastle gets a right-click / long-press menu built on Radix ContextMenu, wrapped as shadcn's `context-menu.tsx` | accepted | 2026-11-09 |
+| [025](025-event-title-overrides-in-convex.md) | Event titles can be overridden from the admin panel through a Convex `eventTitles` table; the event list itself stays in code | draft | 2026-11-10 |

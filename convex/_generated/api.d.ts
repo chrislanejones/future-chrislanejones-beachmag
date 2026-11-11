@@ -17,6 +17,7 @@ import type * as conferences from "../conferences.js";
 import type * as contactMessages from "../contactMessages.js";
 import type * as crons from "../crons.js";
 import type * as eventPhotos from "../eventPhotos.js";
+import type * as eventTitles from "../eventTitles.js";
 import type * as homeGallery from "../homeGallery.js";
 import type * as http from "../http.js";
 import type * as media from "../media.js";
@@ -48,6 +49,7 @@ declare const fullApi: ApiFromModules<{
   contactMessages: typeof contactMessages;
   crons: typeof crons;
   eventPhotos: typeof eventPhotos;
+  eventTitles: typeof eventTitles;
   homeGallery: typeof homeGallery;
   http: typeof http;
   media: typeof media;

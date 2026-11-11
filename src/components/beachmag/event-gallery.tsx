@@ -23,7 +23,10 @@ export function EventHero(props: EventHeroProps) {
 
 function LiveEventHero(props: EventHeroProps) {
   const photos = useQuery(api.eventPhotos.list, { eventSlug: props.slug });
-  return <EventHeroContent {...props} photos={photos ?? props.initialPhotos} />;
+  // Titles saved in the admin show at once; the page's own copy can be a minute old.
+  const titles = useQuery(api.eventTitles.get, { eventSlug: props.slug });
+  const named = titles ? { name: titles.name, series: titles.series || undefined } : {};
+  return <EventHeroContent {...props} {...named} photos={photos ?? props.initialPhotos} />;
 }
 
 function EventHeroContent({ name, series, description, photos }: Pick<EventHeroProps, "name" | "series" | "description"> & { photos: Doc<"eventPhotos">[] }) {

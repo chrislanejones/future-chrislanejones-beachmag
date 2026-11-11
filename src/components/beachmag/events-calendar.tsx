@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { EditionButtons } from "./edition-buttons";
 import { calendarEvents, eventHref, eventTitle, localDay, pastEvents, upcomingEvents } from "./events";
+import { WithEventTitles, type Titled } from "./event-titles";
 
 const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const WEEKDAYS = [
@@ -111,15 +112,19 @@ function EventList({ events }: { events: Upcoming[] }) {
 // Every month from January 2026 through the current/last event year is reachable.
 // Open on the current month, with the upcoming list beside it.
 export function EventsCalendar() {
+  return <WithEventTitles>{(titled) => <CalendarBody titled={titled} />}</WithEventTitles>;
+}
+
+function CalendarBody({ titled }: { titled: Titled }) {
   const [shown, setShown] = useState(() => {
     const today = new Date();
     return Math.max(0, (today.getFullYear() - 2026) * 12 + today.getMonth());
   });
   const now = new Date();
   const today = localDay(now);
-  const events = upcomingEvents(now, Infinity);
-  const archive = pastEvents(now);
-  const allEvents = calendarEvents();
+  const events = titled(upcomingEvents(now, Infinity));
+  const archive = titled(pastEvents(now));
+  const allEvents = titled(calendarEvents());
   const last = allEvents.at(-1);
   const detail = useRef<HTMLElement>(null);
   const endYear = Math.max(2026, now.getFullYear(), Number(last?.start.slice(0, 4) ?? 2026));

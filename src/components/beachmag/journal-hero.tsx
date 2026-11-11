@@ -12,6 +12,7 @@ import { EditionButtons } from "./edition-buttons";
 import { Ribbon } from "./ribbon";
 import { SeeAll } from "./see-all";
 import { eventHref, eventTitle, upcomingEvents } from "./events";
+import { WithEventTitles } from "./event-titles";
 
 type Entry = { title: string; excerpt: string; href: string; date?: number };
 
@@ -100,7 +101,7 @@ export function JournalHero() {
             <SeeAll href="/events">See events</SeeAll>
           </div>
           {events.length ? (
-            events.map((event) => (
+            <WithEventTitles>{(titled) => titled(events).map((event) => (
               <div className={event.secret ? "event is-secret" : "event"} key={event.start + event.name}>
                 <time dateTime={event.start}>{event.month}<b>{event.day}</b></time>
                 <div>
@@ -111,7 +112,7 @@ export function JournalHero() {
                   <small>{event.place}</small>
                 </div>
               </div>
-            ))
+            ))}</WithEventTitles>
           ) : (
             <p className="copy">Nothing on the calendar yet.</p>
           )}

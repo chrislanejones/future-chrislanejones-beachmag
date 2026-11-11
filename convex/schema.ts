@@ -157,6 +157,15 @@ export default defineSchema({
     updatedAt: v.number(),
   }).index("by_kind", ["kind"]),
 
+  // Admin overrides for an event's titles. The events themselves live in code
+  // (src/components/beachmag/events.ts); a row here replaces that event's
+  // `series` ("" = none) and `name` until it's reset.
+  eventTitles: defineTable({
+    eventSlug: v.string(),
+    series: v.string(),
+    name: v.string(),
+  }).index("by_eventSlug", ["eventSlug"]),
+
   eventPhotos: defineTable({
     eventSlug: v.string(),
     url: v.string(),

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { CalendarDays, MapPin } from "lucide-react";
 import { BeachmagShell } from "@/components/beachmag/shell";
 import { CoastalArt } from "@/components/beachmag/coastal-art";
-import { HOME_EVENTS, findEvent, eventHref, eventTitle } from "@/components/beachmag/events";
+import { HOME_EVENTS, applyTitles, findEvent, eventHref, eventTitle } from "@/components/beachmag/events";
 import { EventHero } from "@/components/beachmag/event-gallery";
 import { EditionButtons } from "@/components/beachmag/edition-buttons";
 import { ConvexHttpClient } from "convex/browser";
@@ -18,10 +18,18 @@ export const generateStaticParams = () => HOME_EVENTS.map(({ slug }) => ({ slug 
 
 const eventPhotos = (slug: string) => new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!)
   .query(api.eventPhotos.list, { eventSlug: slug }).catch(() => []);
+// The event with any titles saved in the admin (code titles if Convex is down).
+async function titledEvent(slug: string) {
+  const event = findEvent(slug);
+  if (!event) return undefined;
+  const row = await new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!)
+    .query(api.eventTitles.get, { eventSlug: slug }).catch(() => null);
+  return applyTitles([event], row ? [row] : [])[0];
+}
 const absolute = (url: string) => (url.startsWith("/") ? `${SITE_URL}${url}` : url);
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const event = findEvent((await params).slug);
+  const event = await titledEvent((await params).slug);
   if (!event) return {};
   const url = `${SITE_URL}${eventHref(event)}`;
   const description = metaDescription(event.description);
@@ -56,7 +64,7 @@ const timeLabel = (start: string) => new Date(`${start}Z`).toLocaleTimeString("e
 });
 
 export default async function EventPage({ params }: Props) {
-  const event = findEvent((await params).slug);
+  const event = await titledEvent((await params).slug);
   if (!event) notFound();
   const photos = await eventPhotos(event.slug);
   const mapsUrl = event.venue ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.venue)}` : undefined;

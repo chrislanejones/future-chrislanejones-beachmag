@@ -48,13 +48,14 @@ export const HOME_EVENTS: HomeEvent[] = [
     start: "2026-10-20T17:30",
     end: "2026-10-20T19:00",
     series: "AI Connect Jax",
-    name: "Intelligent Tech in Inpatient & Critical Care",
+    name: "Transforming Inpatient & Critical Care with Intelligent Technology",
     place: "Legacy Ale Works · Jacksonville, FL · 5:30–7 PM ET",
     venue: "Legacy Ale Works, 14965 Old St Augustine Rd Ste 129-130, Jacksonville, FL 32258",
     description: "Spent Tuesday evening at AI Connect Jax listening to Dr. Dileep Raman, co-founder of Cloudphysician, discuss how AI, computer vision, and ambient intelligence are being used in inpatient and critical care.",
     organizer: "Jennifer Robertson of The King Tide Foundation",
     speaker: "Dr. Dileep Raman, Co-Founder and Chief of Healthcare, Cloudphysician",
     tags: ["Bayard"],
+    url: "https://www.meetup.com/aiconnect/events/316583681/",
     schedule: [
       { time: "5:30–6 PM", activity: "Socializing & beers" },
       { time: "6–6:45 PM", activity: "Presentation" },
@@ -159,6 +160,22 @@ export const HOME_EVENTS: HomeEvent[] = [
 const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
 export const eventHref = (event: Pick<HomeEvent, "slug">) => `/events/${event.slug}`;
+/** Titles saved in the admin (Convex `eventTitles`): one row per event, all optional. */
+export type EventTitles = { eventSlug: string; series: string; name: string };
+
+/**
+ * The code's events with any admin titles laid over them. A row replaces both
+ * `series` ("" = no series) and `name`; everything else comes from the code.
+ */
+export function applyTitles<T extends Pick<HomeEvent, "slug" | "name" | "series">>(events: T[], rows: EventTitles[] | null | undefined): T[] {
+  if (!rows?.length) return events;
+  const bySlug = new Map(rows.map((row) => [row.eventSlug, row]));
+  return events.map((event) => {
+    const row = bySlug.get(event.slug);
+    return row ? { ...event, name: row.name, series: row.series || undefined } : event;
+  });
+}
+
 /** The full title for tabs, search and screen readers: "Series: Episode". */
 export const eventTitle = (event: Pick<HomeEvent, "name" | "series">) =>
   event.series ? `${event.series}: ${event.name}` : event.name;
