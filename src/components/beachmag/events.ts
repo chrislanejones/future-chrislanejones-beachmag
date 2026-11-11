@@ -120,6 +120,18 @@ export const HOME_EVENTS: HomeEvent[] = [
     tags: ["St. Aug"],
   },
   {
+    slug: "st-augustine-cowork-coffee-2026-11-12",
+    start: "2026-11-12T09:00",
+    end: "2026-11-12T12:00",
+    name: "Saint Augustine Cowork and Coffee [DOS Coffee]",
+    place: "Dos Coffee & Wine · St. Augustine · 9 AM–noon ET",
+    venue: "Dos Coffee & Wine, 300 San Marco Ave, St. Augustine, FL",
+    description: "I joined Jax Code And Coffee at DOS Coffee for a morning of coworking with other developers. Bring your normal work or a project, ask questions, network, and learn together.",
+    organizer: "Jax Code And Coffee · Hosted by Micah W.",
+    note: "Meets every Thursday, 9 AM–noon Eastern, through December 17, 2026.",
+    tags: ["St. Aug"],
+  },
+  {
     slug: "jaxjug-ai-agents-tools-mcp-2026-11-02",
     start: "2026-11-02T18:00",
     end: "2026-11-02T19:30",
