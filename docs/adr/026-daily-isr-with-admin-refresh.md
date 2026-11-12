@@ -13,17 +13,25 @@ Those 23 routes now use `revalidate = 86400`; `llms.txt` and `llms-full.txt` sta
 New `POST /api/revalidate` checks Clerk `auth()` + `isSiteOwner` (403 otherwise) and runs
 `revalidatePath("/", "layout")`: the whole site, because one edit shows on several pages
 (/blog, the homepage, the sitemap, llms.txt). `useSiteMutation` wraps Convex `useMutation`;
-after a save succeeds it waits 1.5 s (a burst of row reorders refreshes once), then posts to
-the route without waiting. 15 admin files use it; Messages stays on `useMutation`, since
-contact messages show on no public page. A route test covers signed out, non-owner and owner.
+after a save succeeds it awaits a `keepalive` POST to the route before the save resolves, so a
+closed tab can't drop it. The call only marks pages stale, so a burst of saves is cheap. 15
+admin files use it; Messages stays on `useMutation`, since contact messages show on no public
+page. Server reads that turned a Convex error into `[]` now go through `src/lib/isr-fallback.ts`:
+the fallback applies only during `next build`; on the live site the error is thrown, and Next.js
+keeps serving the last good page instead of caching an empty list or a false 404 for a day.
+Tests cover the route (signed out, non-owner, owner) and the build/runtime split.
 
 ## Consequences
 + ISR writes and CPU should drop sharply. The real number needs a week of usage data.
-+ Admin edits go live in about 2 s instead of up to 60 s. This replaces ADR-025's "event page
++ Admin edits go live as soon as the save finishes instead of up to 60 s later. This replaces ADR-025's "event page
   metadata lags the hero by up to 60 s": an admin title save now refreshes it within seconds.
 - Content changed outside the admin (`convex run`, the seed runner, the daily
-  `cleanupStaleSEO` cron, a Convex dashboard edit) waits up to a day, unless someone saves in
-  the admin or redeploys.
+  `cleanupStaleSEO` cron, a Convex dashboard edit) waits until the first visit after a page's
+  day is up, unless someone saves in the admin or redeploys. Refresh is demand-driven: that
+  first visit still gets the old page while the new one builds, and a page nobody visits never
+  rebuilds.
+- If Convex is down when a page first renders after a purge, that visit gets an error page
+  instead of an empty one. Errors aren't cached, so the next visit tries again.
 - Every admin save purges every cached page, so the next visit to each one re-renders. Fine at
   this site's edit rate.
 

@@ -11,19 +11,20 @@ import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../../../convex/_generated/api";
 import { DEFAULT_OG_IMAGE, metaDescription } from "@/lib/seo";
 import { PERSON, SITE_URL, jsonLd } from "@/lib/structured-data";
+import { fallbackOnlyAtBuild } from "@/lib/isr-fallback";
 
 export const revalidate = 86400; // once a day; admin saves refresh it at once (api/revalidate)
 type Props = { params: Promise<{ slug: string }> };
 export const generateStaticParams = () => HOME_EVENTS.map(({ slug }) => ({ slug }));
 
-const eventPhotos = (slug: string) => new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!)
-  .query(api.eventPhotos.list, { eventSlug: slug }).catch(() => []);
-// The event with any titles saved in the admin (code titles if Convex is down).
+const eventPhotos = (slug: string) => fallbackOnlyAtBuild(new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!)
+  .query(api.eventPhotos.list, { eventSlug: slug }), []);
+// The event with any titles saved in the admin (code titles if Convex is down at build).
 async function titledEvent(slug: string) {
   const event = findEvent(slug);
   if (!event) return undefined;
-  const row = await new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!)
-    .query(api.eventTitles.get, { eventSlug: slug }).catch(() => null);
+  const row = await fallbackOnlyAtBuild(new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!)
+    .query(api.eventTitles.get, { eventSlug: slug }), null);
   return applyTitles([event], row ? [row] : [])[0];
 }
 const absolute = (url: string) => (url.startsWith("/") ? `${SITE_URL}${url}` : url);

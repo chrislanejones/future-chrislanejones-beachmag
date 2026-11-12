@@ -15,7 +15,7 @@ export async function generateMetadata() {
 
 export default async function Home() {
   // Read on the server so the project cards link to their pages on first paint.
-  const projects = await getProjects().catch(() => []);
+  const projects = await getProjects();
   return (
     <BeachmagShell>
       <CoastalArt>

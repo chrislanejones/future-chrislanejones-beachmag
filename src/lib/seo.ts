@@ -3,6 +3,7 @@ import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../convex/_generated/api";
 import { DEFAULT_SEO } from "./seo-defaults";
 import { PERSON, SITE_URL } from "./structured-data";
+import { rethrowUnlessBuilding } from "@/lib/isr-fallback";
 
 const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL!;
 const convex = new ConvexHttpClient(convexUrl);
@@ -64,6 +65,7 @@ export async function getPageSEO(path: string): Promise<Metadata> {
     return getDefaultSEO(path);
   } catch (error) {
     console.error("Error fetching SEO from Convex:", error);
+    rethrowUnlessBuilding(error);
     return getDefaultSEO(path);
   }
 }

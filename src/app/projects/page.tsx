@@ -12,7 +12,7 @@ export async function generateMetadata() {
 }
 
 export default async function ProjectsPage() {
-  const projects = await getProjects().catch(() => []);
+  const projects = await getProjects();
   return (
     <CoastalPageShell>
       <PageHero

@@ -5,6 +5,7 @@ import { CoastalPageShell } from "@/components/coastal/page-shell";
 import { PageHero } from "@/components/beachmag/interior-parts";
 import BlogPage from "./BlogPage";
 import { getPageSEO } from "@/lib/seo";
+import { fallbackOnlyAtBuild } from "@/lib/isr-fallback";
 
 const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
@@ -15,7 +16,7 @@ export async function generateMetadata() {
 }
 
 export default async function Page() {
-  const posts = await convex.query(api.blogPosts.getAllPosts, {}).catch(() => []);
+  const posts = await fallbackOnlyAtBuild(convex.query(api.blogPosts.getAllPosts, {}), []);
 
   return (
     <CoastalPageShell>

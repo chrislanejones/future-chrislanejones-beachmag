@@ -11,7 +11,7 @@ export async function generateMetadata() {
 }
 
 export default async function About() {
-  const conferences = await getConferences().catch(() => []);
+  const conferences = await getConferences();
   return (
     <CoastalPageShell>
       <PageHero
