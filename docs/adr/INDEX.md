@@ -40,3 +40,4 @@ Written on 2026-10-21 from the current implementation. Draft records do not impl
 | [023](023-sonner-toasts-for-copy-and-form-feedback.md) | Sonner, wrapped as shadcn's Toaster on the site's theme store, carries copy confirmations and form feedback | draft | 2026-10-27 |
 | [024](024-radix-context-menu-for-the-sandcastle.md) | The sandcastle gets a right-click / long-press menu built on Radix ContextMenu, wrapped as shadcn's `context-menu.tsx` | accepted | 2026-11-09 |
 | [025](025-event-title-overrides-in-convex.md) | Event titles can be overridden from the admin panel through a Convex `eventTitles` table; the event list itself stays in code | draft | 2026-11-10 |
+| [026](026-daily-isr-with-admin-refresh.md) | Public pages refresh once a day, and every admin save refreshes the whole site | draft | 2026-11-11 |

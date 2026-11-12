@@ -11,7 +11,8 @@ import {
   MapPin,
   Calendar,
 } from "lucide-react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSiteMutation } from "@/app/admin/hooks/useSiteMutation";
 import { api } from "../../../../convex/_generated/api";
 import type { Id, Doc } from "../../../../convex/_generated/dataModel";
 import { MediaDrawer } from "../components/MediaDrawer";
@@ -81,10 +82,10 @@ const ConferencesTabEnhanced = () => {
   const rawConferences = useQuery(api.conferences.getAll);
   const confList: Conference[] = (rawConferences ?? []) as Conference[];
 
-  const createConference = useMutation(api.conferences.create);
-  const updateConference = useMutation(api.conferences.update);
-  const deleteConferenceMutation = useMutation(api.conferences.deleteConference);
-  const seedConferences = useMutation(api.conferences.seedConferences);
+  const createConference = useSiteMutation(api.conferences.create);
+  const updateConference = useSiteMutation(api.conferences.update);
+  const deleteConferenceMutation = useSiteMutation(api.conferences.deleteConference);
+  const seedConferences = useSiteMutation(api.conferences.seedConferences);
 
   const [selected, setSelected] = useState<Conference | null>(null);
   const [isCreating, setIsCreating] = useState(false);

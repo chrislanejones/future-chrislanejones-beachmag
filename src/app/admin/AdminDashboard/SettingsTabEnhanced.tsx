@@ -25,7 +25,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { Id } from "../../../../convex/_generated/dataModel";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSiteMutation } from "@/app/admin/hooks/useSiteMutation";
 import { api } from "../../../../convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/dialog";
@@ -65,28 +66,28 @@ const SettingsTabEnhanced = () => {
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
   // Data Management state
-  const seedLinks = useMutation(api.browserLinks.seedLinks);
-  const seedTimeline = useMutation(api.careerTimeline.seedTimeline);
-  const seedBlogPosts = useMutation(api.blogPosts.seedBlogPosts);
-  const seedNavigation = useMutation(api.navigation.seedNavigationData);
-  const seedSEO = useMutation(api.seo.seedSEOData);
-  const seedProfile = useMutation(api.siteSettings.seedProfile);
-  const seedProfilePhoto = useMutation(api.media.seedProfilePhoto);
-  const seedSocialLinks = useMutation(api.socialLinks.seedSocialLinks);
-  const seedPageHeaders = useMutation(api.pageHeaders.seedPageHeaders);
-  const seedProjects = useMutation(api.projects.seedProjects);
-  const seedClients = useMutation(api.clients.seedClients);
-  const seedConferences = useMutation(api.conferences.seedConferences);
-  const seedClientIcons = useMutation(api.media.seedClientIcons);
-  const seedRedirects = useMutation(api.redirects.seedRedirects);
-  const seedMessages = useMutation(api.contactMessages.seedMessages);
+  const seedLinks = useSiteMutation(api.browserLinks.seedLinks);
+  const seedTimeline = useSiteMutation(api.careerTimeline.seedTimeline);
+  const seedBlogPosts = useSiteMutation(api.blogPosts.seedBlogPosts);
+  const seedNavigation = useSiteMutation(api.navigation.seedNavigationData);
+  const seedSEO = useSiteMutation(api.seo.seedSEOData);
+  const seedProfile = useSiteMutation(api.siteSettings.seedProfile);
+  const seedProfilePhoto = useSiteMutation(api.media.seedProfilePhoto);
+  const seedSocialLinks = useSiteMutation(api.socialLinks.seedSocialLinks);
+  const seedPageHeaders = useSiteMutation(api.pageHeaders.seedPageHeaders);
+  const seedProjects = useSiteMutation(api.projects.seedProjects);
+  const seedClients = useSiteMutation(api.clients.seedClients);
+  const seedConferences = useSiteMutation(api.conferences.seedConferences);
+  const seedClientIcons = useSiteMutation(api.media.seedClientIcons);
+  const seedRedirects = useSiteMutation(api.redirects.seedRedirects);
+  const seedMessages = useSiteMutation(api.contactMessages.seedMessages);
 
   // Redirects
   const allRedirects = useQuery(api.redirects.getAll) ?? [];
-  const createRedirect = useMutation(api.redirects.create);
-  const updateRedirect = useMutation(api.redirects.update);
-  const deleteRedirectMutation = useMutation(api.redirects.deleteRedirect);
-  const toggleRedirectActive = useMutation(api.redirects.toggleActive);
+  const createRedirect = useSiteMutation(api.redirects.create);
+  const updateRedirect = useSiteMutation(api.redirects.update);
+  const deleteRedirectMutation = useSiteMutation(api.redirects.deleteRedirect);
+  const toggleRedirectActive = useSiteMutation(api.redirects.toggleActive);
 
   const [redirectForm, setRedirectForm] = useState({
     from: "",

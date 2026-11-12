@@ -11,7 +11,8 @@ import {
   ChevronDown,
   Edit2,
 } from "lucide-react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSiteMutation } from "@/app/admin/hooks/useSiteMutation";
 import { api } from "../../../../convex/_generated/api";
 import type { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { MediaDrawer } from "../components/MediaDrawer";
@@ -46,11 +47,11 @@ const ProjectsTabEnhanced = () => {
   const projectList = (projects ?? []) as Project[];
   const featuredList = (featuredProjects ?? []) as Project[];
 
-  const createProject = useMutation(api.projects.create);
-  const updateProject = useMutation(api.projects.update);
-  const deleteProjectMutation = useMutation(api.projects.deleteProject);
-  const toggleFeatured = useMutation(api.projects.toggleFeatured);
-  const swapFeaturedOrder = useMutation(api.projects.swapFeaturedOrder);
+  const createProject = useSiteMutation(api.projects.create);
+  const updateProject = useSiteMutation(api.projects.update);
+  const deleteProjectMutation = useSiteMutation(api.projects.deleteProject);
+  const toggleFeatured = useSiteMutation(api.projects.toggleFeatured);
+  const swapFeaturedOrder = useSiteMutation(api.projects.swapFeaturedOrder);
 
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isCreating, setIsCreating] = useState(false);

@@ -3,13 +3,14 @@ import { ConvexHttpClient } from 'convex/browser'
 import { api } from '../../convex/_generated/api'
 import { projectHref } from '@/lib/projects'
 import { SITE_URL } from '@/lib/structured-data'
+import { rethrowUnlessBuilding } from '@/lib/isr-fallback'
 
 import { HOME_EVENTS, eventHref } from '@/components/beachmag/events'
 
 const BASE_URL = SITE_URL
 const CONVEX_SITE_URL = process.env.NEXT_PUBLIC_CONVEX_SITE_URL
 
-export const revalidate = 60
+export const revalidate = 86400 // once a day; admin saves refresh it at once (api/revalidate)
 
 const staticPages = [
   '/',
@@ -72,6 +73,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   } catch (error) {
     console.error('Error fetching conferences for sitemap:', error)
+    rethrowUnlessBuilding(error)
   }
 
   let projectUrls: MetadataRoute.Sitemap = []
@@ -86,6 +88,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   } catch (error) {
     console.error('Error fetching projects for sitemap:', error)
+    rethrowUnlessBuilding(error)
   }
 
   if (!CONVEX_SITE_URL) {
@@ -111,6 +114,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return [...staticUrls, ...eventUrls, ...conferenceUrls, ...projectUrls, ...blogUrls]
   } catch (error) {
     console.error('Error generating sitemap dynamic entries:', error)
+    rethrowUnlessBuilding(error)
     return [...staticUrls, ...eventUrls, ...conferenceUrls, ...projectUrls]
   }
 }

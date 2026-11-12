@@ -5,7 +5,7 @@ import { CoastalPageIntro } from "@/components/coastal/page-intro";
 import SiteHistoryPage from "@/app/site-history/SiteHistoryPage";
 import { getPageSEO } from "@/lib/seo";
 
-export const revalidate = 60;
+export const revalidate = 86400; // once a day; admin saves refresh it at once (api/revalidate)
 
 export async function generateMetadata() {
   return await getPageSEO("/site-history");

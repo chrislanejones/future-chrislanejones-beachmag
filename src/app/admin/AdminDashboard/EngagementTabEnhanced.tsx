@@ -10,7 +10,8 @@ import {
   ExternalLink,
   ThumbsUp,
 } from "lucide-react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSiteMutation } from "@/app/admin/hooks/useSiteMutation";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { ErrorDisplay } from "../components/ErrorDisplay";
@@ -52,8 +53,8 @@ const EngagementTabEnhanced = () => {
     | undefined;
   const pendingCount = useQuery(api.blogPosts.getPendingCommentsCount) ?? 0;
 
-  const approveComment = useMutation(api.blogPosts.approveComment);
-  const deleteComment = useMutation(api.blogPosts.deleteComment);
+  const approveComment = useSiteMutation(api.blogPosts.approveComment);
+  const deleteComment = useSiteMutation(api.blogPosts.deleteComment);
 
   const [activeTab, setActiveTab] = useState<"comments" | "likes">("comments");
   const [selectedComment, setSelectedComment] = useState<BlogComment | null>(

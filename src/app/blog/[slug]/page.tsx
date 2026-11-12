@@ -10,10 +10,11 @@ import { jsonLd as toJsonLd } from "@/lib/structured-data";
 import { DEFAULT_OG_IMAGE, metaDescription } from "@/lib/seo";
 import { renderPostHtml, withSectionIds } from "@/lib/blog-content";
 import { SITE_URL } from "@/lib/structured-data";
+import { rethrowUnlessBuilding } from "@/lib/isr-fallback";
 
 const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
-export const revalidate = 60;
+export const revalidate = 86400; // once a day; admin saves refresh it at once (api/revalidate)
 
 // Prerender every known post at build time; new ones still render on
 // demand (dynamicParams defaults to true) and then cache via ISR.
@@ -65,7 +66,8 @@ export async function generateMetadata({
         images,
       },
     };
-  } catch {
+  } catch (error) {
+    rethrowUnlessBuilding(error);
     return {};
   }
 }

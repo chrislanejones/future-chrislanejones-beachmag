@@ -6,6 +6,7 @@ import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../convex/_generated/api";
 import { PERSON, SITE_URL } from "./structured-data";
 import { projectHref } from "./projects";
+import { fallbackOnlyAtBuild } from "@/lib/isr-fallback";
 
 const PAGES: [path: string, title: string, note: string][] = [
   ["/about", "About", "Background, from video production to web engineering, plus hiking and community work"],
@@ -28,9 +29,9 @@ type Post = { title: string; slug: string; excerpt: string; content: string; cre
 async function load() {
   const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
   const [posts, projects, conferences] = await Promise.all([
-    convex.query(api.blogPosts.getAllPosts, {}).catch(() => []),
-    convex.query(api.projects.getAll, {}).catch(() => []),
-    convex.query(api.conferences.getAll, {}).catch(() => []),
+    fallbackOnlyAtBuild(convex.query(api.blogPosts.getAllPosts, {}), []),
+    fallbackOnlyAtBuild(convex.query(api.projects.getAll, {}), []),
+    fallbackOnlyAtBuild(convex.query(api.conferences.getAll, {}), []),
   ]);
   return { posts: posts as Post[], projects, conferences };
 }

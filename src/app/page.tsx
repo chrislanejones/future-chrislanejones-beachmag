@@ -8,14 +8,14 @@ import { ToolGallery } from "@/components/beachmag/tool-gallery";
 import { Sandbox } from "@/components/beachmag/sandbox/sandbox";
 import { getProjects } from "@/lib/projects-server";
 
-export const revalidate = 60;
+export const revalidate = 86400; // once a day; admin saves refresh it at once (api/revalidate)
 export async function generateMetadata() {
   return await getPageSEO("/");
 }
 
 export default async function Home() {
   // Read on the server so the project cards link to their pages on first paint.
-  const projects = await getProjects().catch(() => []);
+  const projects = await getProjects();
   return (
     <BeachmagShell>
       <CoastalArt>

@@ -7,7 +7,7 @@ import { DEFAULT_OG_IMAGE, metaDescription } from "@/lib/seo";
 import ConferenceYearPage from "./ConferenceYearPage";
 import { SITE_URL } from "@/lib/structured-data";
 
-export const revalidate = 60;
+export const revalidate = 86400; // once a day; admin saves refresh it at once (api/revalidate)
 export async function generateStaticParams() {
   return conferenceYears(await getConferences()).map((year) => ({ year: String(year) }));
 }

@@ -16,7 +16,8 @@ import {
   User,
   type LucideIcon,
 } from "lucide-react";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSiteMutation } from "@/app/admin/hooks/useSiteMutation";
 import Image from "next/image";
 import { api } from "../../../../convex/_generated/api";
 import type { Doc, Id } from "../../../../convex/_generated/dataModel";
@@ -195,11 +196,11 @@ const LinksGroup = ({
   onNotify: (message: string) => void;
   onError: (message: string) => void;
 }) => {
-  const createLink = useMutation(api.socialLinks.create);
-  const updateLink = useMutation(api.socialLinks.update);
-  const deleteLink = useMutation(api.socialLinks.deleteLink);
-  const reorderLinks = useMutation(api.socialLinks.reorder);
-  const setSurfaceOrder = useMutation(api.socialLinks.setSurfaceOrder);
+  const createLink = useSiteMutation(api.socialLinks.create);
+  const updateLink = useSiteMutation(api.socialLinks.update);
+  const deleteLink = useSiteMutation(api.socialLinks.deleteLink);
+  const reorderLinks = useSiteMutation(api.socialLinks.reorder);
+  const setSurfaceOrder = useSiteMutation(api.socialLinks.setSurfaceOrder);
 
   const [selectedId, setSelectedId] = useState<Id<"socialLinks"> | null>(null);
   const [isCreating, setIsCreating] = useState(false);
@@ -728,9 +729,9 @@ const ProfileSocialTabEnhanced = () => {
   const profile = useQuery(api.siteSettings.getProfile);
   const allLinks = (useQuery(api.socialLinks.getAll) ?? []) as SocialLink[];
 
-  const updateProfile = useMutation(api.siteSettings.updateProfile);
-  const updateAvatar = useMutation(api.siteSettings.updateAvatar);
-  const removeAvatarMutation = useMutation(api.siteSettings.removeAvatar);
+  const updateProfile = useSiteMutation(api.siteSettings.updateProfile);
+  const updateAvatar = useSiteMutation(api.siteSettings.updateAvatar);
+  const removeAvatarMutation = useSiteMutation(api.siteSettings.removeAvatar);
 
   const {
     toasts,

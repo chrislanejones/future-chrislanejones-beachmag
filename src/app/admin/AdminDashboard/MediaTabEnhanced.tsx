@@ -14,7 +14,8 @@ import {
   Home,
   Pencil,
 } from "lucide-react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSiteMutation } from "@/app/admin/hooks/useSiteMutation";
 import { api } from "../../../../convex/_generated/api";
 import type { Id, Doc } from "../../../../convex/_generated/dataModel";
 import { ErrorDisplay } from "../components/ErrorDisplay";
@@ -37,9 +38,9 @@ type GalleryItem = Doc<"homeGallery">;
 
 const MediaTabEnhanced = () => {
   const organizedMedia = useQuery(api.media.getOrganized);
-  const deleteMediaMutation = useMutation(api.media.deleteMedia);
-  const updateMedia = useMutation(api.media.update);
-  const createMedia = useMutation(api.media.create);
+  const deleteMediaMutation = useSiteMutation(api.media.deleteMedia);
+  const updateMedia = useSiteMutation(api.media.update);
+  const createMedia = useSiteMutation(api.media.create);
   const [documentBusy, setDocumentBusy] = useState(false);
   const { startUpload: startDocumentUpload } = useUploadThing("documentUploader");
   const { startUpload: startAudioUpload } = useUploadThing("audioUploader");
@@ -66,9 +67,9 @@ const MediaTabEnhanced = () => {
   const galleryItems = useQuery(api.homeGallery.getAll) as
     | GalleryItem[]
     | undefined;
-  const setGalleryPosition = useMutation(api.homeGallery.setPosition);
-  const removeGalleryPosition = useMutation(api.homeGallery.removePosition);
-  const updateGalleryMetadata = useMutation(api.homeGallery.updateMetadata);
+  const setGalleryPosition = useSiteMutation(api.homeGallery.setPosition);
+  const removeGalleryPosition = useSiteMutation(api.homeGallery.removePosition);
+  const updateGalleryMetadata = useSiteMutation(api.homeGallery.updateMetadata);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedView, setSelectedView] = useState<string>("all");

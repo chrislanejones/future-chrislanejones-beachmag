@@ -4,7 +4,7 @@ import { PageHero } from "@/components/beachmag/interior-parts";
 import { getPageSEO } from "@/lib/seo";
 import { CalBooking } from "@/components/beachmag/cal-booking";
 
-export const revalidate = 60;
+export const revalidate = 86400; // once a day; admin saves refresh it at once (api/revalidate)
 
 // Cal.com event, embedded inline. Cal.com reads busy times from Google
 // Calendar and books onto it. The link is "<username>/<event slug>" from

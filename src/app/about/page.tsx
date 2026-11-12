@@ -4,14 +4,14 @@ import AboutPage from "@/app/about/AboutPage";
 import { getPageSEO } from "@/lib/seo";
 import { getConferences } from "@/lib/conferences-server";
 
-export const revalidate = 60;
+export const revalidate = 86400; // once a day; admin saves refresh it at once (api/revalidate)
 
 export async function generateMetadata() {
   return await getPageSEO("/about");
 }
 
 export default async function About() {
-  const conferences = await getConferences().catch(() => []);
+  const conferences = await getConferences();
   return (
     <CoastalPageShell>
       <PageHero

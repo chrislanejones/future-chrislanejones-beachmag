@@ -5,7 +5,7 @@ import CareerPage from "@/app/career-and-resume/CareerPage";
 import { ContentBoundary } from "@/components/coastal/live-content";
 import { getPageSEO } from "@/lib/seo";
 
-export const revalidate = 60;
+export const revalidate = 86400; // once a day; admin saves refresh it at once (api/revalidate)
 
 export async function generateMetadata() {
   return await getPageSEO("/career-and-resume");

@@ -4,7 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowDown, ArrowUp, Calendar, Edit2, ExternalLink, Image as ImageIcon, MapPin, Plus, Save, Trash2 } from "lucide-react";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSiteMutation } from "@/app/admin/hooks/useSiteMutation";
 import { api } from "../../../../convex/_generated/api";
 import type { Doc } from "../../../../convex/_generated/dataModel";
 import { HOME_EVENTS, applyTitles, eventHref, eventTitle, findEvent, type HomeEvent } from "@/components/beachmag/events";
@@ -30,8 +31,8 @@ const eventDate = (event: HomeEvent) => new Date(`${event.start}Z`).toLocaleDate
 // the live site. "Has its own title each time" is for a recurring meetup like
 // AI Connect Jax, where every month's talk has a name. Off: one title only.
 function EventTitleEditor({ event, saved }: { event: HomeEvent; saved: Doc<"eventTitles"> | null | undefined }) {
-  const save = useMutation(api.eventTitles.save);
-  const reset = useMutation(api.eventTitles.reset);
+  const save = useSiteMutation(api.eventTitles.save);
+  const reset = useSiteMutation(api.eventTitles.reset);
   const [recurring, setRecurring] = useState(!!event.series);
   const [series, setSeries] = useState(event.series ?? "");
   const [name, setName] = useState(event.name);
@@ -83,9 +84,9 @@ function EventPhotoEditor({ event, saved }: { event: HomeEvent; saved: Doc<"even
   const photos = useQuery(api.eventPhotos.list, { eventSlug: event.slug });
   const mainPhoto = photos?.[0];
   const additionalPhotos = photos?.slice(1) ?? [];
-  const save = useMutation(api.eventPhotos.save);
-  const remove = useMutation(api.eventPhotos.remove);
-  const move = useMutation(api.eventPhotos.move);
+  const save = useSiteMutation(api.eventPhotos.save);
+  const remove = useSiteMutation(api.eventPhotos.remove);
+  const move = useSiteMutation(api.eventPhotos.move);
   const [draft, setDraft] = useState(blank);
   const [editing, setEditing] = useState<Doc<"eventPhotos">["_id"]>();
   const [editorOpen, setEditorOpen] = useState(false);

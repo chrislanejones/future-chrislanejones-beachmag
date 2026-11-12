@@ -9,7 +9,8 @@ import {
   GripVertical,
   Calendar,
 } from "lucide-react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSiteMutation } from "@/app/admin/hooks/useSiteMutation";
 import { api } from "../../../../convex/_generated/api";
 import { Id, Doc } from "../../../../convex/_generated/dataModel";
 import { ErrorDisplay } from "../components/ErrorDisplay";
@@ -29,10 +30,10 @@ const CareerTimelineTabEnhanced = () => {
   // Keep the raw result: undefined means Convex is still loading.
   const eventsQuery = useQuery(api.careerTimeline.getAllEvents);
   const events = eventsQuery ?? [];
-  const addEvent = useMutation(api.careerTimeline.addEvent);
-  const updateEvent = useMutation(api.careerTimeline.updateEvent);
-  const deleteEvent = useMutation(api.careerTimeline.deleteEvent);
-  const reorderEvents = useMutation(api.careerTimeline.reorderEvents);
+  const addEvent = useSiteMutation(api.careerTimeline.addEvent);
+  const updateEvent = useSiteMutation(api.careerTimeline.updateEvent);
+  const deleteEvent = useSiteMutation(api.careerTimeline.deleteEvent);
+  const reorderEvents = useSiteMutation(api.careerTimeline.reorderEvents);
 
   const [selectedEvent, setSelectedEvent] = useState<CareerEvent | null>(null);
   const [isEditing, setIsEditing] = useState(false);

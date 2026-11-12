@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useRef } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSiteMutation } from "@/app/admin/hooks/useSiteMutation";
 import { api } from "../../../../convex/_generated/api";
 import { Doc } from "../../../../convex/_generated/dataModel";
 import {
@@ -52,9 +53,9 @@ export const MediaDrawer: React.FC<MediaDrawerProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const allMedia = useQuery(api.media.getAll) ?? [];
-  const createMedia = useMutation(api.media.create);
-  const updateMedia = useMutation(api.media.update);
-  const deleteMedia = useMutation(api.media.deleteMedia);
+  const createMedia = useSiteMutation(api.media.create);
+  const updateMedia = useSiteMutation(api.media.update);
+  const deleteMedia = useSiteMutation(api.media.deleteMedia);
 
   // Auto-select during render instead of in an effect: setting the selection
   // makes the condition false on the very next pass, so this converges without
