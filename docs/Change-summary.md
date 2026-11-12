@@ -2,6 +2,15 @@
 
 [Documentation handbook](README.md) · [Project home](../README.md)
 
+## 2026-11-11 — Pages refresh once a day, and admin saves show up right away
+
+- Public pages used to rebuild at most once a minute. Bots crawl every blog post, project and conference page, so the site was rebuilding itself all day. That used 150K of Vercel's 200K monthly ISR writes and most of the 4 hours of CPU.
+- Pages now refresh once a day on their own. Saving anything in the admin refreshes the whole site a couple of seconds later, so edits still go live right away.
+- The refresh route (`POST /api/revalidate`) only answers the site owner. Marking a contact message read doesn't call it, since no public page shows messages.
+- `llms.txt` and `llms-full.txt` still refresh every hour. [ADR-026](adr/026-daily-isr-with-admin-refresh.md) has the reasoning.
+
+Validation: TypeScript, ESLint, all 138 tests (3 new ones for the refresh route) and a production build passed. Every page in the build output shows a 1-day refresh.
+
 ## 2026-11-03 — Latest resume revision
 
 - Replaced both production resume downloads using the newly supplied PDF and a matching editable Word document, preserving the existing Word layout. Both include Craft CMS in Technical Skills and Independent Consulting.
