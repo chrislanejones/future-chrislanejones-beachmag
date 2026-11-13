@@ -13,17 +13,23 @@ export function BeachmagShell({ children }: { children: ReactNode }) {
   return (
     <div data-beachmag className={`${bodoniModa.variable} ${dmSans.variable}`}>
       <a className="skip-link" href="#main-content">Skip to content</a>
-      {/* If the live nav or footer throws (a Convex error), the static copy renders instead. */}
-      <ContentBoundary fallback={<SiteNav offline />}>
-        <SiteNav />
-      </ContentBoundary>
+      {/* If the live nav or footer throws (a Convex error), the static copy renders instead.
+          data-nosnippet keeps Google from quoting the menu and footer as a page's search
+          snippet; Google only honors it on div, span and section, hence the wrappers. */}
+      <div data-nosnippet>
+        <ContentBoundary fallback={<SiteNav offline />}>
+          <SiteNav />
+        </ContentBoundary>
+      </div>
       <div id="page-content">
         <main id="main-content" tabIndex={-1}>
           {children}
         </main>
-        <ContentBoundary fallback={<SiteFooter offline />}>
-          <SiteFooter />
-        </ContentBoundary>
+        <div data-nosnippet>
+          <ContentBoundary fallback={<SiteFooter offline />}>
+            <SiteFooter />
+          </ContentBoundary>
+        </div>
       </div>
     </div>
   );

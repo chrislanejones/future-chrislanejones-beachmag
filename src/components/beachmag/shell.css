@@ -2754,3 +2754,9 @@ html.dark #coastal-art .map-wrap .map-night {
   letter-spacing: .1em;
   text-transform: uppercase;
 }
+
+/* The data-nosnippet wrappers around the nav and footer (shell.tsx) are for
+   Google only; they must not add a box to the layout. */
+[data-beachmag] [data-nosnippet] {
+  display: contents;
+}
