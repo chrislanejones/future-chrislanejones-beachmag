@@ -24,7 +24,7 @@ const staticPages = [
   '/events',
   '/lets-meet',
   '/link-page',
-  '/logo-page',
+  '/design-system',
   '/projects',
   '/react-maintenance',
   '/site-history',

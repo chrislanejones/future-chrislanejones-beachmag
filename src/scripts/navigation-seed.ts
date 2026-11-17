@@ -67,7 +67,7 @@ export const staticFooterNavLinks: SeedFooterNavSection[] = [
     title: "Resources",
     links: [
       { href: "/site-history", label: "History of This Site" },
-      { href: "/logo-page", label: "About The Logo" },
+      { href: "/design-system", label: "Design System" },
       { href: "/site-map", label: "Change Log / Site Map" },
       { href: "/admin", label: "Admin" },
       { href: "/404", label: "404 / Wipeout" },

@@ -36,11 +36,11 @@ export const staticPageHeaders: Record<
     description:
       "Thoughts on web development, React, WordPress, and building things on the internet.",
   },
-  "/logo-page": {
-    title: "About the Logo",
-    breadcrumbPage: "Logo",
+  "/design-system": {
+    title: "Design System",
+    breadcrumbPage: "Design System",
     description:
-      "My logo started as a mountain from eight years on the Shenandoah trails. When we moved back to Florida in 2026, it became three waves. Here is every version.",
+      "The parts this site is built from: the logo, the colors, the type, and buttons that look like an old radio. Every example is the real part, not a picture of it.",
   },
   "/projects": {
     title: "Projects",

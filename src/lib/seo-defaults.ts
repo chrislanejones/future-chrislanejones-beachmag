@@ -71,11 +71,11 @@ export const DEFAULT_SEO: Record<string, Metadata> = {
       "GitHub, Codeberg, LinkedIn, X, Bluesky, and more: all my links in one place, plus my portfolio, blog, and web development services.",
     alternates: { canonical: `${SITE_URL}/link-page` },
   },
-  "/logo-page": {
-    title: "About the Logo: From Mountains to Waves",
+  "/design-system": {
+    title: "Design System: Colors, Type, Parts & the Logo",
     description:
-      "My logo went from a Shenandoah mountain to three ocean waves when we moved back to Florida in 2026. The story behind each design, plus downloads.",
-    alternates: { canonical: `${SITE_URL}/logo-page` },
+      "What chrislanejones.com is built from: paper and ink colors, Bodoni Moda and DM Sans, radio-style buttons, motion, and every logo version to download.",
+    alternates: { canonical: `${SITE_URL}/design-system` },
   },
   "/site-history": {
     title: "Site History: WordPress 2.1 to Next.js",

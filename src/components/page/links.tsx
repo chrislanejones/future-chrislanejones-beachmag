@@ -157,7 +157,7 @@ export function useFooterNavSections(live = true) {
           order: 2,
           links: [
             { href: "/site-history", label: "History of This Site", order: 0 },
-            { href: "/logo-page", label: "About The Logo", order: 1 },
+            { href: "/design-system", label: "Design System", order: 1 },
             { href: "/site-map", label: "Change Log / Site Map", order: 2 },
             { href: "/admin-showcase", label: "Admin Showcase", order: 3 },
             { href: "/404", label: "404 / Wipeout", order: 4 },

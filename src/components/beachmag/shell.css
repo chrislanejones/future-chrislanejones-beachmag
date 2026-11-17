@@ -1424,8 +1424,9 @@ html.dark .gallery-drawer {
   background: var(--nav-ink);
   color: var(--nav-paper);
 }
-/* The menu signs off with Let's meet, dressed like the footer's buttons. */
-#site-takeover .menu-meet {
+/* The menu signs off with Let's meet, dressed like the footer's buttons.
+   .interior is here so /design-system can show the same link on its sheet. */
+:is(#site-takeover, .interior) .menu-meet {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1441,14 +1442,14 @@ html.dark .gallery-drawer {
   transform: rotate(-3deg);
   transition: transform 200ms;
 }
-#site-takeover .menu-meet span {
+:is(#site-takeover, .interior) .menu-meet span {
   font-size: 27px;
 }
-#site-takeover .menu-meet:hover {
+:is(#site-takeover, .interior) .menu-meet:hover {
   transform: rotate(0);
 }
 @media (prefers-reduced-motion: reduce) {
-  #site-takeover .menu-meet {
+  :is(#site-takeover, .interior) .menu-meet {
     transition: none;
   }
 }

@@ -8,7 +8,7 @@ const paths = process.env.A11Y_PATHS?.split(',') || [
   '/', '/about', '/career-and-resume', '/events',
   '/events/buildweek-jacksonville-kickoff-2026-10-19', '/contact',
   '/projects', '/blog', '/conferences', '/browser-tabs', '/link-page',
-  '/logo-page', '/react-maintenance', '/wordpress-maintenance',
+  '/design-system', '/react-maintenance', '/wordpress-maintenance',
   '/site-history', '/site-map', '/admin-showcase', '/color-guide',
 ];
 const modes = (process.env.A11Y_MODES || 'desktop-light,desktop-dark,mobile-light,mobile-dark').split(',');

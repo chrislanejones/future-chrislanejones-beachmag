@@ -12,7 +12,7 @@ const KNOWN_PATHS = new Set([
   "/contact",
   "/events",
   "/link-page",
-  "/logo-page",
+  "/design-system",
   "/projects",
   "/react-maintenance",
   "/site-history",
@@ -214,11 +214,11 @@ export const seedSEOData = mutation({
         canonicalUrl: "https://www.chrislanejones.com/link-page",
       },
       {
-        path: "/logo-page",
-        title: "About the Logo: A Mountain for Code",
+        path: "/design-system",
+        title: "Design System: Colors, Type, Parts & the Logo",
         description:
-          "The mountain in my logo represents more than a visual — it came from the Shenandoah trails I hiked for eight years, and from the peaks you climb in code. The story behind the design.",
-        canonicalUrl: "https://www.chrislanejones.com/logo-page",
+          "What chrislanejones.com is built from: paper and ink colors, Bodoni Moda and DM Sans, radio-style buttons, motion, and every logo version to download.",
+        canonicalUrl: "https://www.chrislanejones.com/design-system",
       },
       {
         path: "/site-history",

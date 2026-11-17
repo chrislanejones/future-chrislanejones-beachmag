@@ -14,6 +14,16 @@ Adjacent problems noticed during sessions — not fixed in the diff they were fo
 - **design/ is a reference archive**: `design/outputs/coastal-site-preview.zip` predates the radio stations, and `coastal-demo.wav` plus `generate_radio_demo.py` are unused. The 10-22 evening zip (sand game update) has an older radio than this repo; only its sandbox source was ported.
 - **Codex's sandbox uses `active` as a GLSL name** (reserved in WebGL2), so its wave overlay never compiled there. Fixed here in `incoming-wave.tsx`; tell Codex if that design keeps going.
 
+## /design-system (11-16-2026)
+
+- **Production Convex rows still say /logo-page.** The 308 redirect covers them meanwhile. In the live admin: `footerNavLinks` row `k974gxdvmkyaqjr2cer7drjdks7wbrmv` (href `/logo-page` → `/design-system`, label "About The Logo" → "Design System"); `seoMetadata` row for `/logo-page` (path, title, description, canonicalUrl); `pageHeaders` row for `/logo-page` (path, title "Design System", breadcrumbPage, description). Until then the page uses the static copy in `seo-defaults.ts` and `page-headers.ts`.
+- **`convex/seo.ts` isn't deployed.** `KNOWN_PATHS` and the seed now name `/design-system`. The deployed copy still lists `/logo-page`, so the admin's "stale SEO" cleanup would call a new `/design-system` row stale until the next `convex deploy`.
+- **`--bm-font-display` and `--bm-font-body` don't resolve.** globals.css sets them on `:root` from `--font-bodoni-moda` / `--font-dm-sans`, which only exist on `[data-beachmag]`, so anything reading them falls back to its inherited font. Nothing uses them yet; design-system.css reads the font variables directly.
+- **`/color-guide` overlaps `/design-system`.** It documents the earlier beach site's blue palette, not the magazine's. Retire it or redirect it.
+- **`.logoMedia` and `.lineArt` in `coastal/interior.module.css` are unused** now that the logo page is gone.
+- **Next.js 16.4.2 prints a security upgrade notice** and exits on some `pnpm dev` starts (a retry runs). It recommends `next upgrade`; that's a dependency change for its own session.
+- **No spacing or type tokens in the skin.** The page says so; sizes and gaps are literals in the generated CSS.
+
 ## Radio TAPE / FM / AM switch (11-06-2026)
 
 - **Touch drag on the switch's thumb isn't tested on a real phone** (Chris's to try). A scripted touch can't stand in: it can't take pointer capture the way a finger does. Tapping a position is the safe path; on iPhone a drag's first play could be refused until PLAY is pressed.

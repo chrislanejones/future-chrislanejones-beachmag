@@ -12,7 +12,6 @@ const SECTION_LABELS: Record<string, string> = {
   "react-maintenance": "React Services",
   "wordpress-maintenance": "WordPress Services",
   "site-history": "Site History",
-  "logo-page": "About the Logo",
   "link-page": "Link Page",
   "site-map": "Site Map",
   "color-guide": "Color Guide",

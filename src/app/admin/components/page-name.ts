@@ -4,7 +4,6 @@ const NAMES: Record<string, string> = {
   "/": "Home",
   "/career-and-resume": "Career & Resume",
   "/wordpress-maintenance": "WordPress Maintenance",
-  "/logo-page": "About the Logo",
 };
 
 export function getPageName(path: string): string {

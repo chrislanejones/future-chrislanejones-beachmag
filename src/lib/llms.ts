@@ -21,7 +21,7 @@ const PAGES: [path: string, title: string, note: string][] = [
   ["/browser-tabs", "Browser Tabs", "Curated dev resources and tools"],
   ["/admin-showcase", "Admin Showcase", "Tour of the custom Next.js + Convex admin that runs this site"],
   ["/site-history", "Site History", "How this site changed from 2007 WordPress to Next.js"],
-  ["/logo-page", "About the Logo", "The story behind the mountain logo"],
+  ["/design-system", "Design System", "The site's colors, type, components and motion, plus every version of the logo to download"],
 ];
 
 type Post = { title: string; slug: string; excerpt: string; content: string; createdAt: number; tags?: string[] };

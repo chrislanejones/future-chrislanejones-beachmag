@@ -32,7 +32,7 @@ const sitemapSections = [
       { label: "Browser Tabs", href: "/browser-tabs" },
       { label: "Conferences", href: "/conferences" },
       { label: "Site History", href: "/site-history" },
-      { label: "About the Logo", href: "/logo-page" },
+      { label: "Design System", href: "/design-system" },
     ],
   },
   {

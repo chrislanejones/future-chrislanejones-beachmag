@@ -1,0 +1,570 @@
+/* /design-system: the page's own layout. Everything it shows is the site's
+   real classes (interior.css, shell.css, beachmag.css); the ds-* rules here
+   only frame them. Colors come from the sheet's variables, never a literal:
+   `pnpm check:css` holds this file at zero. */
+.ds {
+  --ds-line: color-mix(in srgb, var(--ink) 30%, transparent);
+  --ds-quiet: color-mix(in srgb, var(--ink) 80%, var(--paper));
+  padding-bottom: 8px;
+}
+.ds-body {
+  min-width: 0;
+}
+.ds code {
+  font: 0.92em/1.4 var(--font-code);
+  overflow-wrap: anywhere;
+}
+/* shell.css gives an inner page's paragraphs and lists a 1em margin, and
+   globals.css sizes every p at its body step. Here the grids do the spacing
+   and a p takes its container's size. */
+.ds-body :is(p, ul, ol, dl) {
+  margin-block: 0;
+}
+:where(.ds-body) p {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* ── a section: the rule, the heading, the deck ── */
+.ds-sec {
+  margin-bottom: 68px;
+}
+.ds-body .ds-head .section-rule {
+  margin-bottom: 18px;
+}
+.ds-body .ds-head h2,
+.ds-body .ds-coda h2 {
+  margin-bottom: 12px;
+}
+.ds-body .ds-deck {
+  max-width: 62ch;
+  margin-bottom: 28px;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.ds-body .ds-note {
+  max-width: 72ch;
+  margin-bottom: 16px;
+  color: var(--ds-quiet);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.ds-h3 {
+  margin: 0 0 8px;
+  font: 900 22px/1.15 var(--font-bodoni-moda), Georgia, serif;
+  letter-spacing: -0.5px;
+}
+.ds-group {
+  margin-top: 44px;
+}
+.ds-head + .ds-group {
+  margin-top: 0;
+}
+.ds-group__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 20px;
+}
+
+/* ── cards: principles and accessibility ── */
+.ds-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ds-card {
+  padding: 20px 20px 22px;
+  border-top: 3px solid;
+  background: var(--sheet);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.ds-body .ds-card__num {
+  margin-bottom: 10px;
+  color: var(--accent);
+  font: italic 900 26px/1 var(--font-bodoni-moda), Georgia, serif;
+}
+
+/* ── logo ── */
+.ds-logos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 35px 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ds-logo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  font-size: 13px;
+}
+.ds-logo .ds-h3 {
+  margin: 0;
+}
+.ds-logo__plate {
+  position: relative;
+  height: 220px;
+  border: 1px solid var(--ds-line);
+  background: var(--sheet);
+}
+.ds-logo__plate img {
+  padding: 28px;
+  object-fit: contain;
+}
+/* The traced mountain is black line art: flip it to read on the night paper. */
+html.dark .ds-logo__line-art {
+  filter: invert(1);
+}
+.ds-logo .action-link {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+/* ── swatches ── */
+.ds-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 22px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ds-swatches--page {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+.ds-swatch {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-width: 0;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.ds-swatch__chip {
+  display: block;
+  height: 64px;
+  margin-bottom: 6px;
+  border: 1px solid var(--ds-line);
+}
+.ds-swatches--page .ds-swatch__chip {
+  height: 96px;
+}
+.ds-swatch__name {
+  font-weight: 700;
+}
+.ds-swatch__vals {
+  margin: 0;
+  font-size: 11px;
+}
+.ds-swatch__vals div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 0;
+  border-top: 1px solid var(--ds-line);
+}
+.ds-swatch__vals dd {
+  margin: 0;
+}
+
+/* ── tables ── */
+.ds-scroll {
+  margin: 22px 0 18px;
+}
+.ds-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  line-height: 1.5;
+  text-align: left;
+}
+.ds-table caption {
+  padding-bottom: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-align: left;
+  text-transform: uppercase;
+}
+.ds-table :is(th, td) {
+  padding: 10px 14px 10px 0;
+  border-top: 1px solid var(--ds-line);
+  vertical-align: top;
+}
+.ds-table thead th {
+  border-top: 2px solid;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.ds-table tbody th {
+  font-weight: 700;
+}
+.ds-pair {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 28px;
+  margin-right: 10px;
+  border: 1px solid var(--ds-line);
+  font: 900 15px/1 var(--font-bodoni-moda), Georgia, serif;
+  vertical-align: middle;
+}
+.ds-verdict {
+  margin-left: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+/* ── an example in its frame ── */
+.ds-live {
+  min-width: 0;
+  border: 1px solid var(--ds-line);
+}
+.ds-live__body {
+  display: grid;
+  place-items: center;
+  min-height: 120px;
+  margin: 0;
+  padding: 28px 22px;
+}
+.ds-body .ds-live__cap {
+  padding: 8px 12px;
+  border-top: 1px solid var(--ds-line);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+/* ── typography ── */
+.ds-faces {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.ds-face {
+  min-width: 0;
+  padding: 24px;
+  border-top: 3px solid;
+  background: var(--sheet);
+}
+.ds-face__glyphs {
+  display: flex;
+  gap: 18px;
+  font: 400 76px/1 var(--font-dm-sans), Arial, sans-serif;
+  letter-spacing: -2px;
+}
+.ds-face__glyphs span:nth-child(2) {
+  font-weight: 500;
+}
+.ds-face__glyphs span:nth-child(3) {
+  font-weight: 700;
+}
+.ds-face__glyphs--display {
+  display: block;
+  font: 900 84px/0.94 var(--font-bodoni-moda), Georgia, serif;
+  letter-spacing: -3.5px;
+}
+.ds-face em {
+  color: var(--accent);
+}
+.ds-body .ds-face__name {
+  margin: 16px 0 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.ds-face__line {
+  font-size: 15px;
+}
+.ds-face__line--display {
+  font: 900 30px/1.05 var(--font-bodoni-moda), Georgia, serif;
+  letter-spacing: -1px;
+}
+.ds-typeset {
+  display: grid;
+  justify-items: start;
+  gap: 14px;
+  width: 100%;
+}
+.ds-body .ds-typeset .page-intro {
+  margin-top: 0;
+}
+.ds-body .ds-typeset .end-note {
+  width: 100%;
+  margin: 6px 0 0;
+}
+
+/* ── spacing, rules, corners ── */
+.ds-scale,
+.ds-rules,
+.ds-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12.5px;
+}
+.ds-scale li,
+.ds-rules li {
+  display: grid;
+  grid-template-columns: 140px 44px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+.ds-scale__bar {
+  display: block;
+  width: calc(var(--ds-w) * 3px);
+  height: 14px;
+  background: var(--accent);
+}
+.ds-rules__line {
+  display: block;
+  border-top: 1px solid var(--ink);
+}
+.ds-scale__px {
+  font: 700 12px var(--font-code);
+}
+.ds-pairgrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.ds-pairgrid > div {
+  min-width: 0;
+}
+.ds-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+}
+.ds-box {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 60px;
+  border: 2px solid;
+  background: var(--sheet);
+  font-size: 11px;
+  font-weight: 700;
+}
+.ds-body .ds-list {
+  gap: 6px;
+  margin-top: 14px;
+}
+.ds-list code {
+  margin-right: 6px;
+  font-weight: 700;
+}
+
+/* ── components ── */
+.ds-comps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 38px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ds-comp {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.ds-comp .ds-live {
+  margin-bottom: 8px;
+}
+.ds-comp .ds-live__body {
+  min-height: 190px;
+}
+.ds-comp__name {
+  margin: 0;
+  font: 900 20px/1.2 var(--font-bodoni-moda), Georgia, serif;
+  letter-spacing: -0.4px;
+}
+.ds-body .ds-comp__where {
+  font-size: 12px;
+}
+.ds-body .ds-comp__src {
+  color: var(--ds-quiet);
+  font-size: 11px;
+}
+.ds-keys {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+  max-width: 340px;
+}
+/* Room for the 7 degree tilt, which swings the ribbon's ends past its box. */
+.ds-ribbons {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  padding: 22px 0 8px;
+}
+.ds-body .ds-comp :is(.section-rule, .filter-tabs, .end-note) {
+  width: 100%;
+  margin: 0;
+}
+.ds-comp .resource-tile {
+  width: 100%;
+  max-width: 360px;
+}
+.ds-end-link {
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.ds-events {
+  width: 100%;
+  max-width: 380px;
+}
+
+/* ── motion ── */
+.ds-demo {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.ds-demo__ctl {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 20px;
+}
+.ds-demo .ds-note {
+  margin: 0;
+}
+/* .interior button resets font and color; a key keeps its own, like a.radio-key does. */
+.ds .ds-play {
+  width: auto;
+  padding: 0 22px 4px;
+  color: var(--bm-ink);
+  font: 700 13px/1 var(--font-dm-sans), Arial, sans-serif;
+}
+.ds-lanes {
+  place-items: stretch;
+  gap: 12px;
+  list-style: none;
+}
+.ds-lane {
+  display: grid;
+  grid-template-columns: minmax(0, 210px) minmax(0, 1fr) 52px;
+  align-items: center;
+  gap: 14px;
+  font-size: 12.5px;
+}
+.ds-lane__track {
+  position: relative;
+  height: 18px;
+  border-bottom: 1px solid var(--ds-line);
+}
+.ds-lane__dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  transition-property: left;
+}
+.ds-lane__dot.is-end {
+  left: calc(100% - 16px);
+}
+.ds-lane__ms {
+  font: 700 12px var(--font-code);
+  text-align: right;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-lane__dot {
+    transition: none;
+  }
+}
+
+/* ── the close ── */
+.ds-coda {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 36px;
+  padding-top: 28px;
+  border-top: 5px solid;
+}
+.ds-coda__actions {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+.ds-body .ds-coda__foot {
+  margin-top: 8px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+.ds-coda__foot b {
+  color: var(--accent);
+  font: 900 20px/1 var(--font-bodoni-moda), Georgia, serif;
+}
+
+@media (max-width: 640px) {
+  .ds-sec {
+    margin-bottom: 52px;
+  }
+  .ds-faces,
+  .ds-pairgrid,
+  .ds-comps,
+  .ds-coda {
+    grid-template-columns: 1fr;
+  }
+  .ds-face__glyphs {
+    font-size: 60px;
+  }
+  .ds-face__glyphs--display {
+    font-size: 68px;
+  }
+  .ds-swatches {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ds-table {
+    font-size: 12px;
+  }
+  .ds-table :is(th, td) {
+    padding-right: 10px;
+  }
+  .ds-scale li,
+  .ds-rules li {
+    grid-template-columns: 96px 40px minmax(0, 1fr);
+    gap: 10px;
+  }
+  .ds-scale__bar {
+    width: calc(var(--ds-w) * 2px);
+  }
+  .ds-live__body {
+    padding: 24px 14px;
+  }
+  .ds-lane {
+    grid-template-columns: minmax(0, 1fr) 52px;
+    gap: 4px 14px;
+  }
+  .ds-lane__track {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}

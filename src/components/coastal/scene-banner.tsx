@@ -101,7 +101,8 @@ export const BANNER_SCENES: Record<string, BannerScene> = {
       blur: "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAADwAQCdASoQAAkAAoBCJQBOgCP7qkvJOGAA/vpnK5ujwLyVDE27Q/lafFaBaz6+iriX1hrYgrd/4AAA" },
   },
 
-  "/logo-page": {
+  // The banner was shot for the logo page, so its files keep that name.
+  "/design-system": {
     focus: "60% 55%",
     day: { still: "/banners/logo-page-day.webp", video: "/banners/logo-page-day.mp4", alt: "A 3D model of the beach, beachgoers on the sand below the hotels and dunes at sunset",
       blur: "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADwAQCdASoQAAkAAoBCJZgCsAEO5MQoroAA/ryfsnxVDZ2dOXepiY55/ts8OeXanDAGVHfOP4GBw8ph6K9y3niV17EmAAAA" },

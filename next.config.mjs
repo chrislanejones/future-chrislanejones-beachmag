@@ -155,7 +155,9 @@ const nextConfig = {
       },
       // URLs from the old site that Google still crawls (Search Console, 10-25-2026).
       { source: "/home", destination: "/", permanent: true },
-      { source: "/logo", destination: "/logo-page", permanent: true },
+      { source: "/logo", destination: "/design-system", permanent: true },
+      // The logo page grew into the design system (11-16-2026); the logo is a section there.
+      { source: "/logo-page", destination: "/design-system", permanent: true },
       { source: "/career-files/:file*", destination: "/career-and-resume", permanent: true },
       {
         source: "/wcus-2023-recap-the-largest-and-most-incredible-wordcamp-conference-to-date",

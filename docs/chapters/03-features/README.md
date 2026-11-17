@@ -18,7 +18,7 @@ The beach version brings the 2026 move back to Florida into the portfolio: St. A
 | `/browser-tabs` | Searchable, grouped developer resources |
 | `/contact` | Contact form backed by Convex |
 | `/link-page` | Social and portfolio links |
-| `/logo-page`, `/site-history` | Brand story and previous site designs |
+| `/design-system`, `/site-history` | The design system (with the logo and its downloads) and previous site designs |
 | `/react-maintenance`, `/wordpress-maintenance` | Maintenance service pages |
 | `/site-map` | Human-readable page directory |
 | `/color-guide` | Coastal palette reference |
