@@ -22,39 +22,43 @@ export const BANNER_SCENES: Record<string, BannerScene> = {
   // Chris's framing (11-18-2026): a rooftop deck under string lights. Dark mode is dusk, 18.75.
   "/events": {
     focus: "45% 60%",
-    day: { still: "/banners/events-day.webp", video: "/banners/events-day.mp4", alt: "A 3D model of a St. Augustine Beach rooftop deck: people at picnic tables under teal umbrellas and palms, string lights overhead and a hotel behind, late in the afternoon",
+    day: { still: "/banners/events-day.webp", alt: "A 3D model of a St. Augustine Beach rooftop deck: people at picnic tables under teal umbrellas and palms, string lights overhead and a hotel behind, late in the afternoon",
       blur: "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADwAQCdASoQAAkAAoBCJZQCsAEU2Cpjr4AA/smGMpEfiF/t1PYzHGb6TBuNzDvBHkf7nERoLR+PzicvF5UWibDWILhaCfiZEKdReSwExjGcrnTHARmPDAAA" },
-    night: { still: "/banners/events-night.webp", video: "/banners/events-night.mp4", alt: "A 3D model of a St. Augustine Beach rooftop deck at dusk: the string lights on over people at picnic tables under teal umbrellas, the hotel windows lit behind",
+    night: { still: "/banners/events-night.webp", alt: "A 3D model of a St. Augustine Beach rooftop deck at dusk: the string lights on over people at picnic tables under teal umbrellas, the hotel windows lit behind",
       blur: "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAQCdASoQAAkAAoBCJZwCsAEO569e/AAAzhBfTNpVWqxqbgI1bPm0Q6Lsuo9YLnNaDyIuCzzHVkQx41NTIvTz4LBViooY+yCb+93BKAE2AAAA" },
   },
+  // Stills only (11-18-2026): Chris's framing, 6.5 for Sunlit and 18.75 for After dark.
   "/browser-tabs": {
-    focus: "50% 60%",
-    day: { still: "/banners/browser-tabs-day.webp", video: "/banners/browser-tabs-day.mp4", alt: "A 3D model of a rooftop restaurant deck on A1A, diners at picnic tables under teal umbrellas, teal lounge sofas and people leaning on the cable railing, a beach hotel across the street",
-      blur: "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAABQAgCdASoQAAkAAoBCJZwAD43uL5VmTTbI/AAA/rd5rj4b25zUE5aD1EaQx2sWHBwS/ZvcWp0qyWOxubMrOMBvc0p3f89ALFEc0Dt3JSjI4AljAAA=" },
-    night: { still: "/banners/browser-tabs-night.webp", video: "/banners/browser-tabs-night.mp4", alt: "A 3D model of a rooftop restaurant deck on A1A at night, lanterns on the tables and string lights over diners under teal umbrellas, hotel windows lit across the street",
-      blur: "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADwAQCdASoQAAkAAoBCJYwCdAERB8IgP4AA/vn8ExBWww507ypB93bLtHZb0xxJJwM41Yn7NsafxjXcHnGay16LJwsVl0xcoYAAAA==" },
+    focus: "45% 50%",
+    day: { still: "/banners/browser-tabs-day.webp", alt: "A 3D model of a St. Augustine Beach corner from above: the Cone Cove ice cream shop under palms, a crosswalk and a flag, with the ocean past the rooftops in the morning",
+      blur: "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAACwAQCdASoQAAkAAoBCJZQC7AEOh1WwAP4nv6n/bzT9znkkKwfVXm66VJRMd3yrrYzw3sWmGNwWkj6czhbgMcnzynYLlSZc1pNEbLVIOgAAAA==" },
+    night: { still: "/banners/browser-tabs-night.webp", alt: "A 3D model of a St. Augustine Beach corner at dusk from above: Cone Cove's windows lit under the palms, a crosswalk and a flag, the ocean past the rooftops",
+      blur: "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAACwAQCdASoQAAkAAoBCJZwAAuTU8JoAAP7sW/zZ3LefCa7UoSrtSD3c9NxPrRiacEMuOqnB5d3j4hvlYhWgAAAA" },
   },
+  // Stills only (11-18-2026): Chris's framing, 6.0 for Sunlit and 18.75 for After dark.
   "/contact": {
-    focus: "60% 60%",
-    day: { still: "/banners/contact-day.webp", video: "/banners/contact-day.mp4", alt: "A 3D model of the beach from above the dunes, a dune walkover, beachgoers on the sand and a fishing boat offshore at sunrise",
-      blur: "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAACwAQCdASoQAAkAAoBCJZQCdAD0LkJsAP7wF34ZbvMXxRn29W+/rH/6bvvieuVfTluiz3xeJb7RONmoUdD9/jo1OzX/p/T/AAA=" },
-    night: { still: "/banners/contact-night.webp", video: "/banners/contact-night.mp4", alt: "A 3D model of the beach from above the dunes, a dune walkover, beachgoers on the sand and a fishing boat offshore under the moon",
-      blur: "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAQCdASoQAAkAAoBCJQBOgB7HXICAAP76ZXpMcqem1UVgy5vp+rmU51U2GzWYEN4LE6JHuk/mj6Wg7bgAAA==" },
+    focus: "45% 60%",
+    day: { still: "/banners/contact-day.webp", alt: "A 3D model of two people in beach chairs under an umbrella at sunrise, a cooler between them, one talking on a giant 1980s brick phone, a fishing boat offshore",
+      blur: "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAACwAQCdASoQAAkAAoBCJZwCdAEOI+oAAP7tm004RoUpkIvYhUljEySoLctMsk6sThEAQc4SZ5AEAGFUAAA=" },
+    night: { still: "/banners/contact-night.webp", alt: "A 3D model of two people in beach chairs under an umbrella at dusk, a cooler between them, one talking on a giant 1980s brick phone, a fishing boat offshore",
+      blur: "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoQAAkAAoBCJYwCdAERHMCgAPx8jpj1y2OfChsLXaFAKLTCQS4u0QOS6ADUAAAA" },
   },
+  // Stills only (11-18-2026): Chris's framing, 6.0 for Sunlit and 18.75 for After dark.
   "/blog": {
-    focus: "68% 70%",
-    day: { still: "/banners/blog-day.webp", video: "/banners/blog-day.mp4", alt: "A 3D model of a Northeast Florida beach town seen from the water at dawn, a fishing boat offshore, beachgoers and dune walkovers below the beach houses and hotels under a lavender sky",
-      blur: "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoQAAkAAoBCJZACdAEPQ3aEAAD+1Nkx89LrzqPor5tQ3mNjknNAaSxlmukPRhzGa2hT6yLCKbyeJAAA" },
-    night: { still: "/banners/blog-night.webp", video: "/banners/blog-night.mp4", alt: "A 3D model of a Northeast Florida beach town seen from the water at night, a fishing boat offshore, windows lit in the beach houses and hotels under the stars",
-      blur: "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAADQAQCdASoQAAkAAoBCJQBOgCHh16BgAAD++mD3yVgx1N11rj294EbVm8ZyhcrjDReXgAAA" },
+    focus: "45% 50%",
+    day: { still: "/banners/blog-day.webp", alt: "A 3D model of St. Augustine Beach from the water at sunrise: a fishing boat offshore, the dunes and beach houses behind it",
+      blur: "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAAAQAgCdASoQAAkAAoBCJYgCdH8AGEi/u8YAAP7q6yp1pOhV0mCCdmDSliaTxLLG4ZIbf4NxN5znqm1Cas6i0ZutBFXxTNuIAAA=" },
+    night: { still: "/banners/blog-night.webp", alt: "A 3D model of St. Augustine Beach from the water at dusk: a fishing boat offshore, the first windows lit in the beach houses behind it",
+      blur: "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoQAAkAAoBCJQBOgB6JBTRCgAD+WEJSmTDQ1GxDqH/Ul44evAOa9gVvDYVYwA6rsC2DT9xGxdZWbxgA" },
   },
 
+  // Stills only (11-18-2026): Chris's framing, 6.0 for Sunlit and 18.75 for After dark.
   "/conferences": {
-    focus: "75% 55%",
-    day: { still: "/banners/conferences-day.webp", video: "/banners/conferences-day.mp4", alt: "A 3D model of the pier reaching into the Atlantic at sunset",
-      blur: "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADwAQCdASoQAAkAAoBCJZgCsAEUov5jgzgA+p/5vBk125haQUsTwACul/9w/Dr64WKEJ6HqlUSeYNzfsTTo2sd44ecPf+J5UAA=" },
-    night: { still: "/banners/conferences-night.webp", video: "/banners/conferences-night.mp4", alt: "A 3D model of the pier reaching into the Atlantic at night, windows lit",
-      blur: "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAABwAQCdASoQAAkAAoBCJYgCdAF1AAD+9vTyTNqPe/v3yXz6fRBugKWCw443DIUlhftpTlP0svVe+KeAZDPgxd8SO2QAAA==" },
+    focus: "40% 55%",
+    day: { still: "/banners/conferences-day.webp", alt: "A 3D model of the Envoy Suites hotel beside the volleyball courts at sunrise, the beach pavilion and the ocean at the end of the parking lot",
+      blur: "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAAAQAgCdASoQAAkAAoBCJZQCsAECptUG5ngAAMyj40dGbS4qhNrmW0WYWHCQPIcAcw0yVH3CY1ABnA0ReUCRUsrjFecGlXBLi+o2jm8GzgA=" },
+    night: { still: "/banners/conferences-night.webp", alt: "A 3D model of the Envoy Suites hotel beside the volleyball courts at dusk, its windows lit and the beach pavilion at the end of the parking lot",
+      blur: "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAAAQAgCdASoQAAkAAoBCJZQC7AEezx3EqTQAAP40eK6FGXq3TqJyqUGNBQhwvrOgPLZA4B+B4mJ4Et7+xHWRv9A6Rm3cAA==" },
   },
   // Stills only: the beach chairs under the umbrella south of the pier
   // (global camera at 19.7, 0.8, -10.4 looking at 24.8, 0.1, -16.5;
@@ -66,32 +70,35 @@ export const BANNER_SCENES: Record<string, BannerScene> = {
     night: { still: "/banners/lets-meet-night.webp", alt: "A 3D model of two beach chairs under an umbrella on the sand, the pier and swimmers down the beach at night",
       blur: "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAADQAQCdASoQAAkAA4BaJYwAAu0dpchAAAD+u1/RcvL9uZztQx6QwaAA" },
   },
+  // Stills only (11-18-2026): Chris's framing, 5.75 for Sunlit and 18.75 for After dark.
   "/career-and-resume": {
-    focus: "60% 55%",
-    day: { still: "/banners/career-and-resume-day.webp", video: "/banners/career-and-resume-day.mp4", alt: "A 3D model of a beachfront resort beside the pier, a sailboat offshore and the beach town along the shore at sunset",
-      blur: "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADwAQCdASoQAAkAAoBCJZQCdAEOgjSTcyAA/tUXv1hht0W/P8IJVV8V8g/d5nOslDH97kbLcmkAhV8XBpsUgOj/HVFZWgAA" },
-    night: { still: "/banners/career-and-resume-night.webp", video: "/banners/career-and-resume-night.mp4", alt: "A 3D model of a beachfront resort beside the pier, a sailboat offshore and the beach town along the shore at night, windows lit",
-      blur: "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAQCdASoQAAkAAoBCJQBOgCGgnADgAP76b2cWJSW6t1d/63ACRSh7XCSZaZYgXky8qBBUUjg7ePiIRbGAAA==" },
+    focus: "40% 50%",
+    day: { still: "/banners/career-and-resume-day.webp", alt: "A 3D model of the Envoy Suites hotel from across A1A at sunrise: palms in the front lot, cars parked under the building and the valet canopy past the corner",
+      blur: "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQAgCdASoQAAkAAoBCJZwC7AEQFPpL7mhAAP55P23ZDAxidZZtE69pinBrA6QrnzJt3D3IcQwGc9qrJ0cFjA6PuZsLa2hGYYAAAA==" },
+    night: { still: "/banners/career-and-resume-night.webp", alt: "A 3D model of the Envoy Suites hotel from across A1A at dusk: its windows lit above the palms in the front lot and the valet canopy past the corner",
+      blur: "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADwAQCdASoQAAkAAoBCJZwCdAEU+bAPzwAA/s4HIHUv3M+OgAsHtsbrcN6WgjofE2TZPmlLzZXdbSqt2qVs8rQROxhplaAA" },
   },
+  // Stills only (11-18-2026): Chris's framing, 6.0 for Sunlit and 18.75 for After dark.
   "/projects": {
-    focus: "50% 62%",
-    day: { still: "/banners/projects-day.webp", video: "/banners/projects-day.mp4", alt: "A 3D model of the pier from the water, beachgoers on the sand and the beach town and hotels along the shore at sunrise",
-      blur: "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADQAQCdASoQAAkAAoBCJZgCdAEOO30oAAD+6yWzl9hefHH6s4NMJVMeiVPDipP0SZL1g5flOuXKp2ZQN16vOZz6iS/Kn083TAAAAA==" },
-    night: { still: "/banners/projects-night.webp", video: "/banners/projects-night.mp4", alt: "A 3D model of the pier from the water, beachgoers on the sand and the beach town and hotels along the shore at night, windows lit",
-      blur: "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAADQAQCdASoQAAkAAoBCJQBOgCP/5MWHwAD++dgWU1YNC/OF5IUc7P3kFxAviUxxGR1GJwAA" },
+    focus: "40% 55%",
+    day: { still: "/banners/projects-day.webp", alt: "A 3D model of a beach lot under construction beside the dune at sunrise: footings on a concrete slab, a sand pile and orange safety fence, the ocean and pier beyond",
+      blur: "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADQAQCdASoQAAkAAoBCJZwCdAEU9PGoAAD5QuNHBZSgdLNnXzG1rOopyKYXm1AMfhslmH4l/uysNa32gq2cLEFAm4BiF8VhwwAAAA==" },
+    night: { still: "/banners/projects-night.webp", alt: "A 3D model of a beach lot under construction beside the dune at dusk: footings on a concrete slab and a sand pile, windows lit in the house next door",
+      blur: "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAADwAQCdASoQAAkAAoBCJZwC7AEPBG5X1vAA/oQfvAUJ3gO6lT/zJqfQqcpJ1zdGJWOpN0BtQ7FncqQPJgcTCcIeAAA=" },
   },
+  // Stills only (11-18-2026): Chris's framing, 6.5 for Sunlit and 18.75 for After dark.
   "/site-history": {
-    focus: "65% 50%",
-    day: { still: "/banners/site-history-day.webp", alt: "A 3D model of a Northeast Florida beach town from the air, the town, its dune walkovers and the pier running along the Atlantic in the early morning",
-      blur: "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADQAQCdASoQAAkAAoBCJQBWACHQBH3D4AD+6soOSNhOh5VFppgnLPLyPAEZ/dwtm3FMNUzH8TT1FLGZmro2V8rEkSSROrIWYGQx6RchREAAAA==" },
-    night: { still: "/banners/site-history-night.webp", alt: "A 3D model of a Northeast Florida beach town from the air, the town, its dune walkovers and the pier running along the Atlantic at night, windows lit",
-      blur: "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoQAAkAAoBCJQBOgCP7q5RCHwAA/vnJDZP/xGrWd4oTanavWgWc0K+SZuOKcJnzcMUWXqweehAAAA==" },
+    focus: "40% 50%",
+    day: { still: "/banners/site-history-day.webp", alt: "A 3D model of the El Castillo resort hotel from the street: its sign, a flag and palms out front, early in the morning",
+      blur: "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADQAQCdASoQAAkAAoBCJYwCdAC1MY5n+AD+64IEwGcbNcKC37HK8+A3yjw8K6v2P0Vq49JWA6cRwZUJFtEFxD8RZfeGHFlQEDrZZgj6AAA=" },
+    night: { still: "/banners/site-history-night.webp", alt: "A 3D model of the El Castillo resort hotel from the street at dusk: windows lit above its sign, the flag and the lamps along the curb",
+      blur: "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAQAgCdASoQAAkAAoBCJZQCdAEfwGv6HN6AAM39uCJ4Q1zRyWfjtO8wIV0h0ugPljIidVadzjzve/cCDVa5BlCPkWVo9jqcSZkggAAA" },
   },
   "/site-map": {
     focus: "68% 50%",
-    day: { still: "/banners/site-map-day.webp", video: "/banners/site-map-day.mp4", alt: "A 3D model of a top-down map of the beach town streets, beach and ocean at midday",
+    day: { still: "/banners/site-map-day.webp", alt: "A 3D model of a top-down map of the beach town streets, beach and ocean at midday",
       blur: "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAACwAQCdASoQAAkAAoBCJQBOgBjsndp4AP4VKtckqvoUY3x19aZz29q7UNYCdGTt6Mp1qPO55x+bd6aWAAA=" },
-    night: { still: "/banners/site-map-night.webp", video: "/banners/site-map-night.mp4", alt: "A 3D model of a top-down map of the beach town streets, beach and ocean at night, windows lit",
+    night: { still: "/banners/site-map-night.webp", alt: "A 3D model of a top-down map of the beach town streets, beach and ocean at night, windows lit",
       blur: "data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAADQAQCdASoQAAkAAoBCJYwCdAEO+LuSgAD+/EkxQ94RIgoWrAz8diLsuUAAAA==" },
   },
   "/react-maintenance": {
@@ -110,19 +117,19 @@ export const BANNER_SCENES: Record<string, BannerScene> = {
       blur: "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAADwAQCdASoQAAkAAoBCJQBOgCP7qkvJOGAA/vpnK5ujwLyVDE27Q/lafFaBaz6+iriX1hrYgrd/4AAA" },
   },
 
-  // The banner was shot for the logo page, so its files keep that name.
+  // Stills only (11-18-2026): Chris's framing, 6.5 for Sunlit and 18.75 for After dark.
   "/design-system": {
-    focus: "60% 55%",
-    day: { still: "/banners/logo-page-day.webp", video: "/banners/logo-page-day.mp4", alt: "A 3D model of St. Augustine Beach from above the houses: dune walkovers cross to the sand, the beach runs north to the pier and a boat sits offshore under a pink evening sky",
-      blur: "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoQAAkAAoBCJZQC7AELXCV3R3AA/pG/qSAxOxelqZf4qusGcuVp1qEBhR3todL+4MaYXzXmPRTjXbb5RM3WmF6qo/NnzUAA" },
-    night: { still: "/banners/logo-page-night.webp", video: "/banners/logo-page-night.mp4", alt: "A 3D model of St. Augustine Beach at dusk from above the houses: the first windows lit, dune walkovers crossing to the sand and the beach running north to the pier",
-      blur: "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAAAQAgCdASoQAAkAAoBCJZQC7AEWUOrFwM3gAP1T+Zz87atr4X3BCC0HcPAJjKZIje5+c94ivVp2qx5MmtkbwvyFAx2gAA==" },
+    focus: "45% 50%",
+    day: { still: "/banners/design-system-day.webp", alt: "A 3D model of a three-story building with angled white fins from above the rooftops, a pool beside it and the town behind, in the morning",
+      blur: "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAACwAQCdASoQAAkAAoBCJZQAAub0lRJIAP7Bh6pINe1wXeVxiajlq1Pwijr3qlMXmDzsmOsTqIV5KoY8IpKLnayqRT6i71PIxDga2gAA" },
+    night: { still: "/banners/design-system-night.webp", alt: "A 3D model of a three-story building with angled white fins at dusk, a few windows lit, a pool beside it and the town behind",
+      blur: "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAQCdASoQAAkAAoBCJZQC7AEOZ0BAAP713WOugUifYS8zsTkWmYlNgdbVQ2zuAKZ4CN9KR3AtbAOC8fwAAA==" },
   },
   "/admin-showcase": {
     focus: "75% 70%",
-    day: { still: "/banners/admin-showcase-day.webp", video: "/banners/admin-showcase-day.mp4", alt: "A 3D model of the El Castillo resort hotel above the Atlantic at sunset",
+    day: { still: "/banners/admin-showcase-day.webp", alt: "A 3D model of the El Castillo resort hotel above the Atlantic at sunset",
       blur: "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADQAQCdASoQAAkAAoBCJZQCdAEOqPP/AAD+8f5NLSUQavTkY+yVZojz8idUsUXe3gK7JfWKAnR3MLvSXNHU2HWwBpWBVIirriwAHPp9uwNG/AAA" },
-    night: { still: "/banners/admin-showcase-night.webp", video: "/banners/admin-showcase-night.mp4", alt: "A 3D model of the El Castillo resort hotel above the Atlantic at night, windows lit",
+    night: { still: "/banners/admin-showcase-night.webp", alt: "A 3D model of the El Castillo resort hotel above the Atlantic at night, windows lit",
       blur: "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAACwAQCdASoQAAkAAoBCJQBOgCHfPL2oAP75xiiE4v6Rz+K11AZVM9k+7goAPaVAmxwxTu9EWxgAAA==" },
   },
 };

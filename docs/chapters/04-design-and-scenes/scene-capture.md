@@ -1,6 +1,8 @@
 # Page banner scenes
 
-The home hero and 13 page banners now show the St. Augustine Beach 3D world (`~/repo/3d-world`, recorded at `2bb3fc8`). Each one is a still followed by a seamless video loop: day in light mode, night (21:00) in dark mode. `src/components/coastal/scene-banner.tsx` maps each page path to its image. Any page not listed there keeps the drawn `BeachBanner`.
+The home hero and 13 page banners now show the St. Augustine Beach 3D world (`~/repo/3d-world`, recorded at `2bb3fc8`). Each one is a still followed by a seamless video loop: day in light mode, night (21:00) in dark mode.
+
+**Since 11-18-2026 only the home hero plays video.** Every page banner is two stills: a day photo for Sunlit and a dusk or night photo for After dark. The loop notes below now apply to the home hero only. `src/components/coastal/scene-banner.tsx` maps each page path to its image. Any page not listed there keeps the drawn `BeachBanner`.
 
 ## Home
 
