@@ -6,7 +6,7 @@
 
 html.vice-neon{
   --v-night:#0b0220;--v-panel:#140530;--v-panel-2:#1c0845;--v-ink:#f4e8ff;
-  --v-pink:#ff2d95;--v-cyan:#1ff0ff;--v-sun:#ffd23f;--v-violet:#7b3cff;--v-line:#4b2d86;
+  --v-pink:#ff2d95;--v-pink-deep:#b3125f;--v-violet-deep:#5a1fd1;--v-cyan:#1ff0ff;--v-sun:#ffd23f;--v-violet:#7b3cff;--v-line:#4b2d86;
   --v-script:Yellowtail,'Brush Script MT',cursive;
   --glow-pink:0 0 4px #fff6,0 0 10px #ff2d95,0 0 28px #ff2d95aa,0 0 60px #ff2d9566;
   --glow-cyan:0 0 4px #fff5,0 0 10px #1ff0ffcc,0 0 30px #1ff0ff88;
@@ -20,7 +20,7 @@ html.vice-neon body{
 html.vice-neon body>main{box-shadow:0 0 0 1px #ff2d9566,0 0 90px #7b3cff66}
 
 /* One-day ribbon */
-html.vice-neon body>main::before{content:"ONE DAY ONLY  ✦  THE VICE EDITION  ✦  SAME A1A, DIFFERENT NEON";display:block;white-space:pre-wrap;text-align:center;padding:9px 16px;background:linear-gradient(90deg,#ff2d95,#7b3cff 50%,#12b8e6);color:#fff;font:700 11px var(--font-dm-sans,'DM Sans'),Arial,sans-serif;letter-spacing:.24em}
+html.vice-neon body>main::before{content:"ONE DAY ONLY  ✦  THE VICE EDITION  ✦  SAME A1A, DIFFERENT NEON";display:block;white-space:pre-wrap;text-align:center;padding:9px 16px;background:#0b0220;color:#fff;border-bottom:1px solid #ff2d9566;font:700 11px var(--font-dm-sans,'DM Sans'),Arial,sans-serif;letter-spacing:.24em}
 
 /* Nav */
 html.vice-neon #site-nav{border-bottom:3px solid;border-image:var(--v-rainbow) 1;text-transform:uppercase;letter-spacing:.14em;font-size:11px}
@@ -68,7 +68,7 @@ html.vice-neon #featured-projects .project-cutout:nth-child(2) .project-print{bo
 html.vice-neon #featured-projects .project-print img{filter:saturate(1.2) contrast(1.04);background:#0b0220;border-color:#fff2}
 html.vice-neon #featured-projects .project-print>span{color:var(--v-sun);letter-spacing:.2em}
 html.vice-neon #featured-projects .project-go{background:#0d0224;border-color:var(--v-pink);box-shadow:4px 4px 0 var(--v-cyan);text-transform:uppercase;letter-spacing:.14em;font-size:11px}
-html.vice-neon #featured-projects .project-go:hover{background:var(--v-pink);color:#fff;box-shadow:4px 4px 0 var(--v-cyan),0 0 26px #ff2d95}
+html.vice-neon #featured-projects .project-go:hover{background:var(--v-pink-deep);color:#fff;box-shadow:4px 4px 0 var(--v-cyan),0 0 26px #ff2d95}
 html.vice-neon #featured-projects .projects-bottom{border-color:var(--v-line);color:#c9b5ee}
 
 /* Radio, ramblings, postcards */
@@ -81,7 +81,7 @@ html.vice-neon #beach-offline .station[aria-pressed=true]{color:#ffd0ea;border-c
 html.vice-neon #beach-offline .dial-needle{background:var(--v-pink);box-shadow:0 0 8px var(--v-pink)}
 html.vice-neon #beach-offline .real-status{color:var(--v-cyan);letter-spacing:.1em}
 html.vice-neon #beach-offline .skill-links a{color:var(--v-cyan)}
-html.vice-neon #beach-offline .skill-sticker{background:linear-gradient(100deg,#ff2d95,#7b3cff);color:#fff}
+html.vice-neon #beach-offline .skill-sticker{background:linear-gradient(100deg,var(--v-pink-deep),var(--v-violet-deep));color:#fff}
 html.vice-neon #beach-offline .sticker-label{font:400 30px/1 var(--v-script)}
 html.vice-neon #beach-offline .ramble,html.vice-neon #beach-offline .photo-front{box-shadow:0 0 0 1px var(--v-pink),6px 8px 0 #ff2d9566}
 html.vice-neon #beach-offline .ramble:before{background:#1ff0ff66}
@@ -95,7 +95,7 @@ html.vice-neon #beach-offline .plain-button{border-color:var(--v-pink);color:#ff
 html.vice-neon #coastal-art #tool-gallery{border-top:3px solid;border-image:var(--v-rainbow) 1;--rule:var(--v-line)}
 html.vice-neon #coastal-art #tool-gallery h2{border-bottom:3px solid var(--v-cyan);box-shadow:0 8px 14px -12px var(--v-cyan)}
 html.vice-neon #tool-gallery .eyebrow{color:var(--v-cyan);letter-spacing:.2em}
-html.vice-neon #tool-gallery .category[aria-pressed=true]{background:linear-gradient(100deg,#ff2d95,#7b3cff);color:#fff;box-shadow:0 0 24px #ff2d9577}
+html.vice-neon #tool-gallery .category[aria-pressed=true]{background:linear-gradient(100deg,var(--v-pink-deep),var(--v-violet-deep));color:#fff;box-shadow:0 0 24px #ff2d9577}
 html.vice-neon #tool-gallery .category[aria-pressed=true] .arrow{color:#fff}
 html.vice-neon #tool-gallery .category:hover{box-shadow:inset 0 -4px 0 var(--v-cyan)}
 html.vice-neon #tool-gallery .tech-item:nth-child(odd) .brand-icon{background:var(--v-cyan);filter:drop-shadow(0 0 7px #1ff0ff99)}
@@ -112,15 +112,44 @@ html.vice-neon #sandbox .game-stage{border-color:var(--v-pink);box-shadow:0 0 34
 html.vice-neon #sandbox .game-stage>div{filter:brightness(.6) contrast(1.3)}
 html.vice-neon #sandbox .game-stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(215deg,#12d8f0 0,#2b6bff 30%,#a12bff 52%,#ff2d95 100%);mix-blend-mode:color;opacity:.92}
 
-/* Hero: the lifeguard stand keeps its drawing; a filter repaints it (blue body,
-   pink roof and rails) and hangs the VI board on the railing. A striped sun sits behind. */
-html.vice-neon #coastal-art .lifeguard-drawing.beach-figure{-webkit-mask:none;mask:none;background:var(--art) center bottom/contain no-repeat;opacity:1;transform:none;right:14px;top:168px;width:332px;height:370px;filter:url(#vice-tower-neon)}
-html.vice-neon #coastal-art .direction::before{content:"";position:absolute;z-index:-2;right:52px;top:276px;width:250px;height:250px;border-radius:50%;background:linear-gradient(#ffd23f 0,#ff7a3c 30%,#ff2d95 58%,#b01cc8 100%);-webkit-mask:linear-gradient(#000 0 52%,transparent 52% 54.5%,#000 54.5% 63%,transparent 63% 66.5%,#000 66.5% 75%,transparent 75% 79.5%,#000 79.5% 88%,transparent 88% 93%,#000 93%);mask:linear-gradient(#000 0 52%,transparent 52% 54.5%,#000 54.5% 63%,transparent 63% 66.5%,#000 66.5% 75%,transparent 75% 79.5%,#000 79.5% 88%,transparent 88% 93%,#000 93%);opacity:.55}
+
+/* Beach figures (lifeguard stand, beach girl, surfer): the same line drawings,
+   painted one solid neon pink with a soft halo. Nothing sits behind them. */
+html.vice-neon .beach-figure{-webkit-mask:none;mask:none;background:var(--art) center bottom/contain no-repeat;opacity:1;filter:url(#vice-ink-neon)}
+html.vice-neon #coastal-art .lifeguard-drawing.beach-figure{opacity:1;transform:none;right:14px;top:168px;width:332px;height:370px;filter:url(#vice-tower-neon)}
+@media(min-width:1101px){html.vice-neon #sandbox .sandbox-heading{grid-template-columns:1fr 1fr 190px}}
+@media(max-width:1100px){html.vice-neon #sandbox .sand-figure{display:none}}  /* as the live site: no room beside the heading */
+html.vice-neon #sandbox .sand-figure{align-self:end;justify-self:center;height:250px;aspect-ratio:999/1458}
+html.vice-neon #coastal-footer .footer-figures{opacity:1}
+
+/* Inner pages (contact shown): same palette on the interior shell. */
+html.vice-neon .interior{--paper:var(--v-panel);--ink:var(--v-ink);--sheet:var(--v-panel-2);--accent:var(--v-pink);background:radial-gradient(520px 320px at 78% 250px,#ff2d9533,transparent 70%),linear-gradient(#0b0220,#2a0a55 330px,#140530 760px) top/100% 760px no-repeat,var(--v-panel)}
+html.vice-neon .interior:before{opacity:.04}
+html.vice-neon .edition-row{border-color:var(--v-line);color:var(--v-cyan)}
+html.vice-neon .edition-row button{border-color:var(--v-line);color:#c9b5ee;background:transparent}
+html.vice-neon .edition-row button.vice-edition{color:#fff;border-color:var(--v-pink);box-shadow:0 0 0 1px var(--v-pink),0 0 18px #ff2d95aa,inset 0 0 14px #ff2d9555}
+html.vice-neon .page-kicker{color:var(--v-cyan);letter-spacing:.2em}
+html.vice-neon .interior h1 em{font-family:var(--v-script);font-style:normal;font-weight:400;letter-spacing:0;font-size:1.3em;line-height:.8;color:#ffe3f3;text-shadow:var(--glow-pink);display:inline-block;transform:rotate(-4deg);padding-right:.2em}
+html.vice-neon .page-polaroid{box-shadow:0 0 0 2px var(--v-pink),0 0 30px #ff2d9588,9px 11px 0 var(--v-cyan)}
+html.vice-neon .page-polaroid:before{background:#1ff0ff66}
+html.vice-neon .page-polaroid img{filter:url(#vice-neon-photo)}
+html.vice-neon .page-polaroid figcaption{font:400 30px/1 var(--v-script);color:#d9fdff;text-shadow:var(--glow-cyan)}
+html.vice-neon .section-rule{border-top:3px solid;border-image:var(--v-rainbow) 1;color:#c9b5ee}
+html.vice-neon .contact-letter{border-top-color:var(--v-pink);box-shadow:0 0 0 1px var(--v-pink),6px 8px 0 #ff2d9566}
+html.vice-neon .action-link{border-color:var(--v-pink);background:#0d0224;box-shadow:4px 4px 0 var(--v-cyan);text-transform:uppercase;letter-spacing:.14em;font-size:11px}
+html.vice-neon .action-link:hover{background:var(--v-pink-deep);color:#fff}
+html.vice-neon .contact-aside,html.vice-neon .contact-aside a{border-color:var(--v-line)}
+html.vice-neon .contact-number{font:400 76px/1 var(--v-script);color:#ffe3f3;text-shadow:var(--glow-pink)}
+html.vice-neon .contact-services>a{border-color:var(--v-line)}
+html.vice-neon .contact-services>a:hover{box-shadow:4px 4px 0 var(--v-pink)}
+html.vice-neon .contact-aside>svg{color:#ff5cae;filter:drop-shadow(0 0 3px var(--v-pink)) drop-shadow(0 0 14px #ff2d9599)}
+
+/* Keyboard focus */
+html.vice-neon :focus-visible{outline:3px solid var(--v-cyan);outline-offset:4px}
 
 /* Phones */
 @media(max-width:640px){
 html.vice-neon #coastal-art .lifeguard-drawing.beach-figure{width:126px;height:140px;right:6px;top:182px}
-html.vice-neon #coastal-art .direction::before{width:92px;height:92px;right:22px;top:222px}
 html.vice-neon #coastal-art .mast{font-size:50px;padding-bottom:10px}
 html.vice-neon #coastal-art .mast em{font-size:1.45em;transform:rotate(-6deg) translate(.15em,-.15em)}
 html.vice-neon #coastal-art .sticker{font-size:26px}
@@ -131,10 +160,6 @@ html.vice-neon body>main::before{font-size:9px;letter-spacing:.14em}
    photo or banner video swapped in later gets the same night-neon grade. */
 html.vice-neon #coastal-art .map,html.vice-neon #beach-offline .ramble-photo img,html.vice-neon #beach-offline .photo-front img,html.vice-neon #beach-offline .album-photo img{filter:url(#vice-neon-photo)}
 
-/* Beach figures become neon signs: white-hot line, coloured glow. */
-html.vice-neon .beach-figure{-webkit-mask:none;mask:none;background:var(--art) center bottom/contain no-repeat;filter:invert(1) drop-shadow(0 0 2px var(--v-pink)) drop-shadow(0 0 9px var(--v-pink)) drop-shadow(0 0 26px #ff2d9599)}
-html.vice-neon #sandbox .sandbox-heading{grid-template-columns:1fr 1fr 190px;background:linear-gradient(transparent 0 58%,#110430 58% 61%,transparent 61% 69%,#110430 69% 73%,transparent 73% 81%,#110430 81% 86%,transparent 86%) right 0 bottom 30px/190px 190px no-repeat,radial-gradient(circle closest-side,#ffd23f 0,#ff7a3c 45%,#ff2d95 78%,#b01cc8 99%,transparent 100%) right 0 bottom 30px/190px 190px no-repeat}
-html.vice-neon #sandbox .sand-figure{align-self:end;justify-self:center;height:250px;aspect-ratio:999/1458;opacity:1;filter:invert(1) drop-shadow(0 0 2px var(--v-cyan)) drop-shadow(0 0 9px var(--v-cyan)) drop-shadow(0 0 24px #1ff0ff88)}
 
 /* Footer: last call on the grid */
 html.vice-neon #coastal-footer{--footer-paper:#07010f;--footer-ink:var(--v-ink);--footer-accent:var(--v-pink);border-top:3px solid;border-image:var(--v-rainbow) 1;background:linear-gradient(#07010f 0,#07010fee 40%,#07010f33 100%),repeating-linear-gradient(90deg,#1ff0ff44 0 1px,transparent 1px 46px),repeating-linear-gradient(0deg,#1ff0ff44 0 1px,transparent 1px 46px),#07010f}
@@ -146,6 +171,3 @@ html.vice-neon #coastal-footer .footer-contact{background:#07010f;border-color:v
 html.vice-neon #coastal-footer h3{color:var(--v-cyan);letter-spacing:.2em}
 html.vice-neon #coastal-footer .footer-wave{color:var(--v-cyan);filter:drop-shadow(0 0 6px var(--v-cyan))}
 html.vice-neon #coastal-footer .footer-colophon{border-top-color:var(--v-line)}
-html.vice-neon #coastal-footer .footer-figures{opacity:1}
-html.vice-neon #coastal-footer .footer-figures::before{content:"";position:absolute;right:8px;bottom:120px;width:330px;height:330px;border-radius:50%;background:linear-gradient(#ffd23f 0,#ff7a3c 30%,#ff2d95 58%,#b01cc8 100%);-webkit-mask:linear-gradient(#000 0 52%,transparent 52% 54.5%,#000 54.5% 63%,transparent 63% 66.5%,#000 66.5% 75%,transparent 75% 79.5%,#000 79.5% 88%,transparent 88% 93%,#000 93%);mask:linear-gradient(#000 0 52%,transparent 52% 54.5%,#000 54.5% 63%,transparent 63% 66.5%,#000 66.5% 75%,transparent 75% 79.5%,#000 79.5% 88%,transparent 88% 93%,#000 93%);opacity:.5}
-html.vice-neon #coastal-footer .footer-figures .beach-figure{filter:invert(1) drop-shadow(0 0 2px var(--v-pink)) drop-shadow(0 0 10px var(--v-pink)) drop-shadow(0 0 28px #ff2d95)}

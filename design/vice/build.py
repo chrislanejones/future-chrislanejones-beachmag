@@ -1,4 +1,5 @@
-"""Builds the two Vice-edition homepage mock-ups from design/outputs/coastal-homepage.html.
+"""Builds the Vice-edition mock-ups: the homepage (design/outputs/coastal-homepage.html)
+and the contact page (design/site/coastal-contact.html), each in two variants.
 
   python3 build.py [path/to/simple-icons/icons]
 
@@ -45,28 +46,31 @@ FILTERS = f'''<svg width="0" height="0" style="position:absolute" aria-hidden="t
 </filter></defs></svg>'''
 
 
-def tower_filter(fid, body, trim, board, glow):
-    """Recolours the lifeguard-stand line art in place and hangs a VI board on its
-    railing. Regions are fractions of the drawing: roof and flag, then deck and rails."""
-    sign = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 100"><g transform="rotate(3 110 50)">'
-            f'<rect x="8" y="9" width="204" height="82" fill="{board}" stroke="{trim}" stroke-width="6"/>'
-            f'<path d="M62 24h19l15 42 15-42h19L105 80H87ZM142 24h18v56h-18Z" fill="{trim}"/></g></svg>')
-    blur = f'<feGaussianBlur in="art" stdDeviation="{glow}" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="art"/></feMerge>' if glow else ''
+def ink_filter(fid, ink, glow='', board=None, numeral=None):
+    """Paints a line drawing (public/art, black ink on transparent) in one solid
+    colour, in place. With `board`, also hangs a VI board on the lifeguard
+    stand's railing; with `glow`, adds a soft halo of the same colour."""
+    sign = ''
+    if board:
+        svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 100"><g transform="rotate(3 110 50)">'
+               f'<rect x="8" y="9" width="204" height="82" fill="{board}" stroke="{numeral}" stroke-width="6"/>'
+               f'<path d="M62 24h19l15 42 15-42h19L105 80H87ZM142 24h18v56h-18Z" fill="{numeral}"/></g></svg>')
+        sign = f'''<feFlood flood-color="#000" x=".4" y=".4" width=".22" height=".11" result="hole"/>
+<feComposite in="art" in2="hole" operator="out" result="cut"/>
+<feImage href="data:image/svg+xml,{quote(svg)}" x=".395" y=".398" width=".23" height=".115" preserveAspectRatio="none" result="sign"/>
+<feMerge result="art"><feMergeNode in="cut"/><feMergeNode in="sign"/></feMerge>'''
+    halo = f'<feGaussianBlur in="art" stdDeviation="{glow}" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="art"/></feMerge>' if glow else ''
     return f'''<filter id="{fid}" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB" x="-8%" y="-8%" width="116%" height="116%">
-<feFlood flood-color="{body}" result="p0"/>
-<feFlood flood-color="{trim}" x="0" y="0" width="1" height=".265" result="p1"/>
-<feFlood flood-color="{trim}" x="0" y=".385" width="1" height=".185" result="p2"/>
-<feMerge result="paint"><feMergeNode in="p0"/><feMergeNode in="p1"/><feMergeNode in="p2"/></feMerge>
-<feComposite in="paint" in2="SourceAlpha" operator="in" result="ink"/>
-<feFlood flood-color="#000" x=".4" y=".4" width=".22" height=".11" result="hole"/>
-<feComposite in="ink" in2="hole" operator="out" result="cut"/>
-<feImage href="data:image/svg+xml,{quote(sign)}" x=".395" y=".398" width=".23" height=".115" preserveAspectRatio="none" result="sign"/>
-<feMerge result="art"><feMergeNode in="cut"/><feMergeNode in="sign"/></feMerge>{blur}
+<feFlood flood-color="{ink}" result="paint"/>
+<feComposite in="paint" in2="SourceAlpha" operator="in" result="art"/>
+{sign}{halo}
 </filter>'''
 
 
-FILTERS = FILTERS.replace('</defs>', tower_filter('vice-tower-neon', '#4d8dff', '#ff2d95', '#0b0220', '.012')
-                          + tower_filter('vice-tower-deco', '#1f4fd6', '#ff3d9a', '#1f4fd6', '') + '</defs>')
+NEON_INK, DECO_INK = '#ff5cae', '#2a1a5e'
+FILTERS = FILTERS.replace('</defs>', ink_filter('vice-ink-neon', NEON_INK, '.012')
+                          + ink_filter('vice-tower-neon', NEON_INK, '.012', board='#0b0220', numeral='#1ff0ff')
+                          + ink_filter('vice-tower-deco', DECO_INK, board=DECO_INK, numeral='#ff8cc6') + '</defs>')
 
 
 def rules_for(css, *needles):
@@ -167,7 +171,46 @@ def page(variant, edition_label, night, extra=''):
     (HERE / ('vice-%s%s.html' % (variant, '-' + extra if extra else ''))).write_text(h)
 
 
+# src/components/beachmag/ink-sketch.tsx as static markup: the contact page's
+# phone guy, painted with the page's ink through a luminance mask.
+PHONE_GUY = ('<svg viewBox="0 0 1000 1250" class="phone-guy" aria-hidden="true" focusable="false"><defs>'
+             '<filter id="pg-invert" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="-1 0 0 0 1  0 -1 0 0 1  0 0 -1 0 1  0 0 0 1 0"/></filter>'
+             '<mask id="pg-ink" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="1250" style="mask-type:luminance">'
+             '<image href="../../public/art/phone-guy-beach.webp" width="1000" height="1250" filter="url(#pg-invert)"/></mask></defs>'
+             '<rect width="1000" height="1250" fill="currentColor" mask="url(#pg-ink)"/></svg>')
+CONTACT = (HERE / '../site/coastal-contact.html').read_text()
+
+
+def contact_page(variant, edition_label, night):
+    """The contact page from design/site, with the live footer and the live page's phone guy."""
+    h = CONTACT
+    h = h.replace("'Bodoni Moda'", "var(--font-bodoni-moda,'Bodoni Moda')")
+    h = h.replace("'DM Sans'", "var(--font-dm-sans,'DM Sans')")
+    h = re.sub(r'https://cdn\.jsdelivr\.net/gh/chrislanejones/future-chrislanejones-beach@[^/]+/public/', '../../public/', h)
+    h = h.replace('../../public/site-icons/Waves-Logo.webp', 'vice-logo.svg')
+    if night:
+        # The page's edition script puts data-day back in src, so both slots get the night photo.
+        h = h.replace('../../public/banners/contact-day.webp', '../../public/banners/contact-night.webp')
+    h = h.replace('<html', '<html class="vice vice-%s"' % variant, 1)
+    h = h.replace('THE COASTAL EDITION', 'THE VICE EDITION')
+    h = re.sub(r'<title>[^<]*', '<title>Vice edition contact (%s)' % variant, h, count=1)
+    h = h.replace('aria-pressed="false">After dark ☾</button></div></div><header',
+                  'aria-pressed="false">After dark ☾</button>'
+                  '<button class="vice-edition" aria-pressed="true">%s</button></div></div><header' % edition_label)
+    h, n = re.subn(r'<footer id="coastal-footer".*?</footer>', lambda m: FOOTER, h, count=1, flags=re.S)
+    assert n == 1, 'footer not found'
+    h, n = re.subn(r'(CodePen ↗</a>)(</aside>)', lambda m: m.group(1) + PHONE_GUY + m.group(2), h, count=1)
+    assert n == 1, 'contact aside not found'
+    app = ROOT / 'src/components/beachmag'
+    live = (app / 'footer.css').read_text() + rules_for((app / 'shell.css').read_text(), '#coastal-footer', '.beach-figure')
+    live += '.phone-guy{display:block;width:min(100%,360px);aspect-ratio:4/5;margin:32px auto 0;color:var(--ink)}'  # contact.module.css
+    h = h.replace('</body>', "<style>:root{--font-bodoni-moda:'Bodoni Moda';--font-dm-sans:'DM Sans'}\n%s</style>%s"
+                             '<link rel="stylesheet" href="vice-%s.css"></body>' % (live, FILTERS, variant))
+    (HERE / ('vice-%s-contact.html' % variant)).write_text(h)
+
+
 page('neon', 'Vice nights ✦', night=True)
 page('deco', 'Vice days ✦', night=False)
-page('deco', 'Vice days ✦', night=False, extra='horizon')  # same skin, postcard-horizon hero
+contact_page('neon', 'Vice nights ✦', night=True)
+contact_page('deco', 'Vice days ✦', night=False)
 print('built', sorted(p.name for p in HERE.glob('*.html')), len(list((HERE / 'icons').glob('*.svg'))), 'icons')

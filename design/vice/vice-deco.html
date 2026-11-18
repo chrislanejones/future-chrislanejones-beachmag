@@ -680,24 +680,22 @@ body.menu-open #page-content{transform:translate(-18px,15px) rotate(-4deg) scale
 <feComponentTransfer><feFuncR type="gamma" amplitude="1.75" exponent=".9" offset="-.03"/><feFuncG type="gamma" amplitude="1.75" exponent=".9" offset="-.03"/><feFuncB type="gamma" amplitude="1.75" exponent=".9" offset="-.03"/></feComponentTransfer>
 <feComponentTransfer result="toned"><feFuncR type="table" tableValues="0.055 0.092 0.128 0.165 0.201 0.238 0.275 0.387 0.500 0.613 0.726 0.839 0.871 0.904 0.936 0.968 1.000 0.966 0.931 0.897 0.863"/><feFuncG type="table" tableValues="0.016 0.025 0.034 0.043 0.052 0.061 0.071 0.088 0.105 0.122 0.140 0.157 0.243 0.329 0.416 0.502 0.588 0.691 0.794 0.897 1.000"/><feFuncB type="table" tableValues="0.180 0.242 0.303 0.365 0.426 0.488 0.549 0.573 0.596 0.620 0.643 0.667 0.690 0.714 0.737 0.761 0.784 0.838 0.892 0.946 1.000"/></feComponentTransfer>
 <feComposite in="toned" in2="own" operator="arithmetic" k1="0" k2=".88" k3=".34" k4="0"/>
+</filter><filter id="vice-ink-neon" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB" x="-8%" y="-8%" width="116%" height="116%">
+<feFlood flood-color="#ff5cae" result="paint"/>
+<feComposite in="paint" in2="SourceAlpha" operator="in" result="art"/>
+<feGaussianBlur in="art" stdDeviation=".012" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="art"/></feMerge>
 </filter><filter id="vice-tower-neon" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB" x="-8%" y="-8%" width="116%" height="116%">
-<feFlood flood-color="#4d8dff" result="p0"/>
-<feFlood flood-color="#ff2d95" x="0" y="0" width="1" height=".265" result="p1"/>
-<feFlood flood-color="#ff2d95" x="0" y=".385" width="1" height=".185" result="p2"/>
-<feMerge result="paint"><feMergeNode in="p0"/><feMergeNode in="p1"/><feMergeNode in="p2"/></feMerge>
-<feComposite in="paint" in2="SourceAlpha" operator="in" result="ink"/>
+<feFlood flood-color="#ff5cae" result="paint"/>
+<feComposite in="paint" in2="SourceAlpha" operator="in" result="art"/>
 <feFlood flood-color="#000" x=".4" y=".4" width=".22" height=".11" result="hole"/>
-<feComposite in="ink" in2="hole" operator="out" result="cut"/>
-<feImage href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20220%20100%22%3E%3Cg%20transform%3D%22rotate%283%20110%2050%29%22%3E%3Crect%20x%3D%228%22%20y%3D%229%22%20width%3D%22204%22%20height%3D%2282%22%20fill%3D%22%230b0220%22%20stroke%3D%22%23ff2d95%22%20stroke-width%3D%226%22/%3E%3Cpath%20d%3D%22M62%2024h19l15%2042%2015-42h19L105%2080H87ZM142%2024h18v56h-18Z%22%20fill%3D%22%23ff2d95%22/%3E%3C/g%3E%3C/svg%3E" x=".395" y=".398" width=".23" height=".115" preserveAspectRatio="none" result="sign"/>
+<feComposite in="art" in2="hole" operator="out" result="cut"/>
+<feImage href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20220%20100%22%3E%3Cg%20transform%3D%22rotate%283%20110%2050%29%22%3E%3Crect%20x%3D%228%22%20y%3D%229%22%20width%3D%22204%22%20height%3D%2282%22%20fill%3D%22%230b0220%22%20stroke%3D%22%231ff0ff%22%20stroke-width%3D%226%22/%3E%3Cpath%20d%3D%22M62%2024h19l15%2042%2015-42h19L105%2080H87ZM142%2024h18v56h-18Z%22%20fill%3D%22%231ff0ff%22/%3E%3C/g%3E%3C/svg%3E" x=".395" y=".398" width=".23" height=".115" preserveAspectRatio="none" result="sign"/>
 <feMerge result="art"><feMergeNode in="cut"/><feMergeNode in="sign"/></feMerge><feGaussianBlur in="art" stdDeviation=".012" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="art"/></feMerge>
 </filter><filter id="vice-tower-deco" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB" x="-8%" y="-8%" width="116%" height="116%">
-<feFlood flood-color="#1f4fd6" result="p0"/>
-<feFlood flood-color="#ff3d9a" x="0" y="0" width="1" height=".265" result="p1"/>
-<feFlood flood-color="#ff3d9a" x="0" y=".385" width="1" height=".185" result="p2"/>
-<feMerge result="paint"><feMergeNode in="p0"/><feMergeNode in="p1"/><feMergeNode in="p2"/></feMerge>
-<feComposite in="paint" in2="SourceAlpha" operator="in" result="ink"/>
+<feFlood flood-color="#2a1a5e" result="paint"/>
+<feComposite in="paint" in2="SourceAlpha" operator="in" result="art"/>
 <feFlood flood-color="#000" x=".4" y=".4" width=".22" height=".11" result="hole"/>
-<feComposite in="ink" in2="hole" operator="out" result="cut"/>
-<feImage href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20220%20100%22%3E%3Cg%20transform%3D%22rotate%283%20110%2050%29%22%3E%3Crect%20x%3D%228%22%20y%3D%229%22%20width%3D%22204%22%20height%3D%2282%22%20fill%3D%22%231f4fd6%22%20stroke%3D%22%23ff3d9a%22%20stroke-width%3D%226%22/%3E%3Cpath%20d%3D%22M62%2024h19l15%2042%2015-42h19L105%2080H87ZM142%2024h18v56h-18Z%22%20fill%3D%22%23ff3d9a%22/%3E%3C/g%3E%3C/svg%3E" x=".395" y=".398" width=".23" height=".115" preserveAspectRatio="none" result="sign"/>
+<feComposite in="art" in2="hole" operator="out" result="cut"/>
+<feImage href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20220%20100%22%3E%3Cg%20transform%3D%22rotate%283%20110%2050%29%22%3E%3Crect%20x%3D%228%22%20y%3D%229%22%20width%3D%22204%22%20height%3D%2282%22%20fill%3D%22%232a1a5e%22%20stroke%3D%22%23ff8cc6%22%20stroke-width%3D%226%22/%3E%3Cpath%20d%3D%22M62%2024h19l15%2042%2015-42h19L105%2080H87ZM142%2024h18v56h-18Z%22%20fill%3D%22%23ff8cc6%22/%3E%3C/g%3E%3C/svg%3E" x=".395" y=".398" width=".23" height=".115" preserveAspectRatio="none" result="sign"/>
 <feMerge result="art"><feMergeNode in="cut"/><feMergeNode in="sign"/></feMerge>
 </filter></defs></svg><script>(function(){var root=document.getElementById('sandbox-root');function seat(){var h=root.querySelector('.sandbox-heading');if(h&&!h.querySelector('.sand-figure'))h.insertAdjacentHTML('beforeend','<span class="beach-figure beach-girl sand-figure" aria-hidden="true" style="--art:url(\'../../public/art/beach-girl.webp\')"></span>')}new MutationObserver(seat).observe(root,{childList:true,subtree:true});seat()})()</script><link rel="stylesheet" href="vice-deco.css"></body></html>
