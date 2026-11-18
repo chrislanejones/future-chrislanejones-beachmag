@@ -4,6 +4,8 @@ import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BufferAttribute, BufferGeometry, Color, DoubleSide, OrthographicCamera, Plane, Raycaster, Shape, Vector2, Vector3, type Camera, type Group, type ShaderMaterial, type Texture } from "three";
 import { FlagBox } from "./flag-box";
+import { ViceFlag } from "./vice-flag";
+import { useVice } from "@/lib/vice";
 import { ABOVE_WAVE, IncomingWave } from "./incoming-wave";
 import { SandErosion } from "./sand-erosion";
 import { beachWashAt, erosionAt } from "./beach-wash";
@@ -263,6 +265,7 @@ function SandPiece({ piece, texture, shells, dark, elevation = 0, born }: { piec
   const reveal=useRef<Group>(null);
   useFrame(()=>{if(reveal.current){const amount=born?smooth(.52,.69,(performance.now()-born)/MOLD_MS):1;reveal.current.scale.y=amount;reveal.current.position.y=elevation*(1-amount)}});
   const color = dark ? "#bca47a" : "#dfc491";
+  const vice = useVice();
   const material = <meshStandardMaterial color={color} map={texture} roughness={1} />;
   const flag = useMemo(() => {
     const shape = new Shape();
@@ -322,9 +325,9 @@ function SandPiece({ piece, texture, shells, dark, elevation = 0, born }: { piec
       </group>}
       {piece.kind === "flag" && <group position={[0, elevation, 0]}>
         <mesh position={[0, .46, 0]} castShadow renderOrder={ABOVE_WAVE}><cylinderGeometry args={[.025, .025, .92, 10]} /><meshStandardMaterial color="#785139" transparent /></mesh>
-        <mesh position={[.02, .9, 0]} castShadow renderOrder={ABOVE_WAVE}>
+        {vice ? <ViceFlag dark={dark} position={[.02, .9, 0]} /> : <mesh position={[.02, .9, 0]} castShadow renderOrder={ABOVE_WAVE}>
           <shapeGeometry args={[flag]} /><meshStandardMaterial color="#da7960" side={DoubleSide} roughness={.85} transparent />
-        </mesh>
+        </mesh>}
       </group>}
     </group>
   );

@@ -2,10 +2,13 @@ import {useMemo} from 'react';
 import {DoubleSide,Shape} from 'three';
 import {LEDGE_HEIGHT,type Spot} from './ledge';
 import {ABOVE_WAVE} from './incoming-wave';
+import {useVice} from '@/lib/vice';
+import {ViceFlag} from './vice-flag';
 
 /** A single physical supply: the crate stays after the fifth flag is taken. */
 export function FlagBox({at,available,dark,onPick}:{at:Spot;available:number;dark:boolean;onPick:()=>void}){
  const flag=useMemo(()=>{const s=new Shape();s.moveTo(0,0);s.lineTo(.31,-.1);s.lineTo(0,-.2);s.closePath();return s},[]);
+ const vice=useVice();
  const wood=dark?'#98744d':'#bf935c',edge=dark?'#765b3c':'#97703e';
  return <group position={[at.x,LEDGE_HEIGHT,at.z]} rotation={[0,-.12,0]}
   onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()}
@@ -25,7 +28,8 @@ export function FlagBox({at,available,dark,onPick}:{at:Spot;available:number;dar
   </group>
   {Array.from({length:available},(_,i)=><group key={i} position={[-.47+i*.22,.105,i%2?.11:-.09]} rotation={[0,-.12+i*.08,(2-i)*.045]}>
    <mesh position={[0,.51,0]} castShadow renderOrder={ABOVE_WAVE}><cylinderGeometry args={[.018,.018,1.02,8]}/><meshStandardMaterial color="#765235" roughness={.8} transparent/></mesh>
-   <mesh position={[.018,1.02,0]} castShadow renderOrder={ABOVE_WAVE}><shapeGeometry args={[flag]}/><meshStandardMaterial color="#d3684b" side={DoubleSide} roughness={.8} transparent/></mesh>
+   {/* The crate's flags are the planted flag at .55 (.31 of .56 wide). */}
+   {vice?<ViceFlag dark={dark} position={[.018,1.02,0]} scale={.55}/>:<mesh position={[.018,1.02,0]} castShadow renderOrder={ABOVE_WAVE}><shapeGeometry args={[flag]}/><meshStandardMaterial color="#d3684b" side={DoubleSide} roughness={.8} transparent/></mesh>}
   </group>)}
   {/* Generous tap target, including the empty crate, without building beneath it. */}
   <mesh position={[.05,.58,0]}><boxGeometry args={[1.5,1.2,.8]}/><meshBasicMaterial transparent opacity={0} depthWrite={false}/></mesh>
