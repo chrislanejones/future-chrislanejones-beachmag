@@ -16,9 +16,9 @@ export const staticHeaderNavItems: SeedHeaderNavItem[] = [
     label: "About",
     children: [
       { href: "/about", label: "About" },
-      { href: "/browser-tabs", label: "Chrome Tabs I Left Open" },
+      { href: "/browser-tabs", label: "Browser Tabs" },
+      { href: "/design-system", label: "Design System" },
       { href: "/site-history", label: "History of This Site" },
-      { href: "/link-page", label: "Link Page" },
     ],
   },
   {
@@ -47,9 +47,10 @@ export const staticFooterNavLinks: SeedFooterNavSection[] = [
     links: [
       { href: "/", label: "Home" },
       { href: "/about", label: "About" },
-      { href: "/link-page", label: "Link Page" },
       { href: "/browser-tabs", label: "Browser Tabs" },
-      { href: "/contact", label: "Contact" },
+      { href: "/design-system", label: "Design System" },
+      { href: "/events", label: "Events" },
+      { href: "/site-history", label: "Site History" },
     ],
   },
   {
@@ -66,11 +67,16 @@ export const staticFooterNavLinks: SeedFooterNavSection[] = [
   {
     title: "Resources",
     links: [
-      { href: "/site-history", label: "History of This Site" },
-      { href: "/design-system", label: "Design System" },
       { href: "/site-map", label: "Change Log / Site Map" },
+      { href: "/link-page", label: "Link Page" },
       { href: "/admin", label: "Admin" },
-      { href: "/404", label: "404 / Wipeout" },
+    ],
+  },
+  {
+    title: "Contact",
+    links: [
+      { href: "/contact", label: "Contact" },
+      { href: "/lets-meet", label: "Let's Meet" },
     ],
   },
 ];

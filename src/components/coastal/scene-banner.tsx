@@ -11,12 +11,21 @@ type BannerScene = LoopScene & { focus: string };
  * docs/handoffs/2026-10-15-page-banner-scenes.md.
  */
 export const BANNER_SCENES: Record<string, BannerScene> = {
+  // Stills only (11-18-2026): Chris's framing down a side street to El Castillo, no loop.
   "/about": {
-    focus: "75% 50%",
-    day: { still: "/banners/about-day.webp", video: "/banners/about-day.mp4", alt: "A 3D model of a Northeast Florida beach town from straight above, the pier reaching into the Atlantic past the dune walkovers, beachgoers on the sand and a fishing boat offshore in the early morning",
-      blur: "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAAAQAgCdASoQAAkAAoBCJaACdGuAAt4Ra1/wAP225iR4la8na1m4TawehnUdXl50cgr2XZf0ydMP6FEJwR+pVfOk4f+VOZAA" },
-    night: { still: "/banners/about-night.webp", video: "/banners/about-night.mp4", alt: "A 3D model of a Northeast Florida beach town from straight above, the pier reaching into the Atlantic past the dune walkovers, beachgoers on the sand and a fishing boat offshore at night, windows lit",
-      blur: "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoQAAkAAoBCJQBOgCKfAeEI8AD++Gx6UG7GuOdZt3Ykkg5Y3SgdHQpPs5WvigISFlAAAA==" },
+    focus: "52% 50%",
+    day: { still: "/banners/about-day.webp", alt: "A 3D model of a St. Augustine Beach side street from above the houses: palms and pines, parked cars and the El Castillo resort hotel at the end of the street under a pink evening sky",
+      blur: "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAAAQAgCdASoQAAkAAoBCJZQCdAEPSq5zQhIAAP5b/yFDQXAarDdOknSQZADUuV3HSl0n9sLLZxMgNEZiSSSMLV9ChGfV1Abd/fnr0q2HS1tDeCPFQAA=" },
+    night: { still: "/banners/about-night.webp", alt: "A 3D model of a St. Augustine Beach side street at dusk from above the houses: the first windows lit and the El Castillo resort hotel at the end of the street under a purple sky",
+      blur: "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAAAQAgCdASoQAAkAAoBCJZwCdAEPS7jtjxIAAP14+4bEF2B3y22cqnSaApc+EfMVJJEEpjxFEdDPDrhvebzxHIqw4svBQAAA" },
+  },
+  // Chris's framing (11-18-2026): a rooftop deck under string lights. Dark mode is dusk, 18.75.
+  "/events": {
+    focus: "45% 60%",
+    day: { still: "/banners/events-day.webp", video: "/banners/events-day.mp4", alt: "A 3D model of a St. Augustine Beach rooftop deck: people at picnic tables under teal umbrellas and palms, string lights overhead and a hotel behind, late in the afternoon",
+      blur: "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADwAQCdASoQAAkAAoBCJZQCsAEU2Cpjr4AA/smGMpEfiF/t1PYzHGb6TBuNzDvBHkf7nERoLR+PzicvF5UWibDWILhaCfiZEKdReSwExjGcrnTHARmPDAAA" },
+    night: { still: "/banners/events-night.webp", video: "/banners/events-night.mp4", alt: "A 3D model of a St. Augustine Beach rooftop deck at dusk: the string lights on over people at picnic tables under teal umbrellas, the hotel windows lit behind",
+      blur: "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAQCdASoQAAkAAoBCJZwCsAEO569e/AAAzhBfTNpVWqxqbgI1bPm0Q6Lsuo9YLnNaDyIuCzzHVkQx41NTIvTz4LBViooY+yCb+93BKAE2AAAA" },
   },
   "/browser-tabs": {
     focus: "50% 60%",
@@ -104,10 +113,10 @@ export const BANNER_SCENES: Record<string, BannerScene> = {
   // The banner was shot for the logo page, so its files keep that name.
   "/design-system": {
     focus: "60% 55%",
-    day: { still: "/banners/logo-page-day.webp", video: "/banners/logo-page-day.mp4", alt: "A 3D model of the beach, beachgoers on the sand below the hotels and dunes at sunset",
-      blur: "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADwAQCdASoQAAkAAoBCJZgCsAEO5MQoroAA/ryfsnxVDZ2dOXepiY55/ts8OeXanDAGVHfOP4GBw8ph6K9y3niV17EmAAAA" },
-    night: { still: "/banners/logo-page-night.webp", video: "/banners/logo-page-night.mp4", alt: "A 3D model of the beach, beachgoers on the sand below the hotels and dunes at night, windows lit",
-      blur: "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADQAQCdASoQAAkAAoBCJYgCdAEPAx2k0AD++mk+lJuL9fC570GBCqVG9ZDrbvuOSEDk9+fUbm01Yj24AAA=" },
+    day: { still: "/banners/logo-page-day.webp", video: "/banners/logo-page-day.mp4", alt: "A 3D model of St. Augustine Beach from above the houses: dune walkovers cross to the sand, the beach runs north to the pier and a boat sits offshore under a pink evening sky",
+      blur: "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoQAAkAAoBCJZQC7AELXCV3R3AA/pG/qSAxOxelqZf4qusGcuVp1qEBhR3todL+4MaYXzXmPRTjXbb5RM3WmF6qo/NnzUAA" },
+    night: { still: "/banners/logo-page-night.webp", video: "/banners/logo-page-night.mp4", alt: "A 3D model of St. Augustine Beach at dusk from above the houses: the first windows lit, dune walkovers crossing to the sand and the beach running north to the pier",
+      blur: "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAAAQAgCdASoQAAkAAoBCJZQC7AEWUOrFwM3gAP1T+Zz87atr4X3BCC0HcPAJjKZIje5+c94ivVp2qx5MmtkbwvyFAx2gAA==" },
   },
   "/admin-showcase": {
     focus: "75% 70%",

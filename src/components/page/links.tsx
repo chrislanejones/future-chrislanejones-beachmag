@@ -57,6 +57,9 @@ export function SiteLogo({ className = "" }: { className?: string }) {
   );
 }
 
+/** Sorts nav rows by the order the admin set. */
+const byOrder = (a: { order: number }, b: { order: number }) => a.order - b.order;
+
 // Use a hook to fetch header nav items
 export function useHeaderNavItems(live = true) {
   // live=false skips Convex: the boundary's fallback renders the static list.
@@ -73,13 +76,9 @@ export function useHeaderNavItems(live = true) {
           order: 1,
           children: [
             { href: "/about", label: "About", order: 0 },
-            {
-              href: "/browser-tabs",
-              label: "Chrome Tabs I Left Open",
-              order: 1,
-            },
-            { href: "/site-history", label: "History of This Site", order: 2 },
-            { href: "/link-page", label: "Link Page", order: 3 },
+            { href: "/browser-tabs", label: "Browser Tabs", order: 1 },
+            { href: "/design-system", label: "Design System", order: 2 },
+            { href: "/site-history", label: "History of This Site", order: 3 },
           ],
         },
         {
@@ -101,7 +100,11 @@ export function useHeaderNavItems(live = true) {
         { label: "Contact", href: "/contact", order: 4 },
       ] as HeaderNavItem[];
     }
-    return convexHeaderNavItems as HeaderNavItem[];
+    // The query returns rows in the order they were made; the admin's
+    // order field is what the menu should follow.
+    return [...(convexHeaderNavItems as HeaderNavItem[])]
+      .sort(byOrder)
+      .map((item) => (item.children ? { ...item, children: [...item.children].sort(byOrder) } : item));
   }, [convexHeaderNavItems]);
 }
 
@@ -131,9 +134,10 @@ export function useFooterNavSections(live = true) {
           links: [
             { href: "/", label: "Home", order: 0 },
             { href: "/about", label: "About", order: 1 },
-            { href: "/link-page", label: "Link Page", order: 2 },
-            { href: "/browser-tabs", label: "Browser Tabs", order: 3 },
-            { href: "/contact", label: "Contact", order: 4 },
+            { href: "/browser-tabs", label: "Browser Tabs", order: 2 },
+            { href: "/design-system", label: "Design System", order: 3 },
+            { href: "/events", label: "Events", order: 4 },
+            { href: "/site-history", label: "Site History", order: 5 },
           ],
         },
         {
@@ -156,20 +160,26 @@ export function useFooterNavSections(live = true) {
           title: "Resources",
           order: 2,
           links: [
-            { href: "/site-history", label: "History of This Site", order: 0 },
-            { href: "/design-system", label: "Design System", order: 1 },
-            { href: "/site-map", label: "Change Log / Site Map", order: 2 },
-            { href: "/admin-showcase", label: "Admin Showcase", order: 3 },
-            { href: "/404", label: "404 / Wipeout", order: 4 },
+            { href: "/site-map", label: "Change Log / Site Map", order: 0 },
+            { href: "/link-page", label: "Link Page", order: 1 },
+            { href: "/admin-showcase", label: "Admin Showcase", order: 2 },
+          ],
+        },
+        {
+          title: "Contact",
+          order: 3,
+          links: [
+            { href: "/contact", label: "Contact", order: 0 },
+            { href: "/lets-meet", label: "Let's Meet", order: 1 },
           ],
         },
       ] as FooterNavSection[];
     }
     // Older CMS rows still call this the Music Lounge. Keep the retired
     // page name out of the footer while preserving the admin's link order.
-    return convexFooterSections.map((section) => ({
+    return [...convexFooterSections].sort(byOrder).map((section) => ({
       ...section,
-      links: section.links.map((link) =>
+      links: [...section.links].sort(byOrder).map((link) =>
         link.href === "/404" && link.label === "404 Music Lounge"
           ? { ...link, label: "404 / Wipeout" }
           : link,
