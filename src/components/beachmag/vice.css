@@ -1,0 +1,688 @@
+/* The Vice edition: one day (Grand Theft Auto VI's release), switched on by
+   html.vice (src/lib/vice-day.ts). After dark becomes Vice nights (neon on a
+   violet night); Sunlit paper becomes Vice days (pastel Ocean Drive deco).
+   An override layer: it re-points the palette variables the sections already
+   read, then adds the signage. Colors are --vice-* tokens (globals.css);
+   `pnpm check:css` holds this file to zero raw colors.
+   Photos are graded by filters, never converted, so new photos match. The
+   beach figures keep their drawings, painted one solid color by the filters
+   in vice-filters.tsx (the lifeguard stand also gets its VI board). */
+
+/* ── Both editions ─────────────────────────────────────────────────────── */
+
+/* The one-day banner over the nav. Decorative: the nav and page say the rest. */
+html.vice [data-beachmag]::before {
+  content: "ONE DAY ONLY  ✦  THE VICE EDITION  ✦  SAME A1A, DIFFERENT " var(--vice-ribbon-tail);
+  display: block;
+  white-space: pre-wrap;
+  text-align: center;
+  padding: 9px 16px;
+  font: 700 11px/1.4 var(--bm-font-body);
+  letter-spacing: 0.24em;
+}
+
+/* The sunset palm takes the wave mark's place in the nav. */
+html.vice #site-nav .brand-marks {
+  width: 46px;
+  height: 46px;
+  background: url("/art/vice-logo.svg") center / contain no-repeat;
+}
+html.vice #site-nav .brand-marks > * {
+  visibility: hidden;
+}
+html.vice #site-nav .nav-brand .brand-wordmark::after {
+  content: "THE VICE EDITION";
+  display: block;
+  font-size: 7px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  color: var(--vice-mark);
+}
+
+/* Section titles: the italic word becomes a script sign. */
+html.vice :is(#coastal-art, .interior, #sandbox, #coastal-footer) :is(h1, h2) em,
+html.vice #coastal-art .mast em {
+  font-family: var(--font-vice-script), cursive;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+html.vice :is(#featured-projects, #beach-offline, #tool-gallery, #sandbox, #coastal-footer, .interior) :is(h1, h2) em {
+  display: inline-block;
+  font-size: 1.28em;
+  line-height: 0.8;
+  transform: rotate(-4deg);
+  padding-right: 0.2em;
+}
+
+/* The hero: the lifeguard stand keeps its drawing at full strength. */
+html.vice #coastal-art .lifeguard-drawing.beach-figure {
+  -webkit-mask: none;
+  mask: none;
+  background: var(--art) center bottom / contain no-repeat;
+  opacity: 1;
+}
+
+/* The beach girl stands beside the sandbox heading at full strength. */
+html.vice #sandbox .sand-figure,
+html.vice #coastal-footer .footer-figures {
+  opacity: 1;
+}
+
+/* ── Vice nights ───────────────────────────────────────────────────────── */
+
+html.vice.dark {
+  --vice-mark: var(--vice-pink);
+  --vice-ribbon-tail: "NEON";
+}
+html.vice.dark body:has([data-beachmag]) {
+  --nav-paper: var(--vice-night);
+  --nav-ink: var(--vice-night-ink);
+  --nav-accent: var(--vice-pink);
+  background:
+    radial-gradient(900px 520px at 8% 0, color-mix(in srgb, var(--vice-pink) 25%, transparent), transparent 70%),
+    radial-gradient(900px 700px at 96% 28%, color-mix(in srgb, var(--vice-cyan) 15%, transparent), transparent 70%),
+    linear-gradient(var(--vice-night), var(--vice-night-sky) 55%, var(--vice-night-plum));
+}
+html.vice.dark [data-beachmag]::before {
+  background: var(--vice-night);
+  color: var(--vice-night-ink);
+  border-bottom: 1px solid color-mix(in srgb, var(--vice-pink) 40%, transparent);
+}
+html.vice.dark #site-nav {
+  border-bottom: 3px solid;
+  border-image: linear-gradient(90deg, var(--vice-pink), var(--vice-sun), var(--vice-cyan)) 1;
+}
+html.vice.dark #site-nav .brand-marks {
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--vice-pink) 60%, transparent));
+}
+html.vice.dark #site-nav .desktop-links a:hover,
+html.vice.dark #site-nav .nav-group button:hover {
+  color: var(--vice-cyan);
+  text-shadow: var(--vice-glow-cyan);
+  text-decoration: none;
+}
+html.vice.dark [data-beachmag] :focus-visible {
+  outline-color: var(--vice-cyan);
+  box-shadow: 0 0 0 4px var(--vice-night);
+}
+
+/* Hero */
+html.vice.dark #coastal-art {
+  --paper: var(--vice-night-panel);
+  --ink: var(--vice-night-ink);
+  --orange: var(--vice-pink);
+  --accent: var(--vice-pink);
+  --line: var(--vice-night-line);
+  --sand: var(--vice-night-panel-2);
+  --tear-fill: var(--vice-night-panel-2);
+}
+html.vice.dark #coastal-art .direction {
+  background:
+    radial-gradient(520px 300px at 82% 250px, color-mix(in srgb, var(--vice-pink) 22%, transparent), transparent 70%),
+    linear-gradient(var(--vice-night), var(--vice-night-sky) 330px, var(--vice-night-dusk) 520px, var(--vice-night-panel) 880px) top / 100% 880px no-repeat,
+    var(--vice-night-panel);
+}
+html.vice.dark #coastal-art .top {
+  border-bottom-color: var(--vice-cyan);
+  box-shadow: 0 8px 14px -12px var(--vice-cyan);
+}
+html.vice.dark #coastal-art .mast {
+  font-family: var(--font-vice-neon), "Arial Black", sans-serif;
+  font-size: clamp(48px, 7.6vw, 92px);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.02;
+  color: var(--vice-ice);
+  text-shadow: var(--vice-glow-cyan);
+}
+html.vice.dark #coastal-art .mast em {
+  font-size: 1.5em;
+  line-height: 0.9;
+  background: none;
+  color: var(--vice-pink-pale);
+  text-shadow: var(--vice-glow-pink);
+  padding: 0 0.3em 0.12em 0.05em;
+  transform: rotate(-6deg) translate(0.4em, -0.15em);
+}
+html.vice.dark #coastal-art .sub {
+  border-color: var(--vice-pink);
+  box-shadow: 0 -8px 14px -12px var(--vice-pink), 0 8px 14px -12px var(--vice-pink);
+}
+html.vice.dark #coastal-art .sub a,
+html.vice.dark #coastal-art .edge,
+html.vice.dark #coastal-art :is(.label, .event time) {
+  color: var(--vice-cyan);
+}
+html.vice.dark #coastal-art .map {
+  filter: url(#vice-neon-photo);
+  border-color: var(--vice-day-white);
+  box-shadow: 0 0 0 2px var(--vice-pink), 0 0 34px color-mix(in srgb, var(--vice-pink) 67%, transparent), 10px 12px 0 var(--vice-cyan);
+}
+html.vice.dark #coastal-art .sticker {
+  font-family: var(--font-vice-script), cursive;
+  font-style: normal;
+  font-weight: 400;
+  background: var(--vice-night);
+  color: var(--vice-pink-pale);
+  text-shadow: var(--vice-glow-pink);
+  border: 2px solid var(--vice-pink);
+  border-radius: 12px;
+  box-shadow: 0 0 0 4px var(--vice-night), 0 0 26px var(--vice-pink);
+}
+html.vice.dark #coastal-art .lifeguard-drawing.beach-figure {
+  filter: url(#vice-tower-neon);
+}
+html.vice.dark #coastal-art .events h2 {
+  font-family: var(--font-vice-script), cursive;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--vice-ice);
+  text-shadow: var(--vice-glow-cyan);
+}
+html.vice.dark #coastal-art .event time b {
+  color: var(--vice-pink);
+}
+html.vice.dark #coastal-art .columns article a {
+  color: var(--vice-pink);
+}
+
+/* Projects: a lit grid floor */
+html.vice.dark #featured-projects {
+  --project-ink: var(--vice-night-ink);
+  --project-sand: var(--vice-night-panel-2);
+  --project-paper: var(--vice-night);
+  --project-rust: var(--vice-pink);
+  background:
+    linear-gradient(var(--vice-night-panel-2), color-mix(in srgb, var(--vice-night-panel-2) 90%, transparent) 38%, transparent),
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--vice-pink) 33%, transparent) 0 1px, transparent 1px 46px),
+    repeating-linear-gradient(0deg, color-mix(in srgb, var(--vice-pink) 33%, transparent) 0 1px, transparent 1px 46px),
+    var(--vice-night-panel-2);
+  border-top: 3px solid var(--vice-pink);
+}
+html.vice.dark #featured-projects .projects-eyebrow {
+  color: var(--vice-cyan);
+}
+html.vice.dark #featured-projects .project-print {
+  box-shadow: 0 0 0 2px var(--vice-cyan), 0 0 30px color-mix(in srgb, var(--vice-cyan) 40%, transparent), 9px 11px 0 var(--vice-pink);
+}
+html.vice.dark #featured-projects .project-cutout:nth-child(even) .project-print {
+  box-shadow: 0 0 0 2px var(--vice-pink), 0 0 30px color-mix(in srgb, var(--vice-pink) 53%, transparent), 9px 11px 0 var(--vice-cyan);
+}
+html.vice.dark #featured-projects .project-print > span {
+  color: var(--vice-sun);
+}
+
+/* Radio, ramblings, postcards */
+html.vice.dark #beach-offline {
+  --paper: var(--vice-night);
+  --ink: var(--vice-night-ink);
+  --accent: var(--vice-pink);
+  --sheet: var(--vice-night-panel-2);
+  --line: var(--vice-night-line);
+  background:
+    radial-gradient(700px 420px at 50% 360px, color-mix(in srgb, var(--vice-pink) 18%, transparent), transparent 70%),
+    radial-gradient(520px 380px at 50% 460px, color-mix(in srgb, var(--vice-cyan) 12%, transparent), transparent 70%),
+    var(--vice-night);
+}
+html.vice.dark #beach-offline .eyebrow {
+  color: var(--vice-cyan);
+}
+html.vice.dark #beach-offline .mono-radio {
+  filter: drop-shadow(0 34px 40px color-mix(in srgb, var(--vice-pink) 47%, transparent)) drop-shadow(0 0 36px color-mix(in srgb, var(--vice-cyan) 33%, transparent));
+}
+html.vice.dark #beach-offline .skill-sticker {
+  background: linear-gradient(100deg, var(--vice-pink-deep), var(--vice-violet-deep));
+  color: var(--vice-day-white);
+}
+html.vice.dark #beach-offline :is(.rambles, .photos) h3 {
+  font: 400 44px/1 var(--font-vice-script), cursive;
+  letter-spacing: 0;
+  color: var(--vice-ice);
+  text-shadow: var(--vice-glow-cyan);
+}
+html.vice.dark #beach-offline :is(.ramble, .photo-front) {
+  box-shadow: 0 0 0 1px var(--vice-pink), 6px 8px 0 color-mix(in srgb, var(--vice-pink) 40%, transparent);
+}
+html.vice.dark #beach-offline :is(.photo-front, .ramble-photo, .album-photo) img {
+  filter: url(#vice-neon-photo);
+}
+html.vice.dark #beach-offline .photo-front span {
+  font: 400 28px/1 var(--font-vice-script), cursive;
+  color: var(--vice-pink-pale);
+  text-shadow: var(--vice-glow-pink);
+}
+
+/* Tools */
+html.vice.dark #tool-gallery {
+  --paper: var(--vice-night-panel);
+  --ink: var(--vice-night-ink);
+  --accent: var(--vice-pink);
+  --rule: var(--vice-night-line);
+}
+html.vice.dark #tool-gallery .eyebrow {
+  color: var(--vice-cyan);
+}
+html.vice.dark #tool-gallery .category[aria-pressed="true"] {
+  background: linear-gradient(100deg, var(--vice-pink-deep), var(--vice-violet-deep));
+  color: var(--vice-day-white);
+}
+html.vice.dark #tool-gallery .category[aria-pressed="true"] .arrow {
+  color: var(--vice-day-white);
+}
+html.vice.dark #tool-gallery .tech-item:nth-child(odd) .brand-icon {
+  color: var(--vice-cyan);
+}
+html.vice.dark #tool-gallery .tech-item:nth-child(even) .brand-icon {
+  color: var(--vice-pink);
+}
+html.vice.dark #tool-gallery .group-heading h3 {
+  color: var(--vice-sun);
+}
+html.vice.dark #tool-gallery .bottom em {
+  font: 400 28px/1 var(--font-vice-script), cursive;
+  color: var(--vice-pink-pale);
+  text-shadow: var(--vice-glow-pink);
+}
+
+/* Sandbox */
+html.vice.dark #sandbox {
+  background: linear-gradient(var(--vice-night), var(--vice-night-panel-2));
+  color: var(--vice-night-ink);
+  border-top: 3px solid;
+  border-image: linear-gradient(90deg, var(--vice-pink), var(--vice-sun), var(--vice-cyan)) 1;
+}
+html.vice.dark #sandbox .game-kicker {
+  color: var(--vice-cyan);
+}
+html.vice.dark #sandbox h2 em {
+  color: var(--vice-pink-pale);
+  text-shadow: var(--vice-glow-pink);
+}
+html.vice.dark #sandbox .game-stage {
+  border-color: var(--vice-pink);
+  box-shadow: 0 0 34px color-mix(in srgb, var(--vice-pink) 40%, transparent);
+}
+
+/* The beach figures as neon signs: their own lines, one pink, with a halo. */
+html.vice.dark :is(#sandbox, #coastal-footer) .beach-figure {
+  -webkit-mask: none;
+  mask: none;
+  background: var(--art) center bottom / contain no-repeat;
+  filter: url(#vice-ink-neon);
+}
+
+/* Footer: last call on the grid */
+html.vice.dark #coastal-footer {
+  --footer-paper: var(--vice-night-deep);
+  --footer-ink: var(--vice-night-ink);
+  --footer-accent: var(--vice-pink);
+  background:
+    linear-gradient(var(--vice-night-deep), color-mix(in srgb, var(--vice-night-deep) 93%, transparent) 40%, color-mix(in srgb, var(--vice-night-deep) 20%, transparent)),
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--vice-cyan) 27%, transparent) 0 1px, transparent 1px 46px),
+    repeating-linear-gradient(0deg, color-mix(in srgb, var(--vice-cyan) 27%, transparent) 0 1px, transparent 1px 46px),
+    var(--vice-night-deep);
+  border-top: 3px solid;
+  border-image: linear-gradient(90deg, var(--vice-pink), var(--vice-sun), var(--vice-cyan)) 1;
+}
+html.vice.dark #coastal-footer :is(.footer-kicker, h3) {
+  color: var(--vice-cyan);
+}
+html.vice.dark #coastal-footer h2 em {
+  color: var(--vice-pink-pale);
+  text-shadow: var(--vice-glow-pink);
+}
+html.vice.dark #coastal-footer .footer-wave {
+  color: var(--vice-cyan);
+}
+
+/* Inner pages */
+html.vice.dark .interior {
+  --paper: var(--vice-night-panel);
+  --ink: var(--vice-night-ink);
+  --sheet: var(--vice-night-panel-2);
+  --accent: var(--vice-pink);
+  background:
+    radial-gradient(520px 320px at 78% 250px, color-mix(in srgb, var(--vice-pink) 20%, transparent), transparent 70%),
+    linear-gradient(var(--vice-night), var(--vice-night-sky) 330px, var(--vice-night-panel) 760px) top / 100% 760px no-repeat,
+    var(--vice-night-panel);
+}
+html.vice.dark .interior .page-kicker {
+  color: var(--vice-cyan);
+}
+html.vice.dark .interior h1 em {
+  font-size: 1.3em;
+  color: var(--vice-pink-pale);
+  text-shadow: var(--vice-glow-pink);
+}
+html.vice.dark .interior .page-polaroid {
+  box-shadow: 0 0 0 2px var(--vice-pink), 0 0 30px color-mix(in srgb, var(--vice-pink) 53%, transparent), 9px 11px 0 var(--vice-cyan);
+}
+html.vice.dark .interior .page-polaroid :is(img, video) {
+  filter: url(#vice-neon-photo);
+}
+html.vice.dark .interior .page-polaroid figcaption {
+  font: 400 30px/1 var(--font-vice-script), cursive;
+  color: var(--vice-ice);
+  text-shadow: var(--vice-glow-cyan);
+}
+html.vice.dark .interior .contact-number {
+  font: 400 76px/1 var(--font-vice-script), cursive;
+  color: var(--vice-pink-pale);
+  text-shadow: var(--vice-glow-pink);
+}
+html.vice.dark .interior .contact-aside > svg {
+  color: var(--vice-neon-ink);
+  filter: drop-shadow(0 0 3px var(--vice-pink)) drop-shadow(0 0 14px color-mix(in srgb, var(--vice-pink) 60%, transparent));
+}
+
+/* ── Vice days ─────────────────────────────────────────────────────────── */
+
+html.vice:not(.dark) {
+  --vice-mark: var(--vice-flamingo-text);
+  --vice-ribbon-tail: "DECADE";
+  --vice-awning: repeating-linear-gradient(90deg, var(--vice-flamingo) 0 32px, var(--vice-teal) 32px 64px, var(--vice-gold) 64px 96px);
+}
+html.vice:not(.dark) body:has([data-beachmag]) {
+  --nav-paper: var(--vice-day-white);
+  --nav-ink: var(--vice-day-ink);
+  --nav-accent: var(--vice-flamingo-text);
+  background: linear-gradient(165deg, var(--vice-sky-top), var(--vice-sky-mint) 18%, var(--vice-sky-pink) 48%, var(--vice-sky-coral) 78%, var(--vice-sky-gold));
+}
+html.vice:not(.dark) [data-beachmag]::before {
+  background: var(--vice-day-ink);
+  color: var(--vice-day-white);
+}
+html.vice:not(.dark) #site-nav {
+  border-bottom: 12px solid;
+  border-image: var(--vice-awning) 12;
+}
+html.vice:not(.dark) #site-nav .desktop-links a:hover {
+  color: var(--vice-flamingo-text);
+}
+html.vice:not(.dark) [data-beachmag] :focus-visible {
+  outline-color: var(--vice-day-ink);
+  box-shadow: 0 0 0 4px var(--vice-day-white);
+}
+
+/* Hero: block deco letters and a script flourish under sunburst rays */
+html.vice:not(.dark) #coastal-art {
+  --paper: var(--vice-day-paper);
+  --ink: var(--vice-day-ink);
+  --orange: var(--vice-flamingo-text);
+  --accent: var(--vice-flamingo-text);
+  --line: var(--vice-day-line);
+  --sand: var(--vice-peach);
+  --tear-fill: var(--vice-day-white);
+}
+html.vice:not(.dark) #coastal-art .direction {
+  background:
+    linear-gradient(transparent 250px, var(--vice-day-paper) 600px) top / 100% 600px no-repeat,
+    repeating-conic-gradient(from 0deg at calc(100% - 183px) 300px, var(--vice-blush) 0 5deg, transparent 5deg 10deg) top / 100% 600px no-repeat,
+    var(--vice-day-paper);
+}
+html.vice:not(.dark) #coastal-art .top {
+  border-bottom: 6px double var(--vice-day-ink);
+}
+html.vice:not(.dark) #coastal-art .mast {
+  font-family: var(--font-vice-deco), Georgia, serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  color: var(--vice-day-ink);
+  text-shadow: 4px 4px 0 var(--vice-teal);
+}
+html.vice:not(.dark) #coastal-art .mast em {
+  font-size: 1.45em;
+  line-height: 0.9;
+  background: none;
+  color: var(--vice-flamingo);
+  text-shadow: 2px 2px 0 var(--vice-day-white), 5px 5px 0 var(--vice-day-ink);
+  padding: 0 0.3em 0.12em 0.05em;
+  transform: rotate(-6deg) translate(0.4em, -0.15em);
+}
+html.vice:not(.dark) #coastal-art .sub {
+  border-top: 6px double var(--vice-day-ink);
+  border-bottom: 6px double var(--vice-day-ink);
+}
+html.vice:not(.dark) #coastal-art .sub a,
+html.vice:not(.dark) #coastal-art .columns article a {
+  color: var(--vice-flamingo-text);
+}
+html.vice:not(.dark) #coastal-art :is(.edge, .label, .event time) {
+  color: var(--vice-teal-text);
+}
+html.vice:not(.dark) #coastal-art .map {
+  filter: saturate(1.25) contrast(1.03);
+  border-color: var(--vice-day-white);
+  box-shadow: 0 0 0 2px var(--vice-day-ink), 10px 10px 0 var(--vice-teal), 20px 20px 0 var(--vice-flamingo);
+}
+html.vice:not(.dark) #coastal-art .sticker {
+  font-family: var(--font-vice-script), cursive;
+  font-style: normal;
+  font-weight: 400;
+  background: var(--vice-flamingo-text);
+  color: var(--vice-day-white);
+  border: 2px solid var(--vice-day-ink);
+  border-radius: 999px;
+  box-shadow: 5px 5px 0 var(--vice-day-ink);
+}
+html.vice:not(.dark) #coastal-art .lifeguard-drawing.beach-figure {
+  filter: url(#vice-tower-deco);
+}
+html.vice:not(.dark) #coastal-art .events h2 {
+  font-family: var(--font-vice-script), cursive;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--vice-teal-text);
+}
+html.vice:not(.dark) #coastal-art .event time b {
+  color: var(--vice-flamingo-text);
+}
+
+/* Section titles by day: deco capitals, a flamingo flourish */
+html.vice:not(.dark) :is(#featured-projects, #beach-offline, #tool-gallery, #sandbox, #coastal-footer) h2 {
+  font-family: var(--font-vice-deco), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  line-height: 1.02;
+}
+html.vice:not(.dark) :is(#featured-projects, #beach-offline, #tool-gallery, #sandbox) h2 em {
+  font-size: 1.36em;
+  color: var(--vice-flamingo);
+  text-shadow: 2px 2px 0 var(--vice-day-white), 4px 4px 0 var(--vice-day-ink);
+}
+
+/* Projects on mint */
+html.vice:not(.dark) #featured-projects {
+  --project-ink: var(--vice-day-ink);
+  --project-sand: var(--vice-mint);
+  --project-paper: var(--vice-day-white);
+  --project-rust: var(--vice-flamingo-text);
+  border-top: 6px double var(--vice-day-ink);
+}
+html.vice:not(.dark) #featured-projects .projects-eyebrow {
+  color: var(--vice-teal-text);
+}
+html.vice:not(.dark) #featured-projects .project-print {
+  box-shadow: 0 0 0 2px var(--vice-day-ink), 9px 9px 0 var(--vice-flamingo);
+}
+html.vice:not(.dark) #featured-projects .project-cutout:nth-child(even) .project-print {
+  box-shadow: 0 0 0 2px var(--vice-day-ink), 9px 9px 0 var(--vice-teal);
+}
+
+/* Radio, ramblings, postcards on blush */
+html.vice:not(.dark) #beach-offline {
+  --paper: var(--vice-blush);
+  --ink: var(--vice-day-ink);
+  --accent: var(--vice-flamingo-text);
+  --sheet: var(--vice-day-white);
+  --line: var(--vice-day-line);
+}
+html.vice:not(.dark) #beach-offline .eyebrow {
+  color: var(--vice-teal-text);
+}
+html.vice:not(.dark) #beach-offline h2 em {
+  color: var(--vice-day-white);
+  text-shadow: 2px 2px 0 var(--vice-flamingo), 5px 5px 0 var(--vice-day-ink);
+}
+html.vice:not(.dark) #beach-offline .skill-sticker {
+  background: var(--vice-teal-text);
+  color: var(--vice-day-white);
+}
+html.vice:not(.dark) #beach-offline :is(.rambles, .photos) h3 {
+  font: 400 46px/1 var(--font-vice-script), cursive;
+  letter-spacing: 0;
+  color: var(--vice-flamingo-text);
+}
+html.vice:not(.dark) #beach-offline :is(.ramble, .photo-front) {
+  box-shadow: 0 0 0 2px var(--vice-day-ink), 7px 8px 0 var(--vice-teal);
+}
+html.vice:not(.dark) #beach-offline :is(.photo-front, .ramble-photo, .album-photo) img {
+  filter: saturate(1.25);
+}
+html.vice:not(.dark) #beach-offline .photo-front span {
+  font: 400 28px/1 var(--font-vice-script), cursive;
+  color: var(--vice-flamingo-text);
+}
+
+/* Tools */
+html.vice:not(.dark) #tool-gallery {
+  --paper: var(--vice-day-paper);
+  --ink: var(--vice-day-ink);
+  --accent: var(--vice-flamingo-text);
+  --rule: var(--vice-day-line);
+}
+html.vice:not(.dark) #tool-gallery .eyebrow,
+html.vice:not(.dark) #tool-gallery .group-heading h3 {
+  color: var(--vice-teal-text);
+}
+html.vice:not(.dark) #tool-gallery .category[aria-pressed="true"] {
+  background: var(--vice-day-ink);
+  color: var(--vice-day-white);
+  box-shadow: inset -6px 0 0 var(--vice-flamingo);
+}
+html.vice:not(.dark) #tool-gallery .tech-item:nth-child(3n + 1) .brand-icon {
+  color: var(--vice-flamingo-text);
+}
+html.vice:not(.dark) #tool-gallery .tech-item:nth-child(3n + 2) .brand-icon {
+  color: var(--vice-teal-text);
+}
+html.vice:not(.dark) #tool-gallery .bottom em {
+  font: 400 28px/1 var(--font-vice-script), cursive;
+  color: var(--vice-flamingo-text);
+}
+
+/* Sandbox on peach, under an awning */
+html.vice:not(.dark) #sandbox {
+  background: var(--vice-peach);
+  color: var(--vice-day-ink);
+  border-top: 12px solid;
+  border-image: var(--vice-awning) 12;
+}
+html.vice:not(.dark) #sandbox .game-kicker {
+  color: var(--vice-teal-text);
+}
+html.vice:not(.dark) #sandbox .game-stage {
+  box-shadow: 8px 8px 0 var(--vice-teal);
+}
+html.vice:not(.dark) #sandbox .sand-figure {
+  color: var(--vice-day-ink);
+}
+
+/* Footer: indigo evening */
+html.vice:not(.dark) #coastal-footer {
+  --footer-paper: var(--vice-day-ink);
+  --footer-ink: var(--vice-day-paper);
+  --footer-accent: var(--vice-flamingo-pale);
+  border-top: 12px solid;
+  border-image: var(--vice-awning) 12;
+}
+html.vice:not(.dark) #coastal-footer :is(.footer-kicker, h3) {
+  color: var(--vice-aqua);
+}
+html.vice:not(.dark) #coastal-footer h2 em {
+  color: var(--vice-flamingo);
+  text-shadow: 2px 2px 0 var(--vice-day-white), 5px 5px 0 var(--vice-teal);
+}
+html.vice:not(.dark) #coastal-footer .footer-wave {
+  color: var(--vice-aqua);
+}
+html.vice:not(.dark) #coastal-footer .footer-figures {
+  color: var(--vice-flamingo-pale);
+}
+
+/* Inner pages under the rays */
+html.vice:not(.dark) .interior {
+  --paper: var(--vice-day-paper);
+  --ink: var(--vice-day-ink);
+  --sheet: var(--vice-day-white);
+  --accent: var(--vice-flamingo-text);
+  background:
+    linear-gradient(transparent 300px, var(--vice-day-paper) 620px) top / 100% 620px no-repeat,
+    repeating-conic-gradient(from 0deg at 76% 300px, var(--vice-blush) 0 5deg, transparent 5deg 10deg) top / 100% 620px no-repeat,
+    var(--vice-day-paper);
+}
+html.vice:not(.dark) .interior .page-kicker {
+  color: var(--vice-teal-text);
+}
+html.vice:not(.dark) .interior h1 {
+  font-family: var(--font-vice-deco), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  line-height: 1.02;
+  text-shadow: 4px 4px 0 var(--vice-teal);
+}
+html.vice:not(.dark) .interior h1 em {
+  font-size: 1.12em;
+  white-space: nowrap;
+  color: var(--vice-flamingo);
+  text-shadow: 2px 2px 0 var(--vice-day-white), 5px 5px 0 var(--vice-day-ink);
+}
+html.vice:not(.dark) .interior .page-polaroid {
+  box-shadow: 0 0 0 2px var(--vice-day-ink), 10px 10px 0 var(--vice-teal), 20px 20px 0 var(--vice-flamingo);
+}
+html.vice:not(.dark) .interior .page-polaroid :is(img, video) {
+  filter: saturate(1.25) contrast(1.03);
+}
+html.vice:not(.dark) .interior .page-polaroid figcaption {
+  font: 400 30px/1 var(--font-vice-script), cursive;
+  color: var(--vice-flamingo-text);
+}
+html.vice:not(.dark) .interior .contact-number {
+  font: 400 76px/1 var(--font-vice-script), cursive;
+  color: var(--vice-flamingo-text);
+}
+html.vice:not(.dark) .interior .contact-aside > svg {
+  color: var(--vice-day-ink);
+}
+
+/* Narrower than the hero's two columns, the stand sits behind the headline:
+   back to the faint watermark the coastal skin uses, so the words stay legible. */
+@media (max-width: 1199px) {
+  html.vice #coastal-art .lifeguard-drawing.beach-figure {
+    opacity: 0.2;
+  }
+  html.vice.dark #coastal-art .lifeguard-drawing.beach-figure {
+    opacity: 0.3;
+  }
+}
+
+/* ── Phones ────────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  html.vice [data-beachmag]::before {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+  }
+  html.vice #site-nav .brand-marks {
+    width: 34px;
+    height: 34px;
+  }
+}

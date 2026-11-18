@@ -8,6 +8,7 @@ import { DeferredAnalytics } from "@/providers/DeferredAnalytics";
 import { Toaster } from "@/components/ui/sonner";
 import { Suspense } from "react";
 import { PERSON, SITE_URL, jsonLd, siteGraph } from "@/lib/structured-data";
+import { VICE_SCRIPT } from "@/lib/vice-day";
 
 const HOME_TITLE = "Chris Lane Jones | Senior Web Engineer, React & Rust/WASM";
 
@@ -100,6 +101,10 @@ export default function RootLayout({
 }) {
   return (
       <html lang="en" suppressHydrationWarning>
+        <head>
+          {/* The Vice edition's day switch (src/lib/vice.ts): sets html.vice before first paint. */}
+          <script dangerouslySetInnerHTML={{ __html: VICE_SCRIPT }} />
+        </head>
         <body
           className={`${interphases.className} ${interphases.variable} antialiased`}
           suppressHydrationWarning

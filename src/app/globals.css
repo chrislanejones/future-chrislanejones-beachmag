@@ -164,6 +164,50 @@
   --ease-pop: cubic-bezier(0.2, 1.5, 0.4, 1);   /* the bouncy press (keys, knobs, the preserver) */
   --ease-snap: cubic-bezier(0.7, 0, 0.15, 1);   /* the menu takeover */
 
+  /* ── The Vice edition (one day: src/lib/vice.ts, src/components/beachmag/vice.css) ──
+     Vice nights: neon on a violet night. Vice days: pastel Ocean Drive deco. */
+  --vice-night: #0b0220;          /* night page, deepest */
+  --vice-night-deep: #07010f;     /* the footer */
+  --vice-night-panel: #140530;    /* a section */
+  --vice-night-panel-2: #1c0845;  /* a card on it */
+  --vice-night-sky: #2a0a55;      /* the hero's sky, upper */
+  --vice-night-dusk: #43106a;     /* the hero's sky, lower */
+  --vice-night-plum: #4a0b5c;     /* the margin, lower */
+  --vice-night-ink: #f4e8ff;      /* text */
+  --vice-night-soft: #c9b5ee;     /* quiet text, idle buttons */
+  --vice-night-line: #4b2d86;     /* rules */
+  --vice-pink: #ff2d95;           /* neon pink */
+  --vice-pink-deep: #b3125f;      /* pink behind white text (AA) */
+  --vice-pink-pale: #ffe3f3;      /* the white-hot core of pink neon */
+  --vice-neon-ink: #ff5cae;       /* the beach figures at night */
+  --vice-cyan: #1ff0ff;           /* neon cyan */
+  --vice-ice: #d9fdff;            /* the white-hot core of cyan neon */
+  --vice-sun: #ffd23f;            /* neon yellow */
+  --vice-violet: #7b3cff;
+  --vice-violet-deep: #5a1fd1;    /* violet behind white text (AA) */
+  --vice-glow-pink: 0 0 4px #fff6, 0 0 10px #ff2d95, 0 0 28px #ff2d95aa, 0 0 60px #ff2d9566;
+  --vice-glow-cyan: 0 0 4px #fff5, 0 0 10px #1ff0ffcc, 0 0 30px #1ff0ff88;
+  --vice-day-paper: #fff8f2;      /* day page */
+  --vice-day-white: #ffffff;
+  --vice-day-ink: #2a1a5e;        /* indigo ink; also the figures by day */
+  --vice-deco-ink: #2a1a5e;
+  --vice-flamingo: #ff3d9a;       /* flamingo pink, large type and fills */
+  --vice-flamingo-text: #b80f66;  /* flamingo for small text and white labels (AA) */
+  --vice-flamingo-pale: #ff8cc6;  /* on the indigo footer */
+  --vice-teal: #00a9b0;           /* turquoise, fills and offsets */
+  --vice-teal-text: #006b70;      /* turquoise for small text (AA) */
+  --vice-aqua: #7fe6de;           /* on the indigo footer */
+  --vice-gold: #ffc93c;
+  --vice-mint: #bfeee8;           /* projects */
+  --vice-blush: #ffd6e6;          /* radio, ramblings, rays */
+  --vice-peach: #ffe4c7;          /* sandbox */
+  --vice-day-line: #f3a5c8;       /* rules */
+  --vice-sky-top: #7fe6de;        /* the margin's sky gradient */
+  --vice-sky-mint: #bdf0ea;
+  --vice-sky-pink: #ffd3e6;
+  --vice-sky-coral: #ffb8a0;
+  --vice-sky-gold: #ffd98a;
+
   /* ── Motion ── */
   --motion-fast: 160ms;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);

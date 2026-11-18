@@ -6,6 +6,7 @@ import { api } from "../../../convex/_generated/api";
 import { useFooterNavSections } from "@/components/page/links";
 import { Heart, Waves } from "lucide-react";
 import { BeachFigure } from "./beach-figure";
+import { useVice } from "@/lib/vice";
 import "./footer.css";
 
 // The social row follows Profile & Social → "Site footer pulls this order";
@@ -62,11 +63,12 @@ function Directory({ live }: { live: boolean }) {
 export function SiteFooter({ offline = false }: { offline?: boolean }) {
   // offline: static columns and social row (the shell renders this if the live footer throws).
   const social = useSocial(!offline);
+  const vice = useVice();
   return (
     <footer id="coastal-footer" aria-label="Site footer">
       <div className="footer-sendoff">
         <div>
-          <p className="footer-kicker">THE COASTAL EDITION / UNTIL NEXT TIME</p>
+          <p className="footer-kicker">{vice ? "THE VICE EDITION" : "THE COASTAL EDITION"} / UNTIL NEXT TIME</p>
           <h2>
             See you<br /><em>out there.</em>
             {/* A low, wide beach canopy with broad stripes and a leaning sand pole. */}

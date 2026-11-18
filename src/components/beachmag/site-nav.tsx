@@ -5,6 +5,7 @@ import { createElement, useEffect, useRef, useState } from "react";
 import { Anchor, ChevronDown, Fish, Sailboat, Shell, Sun, Sunrise, TreePalm, Umbrella, Volleyball, Waves, type LucideIcon } from "lucide-react";
 import { useHeaderNavItems } from "@/components/page/links";
 import { setTheme, useTheme } from "@/lib/theme-store";
+import { useVice } from "@/lib/vice";
 
 type NavItem = { label: string; href?: string; isExternal?: boolean; children?: NavItem[] };
 
@@ -84,6 +85,7 @@ function NavGroup({ item, markStart, open, onOpen, onClose }: { item: NavItem; m
 // any width; body classes drive the open and close, so the closing animation
 // can finish first.
 export function SiteNav({ offline = false }: { offline?: boolean }) {
+  const vice = useVice();
   const theme = useTheme();
   // offline: the static list only (the shell renders this if the live nav throws).
   const items = useNavItems(!offline);
@@ -280,8 +282,8 @@ export function SiteNav({ offline = false }: { offline?: boolean }) {
         <div className="menu-bottom">
           <p>CHOOSE YOUR EDITION</p>
           <div className="menu-editions" role="group" aria-label="Color scheme">
-            <button type="button" aria-pressed={theme === "light"} onClick={() => setTheme("light")}>Sunlit paper ☀</button>
-            <button type="button" aria-pressed={theme === "dark"} onClick={() => setTheme("dark")}>After dark ☾</button>
+            <button type="button" aria-pressed={theme === "light"} onClick={() => setTheme("light")}>{vice ? "Vice days ☀" : "Sunlit paper ☀"}</button>
+            <button type="button" aria-pressed={theme === "dark"} onClick={() => setTheme("dark")}>{vice ? "Vice nights ☾" : "After dark ☾"}</button>
           </div>
           <Link className="menu-meet" href="/lets-meet" onClick={() => setOpen(false)}>LET’S MEET <span aria-hidden="true">↗</span></Link>
         </div>
