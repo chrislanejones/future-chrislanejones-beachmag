@@ -85,8 +85,8 @@ export function useHeaderNavItems(live = true) {
           label: "Work",
           order: 2,
           children: [
-            { href: "/projects", label: "Projects", order: 0 },
-            { href: "/career-and-resume", label: "Career & Resume", order: 1 },
+            { href: "/career-and-resume", label: "Career & Resume", order: 0 },
+            { href: "/projects", label: "Projects", order: 1 },
             { href: "/conferences", label: "Conferences", order: 2 },
             { href: "/react-maintenance", label: "React Services", order: 3 },
             {
@@ -144,33 +144,27 @@ export function useFooterNavSections(live = true) {
           title: "Work",
           order: 1,
           links: [
-            { href: "/projects", label: "Projects", order: 0 },
-            { href: "/career-and-resume", label: "Career & Resume", order: 1 },
+            { href: "/career-and-resume", label: "Career & Resume", order: 0 },
+            { href: "/projects", label: "Projects", order: 1 },
             { href: "/blog", label: "Blog", order: 2 },
-            { href: "/react-maintenance", label: "React Services", order: 3 },
+            { href: "/conferences", label: "Conferences", order: 3 },
+            { href: "/react-maintenance", label: "React Services", order: 4 },
             {
               href: "/wordpress-maintenance",
               label: "WordPress Services",
-              order: 4,
+              order: 5,
             },
-            { href: "/conferences", label: "Conferences", order: 5 },
           ],
         },
         {
-          title: "Resources",
+          title: "Resources & Contact",
           order: 2,
           links: [
             { href: "/site-map", label: "Change Log / Site Map", order: 0 },
             { href: "/link-page", label: "Link Page", order: 1 },
             { href: "/admin-showcase", label: "Admin Showcase", order: 2 },
-          ],
-        },
-        {
-          title: "Contact",
-          order: 3,
-          links: [
-            { href: "/contact", label: "Contact", order: 0 },
-            { href: "/lets-meet", label: "Let's Meet", order: 1 },
+            { href: "/contact", label: "Contact", order: 3 },
+            { href: "/lets-meet", label: "Let's Meet", order: 4 },
           ],
         },
       ] as FooterNavSection[];

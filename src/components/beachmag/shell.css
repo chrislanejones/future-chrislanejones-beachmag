@@ -2010,11 +2010,11 @@ section#sandbox .sandbox-heading {
   opacity: 0.2;
 }
 
-/* Footer: the four link columns sit at equal steps; the last column is
+/* Footer: the three link columns sit at equal steps; the fifth column is
    the girl from the beach drawing, rising past the send-off. */
 @media (min-width: 641px) {
   #coastal-footer .footer-directory {
-    grid-template-columns: 1.1fr repeat(4, 0.7fr) 1fr;
+    grid-template-columns: 1.1fr 0.75fr 0.75fr 0.75fr 1.2fr;
   }
 }
 #coastal-footer .footer-figures {
@@ -2825,4 +2825,11 @@ html.dark #coastal-art .map-wrap .map-night {
   #coastal-art .events-hero .page-polaroid:hover {
     transform: rotate(4deg);
   }
+}
+
+/* /browser-tabs sits inside the inner-page sheet now (InteriorPage + PageHero,
+   like /projects), so the archive drops its own sheet padding and paper. */
+.interior #browser-tabs {
+  padding: 0;
+  background: transparent;
 }
