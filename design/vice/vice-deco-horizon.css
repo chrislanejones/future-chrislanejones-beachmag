@@ -1,0 +1,18 @@
+/* Vice edition, variant B2: "Ocean Drive, daytime" with a postcard horizon in
+   place of the sunburst. Loaded after vice-deco.css; it only restyles the hero.
+   The sky ends where the .sub rule starts (543px down at desktop width). */
+html.vice-horizon #coastal-art .direction{background:
+  radial-gradient(closest-side,#fff 97%,transparent) 590px 192px/250px 26px no-repeat,
+  radial-gradient(closest-side,#fff 97%,transparent) 660px 210px/300px 24px no-repeat,
+  radial-gradient(closest-side,#fffc 97%,transparent) 560px 318px/210px 22px no-repeat,
+  radial-gradient(closest-side,#fffc 97%,transparent) 630px 334px/150px 18px no-repeat,
+  radial-gradient(closest-side,#fff 97%,transparent) -40px 232px/190px 22px no-repeat,
+  linear-gradient(#00a9b0 0 20px,#fff8f2 20px 23px,#27bcc0 23px 39px,#fff8f2 39px 42px,#62d2d1 42px 55px,#fff8f2 55px 58px,#a8e8e3 58px 70px) 0 473px/100% 70px no-repeat,
+  linear-gradient(#6fdcd8 0,#a9e9e2 34%,#fff0d2 74%,#ffcfae 100%) top/100% 473px no-repeat,
+  var(--v-white)}
+html.vice-horizon #coastal-art .direction::before{right:34px;top:196px;width:300px;height:300px}
+html.vice-horizon #coastal-art .palette-switch{border-bottom-color:#2a1a5e55}
+html.vice-horizon #coastal-art .palette-switch>span{color:var(--v-ink)}
+html.vice-horizon #coastal-art .mast{text-shadow:4px 4px 0 #fff}
+html.vice-horizon #coastal-art .mast em{text-shadow:2px 2px 0 #fff,6px 6px 0 var(--v-ink)}
+html.vice-horizon #coastal-art .sub{border-top:0;padding-top:16px}

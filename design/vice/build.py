@@ -124,7 +124,7 @@ FOOTER = f'''<footer id="coastal-footer" aria-label="Site footer">
 GIRL = '''<script>(function(){var root=document.getElementById('sandbox-root');function seat(){var h=root.querySelector('.sandbox-heading');if(h&&!h.querySelector('.sand-figure'))h.insertAdjacentHTML('beforeend',%r)}new MutationObserver(seat).observe(root,{childList:true,subtree:true});seat()})()</script>''' % figure('beach-girl', 'sand-figure')
 
 
-def page(variant, edition_label, night):
+def page(variant, edition_label, night, extra=''):
     h = SRC
     h = h.replace("'Bodoni Moda'", "var(--font-bodoni-moda,'Bodoni Moda')")
     h = h.replace("'DM Sans'", "var(--font-dm-sans,'DM Sans')")
@@ -146,7 +146,7 @@ def page(variant, edition_label, night):
     h = h.replace('href="sandbox.css"', 'href="../outputs/sandbox.css"')
     h = h.replace('src="sandbox.js"', 'src="../outputs/sandbox.js"')
     h = h.replace('src="audio/', 'src="../outputs/audio/')
-    h = h.replace('<html', '<html class="vice vice-%s"' % variant, 1)
+    h = h.replace('<html', '<html class="vice vice-%s%s"' % (variant, ' vice-' + extra if extra else ''), 1)
     h = h.replace('THE COASTAL EDITION', 'THE VICE EDITION')
     h = h.replace('<title>Coastal homepage', '<title>Vice edition (%s)' % variant)
     # The live homepage draws the lifeguard stand from public/art (journal-hero.tsx);
@@ -162,10 +162,12 @@ def page(variant, edition_label, night):
     live = (app / 'footer.css').read_text() + rules_for((app / 'shell.css').read_text(), '#coastal-footer', '.beach-figure')
     h = h.replace('</main>', FOOTER + '</main>')
     h = h.replace('</body>', "<style>:root{--font-bodoni-moda:'Bodoni Moda';--font-dm-sans:'DM Sans'}\n%s</style>%s%s"
-                             '<link rel="stylesheet" href="vice-%s.css"></body>' % (live, FILTERS, GIRL, variant))
-    (HERE / ('vice-%s.html' % variant)).write_text(h)
+                             '<link rel="stylesheet" href="vice-%s.css">%s</body>'
+                  % (live, FILTERS, GIRL, variant, '<link rel="stylesheet" href="vice-%s-%s.css">' % (variant, extra) if extra else ''))
+    (HERE / ('vice-%s%s.html' % (variant, '-' + extra if extra else ''))).write_text(h)
 
 
 page('neon', 'Vice nights ✦', night=True)
 page('deco', 'Vice days ✦', night=False)
+page('deco', 'Vice days ✦', night=False, extra='horizon')  # same skin, postcard-horizon hero
 print('built', sorted(p.name for p in HERE.glob('*.html')), len(list((HERE / 'icons').glob('*.svg'))), 'icons')
