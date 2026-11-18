@@ -27,6 +27,15 @@ export type HomeEvent = {
 
 export const HOME_EVENTS: HomeEvent[] = [
   {
+    slug: "roundtable-event-2026-11-20",
+    start: "2026-11-20T07:30",
+    end: "2026-11-20T09:30",
+    name: "Roundtable Event",
+    place: "7:30–9:30 AM ET",
+    description: "An early-morning roundtable over coffee.",
+    tags: ["San Marco"],
+  },
+  {
     slug: "gta-vi-release-day-2026-11-19",
     start: "2026-11-19T09:00",
     name: "Grand Theft Auto VI Release Day",
