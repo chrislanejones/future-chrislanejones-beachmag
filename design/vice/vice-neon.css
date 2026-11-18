@@ -1,0 +1,151 @@
+/* Vice edition, variant A: "Neon nights".
+   An override layer over the stock homepage: it re-points the palette variables
+   the sections already read, then adds the neon signage on top. */
+@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
+@font-face{font-family:Yellowtail;src:url('../../public/fonts/Yellowtail-Regular.woff2') format('woff2');font-display:swap}
+
+html.vice-neon{
+  --v-night:#0b0220;--v-panel:#140530;--v-panel-2:#1c0845;--v-ink:#f4e8ff;
+  --v-pink:#ff2d95;--v-cyan:#1ff0ff;--v-sun:#ffd23f;--v-violet:#7b3cff;--v-line:#4b2d86;
+  --v-script:Yellowtail,'Brush Script MT',cursive;
+  --glow-pink:0 0 4px #fff6,0 0 10px #ff2d95,0 0 28px #ff2d95aa,0 0 60px #ff2d9566;
+  --glow-cyan:0 0 4px #fff5,0 0 10px #1ff0ffcc,0 0 30px #1ff0ff88;
+  --v-rainbow:linear-gradient(90deg,var(--v-pink),var(--v-sun),var(--v-cyan));
+}
+html.vice-neon,html.vice-neon *{color-scheme:dark!important}
+html.vice-neon body{
+  --nav-paper:#0f0326;--nav-ink:var(--v-ink);--nav-accent:var(--v-pink);
+  background:radial-gradient(900px 520px at 8% 0,#ff2d9540,transparent 70%),radial-gradient(900px 700px at 96% 28%,#1ff0ff26,transparent 70%),linear-gradient(#0b0220,#1c0646 55%,#4a0b5c);
+}
+html.vice-neon body>main{box-shadow:0 0 0 1px #ff2d9566,0 0 90px #7b3cff66}
+
+/* One-day ribbon */
+html.vice-neon body>main::before{content:"ONE DAY ONLY  ✦  THE VICE EDITION  ✦  SAME A1A, DIFFERENT NEON";display:block;white-space:pre-wrap;text-align:center;padding:9px 16px;background:linear-gradient(90deg,#ff2d95,#7b3cff 50%,#12b8e6);color:#fff;font:700 11px var(--font-dm-sans,'DM Sans'),Arial,sans-serif;letter-spacing:.24em}
+
+/* Nav */
+html.vice-neon #site-nav{border-bottom:3px solid;border-image:var(--v-rainbow) 1;text-transform:uppercase;letter-spacing:.14em;font-size:11px}
+html.vice-neon #site-nav .desktop-links{gap:20px}
+html.vice-neon #site-nav .desktop-links a:hover{color:var(--v-cyan);text-shadow:var(--glow-cyan);text-decoration:none}
+html.vice-neon #site-nav .brand-wave{width:46px;height:46px;filter:drop-shadow(0 0 10px #ff2d9599)}
+html.vice-neon #site-nav .brand-stamp{display:none}
+html.vice-neon #site-nav .nav-brand .brand-wordmark>span{color:var(--v-pink);letter-spacing:.3em}
+
+/* Hero */
+html.vice-neon #coastal-art{--paper:var(--v-panel);--ink:var(--v-ink);--orange:var(--v-pink);--line:var(--v-line);--sand:#2a0f55;--tear-fill:var(--v-panel-2)}
+html.vice-neon #coastal-art .direction{background:radial-gradient(520px 300px at 82% 250px,#ff2d9538,transparent 70%),linear-gradient(#0b0220,#2a0a55 330px,#43106a 520px,#140530 880px) top/100% 880px no-repeat,var(--v-panel)}
+html.vice-neon #coastal-art .direction::after{background:repeating-linear-gradient(0deg,#fff 0 1px,transparent 1px 3px);opacity:.035;mix-blend-mode:screen}
+html.vice-neon #coastal-art .palette-switch{border-bottom-color:var(--v-line)}
+html.vice-neon #coastal-art .palette-switch>span{color:var(--v-cyan)}
+html.vice-neon #coastal-art .palette-switch button{background:transparent;border-color:var(--v-line);color:#c9b5ee;letter-spacing:.06em}
+html.vice-neon #coastal-art .palette-switch button.vice-edition{background:transparent;color:#fff;border-color:var(--v-pink);box-shadow:0 0 0 1px var(--v-pink),0 0 18px #ff2d95aa,inset 0 0 14px #ff2d9555;text-shadow:0 0 8px #ff2d95}
+html.vice-neon #coastal-art .top{border-bottom-color:var(--v-cyan);letter-spacing:.14em;box-shadow:0 8px 14px -12px var(--v-cyan)}
+html.vice-neon #coastal-art .mast{font-family:Monoton,'Arial Black',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.02em;font-size:clamp(56px,9.4vw,104px);line-height:1.02;color:#d9fdff;text-shadow:var(--glow-cyan);padding:44px 0 52px}
+html.vice-neon #coastal-art .mast em{font-family:var(--v-script);font-style:normal;text-transform:none;letter-spacing:0;font-size:1.62em;line-height:.9;background:none;color:#ffe3f3;text-shadow:var(--glow-pink);padding:0 .3em .12em .05em;transform:rotate(-6deg) translate(.5em,-.2em)}
+html.vice-neon #coastal-art .sub{border-color:var(--v-pink);letter-spacing:.14em;margin-top:0;box-shadow:0 -8px 14px -12px var(--v-pink),0 8px 14px -12px var(--v-pink)}
+html.vice-neon #coastal-art .sub span:last-child{color:var(--v-cyan);letter-spacing:.04em}
+html.vice-neon #coastal-art .map{border:3px solid #fff;box-shadow:0 0 0 2px var(--v-pink),0 0 34px #ff2d95aa,10px 12px 0 var(--v-cyan);background:#1c0845}
+html.vice-neon #coastal-art .map-wrap:hover .map{box-shadow:0 0 0 2px var(--v-pink),0 0 44px #ff2d95,14px 16px 0 var(--v-cyan)}
+html.vice-neon #coastal-art .edge{color:var(--v-cyan);text-shadow:0 0 10px #1ff0ff99}
+html.vice-neon #coastal-art .sticker{font-family:var(--v-script);font-style:normal;font-weight:400;font-size:36px;background:#0b0220;color:#ffe3f3;text-shadow:var(--glow-pink);border:2px solid var(--v-pink);border-radius:12px;padding:12px 26px 14px;box-shadow:0 0 0 4px #0b0220,0 0 26px #ff2d95,inset 0 0 18px #ff2d9566}
+html.vice-neon #coastal-art .label{color:var(--v-cyan);letter-spacing:.2em}
+html.vice-neon #coastal-art .columns article a{color:var(--v-pink)}
+html.vice-neon #coastal-art .events h2{font-family:var(--v-script);font-style:normal;font-weight:400;font-size:44px;letter-spacing:0;color:#d9fdff;text-shadow:var(--glow-cyan)}
+html.vice-neon #coastal-art .event time{color:var(--v-cyan);letter-spacing:.14em}
+html.vice-neon #coastal-art .event time b{color:var(--v-pink);text-shadow:0 0 16px #ff2d9588}
+html.vice-neon #coastal-art .footer-line{color:#c9b5ee}
+
+/* Every section title: the italic word becomes the neon script */
+html.vice-neon #featured-projects h2 em,html.vice-neon #beach-offline h2 em,html.vice-neon #tool-gallery h2 em,html.vice-neon #sandbox h2 em{font-family:var(--v-script);font-style:normal;font-weight:400;letter-spacing:0;font-size:1.28em;line-height:.8;color:#ffe3f3;text-shadow:var(--glow-pink);display:inline-block;transform:rotate(-4deg);padding-right:.2em}
+
+/* Projects: a lit grid floor */
+html.vice-neon #featured-projects{--project-ink:var(--v-ink);--project-sand:#1c0845;--project-paper:#0d0224;--project-rust:var(--v-pink);
+  background:linear-gradient(#1c0845 0,#1c0845e6 38%,#1c084500 100%),repeating-linear-gradient(90deg,#ff2d9555 0 1px,transparent 1px 46px),repeating-linear-gradient(0deg,#ff2d9555 0 1px,transparent 1px 46px),#1c0845;border-top:3px solid var(--v-pink);box-shadow:0 -1px 30px #ff2d9566}
+html.vice-neon #featured-projects:before{opacity:.06}
+html.vice-neon #featured-projects .projects-eyebrow{color:var(--v-cyan);letter-spacing:.2em}
+html.vice-neon #featured-projects .projects-all{color:var(--v-cyan);border-color:var(--v-cyan);text-transform:uppercase;letter-spacing:.14em}
+html.vice-neon #featured-projects .project-print{box-shadow:0 0 0 2px var(--v-cyan),0 0 30px #1ff0ff66,9px 11px 0 var(--v-pink)}
+html.vice-neon #featured-projects .project-cutout:nth-child(2) .project-print{box-shadow:0 0 0 2px var(--v-pink),0 0 30px #ff2d9588,9px 11px 0 var(--v-cyan)}
+html.vice-neon #featured-projects .project-print img{filter:saturate(1.2) contrast(1.04);background:#0b0220;border-color:#fff2}
+html.vice-neon #featured-projects .project-print>span{color:var(--v-sun);letter-spacing:.2em}
+html.vice-neon #featured-projects .project-go{background:#0d0224;border-color:var(--v-pink);box-shadow:4px 4px 0 var(--v-cyan);text-transform:uppercase;letter-spacing:.14em;font-size:11px}
+html.vice-neon #featured-projects .project-go:hover{background:var(--v-pink);color:#fff;box-shadow:4px 4px 0 var(--v-cyan),0 0 26px #ff2d95}
+html.vice-neon #featured-projects .projects-bottom{border-color:var(--v-line);color:#c9b5ee}
+
+/* Radio, ramblings, postcards */
+html.vice-neon #beach-offline{--paper:#0f0326;--ink:var(--v-ink);--accent:var(--v-pink);--sheet:#1c0845;--line:var(--v-line);background:radial-gradient(700px 420px at 50% 430px,#ff2d952e,transparent 70%),radial-gradient(520px 380px at 50% 520px,#1ff0ff1f,transparent 70%),#0f0326}
+html.vice-neon #beach-offline .eyebrow{color:var(--v-cyan);letter-spacing:.2em}
+html.vice-neon #beach-offline .lede{border-bottom:3px solid;border-image:var(--v-rainbow) 1}
+html.vice-neon #beach-offline .mono-radio{filter:drop-shadow(0 34px 40px #ff2d9577) drop-shadow(0 0 36px #1ff0ff55)}
+html.vice-neon #beach-offline .cassette-shell{background:linear-gradient(#fbeaff,#f1dcff 24%,#ff2d95 24% 28%,#1ff0ff 28% 30%,#f1dcff 30% 75%,#c9aef2)}
+html.vice-neon #beach-offline .station[aria-pressed=true]{color:#ffd0ea;border-color:var(--v-pink);background:#2a0a3c;text-shadow:0 0 6px #ff2d95}
+html.vice-neon #beach-offline .dial-needle{background:var(--v-pink);box-shadow:0 0 8px var(--v-pink)}
+html.vice-neon #beach-offline .real-status{color:var(--v-cyan);letter-spacing:.1em}
+html.vice-neon #beach-offline .skill-links a{color:var(--v-cyan)}
+html.vice-neon #beach-offline .skill-sticker{background:linear-gradient(100deg,#ff2d95,#7b3cff);color:#fff}
+html.vice-neon #beach-offline .sticker-label{font:400 30px/1 var(--v-script)}
+html.vice-neon #beach-offline .ramble,html.vice-neon #beach-offline .photo-front{box-shadow:0 0 0 1px var(--v-pink),6px 8px 0 #ff2d9566}
+html.vice-neon #beach-offline .ramble:before{background:#1ff0ff66}
+html.vice-neon #beach-offline .ramble h3,html.vice-neon #beach-offline .photos h3{font:400 44px/1 var(--v-script);letter-spacing:0;color:#d9fdff;text-shadow:var(--glow-cyan)}
+html.vice-neon #beach-offline .ramble-photo{background:#0b0220;border-color:var(--v-cyan);box-shadow:0 0 18px #1ff0ff55}
+html.vice-neon #beach-offline .photo-stack:before,html.vice-neon #beach-offline .photo-stack:after{border-color:var(--v-cyan)}
+html.vice-neon #beach-offline .photo-front span{font:400 28px/1 var(--v-script);color:#ffe3f3;text-shadow:var(--glow-pink)}
+html.vice-neon #beach-offline .plain-button{border-color:var(--v-pink);color:#fff;text-transform:uppercase;letter-spacing:.12em;font-size:11px;box-shadow:3px 3px 0 var(--v-cyan)}
+
+/* Tools */
+html.vice-neon #coastal-art #tool-gallery{border-top:3px solid;border-image:var(--v-rainbow) 1;--rule:var(--v-line)}
+html.vice-neon #coastal-art #tool-gallery h2{border-bottom:3px solid var(--v-cyan);box-shadow:0 8px 14px -12px var(--v-cyan)}
+html.vice-neon #tool-gallery .eyebrow{color:var(--v-cyan);letter-spacing:.2em}
+html.vice-neon #tool-gallery .category[aria-pressed=true]{background:linear-gradient(100deg,#ff2d95,#7b3cff);color:#fff;box-shadow:0 0 24px #ff2d9577}
+html.vice-neon #tool-gallery .category[aria-pressed=true] .arrow{color:#fff}
+html.vice-neon #tool-gallery .category:hover{box-shadow:inset 0 -4px 0 var(--v-cyan)}
+html.vice-neon #tool-gallery .tech-item:nth-child(odd) .brand-icon{background:var(--v-cyan);filter:drop-shadow(0 0 7px #1ff0ff99)}
+html.vice-neon #tool-gallery .tech-item:nth-child(even) .brand-icon{background:var(--v-pink);filter:drop-shadow(0 0 7px #ff2d9599)}
+html.vice-neon #tool-gallery .group-heading h3{color:var(--v-sun);text-transform:uppercase;letter-spacing:.16em;font-size:12px}
+html.vice-neon #tool-gallery .bottom em{font:400 28px/1 var(--v-script);color:#ffe3f3;text-shadow:var(--glow-pink)}
+
+/* Sandbox */
+html.vice-neon #sandbox{background:linear-gradient(#0f0326,#1c0845);color:var(--v-ink);border-top:3px solid;border-image:var(--v-rainbow) 1}
+html.vice-neon #sandbox .game-kicker{color:var(--v-cyan);letter-spacing:.2em}
+html.vice-neon #sandbox button{border-color:var(--v-line)}
+html.vice-neon #sandbox button[aria-pressed=true]{background:#2a0a3c;color:#fff;border-color:var(--v-pink);box-shadow:0 0 0 1px var(--v-pink),0 0 18px #ff2d9588}
+html.vice-neon #sandbox .game-stage{border-color:var(--v-pink);box-shadow:0 0 34px #ff2d9566}
+html.vice-neon #sandbox .game-stage>div{filter:brightness(.6) contrast(1.3)}
+html.vice-neon #sandbox .game-stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(215deg,#12d8f0 0,#2b6bff 30%,#a12bff 52%,#ff2d95 100%);mix-blend-mode:color;opacity:.92}
+
+/* Hero: the lifeguard stand keeps its drawing; a filter repaints it (blue body,
+   pink roof and rails) and hangs the VI board on the railing. A striped sun sits behind. */
+html.vice-neon #coastal-art .lifeguard-drawing.beach-figure{-webkit-mask:none;mask:none;background:var(--art) center bottom/contain no-repeat;opacity:1;transform:none;right:14px;top:168px;width:332px;height:370px;filter:url(#vice-tower-neon)}
+html.vice-neon #coastal-art .direction::before{content:"";position:absolute;z-index:-2;right:52px;top:276px;width:250px;height:250px;border-radius:50%;background:linear-gradient(#ffd23f 0,#ff7a3c 30%,#ff2d95 58%,#b01cc8 100%);-webkit-mask:linear-gradient(#000 0 52%,transparent 52% 54.5%,#000 54.5% 63%,transparent 63% 66.5%,#000 66.5% 75%,transparent 75% 79.5%,#000 79.5% 88%,transparent 88% 93%,#000 93%);mask:linear-gradient(#000 0 52%,transparent 52% 54.5%,#000 54.5% 63%,transparent 63% 66.5%,#000 66.5% 75%,transparent 75% 79.5%,#000 79.5% 88%,transparent 88% 93%,#000 93%);opacity:.55}
+
+/* Phones */
+@media(max-width:640px){
+html.vice-neon #coastal-art .lifeguard-drawing.beach-figure{width:126px;height:140px;right:6px;top:182px}
+html.vice-neon #coastal-art .direction::before{width:92px;height:92px;right:22px;top:222px}
+html.vice-neon #coastal-art .mast{font-size:50px;padding-bottom:10px}
+html.vice-neon #coastal-art .mast em{font-size:1.45em;transform:rotate(-6deg) translate(.15em,-.15em)}
+html.vice-neon #coastal-art .sticker{font-size:26px}
+html.vice-neon body>main::before{font-size:9px;letter-spacing:.14em}
+}
+
+/* Photos: a live filter (defined once in the page as #vice-neon-photo), so any
+   photo or banner video swapped in later gets the same night-neon grade. */
+html.vice-neon #coastal-art .map,html.vice-neon #beach-offline .ramble-photo img,html.vice-neon #beach-offline .photo-front img,html.vice-neon #beach-offline .album-photo img{filter:url(#vice-neon-photo)}
+
+/* Beach figures become neon signs: white-hot line, coloured glow. */
+html.vice-neon .beach-figure{-webkit-mask:none;mask:none;background:var(--art) center bottom/contain no-repeat;filter:invert(1) drop-shadow(0 0 2px var(--v-pink)) drop-shadow(0 0 9px var(--v-pink)) drop-shadow(0 0 26px #ff2d9599)}
+html.vice-neon #sandbox .sandbox-heading{grid-template-columns:1fr 1fr 190px;background:linear-gradient(transparent 0 58%,#110430 58% 61%,transparent 61% 69%,#110430 69% 73%,transparent 73% 81%,#110430 81% 86%,transparent 86%) right 0 bottom 30px/190px 190px no-repeat,radial-gradient(circle closest-side,#ffd23f 0,#ff7a3c 45%,#ff2d95 78%,#b01cc8 99%,transparent 100%) right 0 bottom 30px/190px 190px no-repeat}
+html.vice-neon #sandbox .sand-figure{align-self:end;justify-self:center;height:250px;aspect-ratio:999/1458;opacity:1;filter:invert(1) drop-shadow(0 0 2px var(--v-cyan)) drop-shadow(0 0 9px var(--v-cyan)) drop-shadow(0 0 24px #1ff0ff88)}
+
+/* Footer: last call on the grid */
+html.vice-neon #coastal-footer{--footer-paper:#07010f;--footer-ink:var(--v-ink);--footer-accent:var(--v-pink);border-top:3px solid;border-image:var(--v-rainbow) 1;background:linear-gradient(#07010f 0,#07010fee 40%,#07010f33 100%),repeating-linear-gradient(90deg,#1ff0ff44 0 1px,transparent 1px 46px),repeating-linear-gradient(0deg,#1ff0ff44 0 1px,transparent 1px 46px),#07010f}
+html.vice-neon #coastal-footer:before{opacity:.04}
+html.vice-neon #coastal-footer .footer-kicker{color:var(--v-cyan);letter-spacing:.24em}
+html.vice-neon #coastal-footer .footer-sendoff{border-bottom:2px solid var(--v-pink);box-shadow:0 8px 14px -12px var(--v-pink)}
+html.vice-neon #coastal-footer h2 em{font-family:var(--v-script);font-style:normal;font-weight:400;letter-spacing:0;font-size:1.28em;line-height:.8;color:#ffe3f3;text-shadow:var(--glow-pink);display:inline-block;transform:rotate(-4deg);padding-right:.1em}
+html.vice-neon #coastal-footer .footer-contact{background:#07010f;border-color:var(--v-pink);box-shadow:0 0 0 1px var(--v-pink),0 0 18px #ff2d9588,4px 4px 0 var(--v-cyan);letter-spacing:.16em}
+html.vice-neon #coastal-footer h3{color:var(--v-cyan);letter-spacing:.2em}
+html.vice-neon #coastal-footer .footer-wave{color:var(--v-cyan);filter:drop-shadow(0 0 6px var(--v-cyan))}
+html.vice-neon #coastal-footer .footer-colophon{border-top-color:var(--v-line)}
+html.vice-neon #coastal-footer .footer-figures{opacity:1}
+html.vice-neon #coastal-footer .footer-figures::before{content:"";position:absolute;right:8px;bottom:120px;width:330px;height:330px;border-radius:50%;background:linear-gradient(#ffd23f 0,#ff7a3c 30%,#ff2d95 58%,#b01cc8 100%);-webkit-mask:linear-gradient(#000 0 52%,transparent 52% 54.5%,#000 54.5% 63%,transparent 63% 66.5%,#000 66.5% 75%,transparent 75% 79.5%,#000 79.5% 88%,transparent 88% 93%,#000 93%);mask:linear-gradient(#000 0 52%,transparent 52% 54.5%,#000 54.5% 63%,transparent 63% 66.5%,#000 66.5% 75%,transparent 75% 79.5%,#000 79.5% 88%,transparent 88% 93%,#000 93%);opacity:.5}
+html.vice-neon #coastal-footer .footer-figures .beach-figure{filter:invert(1) drop-shadow(0 0 2px var(--v-pink)) drop-shadow(0 0 10px var(--v-pink)) drop-shadow(0 0 28px #ff2d95)}
