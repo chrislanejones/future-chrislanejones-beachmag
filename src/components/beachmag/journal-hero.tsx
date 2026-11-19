@@ -49,10 +49,11 @@ function LiveEntry() {
   );
 }
 
-// The homepage hero: Chris's 10-24-2026 framing of St. Augustine Beach
-// (3d-world, Regular lens), 5:30 PM and 9 PM.
+// The homepage hero: St. Augustine Beach from 3d-world. Sunlit is Chris's
+// 11-19-2026 shot down the shore to the pier (1200x583); After dark is the
+// 10-24-2026 framing at 9 PM.
 const HERO = {
-  day: "/hero/home-day.webp",
+  day: "/hero/home-day-shore.webp",
   night: "/hero/home-night.webp",
   alt: "A 3D model of a Northeast Florida beach town: a white condo, beach cottages and the dune walkovers, with the pier and a sailboat down the shore",
 };

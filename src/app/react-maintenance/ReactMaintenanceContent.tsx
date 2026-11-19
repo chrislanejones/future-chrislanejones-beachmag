@@ -49,7 +49,6 @@ export default function ServicesPage() {
     <MaintenancePage
       kind="React"
       plus="Performance"
-      image="/gallery/Whiteboard-Notes.webp"
       title="Keep your React app moving."
       services={services}
       basicFeatures={[

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
   ArrowUpRight,
   Check,
@@ -20,7 +19,6 @@ const icons = [Code2, ShieldCheck, Wrench, Gauge, ChartNoAxesCombined, MapPin];
 export function MaintenancePage({
   kind,
   plus,
-  image,
   title,
   services,
   basicFeatures,
@@ -28,7 +26,6 @@ export function MaintenancePage({
 }: {
   kind: "React" | "WordPress";
   plus: "Performance" | "SEO";
-  image: string;
   title: string;
   services: Service[];
   basicFeatures: string[];
@@ -37,15 +34,6 @@ export function MaintenancePage({
   return (
     <>
       <section className={styles.serviceHero}>
-        <div>
-          <Image
-            src={image}
-            alt={`${kind} website planning`}
-            fill
-            sizes="(max-width: 767px) 90vw, 50vw"
-            priority
-          />
-        </div>
         <div className={styles.serviceHeroCopy}>
           <h2>{title}</h2>
           <p>
