@@ -736,6 +736,24 @@ body:has([data-coastal-page]) {
   display: block;
 }
 
+/* A photo the text wraps around: <img class="wrap-right"> in a post. Headings,
+   videos and rules start below it. On a phone it sits on its own line. */
+.blog-content img.wrap-right {
+  float: right;
+  width: min(38%, 240px);
+  margin: 0.35em 0 1em 1.5em;
+}
+.blog-content :is(h2, h3, video, hr, figure) {
+  clear: both;
+}
+@media (max-width: 600px) {
+  .blog-content img.wrap-right {
+    float: none;
+    width: min(100%, 280px);
+    margin: 1.5em auto;
+  }
+}
+
 /* tables */
 .blog-content table {
   width: 100%;
