@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { COAST_MAP, COLOR_GROUPS, MOTION_TOKENS, PAGE_COLORS, SECTIONS, SOURCED, TOKEN_FILES } from "./design-system";
+import { BC_COLOR_GROUPS, COAST_MAP, COLOR_GROUPS, MOTION_TOKENS, PAGE_COLORS, SECTIONS, SOURCED, TOKEN_FILES } from "./design-system";
 
 // /design-system prints values copied from the stylesheets. These tests fail
 // when a stylesheet changes and the page would go on showing the old value.
@@ -29,6 +29,13 @@ describe("design system data", () => {
   it("matches the --bm-* primitives in globals.css", () => {
     const css = read(TOKEN_FILES.globals);
     for (const group of COLOR_GROUPS) {
+      for (const token of group.tokens) expect(declared(css, token.token), token.token).toBe(token.value);
+    }
+  });
+
+  it("matches the Beach City --vice-* tokens in globals.css", () => {
+    const css = read(TOKEN_FILES.globals);
+    for (const group of BC_COLOR_GROUPS) {
       for (const token of group.tokens) expect(declared(css, token.token), token.token).toBe(token.value);
     }
   });

@@ -230,3 +230,83 @@ export const TOKEN_FILES = { interior: INTERIOR, shell: SHELL, globals: GLOBALS 
 
 /** The count of named colors on the page, for the closing line. */
 export const COLOR_TOKEN_COUNT = PAGE_COLORS.length + COLOR_GROUPS.reduce((sum, group) => sum + group.tokens.length, 0);
+
+/* ── The Beach City edition (code name "vice"), the short version ──────── */
+
+export const BC_SECTIONS: readonly Section[] = [
+  { id: "bc-logo", title: "Logo" },
+  { id: "bc-colors", title: "Colors" },
+  { id: "bc-typography", title: "Typography" },
+  { id: "bc-changes", title: "What changes" },
+  { id: "bc-switch", title: "How it switches on" },
+];
+
+/** The --vice-* primitives in globals.css that carry the edition. */
+export const BC_COLOR_GROUPS: readonly { title: string; note: string; tokens: readonly Primitive[] }[] = [
+  {
+    title: "BC days",
+    note: "Sunlit becomes pastel Ocean Drive deco. Small text uses the darker flamingo and teal, so it passes AA.",
+    tokens: [
+      { token: "vice-day-paper", value: "#fff8f2", use: "The page" },
+      { token: "vice-day-ink", value: "#2a1a5e", use: "Indigo ink, and the beach figures" },
+      { token: "vice-flamingo", value: "#ff3d9a", use: "Large type and fills" },
+      { token: "vice-flamingo-text", value: "#b80f66", use: "Small text and white labels" },
+      { token: "vice-teal", value: "#00a9b0", use: "Offsets and fills" },
+      { token: "vice-teal-text", value: "#006b70", use: "Small text" },
+      { token: "vice-blush", value: "#ffd6e6", use: "Radio, ramblings, postcards" },
+      { token: "vice-mint", value: "#bfeee8", use: "Projects" },
+      { token: "vice-gold", value: "#ffc93c", use: "The awning stripe" },
+    ],
+  },
+  {
+    title: "BC nights",
+    note: "After dark becomes neon on a violet night. The deep pink and violet sit behind white text.",
+    tokens: [
+      { token: "vice-night", value: "#0b0220", use: "The page" },
+      { token: "vice-night-panel", value: "#140530", use: "A section" },
+      { token: "vice-night-panel-2", value: "#1c0845", use: "A card on it" },
+      { token: "vice-night-ink", value: "#f4e8ff", use: "Text" },
+      { token: "vice-pink", value: "#ff2d95", use: "Neon pink" },
+      { token: "vice-pink-deep", value: "#b3125f", use: "Pink behind white text" },
+      { token: "vice-cyan", value: "#1ff0ff", use: "Neon cyan" },
+      { token: "vice-sun", value: "#ffd23f", use: "Neon yellow" },
+      { token: "vice-violet", value: "#7b3cff", use: "Violet" },
+    ],
+  },
+];
+
+/** The edition's three display faces. DM Sans still sets the body. */
+export const BC_FACES: readonly { name: string; variable: string; use: string; sample: string }[] = [
+  { name: "Monoton", variable: "--font-vice-neon", use: "Neon headlines, BC nights", sample: "SENIOR WEB" },
+  { name: "Limelight", variable: "--font-vice-deco", use: "Deco headlines, BC days", sample: "Made on the shore" },
+  { name: "Yellowtail", variable: "--font-vice-script", use: "Script: the ribbon, captions, signs", sample: "Now on the First Coast." },
+];
+
+/** What the edition changes, and where it lives. */
+export const BC_CHANGES: readonly { part: string; change: string; file: string }[] = [
+  { part: "Banner and wordmark", change: "\"The Beach City edition\" over the nav and under the name", file: "vice.css" },
+  { part: "Logo", change: "The sunset palm takes the wave's place in the nav", file: "public/art/vice-logo.svg" },
+  { part: "The knob", change: "Reads BC days and BC nights", file: "edition-buttons.tsx" },
+  { part: "Lifeguard stand", change: "Painted one solid color, with a BC board on the railing", file: "vice-filters.tsx" },
+  { part: "Photos", change: "Graded by an SVG filter at night, never converted", file: "vice-filters.tsx" },
+  { part: "Sandcastle game", change: "The pennants say BC", file: "sandbox/vice-flag.tsx" },
+  { part: "Hero ribbon", change: "A flamingo pill by day, a neon sign by night", file: "vice.css" },
+  { part: "Postcards gallery", change: "Takes the edition's palette and script", file: "vice.css" },
+  { part: "Margins", change: "A pastel sky by day, a violet night, pinned to the window", file: "vice.css" },
+];
+
+/** The site's two marks, shown on /design-system in both systems. */
+export const LOGO_MARKS: readonly { title: string; image: string; alt: string; description: string }[] = [
+  {
+    title: "Three waves",
+    image: "/site-icons/Waves-Logo.webp",
+    alt: "The three-wave logo",
+    description: "The magazine's mark since 2026: three white waves on a teal tile.",
+  },
+  {
+    title: "Sunset palm",
+    image: "/art/vice-logo.svg",
+    alt: "The sunset palm logo: a palm tree against a striped sunset over the water",
+    description: "The Beach City edition's mark. It takes the wave's place in the nav while the edition is on.",
+  },
+];

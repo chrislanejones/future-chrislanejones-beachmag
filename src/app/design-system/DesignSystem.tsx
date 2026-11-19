@@ -6,14 +6,14 @@ import { EditionButtons } from "@/components/beachmag/edition-buttons";
 import { EndNote } from "@/components/beachmag/interior-parts";
 import { Ribbon } from "@/components/beachmag/ribbon";
 import {
-  A11Y_RULES, COAST_MAP, COLOR_GROUPS, COLOR_TOKEN_COUNT, COMPONENTS, HOME_COMPONENTS, LAYOUT, MOTION_TOKENS,
-  PAGE_COLORS, PRINCIPLES, RULES, SECTIONS, SHADOWS, SPACING, TILTS, TYPE_SCALE,
-  type ComponentEntry, type ComponentId,
+  A11Y_RULES, BC_CHANGES, BC_COLOR_GROUPS, BC_FACES, BC_SECTIONS, COAST_MAP, COLOR_GROUPS, COLOR_TOKEN_COUNT,
+  COMPONENTS, HOME_COMPONENTS, LAYOUT, LOGO_MARKS, MOTION_TOKENS, PAGE_COLORS, PRINCIPLES, RULES, SECTIONS, SHADOWS,
+  SPACING, TILTS, TYPE_SCALE, type ComponentEntry, type ComponentId, type Section,
 } from "@/data/design-system";
-import { logoVariants } from "@/data/logo-variants";
 import { contrastRatio } from "@/lib/color-contrast";
 import { HomeSheet } from "./HomeSheet";
 import { MotionDemo } from "./MotionDemo";
+import { SystemToggle } from "./SystemToggle";
 import "@/components/beachmag/design-system.css";
 
 /* /design-system: the magazine skin, written down.
@@ -28,16 +28,17 @@ import "@/components/beachmag/design-system.css";
  * checks against the stylesheets. */
 
 const file = (path: string) => path.split("/").pop();
-const number = (id: string) => String(SECTIONS.findIndex((section) => section.id === id) + 1).padStart(2, "0");
+const number = (id: string, sections: readonly Section[]) =>
+  String(sections.findIndex((section) => section.id === id) + 1).padStart(2, "0");
 
 /** A section's opening: the rule, the heading with its last word in the accent, and a deck. */
-function SectionHead({ id, tag, children }: { id: string; tag: string; children: ReactNode }) {
-  const title = SECTIONS.find((section) => section.id === id)!.title;
+function SectionHead({ id, tag, children, sections = SECTIONS }: { id: string; tag: string; children: ReactNode; sections?: readonly Section[] }) {
+  const title = sections.find((section) => section.id === id)!.title;
   const split = title.lastIndexOf(" ");
   return (
     <header className="ds-head">
       <div className="section-rule">
-        <p>SECTION {number(id)}</p>
+        <p>SECTION {number(id, sections)}</p>
         <p>{tag}</p>
       </div>
       <h2 id={`${id}-h`}>
@@ -77,27 +78,22 @@ function Principles() {
   );
 }
 
-function Logo() {
+/** The two marks: the wave for Beachmag, the sunset palm for the Beach City edition. */
+function Logo({ id = "logo", sections = SECTIONS }: { id?: string; sections?: readonly Section[] }) {
   return (
-    <section className="ds-sec" id="logo" aria-labelledby="logo-h">
-      <SectionHead id="logo" tag={`${logoVariants.length} VERSIONS`}>
-        Three waves since 2026. Before that, a mountain. Every version is here to download.
+    <section className="ds-sec" id={id} aria-labelledby={`${id}-h`}>
+      <SectionHead id={id} tag={`${LOGO_MARKS.length} MARKS`} sections={sections}>
+        Three waves for the magazine, and a sunset palm for the Beach City edition. Both are here to download.
       </SectionHead>
-      <ul className="ds-logos">
-        {logoVariants.map((variant) => (
-          <li key={variant.title} className="ds-logo">
+      <ul className="ds-logos ds-logos--two">
+        {LOGO_MARKS.map((mark) => (
+          <li key={mark.title} className="ds-logo">
             <div className="ds-logo__plate">
-              <Image
-                className={variant.title === "Tracing Mountain" ? "ds-logo__line-art" : undefined}
-                src={variant.image}
-                alt={variant.imageAlt}
-                fill
-                sizes="(max-width: 640px) 90vw, 380px"
-              />
+              <Image src={mark.image} alt={mark.alt} fill sizes="(max-width: 640px) 90vw, 480px" />
             </div>
-            <h3 className="ds-h3">{variant.title}</h3>
-            <p>{variant.description}</p>
-            <a className="action-link" href={variant.image} download aria-label={`Download image: ${variant.title}`}>
+            <h3 className="ds-h3">{mark.title}</h3>
+            <p>{mark.description}</p>
+            <a className="action-link" href={mark.image} download aria-label={`Download image: ${mark.title}`}>
               Download image <Download size={18} aria-hidden="true" />
             </a>
           </li>
@@ -548,16 +544,129 @@ function Coda() {
   );
 }
 
+/* ── Beach City: the short version ────────────────────────────────────── */
+
+function BcColors() {
+  return (
+    <section className="ds-sec" id="bc-colors" aria-labelledby="bc-colors-h">
+      <SectionHead id="bc-colors" tag={`${BC_COLOR_GROUPS.reduce((sum, group) => sum + group.tokens.length, 0)} NAMED COLORS`} sections={BC_SECTIONS}>
+        The edition repoints the page&rsquo;s colors at these. Turn the knob to see BC days and BC nights.
+      </SectionHead>
+      {BC_COLOR_GROUPS.map((group) => (
+        <div key={group.title} className="ds-group">
+          <div className="ds-group__head">
+            <h3 className="ds-h3">{group.title}</h3>
+          </div>
+          <p className="ds-note">{group.note}</p>
+          <ul className="ds-swatches">
+            {group.tokens.map((token) => (
+              <li key={token.token} className="ds-swatch">
+                <span className="ds-swatch__chip" style={{ background: `var(--${token.token})` }} aria-hidden="true" />
+                <code className="ds-swatch__name">--{token.token}</code>
+                <p className="ds-swatch__use">{token.use}</p>
+                <p className="ds-swatch__vals"><code>{token.value}</code></p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+function BcTypography() {
+  return (
+    <section className="ds-sec" id="bc-typography" aria-labelledby="bc-typography-h">
+      <SectionHead id="bc-typography" tag={`${BC_FACES.length} DISPLAY FACES`} sections={BC_SECTIONS}>
+        Three display faces take over the headlines. DM Sans still sets everything else. They load only while the
+        edition is on.
+      </SectionHead>
+      <div className="ds-faces ds-faces--bc">
+        {BC_FACES.map((face) => (
+          <div key={face.name} className="ds-face">
+            <p className="ds-face__line ds-face__line--bc" style={{ fontFamily: `var(${face.variable}), cursive` }} aria-hidden="true">
+              {face.sample}
+            </p>
+            <p className="ds-face__name">{face.name}</p>
+            <p className="ds-note">{face.use}. <code>{face.variable}</code></p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function BcChanges() {
+  return (
+    <section className="ds-sec" id="bc-changes" aria-labelledby="bc-changes-h">
+      <SectionHead id="bc-changes" tag={`${BC_CHANGES.length} PARTS`} sections={BC_SECTIONS}>
+        It&rsquo;s a layer, not a second site: the sections keep their markup and read new colors.
+      </SectionHead>
+      <div className="ds-scroll">
+        <table className="ds-table">
+          <caption>What the Beach City edition changes</caption>
+          <thead><tr><th scope="col">Part</th><th scope="col">Change</th><th scope="col">Where</th></tr></thead>
+          <tbody>
+            {BC_CHANGES.map((row) => (
+              <tr key={row.part}><th scope="row">{row.part}</th><td>{row.change}</td><td><code>{row.file}</code></td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
+function BcSwitch() {
+  return (
+    <section className="ds-sec" id="bc-switch" aria-labelledby="bc-switch-h">
+      <SectionHead id="bc-switch" tag="THREE WAYS" sections={BC_SECTIONS}>
+        A script in the page&rsquo;s head sets the edition before anything paints, so it never flashes the beach look.
+      </SectionHead>
+      <ol className="ds-cards">
+        <li className="ds-card">
+          <h3 className="ds-h3">On the day</h3>
+          <p>It turns on by itself for 11-19-2026 on Eastern time (<code>src/lib/vice-day.ts</code>).</p>
+        </li>
+        <li className="ds-card">
+          <h3 className="ds-h3">In the address</h3>
+          <p>Add <code>?vice=on</code> to any page to see it, or <code>?vice=off</code> to hide it, for the rest of the tab.</p>
+        </li>
+        <li className="ds-card">
+          <h3 className="ds-h3">On this page</h3>
+          <p>The Beachmag / Beach City toggle at the top does the same thing.</p>
+        </li>
+      </ol>
+      <p className="ds-note">
+        In the code it&rsquo;s still called <code>vice</code>: the class <code>html.vice</code>, the{" "}
+        <code>--vice-*</code> tokens and <code>vice.css</code>.
+      </p>
+    </section>
+  );
+}
+
+function Index({ sections }: { sections: readonly Section[] }) {
+  return (
+    <nav className="article-index" aria-label="On this page">
+      <p>ON THIS PAGE ↓</p>
+      {sections.map((section) => (
+        <a key={section.id} href={`#${section.id}`}>{section.title}</a>
+      ))}
+    </nav>
+  );
+}
+
 export default function DesignSystem() {
   return (
     <div className="ds">
-      <div className="archive-layout-wide">
-        <nav className="article-index" aria-label="On this page">
-          <p>ON THIS PAGE ↓</p>
-          {SECTIONS.map((section) => (
-            <a key={section.id} href={`#${section.id}`}>{section.title}</a>
-          ))}
-        </nav>
+      <div className="ds-system-bar">
+        <p>DESIGN SYSTEM</p>
+        <SystemToggle />
+      </div>
+      {/* Both systems render; design-system.css shows the one that matches html.vice,
+          so the head script picks the right one before first paint. */}
+      <div className="archive-layout-wide ds-edition ds-edition--beachmag">
+        <Index sections={SECTIONS} />
         <div className="ds-body">
           <Principles />
           <Logo />
@@ -568,6 +677,16 @@ export default function DesignSystem() {
           <Motion />
           <Accessibility />
           <Coda />
+        </div>
+      </div>
+      <div className="archive-layout-wide ds-edition ds-edition--beachcity">
+        <Index sections={BC_SECTIONS} />
+        <div className="ds-body">
+          <Logo id="bc-logo" sections={BC_SECTIONS} />
+          <BcColors />
+          <BcTypography />
+          <BcChanges />
+          <BcSwitch />
         </div>
       </div>
       <EndNote line="That's the whole kit." href="/" label="Back to the front page" />

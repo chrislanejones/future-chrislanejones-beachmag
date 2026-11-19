@@ -568,3 +568,74 @@ html.dark .ds-logo__line-art {
     grid-row: 2;
   }
 }
+
+/* ── Beachmag / Beach City ── */
+/* Both systems are in the HTML; html.vice (set in <head>, or by the toggle)
+   picks which one shows, so the right one paints first. */
+html.vice .ds-edition--beachmag,
+html:not(.vice) .ds-edition--beachcity {
+  display: none;
+}
+.ds-system-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin: 0 0 28px;
+  padding: 14px 0;
+  border-top: 3px solid var(--ink);
+  border-bottom: 1px solid var(--ds-line);
+}
+.ds-system-bar > p {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+.ds-system-toggle {
+  display: inline-flex;
+  border: 2px solid var(--ink);
+}
+.ds-system-toggle button {
+  min-height: 44px;
+  padding: 8px 18px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: 700 12px/1 var(--font-dm-sans), Arial, sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.ds-system-toggle button + button {
+  border-left: 2px solid var(--ink);
+}
+.ds-system-toggle button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+.ds-system-toggle button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+/* Two marks, side by side, a little bigger. */
+.ds-logos--two {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.ds-logos--two .ds-logo__plate {
+  height: 260px;
+}
+.ds-faces--bc {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.ds-face__line--bc {
+  font-size: 34px;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 640px) {
+  .ds-faces--bc {
+    grid-template-columns: 1fr;
+  }
+}
