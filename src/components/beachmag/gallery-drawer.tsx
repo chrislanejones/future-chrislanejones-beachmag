@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Images } from "lucide-react";
-import { bodoniModa, dmSans } from "./fonts";
+import { bodoniModa, dmSans, yellowtail } from "./fonts";
 
 type Direction = "left" | "right";
 
@@ -457,10 +457,10 @@ export default function GalleryDrawer({
         )}
       </DrawerTrigger>
 
-      {/* Portaled outside the page, so it carries the fonts and its own palette (shell.css).
+      {/* Portaled outside the page, so it carries the fonts and its own palette (shell.css; the Vice edition in vice.css).
           The inner box scrolls, so the big photo can cover the drawer without scrolling away. */}
       <DrawerContent
-        className={`gallery-drawer h-[90dvh] ${bodoniModa.variable} ${dmSans.variable}`}
+        className={`gallery-drawer h-[90dvh] ${bodoniModa.variable} ${dmSans.variable} ${yellowtail.variable}`}
         onEscapeKeyDown={(event) => {
           // Escape closes the big photo first, then the drawer.
           if (enlarged) {

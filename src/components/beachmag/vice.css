@@ -664,6 +664,55 @@ html.vice:not(.dark) .interior .contact-aside > svg {
   color: var(--vice-day-ink);
 }
 
+/* ── The postcards gallery drawer ──────────────────────────────────────── */
+/* It portals to <body>, outside [data-beachmag], so it gets the edition here:
+   its --gd-* palette takes the global --vice-* tokens, and its polaroids match
+   the homepage postcards (#beach-offline). Event pages share the drawer. */
+html.vice.dark .gallery-drawer {
+  --gd-paper: var(--vice-night);
+  --gd-ink: var(--vice-night-ink);
+  --gd-accent: var(--vice-pink);
+  --gd-card: var(--vice-night-panel-2);
+}
+html.vice:not(.dark) .gallery-drawer {
+  --gd-paper: var(--vice-blush);
+  --gd-ink: var(--vice-day-ink);
+  --gd-accent: var(--vice-flamingo-text);
+  --gd-card: var(--vice-day-white);
+}
+html.vice .gallery-drawer h2 {
+  font: 400 44px/1.1 var(--font-vice-script), cursive;
+  letter-spacing: 0;
+}
+html.vice.dark .gallery-drawer h2 {
+  color: var(--vice-ice);
+  text-shadow: var(--vice-glow-cyan);
+}
+html.vice:not(.dark) .gallery-drawer h2 {
+  color: var(--vice-flamingo-text);
+}
+html.vice .gallery-drawer .polaroid-caption {
+  font: 400 22px/1.1 var(--font-vice-script), cursive;
+}
+html.vice.dark .gallery-drawer .polaroid-caption {
+  color: var(--vice-pink-pale);
+}
+html.vice:not(.dark) .gallery-drawer .polaroid-caption {
+  color: var(--vice-flamingo-text);
+}
+html.vice.dark .gallery-drawer :is(.polaroid, .photo-zoom figure) {
+  box-shadow: 0 0 0 1px var(--vice-pink), 6px 8px 0 color-mix(in srgb, var(--vice-pink) 40%, transparent);
+}
+html.vice:not(.dark) .gallery-drawer :is(.polaroid, .photo-zoom figure) {
+  box-shadow: 0 0 0 2px var(--vice-day-ink), 7px 8px 0 var(--vice-teal);
+}
+html.vice.dark .gallery-drawer :is(.polaroid, .photo-zoom) img {
+  filter: url(#vice-neon-photo);
+}
+html.vice:not(.dark) .gallery-drawer :is(.polaroid, .photo-zoom) img {
+  filter: saturate(1.25);
+}
+
 /* Narrower than the hero's two columns, the stand sits behind the headline:
    back to the faint watermark the coastal skin uses, so the words stay legible. */
 @media (max-width: 1199px) {
