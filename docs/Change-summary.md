@@ -2,6 +2,18 @@
 
 [Documentation handbook](README.md) · [Project home](../README.md)
 
+## 2026-11-18 — The Vice edition, and stills for every page banner
+
+Status: pushed to `main`, which deploys chrislanejones.com.
+
+- **The Vice edition.** For Grand Theft Auto VI's release on 11-19-2026 (Eastern), the site turns Miami for one day. After dark becomes neon on a violet night, and Sunlit becomes pastel Ocean Drive deco. The beach figures get painted one solid color, the lifeguard stand gets a VI board, the sandbox flags say VI, and a sunset palm takes over the nav logo. Preview it any day with `?vice=on`. After the day it switches itself off. [How it works](chapters/04-design-and-scenes/README.md#the-vice-edition-11-19-2026).
+- **New page banners.** Ten pages got new shots of the 3D town: About, Events, Browser Tabs, Site History, Design System, Career, Blog, Contact (now with a guy on a giant 80s phone), Projects and Conferences. Each is a Sunlit still and an After dark still at the /projects size. Only the homepage still plays video.
+- Browser Tabs, Conferences and Contact use the same page header as /projects.
+- The menus were reordered. The Work menus lead with Career, and the footer's third column is now Resources & Contact.
+- The design system page replaced the old logo page (`/logo-page` redirects to `/design-system`).
+
+Validation: TypeScript, ESLint, the CSS color check and all 150 tests passed. The Vice edition was checked with axe (WCAG 2.2 AA) on eleven pages, desktop and phone, both editions, with no new findings.
+
 ## 2026-11-11 — Pages refresh once a day, and admin saves show up right away
 
 - Public pages used to rebuild at most once a minute. Bots crawl every blog post, project and conference page, so the site was rebuilding itself all day. That used 150K of Vercel's 200K monthly ISR writes and most of the 4 hours of CPU.
