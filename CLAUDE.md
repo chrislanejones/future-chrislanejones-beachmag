@@ -21,7 +21,7 @@ Convex agent skills for common tasks can be installed by running
 | repo root | **The app.** Next.js + Convex, copied from `~/repo/future-chrislanejones-beach` at `08f5780` on 10-22-2026. `pnpm dev` serves it on port 3100. |
 | `src/components/beachmag/` | The skin: `BeachmagShell`, the homepage sections, the radio, the sandbox, the browser-tabs archive and the events calendar. Inner pages reach it through `src/components/coastal/page-shell.tsx`; `shell.css` maps their `--coast-*` colors onto the magazine palette. |
 | `design/` | **Reference only, not built or deployed.** The static design the skin was ported from (`design/outputs/*.html`) and its Python builders. |
-| Vice edition | One-day GTA VI skin, on by itself for 11-19-2026 (Eastern): `src/lib/vice-day.ts` (the date and the `<head>` switch), `beachmag/vice.css`, `beachmag/vice-filters.tsx`, `--vice-*` tokens in `globals.css`. Preview any day with `?vice=on`, hide with `?vice=off`. Mock-ups: `design/vice/`. Inert after the day; delete those files to retire it. |
+| Beach City edition (code name `vice`) | A Miami-style skin, on by itself for 11-19-2026 (Eastern): `src/lib/vice-day.ts` (the date and the `<head>` switch), `beachmag/vice.css`, `beachmag/vice-filters.tsx`, `--vice-*` tokens in `globals.css`. Preview any day with `?vice=on`, hide with `?vice=off`. Mock-ups: `design/vice/`. Inert after the day; delete those files to retire it. |
 
 `src/components/beachmag/beachmag.css` and `browser-tabs.css` are generated from the design: `pnpm design:css`. Station audio is rendered with `pnpm audio:render` into `public/audio/`.
 

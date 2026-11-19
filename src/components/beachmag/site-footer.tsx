@@ -68,7 +68,7 @@ export function SiteFooter({ offline = false }: { offline?: boolean }) {
     <footer id="coastal-footer" aria-label="Site footer">
       <div className="footer-sendoff">
         <div>
-          <p className="footer-kicker">{vice ? "THE VICE EDITION" : "THE COASTAL EDITION"} / UNTIL NEXT TIME</p>
+          <p className="footer-kicker">{vice ? "THE BEACH CITY EDITION" : "THE COASTAL EDITION"} / UNTIL NEXT TIME</p>
           <h2>
             See you<br /><em>out there.</em>
             {/* A low, wide beach canopy with broad stripes and a leaning sand pole. */}

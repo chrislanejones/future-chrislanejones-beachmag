@@ -1,4 +1,4 @@
-/* The Vice edition: one day (Grand Theft Auto VI's release), switched on by
+/* The Beach City edition (code name "vice"): a day-long skin, switched on by
    html.vice (src/lib/vice-day.ts). After dark becomes Vice nights (neon on a
    violet night); Sunlit paper becomes Vice days (pastel Ocean Drive deco).
    An override layer: it re-points the palette variables the sections already
@@ -6,13 +6,13 @@
    `pnpm check:css` holds this file to zero raw colors.
    Photos are graded by filters, never converted, so new photos match. The
    beach figures keep their drawings, painted one solid color by the filters
-   in vice-filters.tsx (the lifeguard stand also gets its VI board). */
+   in vice-filters.tsx (the lifeguard stand also gets its BC board). */
 
 /* ── Both editions ─────────────────────────────────────────────────────── */
 
 /* The edition banner over the nav. Decorative: the nav and page say the rest. */
 html.vice [data-beachmag]::before {
-  content: "THE VICE EDITION  ✦  SAME A1A, DIFFERENT " var(--vice-ribbon-tail);
+  content: "THE BEACH CITY EDITION  ✦  SAME A1A, DIFFERENT " var(--vice-ribbon-tail);
   display: block;
   white-space: pre-wrap;
   text-align: center;
@@ -31,7 +31,7 @@ html.vice #site-nav .brand-marks > * {
   visibility: hidden;
 }
 html.vice #site-nav .nav-brand .brand-wordmark::after {
-  content: "THE VICE EDITION";
+  content: "THE BEACH CITY EDITION";
   display: block;
   font-size: 7px;
   font-weight: 400;
@@ -162,6 +162,8 @@ html.vice.dark #coastal-art .map {
   box-shadow: 0 0 0 2px var(--vice-pink), 0 0 34px color-mix(in srgb, var(--vice-pink) 67%, transparent), 10px 12px 0 var(--vice-cyan);
 }
 html.vice.dark #coastal-art .sticker {
+  /* The coastal ribbon's torn-paper clip would cut the neon border and glow. */
+  clip-path: none;
   font-family: var(--font-vice-script), cursive;
   font-style: normal;
   font-weight: 400;
@@ -462,6 +464,8 @@ html.vice:not(.dark) #coastal-art .map {
   box-shadow: 0 0 0 2px var(--vice-day-ink), 10px 10px 0 var(--vice-teal), 20px 20px 0 var(--vice-flamingo);
 }
 html.vice:not(.dark) #coastal-art .sticker {
+  /* The coastal ribbon's torn-paper clip would cut the pill's border and shadow. */
+  clip-path: none;
   font-family: var(--font-vice-script), cursive;
   font-style: normal;
   font-weight: 400;

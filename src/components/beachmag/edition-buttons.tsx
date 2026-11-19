@@ -10,15 +10,15 @@ import { useVice } from "@/lib/vice";
 // to flip it. Styles: shell.css.
 export function EditionButtons() {
   const dark = useTheme() === "dark";
-  // On the Vice edition's day the two sides are Vice days and Vice nights (src/lib/vice.ts).
+  // On the Beach City edition's day the two sides are BC days and BC nights (src/lib/vice.ts).
   const vice = useVice();
   function choose(event: MouseEvent<HTMLButtonElement>) {
     const side = (event.target as HTMLElement).closest("[data-side]")?.getAttribute("data-side");
     setTheme(side === "light" || side === "dark" ? side : dark ? "light" : "dark");
   }
   return (
-    <button type="button" role="switch" aria-checked={dark} aria-label={vice ? "Vice days / Vice nights" : "Sunlit / After dark"} className="edition-switch" onClick={choose}>
-      <span className="edition-side" data-side="light" aria-hidden="true">{vice ? "☀ VICE DAYS" : "☀ SUNLIT"}</span>
+    <button type="button" role="switch" aria-checked={dark} aria-label={vice ? "Beach City days / Beach City nights" : "Sunlit / After dark"} className="edition-switch" onClick={choose}>
+      <span className="edition-side" data-side="light" aria-hidden="true">{vice ? "☀ BC DAYS" : "☀ SUNLIT"}</span>
       <span className="edition-dial" aria-hidden="true">
         <span className="edition-scale"></span>
         <span className="edition-knob">
@@ -27,7 +27,7 @@ export function EditionButtons() {
           <span className="edition-pointer"></span>
         </span>
       </span>
-      <span className="edition-side" data-side="dark" aria-hidden="true">{vice ? "VICE NIGHTS ☾" : "AFTER DARK ☾"}</span>
+      <span className="edition-side" data-side="dark" aria-hidden="true">{vice ? "BC NIGHTS ☾" : "AFTER DARK ☾"}</span>
     </button>
   );
 }

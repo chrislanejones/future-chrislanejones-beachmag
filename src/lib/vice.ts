@@ -9,7 +9,7 @@ const subscribe = () => () => {};
 const getSnapshot = () => document.documentElement.classList.contains("vice");
 const getServerSnapshot = () => false;
 
-/** True while the Vice edition is on (always false during the server render). */
+/** True while the Beach City edition is on (always false during the server render). */
 export function useVice(): boolean {
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }

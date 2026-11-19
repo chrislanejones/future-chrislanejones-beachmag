@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import { DoubleSide, Shape } from "three";
+import { DoubleSide, Path, Shape } from "three";
 import { ABOVE_WAVE } from "./incoming-wave";
 
-// The Vice edition's flag (src/lib/vice-day.ts): the sandbox's pennant, a
-// size up so the letters read, in the painted lifeguard hut's colors with
-// "VI" by the pole. Drawn in the planted flag's units: the hoist runs from
+// The Beach City edition's flag (src/lib/vice-day.ts): the sandbox's pennant,
+// a size up so the letters read, in the painted lifeguard hut's colors with
+// "BC" by the pole. Drawn in the planted flag's units: the hoist runs from
 // y 0 to -.32 and the point sits at x .56.
 const BLUE = "#1f4fd6";
 const PINK = "#ff3d9a";
@@ -15,18 +15,31 @@ function pennant() {
   return shape;
 }
 
-// "VI" where the pennant is tallest, between y -.09 and -.23.
+// "BC" where the pennant is tallest, between y -.09 and -.23. The B is a stem
+// with two round lobes and two counters (holes); the C is a ring open to the fly.
 function letters() {
-  const top = -.09, bottom = -.23, stroke = .036;
-  const v = new Shape();
-  v.moveTo(.05, top); v.lineTo(.05 + stroke, top); v.lineTo(.11, bottom + .075); v.lineTo(.17 - stroke, top); v.lineTo(.17, top);
-  v.lineTo(.11 + stroke / 2, bottom); v.lineTo(.11 - stroke / 2, bottom); v.closePath();
-  const i = new Shape();
-  i.moveTo(.2, top); i.lineTo(.2 + stroke, top); i.lineTo(.2 + stroke, bottom); i.lineTo(.2, bottom); i.closePath();
-  return [v, i];
+  const top = -.09, bottom = -.23, mid = -.16, lobe = .035;
+  const b = new Shape();
+  b.moveTo(.05, top); b.lineTo(.1, top);
+  b.absarc(.1, top - lobe, lobe, Math.PI / 2, -Math.PI / 2, true);
+  b.absarc(.1, mid - lobe, lobe, Math.PI / 2, -Math.PI / 2, true);
+  b.lineTo(.05, bottom); b.closePath();
+  for (const cy of [top - lobe, mid - lobe]) {
+    const hole = new Path();
+    hole.moveTo(.08, cy + .011); hole.lineTo(.1, cy + .011);
+    hole.absarc(.1, cy, .011, Math.PI / 2, -Math.PI / 2, true);
+    hole.lineTo(.08, cy - .011); hole.closePath();
+    b.holes.push(hole);
+  }
+  const cx = .215, cy = mid, outer = .066, inner = .034, open = .75;
+  const c = new Shape();
+  c.absarc(cx, cy, outer, open, Math.PI * 2 - open, false);
+  c.absarc(cx, cy, inner, Math.PI * 2 - open, open, true);
+  c.closePath();
+  return [b, c];
 }
 
-/** The pennant with "VI" on both faces. `scale` 1 is the planted flag's size. */
+/** The pennant with "BC" on both faces. `scale` 1 is the planted flag's size. */
 export function ViceFlag({ dark, position, scale = 1 }: { dark: boolean; position: [number, number, number]; scale?: number }) {
   const cloth = useMemo(() => pennant(), []);
   const mark = useMemo(() => letters(), []);

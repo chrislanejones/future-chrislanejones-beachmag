@@ -1,21 +1,22 @@
-// Hidden SVG filters for the Vice edition (vice.css points at them by id).
+// Hidden SVG filters for the Beach City edition (vice.css points at them by id).
 // Rendered once per page; they cost nothing while the edition is off, since
 // no rule refers to them then. Colors match the --vice-* tokens in globals.css.
 
 const NEON_INK = "#ff5cae"; // --vice-neon-ink
 const DECO_INK = "#2a1a5e"; // --vice-deco-ink
 
-// A board with "VI" for the lifeguard stand's railing.
-function viBoard(board: string, numeral: string) {
+// A board with "BC" for the lifeguard stand's railing.
+function bcBoard(board: string, numeral: string) {
   const svg =
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 100"><g transform="rotate(3 110 50)">' +
     `<rect x="8" y="9" width="204" height="82" fill="${board}" stroke="${numeral}" stroke-width="6"/>` +
-    `<path d="M62 24h19l15 42 15-42h19L105 80H87ZM142 24h18v56h-18Z" fill="${numeral}"/></g></svg>`;
+    `<path fill-rule="evenodd" d="M58 24H82A14 14 0 0 1 82 52A14 14 0 0 1 82 80H58ZM74 34H81A4 4 0 0 1 81 42H74ZM74 62H81A4 4 0 0 1 81 70H74Z" fill="${numeral}"/>` +
+    `<path d="M158.8 32.2A28 28 0 1 0 158.8 71.8L148.9 61.9A14 14 0 1 1 148.9 42.1Z" fill="${numeral}"/></g></svg>`;
   return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }
 
 /** Paints a line drawing (public/art: black ink on transparent) one solid color,
- * optionally hangs the VI board on the stand's railing and adds a halo. */
+ * optionally hangs the BC board on the stand's railing and adds a halo. */
 function InkFilter({ id, ink, glow, board }: { id: string; ink: string; glow?: number; board?: [string, string] }) {
   return (
     <filter id={id} primitiveUnits="objectBoundingBox" colorInterpolationFilters="sRGB" x="-8%" y="-8%" width="116%" height="116%">
@@ -25,7 +26,7 @@ function InkFilter({ id, ink, glow, board }: { id: string; ink: string; glow?: n
         <>
           <feFlood floodColor="#000" x=".4" y=".4" width=".22" height=".11" result="hole" />
           <feComposite in="inked" in2="hole" operator="out" result="cut" />
-          <feImage href={viBoard(...board)} x=".395" y=".398" width=".23" height=".115" preserveAspectRatio="none" result="sign" />
+          <feImage href={bcBoard(...board)} x=".395" y=".398" width=".23" height=".115" preserveAspectRatio="none" result="sign" />
           <feMerge result="art">
             <feMergeNode in="cut" />
             <feMergeNode in="sign" />

@@ -164,8 +164,8 @@
   --ease-pop: cubic-bezier(0.2, 1.5, 0.4, 1);   /* the bouncy press (keys, knobs, the preserver) */
   --ease-snap: cubic-bezier(0.7, 0, 0.15, 1);   /* the menu takeover */
 
-  /* ── The Vice edition (one day: src/lib/vice.ts, src/components/beachmag/vice.css) ──
-     Vice nights: neon on a violet night. Vice days: pastel Ocean Drive deco. */
+  /* ── The Beach City edition, code name "vice" (src/lib/vice.ts, src/components/beachmag/vice.css) ──
+     BC nights: neon on a violet night. BC days: pastel Ocean Drive deco. */
   --vice-night: #0b0220;          /* night page, deepest */
   --vice-night-deep: #07010f;     /* the footer */
   --vice-night-panel: #140530;    /* a section */

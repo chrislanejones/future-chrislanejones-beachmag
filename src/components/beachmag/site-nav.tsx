@@ -282,8 +282,8 @@ export function SiteNav({ offline = false }: { offline?: boolean }) {
         <div className="menu-bottom">
           <p>CHOOSE YOUR EDITION</p>
           <div className="menu-editions" role="group" aria-label="Color scheme">
-            <button type="button" aria-pressed={theme === "light"} onClick={() => setTheme("light")}>{vice ? "Vice days ☀" : "Sunlit paper ☀"}</button>
-            <button type="button" aria-pressed={theme === "dark"} onClick={() => setTheme("dark")}>{vice ? "Vice nights ☾" : "After dark ☾"}</button>
+            <button type="button" aria-pressed={theme === "light"} onClick={() => setTheme("light")}>{vice ? "Beach City days ☀" : "Sunlit paper ☀"}</button>
+            <button type="button" aria-pressed={theme === "dark"} onClick={() => setTheme("dark")}>{vice ? "Beach City nights ☾" : "After dark ☾"}</button>
           </div>
           <Link className="menu-meet" href="/lets-meet" onClick={() => setOpen(false)}>LET’S MEET <span aria-hidden="true">↗</span></Link>
         </div>

@@ -1,5 +1,5 @@
 /**
- * The Vice edition: a one-day skin for Grand Theft Auto VI's release.
+ * The Beach City edition (code name "vice"): a day-long skin for 11-19-2026.
  * It turns itself on for VICE_DAY on the Eastern clock, so the daily ISR
  * cache never decides it; ?vice=on or ?vice=off previews or hides it for the
  * rest of the browser tab. Sunlit paper becomes Vice days, After dark becomes

@@ -14,9 +14,9 @@ The [simple design guide](../../SIMPLE-DESIGN-GUIDE.md) is the detailed palette 
 
 A scene can omit its video and stay a still. Since 11-18-2026 every page banner does: only the homepage hero plays a loop, and the other pages show a Sunlit still and an After dark still. The site no longer loads the legacy town model as its hero, even though old model source files remain in the repository.
 
-## The Vice edition (11-19-2026)
+## The Beach City edition (11-19-2026)
 
-A one-day skin for Grand Theft Auto VI's release. On 11-19-2026, Eastern time, the magazine turns Miami: After dark becomes Vice nights (neon on a violet night) and Sunlit becomes Vice days (pastel Ocean Drive deco).
+A Miami-style skin. On 11-19-2026, Eastern time, the magazine turns into Beach City: After dark becomes BC nights (neon on a violet night) and Sunlit becomes BC days (pastel Ocean Drive deco). In the code it is still called `vice` (the class `html.vice`, the `--vice-*` tokens, `?vice=on`).
 
 | Piece | File |
 |---|---|
