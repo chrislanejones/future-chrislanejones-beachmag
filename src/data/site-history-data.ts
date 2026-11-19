@@ -72,9 +72,9 @@ export const siteHistorySections: SiteHistorySection[] = [
   {
     title: "2026 - The Beach Site",
     description:
-      "In 2026 we moved back to Florida after eight years in Virginia, and the site moved with us. I traded the mountain theme for the coast: sand and sea colors, an aerial shot of the Florida coastline on the home page, and a waves icon where the mountain used to be.\n\nThe stack stayed Next.js, React, and TypeScript, with Convex holding the content behind a custom admin. What changed was the feel. Every inner page opens on a drawn shoreline with drifting waves. Click it and a surfer rides through, then a dolphin jumps.\n\nAt the bottom of the home page there's a 3D sandcastle builder made with React Three Fiber. Flip a bucket, stack a tower on it, dig a moat, and top it off with a flag or a shell. Four corners and four walls make a fort.\n\nIt's the most fun I've had building this site, and it finally looks like where I live.",
-    image: "/site-history/Beach-Website-2026.webp",
-    imageAlt: "2026 beach redesign with an aerial Florida coastline behind the home page hero",
+      "In 2026 we moved back to Florida after eight years in Virginia, and the site moved with us. I traded the mountain theme for the coast, and a waves icon took the mountain's place.\n\nIt changed a lot in its first year. The first beach version had a drawn shoreline on every inner page, where a click sent a surfer and then a dolphin across the scene. In October it became a coastal magazine: cream paper and dark teal ink, big Bodoni headlines, a working radio, an Events section, and a Let's meet page.\n\nThe pictures come from my 3d-world app, a 3D model of the beach towns around St. Augustine. The home page plays a short loop of it, and every inner page has its own shot of the town in Sunlit and After dark. The sandcastle builder made with React Three Fiber is still at the bottom of the home page.\n\nThe stack stayed Next.js, React, and TypeScript, with Convex holding the content behind a custom admin. On 11-19-2026 it even got a costume for a video game launch, the Beach City edition. It's the most fun I've had building this site, and it finally looks like where I live.",
+    image: "/site-history/Beach-Magazine-Website-2026.webp",
+    imageAlt: "The 2026 coastal magazine home page: a Senior web engineer headline, a sketched lifeguard stand, and a 3D aerial of the beach",
     imagePosition: "right",
   },
 ];
