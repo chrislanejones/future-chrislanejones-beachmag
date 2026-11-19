@@ -84,6 +84,9 @@ html.vice.dark body:has([data-beachmag]) {
     radial-gradient(900px 520px at 8% 0, color-mix(in srgb, var(--vice-pink) 25%, transparent), transparent 70%),
     radial-gradient(900px 700px at 96% 28%, color-mix(in srgb, var(--vice-cyan) 15%, transparent), transparent 70%),
     linear-gradient(var(--vice-night), var(--vice-night-sky) 55%, var(--vice-night-plum));
+  /* Pinned to the window: the gradient is sized to one screen and would tile
+     down a long page, leaving a hard seam in the wide-screen margins. */
+  background-attachment: fixed;
 }
 html.vice.dark [data-beachmag]::before {
   background: var(--vice-night);
@@ -393,6 +396,8 @@ html.vice:not(.dark) body:has([data-beachmag]) {
   --nav-ink: var(--vice-day-ink);
   --nav-accent: var(--vice-flamingo-text);
   background: linear-gradient(165deg, var(--vice-sky-top), var(--vice-sky-mint) 18%, var(--vice-sky-pink) 48%, var(--vice-sky-coral) 78%, var(--vice-sky-gold));
+  /* One sky behind the page, not one per screen height (see Vice nights). */
+  background-attachment: fixed;
 }
 html.vice:not(.dark) [data-beachmag]::before {
   background: var(--vice-day-ink);

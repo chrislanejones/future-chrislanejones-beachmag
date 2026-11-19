@@ -85,13 +85,13 @@ export function useHeaderNavItems(live = true) {
           label: "Work",
           order: 2,
           children: [
-            { href: "/career-and-resume", label: "Career & Resume", order: 0 },
+            { href: "/career-and-resume", label: "Career And Resume", order: 0 },
             { href: "/projects", label: "Projects", order: 1 },
             { href: "/conferences", label: "Conferences", order: 2 },
-            { href: "/react-maintenance", label: "React Services", order: 3 },
+            { href: "/react-maintenance", label: "React Maintenance", order: 3 },
             {
               href: "/wordpress-maintenance",
-              label: "WordPress Services",
+              label: "Wordpress Maintenance",
               order: 4,
             },
           ],

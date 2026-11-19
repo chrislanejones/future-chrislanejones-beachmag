@@ -24,11 +24,11 @@ export const staticHeaderNavItems: SeedHeaderNavItem[] = [
   {
     label: "Work",
     children: [
-      { href: "/career-and-resume", label: "Career & Resume" },
+      { href: "/career-and-resume", label: "Career And Resume" },
       { href: "/projects", label: "Projects" },
       { href: "/conferences", label: "Conferences" },
-      { href: "/react-maintenance", label: "React Services" },
-      { href: "/wordpress-maintenance", label: "WordPress Services" },
+      { href: "/react-maintenance", label: "React Maintenance" },
+      { href: "/wordpress-maintenance", label: "Wordpress Maintenance" },
     ],
   },
   { label: "Blog", href: "/blog" },
@@ -69,7 +69,7 @@ export const staticFooterNavLinks: SeedFooterNavSection[] = [
     links: [
       { href: "/site-map", label: "Change Log / Site Map" },
       { href: "/link-page", label: "Link Page" },
-      { href: "/admin", label: "Admin" },
+      { href: "/admin-showcase", label: "Admin Showcase" },
       { href: "/contact", label: "Contact" },
       { href: "/lets-meet", label: "Let's Meet" },
     ],
