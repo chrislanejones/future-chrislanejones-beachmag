@@ -10,9 +10,9 @@
 
 /* ── Both editions ─────────────────────────────────────────────────────── */
 
-/* The one-day banner over the nav. Decorative: the nav and page say the rest. */
+/* The edition banner over the nav. Decorative: the nav and page say the rest. */
 html.vice [data-beachmag]::before {
-  content: "ONE DAY ONLY  ✦  THE VICE EDITION  ✦  SAME A1A, DIFFERENT " var(--vice-ribbon-tail);
+  content: "THE VICE EDITION  ✦  SAME A1A, DIFFERENT " var(--vice-ribbon-tail);
   display: block;
   white-space: pre-wrap;
   text-align: center;
