@@ -398,3 +398,11 @@ and the browser keeps it, so the text differs and React re-renders on the client
 see the right list; it costs a client re-render and a console error. Fix: compute "today"
 in America/New_York on both sides (the event times are Eastern wall-clock already), or
 render the upcoming list after mount. Since 6993ef1 (10-22-2026).
+
+## 11-18-2026: after the Beach City launch
+
+- **Beach City only turns on by itself for 11-19-2026** (`VICE_DAY` in `src/lib/vice-day.ts`). Chris may keep it up "a day or so": widen it to a date range if so.
+- `src/data/logo-variants.ts` is no longer imported (the design system shows only the two marks). Delete it or keep it for site history.
+- Worktrees to prune: `~/ai-repo/beachmag-vice` (vice-merge, merged) and `~/ai-repo/beachmag-next-security` (merged into main as b047444).
+- 3d-world: the brick-phone lounger branch `feat/lounger-brick-phone` in `~/ai-repo/3dworld-phone` is still uncommitted and unpushed.
+- Video (`~/ai-repo/gta-release`): the BC letters on the sandcastle flags are small; a 3x capture of the castle would fix it.
