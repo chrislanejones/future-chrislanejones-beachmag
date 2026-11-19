@@ -76,6 +76,14 @@ html.vice.dark {
   --vice-mark: var(--vice-pink);
   --vice-ribbon-tail: "NEON";
 }
+/* The edition's headline look, one source for the hero, the inner pages and
+   the menu. Set on [data-beachmag], which carries the font variables. */
+html.vice.dark [data-beachmag] {
+  --vice-display-font: var(--font-vice-neon), "Arial Black", sans-serif;
+  --vice-display-ink: var(--vice-ice);
+  --vice-display-shadow: var(--vice-glow-cyan);
+  --vice-label-ink: var(--vice-cyan);
+}
 html.vice.dark body:has([data-beachmag]) {
   --nav-paper: var(--vice-night);
   --nav-ink: var(--vice-night-ink);
@@ -132,14 +140,14 @@ html.vice.dark #coastal-art .top {
   box-shadow: 0 8px 14px -12px var(--vice-cyan);
 }
 html.vice.dark #coastal-art .mast {
-  font-family: var(--font-vice-neon), "Arial Black", sans-serif;
+  font-family: var(--vice-display-font);
   font-size: clamp(48px, 7.6vw, 92px);
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   line-height: 1.02;
-  color: var(--vice-ice);
-  text-shadow: var(--vice-glow-cyan);
+  color: var(--vice-display-ink);
+  text-shadow: var(--vice-display-shadow);
 }
 html.vice.dark #coastal-art .mast em {
   font-size: 1.5em;
@@ -356,7 +364,7 @@ html.vice.dark .interior {
     var(--vice-night-panel);
 }
 html.vice.dark .interior .page-kicker {
-  color: var(--vice-cyan);
+  color: var(--vice-label-ink);
 }
 html.vice.dark .interior h1 em {
   font-size: 1.3em;
@@ -390,6 +398,12 @@ html.vice:not(.dark) {
   --vice-mark: var(--vice-flamingo-text);
   --vice-ribbon-tail: "DECADE";
   --vice-awning: repeating-linear-gradient(90deg, var(--vice-flamingo) 0 32px, var(--vice-teal) 32px 64px, var(--vice-gold) 64px 96px);
+}
+html.vice:not(.dark) [data-beachmag] {
+  --vice-display-font: var(--font-vice-deco), Georgia, serif;
+  --vice-display-ink: var(--vice-day-ink);
+  --vice-display-shadow: 4px 4px 0 var(--vice-teal);
+  --vice-label-ink: var(--vice-teal-text);
 }
 html.vice:not(.dark) body:has([data-beachmag]) {
   --nav-paper: var(--vice-day-white);
@@ -435,13 +449,13 @@ html.vice:not(.dark) #coastal-art .top {
   border-bottom: 6px double var(--vice-day-ink);
 }
 html.vice:not(.dark) #coastal-art .mast {
-  font-family: var(--font-vice-deco), Georgia, serif;
+  font-family: var(--vice-display-font);
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.01em;
   line-height: 1;
-  color: var(--vice-day-ink);
-  text-shadow: 4px 4px 0 var(--vice-teal);
+  color: var(--vice-display-ink);
+  text-shadow: var(--vice-display-shadow);
 }
 html.vice:not(.dark) #coastal-art .mast em {
   font-size: 1.45em;
@@ -639,15 +653,15 @@ html.vice:not(.dark) .interior {
     var(--vice-day-paper);
 }
 html.vice:not(.dark) .interior .page-kicker {
-  color: var(--vice-teal-text);
+  color: var(--vice-label-ink);
 }
 html.vice:not(.dark) .interior h1 {
-  font-family: var(--font-vice-deco), Georgia, serif;
+  font-family: var(--vice-display-font);
   font-weight: 400;
   letter-spacing: 0;
   text-transform: uppercase;
   line-height: 1.02;
-  text-shadow: 4px 4px 0 var(--vice-teal);
+  text-shadow: var(--vice-display-shadow);
 }
 html.vice:not(.dark) .interior h1 em {
   font-size: 1.12em;
@@ -720,6 +734,49 @@ html.vice.dark .gallery-drawer :is(.polaroid, .photo-zoom) img {
 }
 html.vice:not(.dark) .gallery-drawer :is(.polaroid, .photo-zoom) img {
   filter: saturate(1.25);
+}
+
+/* ── The life-preserver menu ───────────────────────────────────────────── */
+
+/* The open menu wears the edition: its sky, the headline face for the big
+   links, the label color for the small print. The rings (open and close)
+   follow on their own through the nav tokens set above. */
+html.vice #site-takeover :is(.menu-group, nav a:not(.menu-sub)) {
+  font-family: var(--vice-display-font);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--vice-display-ink);
+  text-shadow: var(--vice-display-shadow);
+}
+html.vice #site-takeover :is(.menu-label, .menu-bottom p) {
+  color: var(--vice-label-ink);
+}
+html.vice #site-takeover nav a.menu-sub .menu-mark {
+  color: var(--nav-accent);
+}
+html.vice.dark #site-takeover {
+  background:
+    radial-gradient(520px 320px at 90% 0, color-mix(in srgb, var(--vice-pink) 22%, transparent), transparent 70%),
+    linear-gradient(var(--vice-night), var(--vice-night-sky));
+}
+html.vice.dark #site-takeover nav a:not(.menu-sub) span {
+  color: var(--vice-cyan);
+  text-shadow: none;
+}
+/* Neon rings: the preserver glows pink at night. */
+html.vice.dark :is(#site-nav .life-toggle, #site-takeover .menu-close) {
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--vice-pink) 70%, transparent));
+}
+html.vice:not(.dark) #site-takeover {
+  background:
+    linear-gradient(transparent 160px, var(--vice-day-paper) 420px) top / 100% 420px no-repeat,
+    repeating-conic-gradient(from 0deg at 100% 0, var(--vice-blush) 0 5deg, transparent 5deg 10deg) top / 100% 420px no-repeat,
+    var(--vice-day-paper);
+}
+html.vice:not(.dark) #site-takeover nav a:not(.menu-sub) span {
+  color: var(--vice-flamingo-text);
+  text-shadow: none;
 }
 
 /* Narrower than the hero's two columns, the stand sits behind the headline:

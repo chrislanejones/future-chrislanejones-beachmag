@@ -36,19 +36,15 @@ body.menu-open #site-nav .life-toggle { visibility: hidden; }
    close button goes at once instead of riding the circle down. */
 body.menu-closing #site-nav .life-toggle span { transition: none; }
 body:not(.menu-open) #site-takeover .menu-close { visibility: hidden; }
+/* The close button wears the life preserver (drawn below, with the open button). */
 #site-takeover .menu-close {
   position: absolute;
   top: 16px;
   right: 16px;
   display: grid;
   place-items: center;
-  width: 52px;
-  height: 52px;
-  border: 2px solid var(--nav-paper);
-  border-radius: 50%;
-  background: var(--nav-ink);
-  color: var(--nav-paper);
-  font: 32px/1 var(--font-dm-sans), sans-serif;
+  padding: 0;
+  font: 700 22px/1 var(--font-dm-sans), sans-serif;
   cursor: pointer;
   /* Do not transition inherited visibility, including in reduced-motion mode. */
   transition: none;
@@ -380,65 +376,18 @@ body:not(.menu-open) #site-takeover .menu-close { visibility: hidden; }
   overflow-x: clip;
 }
 
-/* The life preserver works at every width now: on desktop it sits at the end
-   of the nav and opens the full list of pages. */
+/* The desktop nav: links sit at the end of the row. (The life preserver is a
+   phone thing; see the min-width: 641px rule further down.) */
 @media (min-width: 641px) {
   #site-nav .desktop-links {
     margin-left: auto;
     align-items: center;
   }
-  #site-nav .life-toggle {
-    display: grid;
-    position: relative;
-    z-index: 101;
-    flex-shrink: 0;
-    width: 44px;
-    height: 44px;
-    place-content: center;
-    gap: 5px;
-    padding: 0;
-    border: 2px solid var(--nav-ink);
-    border-radius: 50%;
-    background: repeating-conic-gradient(from -22.5deg, var(--nav-accent) 0deg 45deg, var(--nav-paper) 45deg 90deg);
-    color: var(--nav-ink);
-    box-shadow: 0 0 0 2px var(--nav-paper), 0 0 0 3px var(--nav-ink);
-    cursor: pointer;
-    transition: transform 400ms var(--ease-pop);
-  }
-  #site-nav .life-toggle::before {
-    content: "";
-    position: absolute;
-    inset: 9px;
-    border: 2px solid var(--nav-ink);
-    border-radius: 50%;
-    background: var(--nav-paper);
-  }
-  #site-nav .life-toggle span {
-    position: relative;
-    z-index: 1;
-    width: 12px;
-    height: 2px;
-    background: currentColor;
-    transition: transform 260ms ease;
-  }
-  #site-nav .life-toggle:hover {
-    transform: rotate(15deg) scale(1.08);
-  }
-  body.menu-open #site-nav .life-toggle span:first-child {
-    transform: translateY(3.5px) rotate(45deg);
-  }
-  body.menu-open #site-nav .life-toggle span:last-child {
-    transform: translateY(-3.5px) rotate(-45deg);
-  }
 }
-/* Too narrow for one row: the links drop to a second row, the preserver stays up top. */
+/* Too narrow for one row: the links drop to a second row. */
 @media (min-width: 641px) and (max-width: 1000px) {
   #site-nav {
     flex-wrap: wrap;
-  }
-  #site-nav .life-toggle {
-    order: 2;
-    margin-left: auto;
   }
   #site-nav .desktop-links {
     order: 3;
@@ -446,6 +395,33 @@ body:not(.menu-open) #site-takeover .menu-close { visibility: hidden; }
     margin-left: 0;
     justify-content: space-between;
   }
+}
+
+/* The life preserver, drawn once for both of its buttons: the header's open
+   button and the open menu's close button, so the X you tap to close is the
+   same ring you tapped to open. Its colors are the nav tokens (--nav-paper,
+   --nav-ink, --nav-accent), which each edition re-points: Sunlit paper,
+   After dark, and Beach City days and nights (vice.css). */
+:is(#site-nav .life-toggle, #site-takeover .menu-close) {
+  width: 52px;
+  height: 52px;
+  border: 2px solid var(--nav-ink);
+  border-radius: 50%;
+  background: repeating-conic-gradient(from -22.5deg, var(--nav-accent) 0deg 45deg, var(--nav-paper) 45deg 90deg);
+  color: var(--nav-ink);
+  box-shadow: 0 0 0 2px var(--nav-paper), 0 0 0 3px var(--nav-ink);
+}
+:is(#site-nav .life-toggle, #site-takeover .menu-close)::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 2px solid var(--nav-ink);
+  border-radius: 50%;
+  background: var(--nav-paper);
+}
+:is(#site-nav .life-toggle, #site-takeover .menu-close) > span {
+  position: relative;
+  z-index: 1;
 }
 
 /* The circle opens from the preserver's real spot (set on click). */
