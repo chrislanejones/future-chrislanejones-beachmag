@@ -30,9 +30,11 @@ import {
 } from "lucide-react";
 import type { Doc } from "../../../../convex/_generated/dataModel";
 
+/** Posts that show their cover photo at the top. Only Beach City for now (11-19-2026);
+ *  every other post keeps its cover for the social preview, just not on the page. */
+const COVER_SLUGS = new Set(["beach-city-edition-gta-vi-launch-day"]);
+
 // Simple function to generate user identifier (could be improved with actual user system)
-/** The cover photo at the top of a post. Off for now; the cover still sets the social preview. */
-const SHOW_COVER = false;
 
 function getUserIdentifier() {
   if (typeof window === "undefined") return "anonymous";
@@ -241,9 +243,9 @@ export default function BlogPostPage({
       />
       <ArchiveLayout index={sections}>
         <p><Link href="/blog">Back to Blog</Link></p>
-        {/* Covers are hidden on the post page for now (11-19-2026); they still
-            feed the social preview image in page.tsx. Flip SHOW_COVER to bring them back. */}
-        {SHOW_COVER && post.coverImage && (
+        {/* Only the posts in COVER_SLUGS show their cover here; all covers still
+            feed the social preview image in page.tsx. */}
+        {COVER_SLUGS.has(post.slug) && post.coverImage && (
           <p>
             <Image src={post.coverImage} alt={post.title} width={1200} height={630} sizes="(max-width: 1240px) 92vw, 960px" priority fetchPriority="high" />
           </p>
