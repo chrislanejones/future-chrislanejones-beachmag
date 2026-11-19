@@ -5,6 +5,9 @@ export type BeachFigureName = "beach-girl" | "lifeguard-stand" | "surfer-guy" | 
 // Bump when the files in public/art change, so browsers fetch the new ones.
 const ART_VERSION = "5";
 
+/** The file behind a figure, with its cache-busting version. */
+export const artUrl = (name: BeachFigureName) => `/art/${name}.webp?v=${ART_VERSION}`;
+
 /**
  * A figure cut from the beach line drawing (public/art): the file's alpha is
  * the ink, painted in whatever color the parent sets, the way the client
@@ -16,7 +19,7 @@ export function BeachFigure({ name, className = "" }: { name: BeachFigureName; c
     <span
       className={`beach-figure ${name} ${className}`.trim()}
       aria-hidden="true"
-      style={{ "--art": `url("/art/${name}.webp?v=${ART_VERSION}")` } as CSSProperties}
+      style={{ "--art": `url("${artUrl(name)}")` } as CSSProperties}
     />
   );
 }

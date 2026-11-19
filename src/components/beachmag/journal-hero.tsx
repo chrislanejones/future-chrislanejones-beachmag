@@ -7,7 +7,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { ContentBoundary } from "@/components/coastal/live-content";
 import { ClientStrip } from "./client-strip";
-import { BeachFigure } from "./beach-figure";
+import { BeachFigure, artUrl } from "./beach-figure";
 import { EditionButtons } from "./edition-buttons";
 import { Ribbon } from "./ribbon";
 import { SeeAll } from "./see-all";
@@ -60,6 +60,9 @@ const HERO = {
 const HERO_SIZES = "(max-width: 1240px) 92vw, 1120px";
 
 function preloadHero() {
+  // On a phone the faint lifeguard stand behind the headline is the largest
+  // paint, and as a CSS background it was found only after the stylesheet.
+  preload(artUrl("lifeguard-stand"), { as: "image", fetchPriority: "high" });
   for (const [src, media] of [[HERO.day, "(prefers-color-scheme: light)"], [HERO.night, "(prefers-color-scheme: dark)"]] as const) {
     const { props } = getImageProps({ src, alt: "", width: 1520, height: 739, sizes: HERO_SIZES });
     preload(props.src, { as: "image", imageSrcSet: props.srcSet, imageSizes: props.sizes, fetchPriority: "high", media });
