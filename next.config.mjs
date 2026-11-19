@@ -130,6 +130,11 @@ const nextConfig = {
       )
     : [],
   pageExtensions: ["js", "jsx", "ts", "tsx"],
+  experimental: {
+    // Next nudges coding agents about upgrades; "security" (the default) limits it
+    // to security advisories. Set by the 16.4.2 -> 16.4.6 security upgrade.
+    agentUpgrade: "security",
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
