@@ -1,6 +1,8 @@
 # Page banner scenes
 
-The home hero and 13 page banners now show the St. Augustine Beach 3D world (`~/repo/3d-world`, recorded at `2bb3fc8`). Each one is a still followed by a seamless video loop: day in light mode, night (21:00) in dark mode. `src/components/coastal/scene-banner.tsx` maps each page path to its image. Any page not listed there keeps the drawn `BeachBanner`.
+The home hero and 13 page banners now show the St. Augustine Beach 3D world (`~/repo/3d-world`, recorded at `2bb3fc8`). Each one is a still followed by a seamless video loop: day in light mode, night (21:00) in dark mode.
+
+**Since 11-18-2026 only the home hero plays video.** Every page banner is two stills: a day photo for Sunlit and a dusk or night photo for After dark. The loop notes below now apply to the home hero only. `src/components/coastal/scene-banner.tsx` maps each page path to its image. Any page not listed there keeps the drawn `BeachBanner`.
 
 ## Home
 
@@ -23,10 +25,10 @@ The site's older live copy of the town (`hero-coast-scene.tsx`, `hero-ocean-lite
 | /site-map | Top down | [-38, 170, -29.9] | [-38, 0, -30] | 12 |
 | /react-maintenance | Boat at sunrise | [19, 1.7, 6] | boat, turned 16° left | 6.75 |
 | /wordpress-maintenance | 9th Street toward the beach | [-7.1, 0.9, 3.6] | [12, 3, 3.4], turned 5° left | 17.5 |
-| /design-system (files keep the `logo-page` name) | Along the beach | [34, 9, 12] | [18, 0, -8], turned 18° left | 17.5 |
+| /design-system (files keep the `logo-page` name) | Over the houses toward the pier, Chris's framing (11-18-2026) | [3.7, 8.5, 25.9] | [19.6, -0.1, -7.9] | 17.5, dark mode 18.75 |
 | /admin-showcase | El Castillo | [-16.5, 8, 8.5] | [5.94, 4.6, -15.56] | 17.5 |
 
-Every page also has a night version from the same camera: 21.0, clear sky (full moonlight), exposure 1.35, ocean motion "Some motion" and 14 mph wind, so trees and flags visibly move in the dark. Medium waves were tried first and made the boat look storm-tossed. Days use scattered clouds, exposure 1.00, "Some motion" and 6-12 mph wind. Blog and React maintenance were recorded for 20 s to give the boat's seam more candidates. Files: 720p (1280 px) WebP stills at quality 80 and H.264 loops, 16.3 MB of video and 1.6 MB of stills in total.
+Every page also has a night version from the same camera (except /design-system, which since 11-18-2026 uses dusk at 18.75 with the day settings and medium waves): 21.0, clear sky (full moonlight), exposure 1.35, ocean motion "Some motion" and 14 mph wind, so trees and flags visibly move in the dark. Medium waves were tried first and made the boat look storm-tossed. Days use scattered clouds, exposure 1.00, "Some motion" and 6-12 mph wind. Blog and React maintenance were recorded for 20 s to give the boat's seam more candidates. Files: 720p (1280 px) WebP stills at quality 80 and H.264 loops, 16.3 MB of video and 1.6 MB of stills in total.
 
 The page title and its cream fade cover the left half of every banner, so each camera is turned left until its subject sits right of center. The first three shots started from Chris's own framing, with targets [12, 4.6, -8], [0.9, 0.4, 30.1] and [-33.3, 1.5, 3.8].
 

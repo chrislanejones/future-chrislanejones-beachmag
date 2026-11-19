@@ -27,14 +27,13 @@ export type HomeEvent = {
 
 export const HOME_EVENTS: HomeEvent[] = [
   {
-    slug: "gta-vi-release-day-2026-11-19",
-    start: "2026-11-19T09:00",
-    name: "Grand Theft Auto VI Release Day",
-    place: "Vice City, in spirit · 9 AM ET",
-    description: "Not every date on this calendar is a meetup. Grand Theft Auto VI comes out today, and yes, I made myself the cover. I don't only play video games, and these days I don't have time to play much of anything, but I've played the series in the past and it's hard not to be curious about this one. The graphics look unreal, the trailers are genuinely funny, and Vice City is basically Florida with the brightness turned all the way up. Somebody play a few missions for me.",
-    organizer: "Rockstar Games",
-    url: "https://www.rockstargames.com/VI",
-    tags: ["Just for fun"],
+    slug: "roundtable-event-2026-11-20",
+    start: "2026-11-20T07:30",
+    end: "2026-11-20T09:30",
+    name: "Roundtable Event",
+    place: "7:30–9:30 AM ET",
+    description: "An early-morning roundtable over coffee.",
+    tags: ["San Marco"],
   },
   {
     slug: "buildweek-jacksonville-kickoff-2026-10-19",

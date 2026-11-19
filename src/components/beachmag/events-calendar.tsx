@@ -5,6 +5,7 @@ import Link from "next/link";
 import { EditionButtons } from "./edition-buttons";
 import { calendarEvents, eventHref, eventTitle, localDay, pastEvents, upcomingEvents } from "./events";
 import { WithEventTitles, type Titled } from "./event-titles";
+import { ScenePolaroid } from "./interior-parts";
 
 const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const WEEKDAYS = [
@@ -144,7 +145,11 @@ function CalendarBody({ titled }: { titled: Titled }) {
         <span>EVENTS / WHERE I&apos;LL BE · JACKSONVILLE, FL · FIRST COAST FLORIDA</span>
         <EditionButtons />
       </div>
-      <h1 className="mast">See you<br /><em>out there.</em></h1>
+      {/* The page's 3D scene in the same taped polaroid, and at the same size, as /projects. */}
+      <div className="events-hero">
+        <h1 className="mast">See you<br /><em>out there.</em></h1>
+        <ScenePolaroid path="/events" caption={<>See you on the rooftop. <span aria-hidden="true">↙</span></>} />
+      </div>
       <div className="sub">
         <span>Meetups, coworking mornings and the odd conference around Northeast Florida. Come say hi.</span>
         <Link href="/conferences">Past conferences ↗</Link>

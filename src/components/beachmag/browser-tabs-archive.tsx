@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { usePreloadedQuery, type Preloaded } from "convex/react";
 import type { api } from "../../../convex/_generated/api";
 import { compareGroups, getLinkGroup } from "@/app/browser-tabs/link-groups";
-import { setTheme, useTheme } from "@/lib/theme-store";
+import { useTheme } from "@/lib/theme-store";
+import { PageHero } from "./interior-parts";
 
 type TabLink = { href: string; label: string; domain: string; favicon?: string };
 
@@ -72,33 +72,16 @@ export function BrowserTabsArchive({ preloadedLinks }: { preloadedLinks: Preload
   };
 
   return (
-    <article id="browser-tabs" data-palette={theme}>
-      <div className="edition-strip">
-        <span>FIELD NOTES / THE INTERNET EDITION</span>
-        <div role="group" aria-label="Color scheme">
-          <button type="button" aria-pressed={theme === "light"} onClick={() => setTheme("light")}>Sunlit paper ☀</button>
-          <button type="button" aria-pressed={theme === "dark"} onClick={() => setTheme("dark")}>After dark ☾</button>
-        </div>
-      </div>
-      <header className="tabs-hero">
-        <div>
-          <p className="eyebrow">{total} LINKS. {groups.length === 11 ? "ELEVEN" : groups.length} RABBIT HOLES.</p>
-          <h1>Chrome tabs<br /><em>I left open.</em></h1>
-          <p className="intro">Tools, oddities & good ideas worth keeping around. A little collection from a very curious browser.</p>
-        </div>
-        <figure className="tabs-photo">
-          <Image
-            id="tabs-banner"
-            src={theme === "dark" ? "/banners/browser-tabs-night.webp" : "/banners/browser-tabs-day.webp"}
-            alt="A miniature 3D coastal world from the Browser Tabs collection"
-            width={900}
-            height={600}
-            sizes="(max-width: 640px) 92vw, 520px"
-            priority
-          />
-          <figcaption>Washed up on the internet. ↙</figcaption>
-        </figure>
-      </header>
+    <>
+      {/* The same header as /projects: kicker, title and intro beside the page's scene polaroid. */}
+      <PageHero
+        kicker={`${total} LINKS. ${groups.length === 11 ? "ELEVEN" : groups.length} RABBIT HOLES.`}
+        title={<>Chrome tabs<br /><em>I left open.</em></>}
+        intro="Tools, oddities & good ideas worth keeping around. A little collection from a very curious browser."
+        path="/browser-tabs"
+        caption="Washed up on the internet. ↙"
+      />
+      <article id="browser-tabs" data-palette={theme}>
       <div className="collection-bar">
         <p><strong id="result-count" role="status" aria-live="polite">{count} of {total} links</strong><br />Collected, not closed.</p>
         <label className="search-wrap" htmlFor="tab-search">
@@ -160,6 +143,7 @@ export function BrowserTabsArchive({ preloadedLinks }: { preloadedLinks: Preload
         <p>All links open in a new tab. Naturally.</p>
         <Link href="/"><em>Back to the beach. ↗</em></Link>
       </footer>
-    </article>
+      </article>
+    </>
   );
 }

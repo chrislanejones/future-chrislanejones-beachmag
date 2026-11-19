@@ -1,7 +1,7 @@
 import { preloadQuery } from "convex/nextjs";
 import { api } from "../../../convex/_generated/api";
 import { getPageSEO } from "@/lib/seo";
-import { BeachmagShell } from "@/components/beachmag/shell";
+import { InteriorPage } from "@/components/beachmag/interior";
 import { BrowserTabsArchive } from "@/components/beachmag/browser-tabs-archive";
 import "@/components/beachmag/browser-tabs.css";
 
@@ -15,8 +15,8 @@ export default async function BrowserTabsPage() {
   // Include the collection in the HTML, then subscribe to live updates on hydration.
   const preloadedLinks = await preloadQuery(api.browserLinks.getAll, {});
   return (
-    <BeachmagShell>
+    <InteriorPage>
       <BrowserTabsArchive preloadedLinks={preloadedLinks} />
-    </BeachmagShell>
+    </InteriorPage>
   );
 }
