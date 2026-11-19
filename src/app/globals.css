@@ -727,8 +727,8 @@ body:has([data-coastal-page]) {
   margin: 2em 0;
 }
 
-/* images */
-.blog-content img {
+/* images and videos */
+.blog-content :is(img, video) {
   border-radius: var(--radius);
   max-width: 100%;
   height: auto;
