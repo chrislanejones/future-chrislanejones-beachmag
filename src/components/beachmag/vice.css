@@ -865,15 +865,16 @@ html.vice .vice-preview-bar button:hover {
 }
 
 /* ---------- "wasted" ----------
-   Clear beach in the sandbox, Beach City only (sandbox/wasted.tsx): the screen
-   drains to gray and darkens, the word slams in across a dark band, then it all
-   fades as the wave goes back out. 3.2s matches the timers in sandbox.tsx.
+   Clear beach in the sandbox, Beach City only (sandbox/wasted.tsx): inside the
+   3D stage, the beach drains to gray and darkens, the word slams in across a
+   dark band, then it all fades as the wave goes back out. 3.2s matches the timers in sandbox.tsx.
    The font is named directly: --bm-font-display resolves on :root, where the
    page's Bodoni variable doesn't exist yet. */
-html.vice .vice-wasted {
-  position: fixed;
+html.vice #sandbox .vice-wasted {
+  position: absolute;
   inset: 0;
-  z-index: 70;
+  z-index: 5;
+  container-type: inline-size;
   display: grid;
   place-items: center;
   pointer-events: none;
@@ -881,15 +882,15 @@ html.vice .vice-wasted {
   backdrop-filter: grayscale(1) brightness(0.55) contrast(1.1);
   animation: vice-wasted-screen 3.2s ease both;
 }
-html.vice .vice-wasted span {
+html.vice #sandbox .vice-wasted span {
   width: 100%;
   padding: 0.12em 0 0.2em;
   text-align: center;
   background: linear-gradient(transparent, color-mix(in srgb, var(--vice-night-deep) 88%, transparent) 15% 85%, transparent);
   color: var(--vice-wasted);
-  font: italic 900 clamp(84px, 19vw, 260px)/1 var(--font-bodoni-moda), Georgia, serif;
+  font: italic 900 clamp(56px, 19cqi, 230px)/1 var(--font-bodoni-moda), Georgia, serif;
   letter-spacing: -0.02em;
-  -webkit-text-stroke: 6px var(--vice-night-deep);
+  -webkit-text-stroke: clamp(3px, 0.5cqi, 6px) var(--vice-night-deep);
   paint-order: stroke fill;
   text-shadow:
     0 0 28px color-mix(in srgb, var(--vice-wasted) 55%, transparent),

@@ -241,7 +241,6 @@ export function Sandbox() {
 
   return (
     <section id="sandbox" ref={setSection} aria-label="Sandcastle sandbox">
-      <Wasted show={wasted && vice} />
       {/* Top row: the words (with the status line last), then the tool
           knob, then the surfer from the beach line drawing. The beach is
           the next row. */}
@@ -322,6 +321,7 @@ export function Sandbox() {
         }}
       >
         {near && !filled && <BucketLoader running={visible} ready={settled} onFull={onFull} />}
+        <Wasted show={wasted && vice} />
         <Boundary>
           {near && <Scene
             pieces={state.pieces}
