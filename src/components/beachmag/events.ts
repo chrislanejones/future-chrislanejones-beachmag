@@ -175,6 +175,7 @@ export const HOME_EVENTS: HomeEvent[] = [
   {
     slug: "secret-podcast-event-2026-12-08",
     start: "2026-12-08T10:15",
+    series: "Nashville",
     name: "Secret Podcast Event",
     place: "Coming soon",
     description: "Details will be shared when this event is announced.",
