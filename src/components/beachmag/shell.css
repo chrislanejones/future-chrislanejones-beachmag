@@ -2837,3 +2837,14 @@ html.dark #coastal-art .map-wrap .map-night {
   padding: 0;
   background: transparent;
 }
+
+/* A link inside a rambling ("Group tabs") reads as part of the sentence: same
+   size and weight as the quote, not the site's small bold link style. */
+#coastal-art .rambles .quote-stack a {
+  display: inline;
+  margin: 0;
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: .12em;
+}
