@@ -224,6 +224,18 @@ export function upcomingEvents(now: Date, limit = 3) {
   return calendarEvents().filter((event) => event.start.slice(0, 10) >= today).slice(0, limit);
 }
 
+/** Events that start on `now`'s day, earliest first. */
+export function todayEvents(now: Date) {
+  const today = localDay(now);
+  return calendarEvents().filter((event) => event.start.slice(0, 10) === today);
+}
+
+/** Events on a later day than `now`, soonest first (today's sit in their own list on /events). */
+export function laterEvents(now: Date) {
+  const today = localDay(now);
+  return calendarEvents().filter((event) => event.start.slice(0, 10) > today);
+}
+
 export function pastEvents(now: Date) {
   return calendarEvents().filter((event) => event.start.slice(0, 10) < localDay(now)).reverse();
 }

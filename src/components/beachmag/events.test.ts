@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { HOME_EVENTS, applyTitles, calendarEvents, eventHref, eventTitle, findEvent, pastEvents, upcomingEvents } from "./events";
+import { HOME_EVENTS, applyTitles, calendarEvents, eventHref, eventTitle, findEvent, laterEvents, pastEvents, todayEvents, upcomingEvents } from "./events";
 
 test("homepage has only the three nearest upcoming events while the archive keeps attended events", () => {
   const today = new Date(2026, 9, 26, 12);
@@ -45,4 +45,14 @@ test("titles saved in the admin replace the code's series and title, nothing els
   expect(single.series).toBeUndefined();
   expect(eventTitle(single)).toBe("Signals night");
   expect(applyTitles([coded], undefined)[0]).toBe(coded);
+});
+
+test("/events splits today's events from the ones on later days", () => {
+  const morning = new Date(2026, 10, 20, 8);
+  expect(todayEvents(morning).map((event) => event.slug)).toEqual(["roundtable-event-2026-11-20"]);
+  expect(laterEvents(morning).every((event) => event.start.slice(0, 10) > "2026-11-20")).toBe(true);
+  expect(laterEvents(morning).some((event) => event.slug === "roundtable-event-2026-11-20")).toBe(false);
+  // Together they are exactly what the homepage counts as upcoming.
+  expect([...todayEvents(morning), ...laterEvents(morning)]).toEqual(upcomingEvents(morning, Infinity));
+  expect(todayEvents(new Date(2026, 10, 21, 8))).toEqual([]);
 });

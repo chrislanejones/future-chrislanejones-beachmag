@@ -3,12 +3,13 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { EditionButtons } from "./edition-buttons";
-import { calendarEvents, eventHref, eventTitle, localDay, pastEvents, upcomingEvents } from "./events";
+import { calendarEvents, eventHref, eventTitle, laterEvents, localDay, pastEvents, todayEvents } from "./events";
 import { WithEventTitles, type Titled } from "./event-titles";
 import { EventRow } from "./event-row";
 import { ScenePolaroid } from "./interior-parts";
 
 const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const PAST_PER_PAGE = 6;
 const WEEKDAYS = [
   { short: "S", long: "Sunday" },
   { short: "M", long: "Monday" },
@@ -19,7 +20,7 @@ const WEEKDAYS = [
   { short: "S", long: "Saturday" },
 ];
 
-type Upcoming = ReturnType<typeof upcomingEvents>[number];
+type Upcoming = ReturnType<typeof calendarEvents>[number];
 
 /** Weeks of a month as rows of day numbers, with null for the blanks around them. */
 function monthWeeks(year: number, month: number) {
@@ -115,8 +116,12 @@ function CalendarBody({ titled }: { titled: Titled }) {
   });
   const now = new Date();
   const today = localDay(now);
-  const events = titled(upcomingEvents(now, Infinity));
+  const onToday = titled(todayEvents(now));
+  const events = titled(laterEvents(now));
   const archive = titled(pastEvents(now));
+  const [pastPage, setPastPage] = useState(0);
+  const pastPages = Math.max(1, Math.ceil(archive.length / PAST_PER_PAGE));
+  const page = Math.min(pastPage, pastPages - 1);
   const allEvents = titled(calendarEvents());
   const last = allEvents.at(-1);
   const detail = useRef<HTMLElement>(null);
@@ -180,12 +185,24 @@ function CalendarBody({ titled }: { titled: Titled }) {
           </section>
         </article>
         <aside className="events">
-          <h2>Coming up.</h2>
+          <h2>Today.</h2>
+          {onToday.length ? <EventList events={onToday} /> : <p className="copy">Nothing on today.</p>}
+          <h2 className="events-later-heading">Coming up.</h2>
           {events.length ? <EventList events={events} /> : (
             <p className="copy">Nothing on the calendar yet.</p>
           )}
-          <h2 className="past-events-heading">Past Events</h2>
-          {archive.length ? <EventList events={archive} /> : <p className="copy">No past events listed yet.</p>}
+          <h2 className="events-later-heading" id="past-events">Past Events</h2>
+          {archive.length ? <EventList events={archive.slice(page * PAST_PER_PAGE, (page + 1) * PAST_PER_PAGE)} /> : (
+            <p className="copy">No past events listed yet.</p>
+          )}
+          {/* Six at a time, newest first; the same silver keys as the calendar. */}
+          {pastPages > 1 && <div className="events-pager">
+            <p aria-live="polite">Page {page + 1} of {pastPages}</p>
+            <div className="client-controls">
+              <button type="button" aria-label="Newer past events" disabled={page === 0} onClick={() => setPastPage(page - 1)}>←</button>
+              <button type="button" aria-label="Older past events" disabled={page >= pastPages - 1} onClick={() => setPastPage(page + 1)}>→</button>
+            </div>
+          </div>}
         </aside>
       </div>
     </>
