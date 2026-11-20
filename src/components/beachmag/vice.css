@@ -878,17 +878,20 @@ html.vice #sandbox .vice-wasted {
   display: grid;
   place-items: center;
   pointer-events: none;
-  background: color-mix(in srgb, var(--vice-night-deep) 35%, transparent);
-  backdrop-filter: grayscale(1) brightness(0.55) contrast(1.1);
+  /* A dark vignette that follows the stage's edges, so the effect reads as the frame's. */
+  background:
+    radial-gradient(ellipse 75% 70% at 50% 50%, transparent 35%, color-mix(in srgb, var(--vice-night-deep) 70%, transparent) 100%),
+    color-mix(in srgb, var(--vice-night-deep) 25%, transparent);
+  backdrop-filter: grayscale(1) brightness(0.6) contrast(1.1);
   animation: vice-wasted-screen 3.2s ease both;
 }
 html.vice #sandbox .vice-wasted span {
   width: 100%;
-  padding: 0.12em 0 0.2em;
+  padding: 0.22em 0 0.3em;
   text-align: center;
-  background: linear-gradient(transparent, color-mix(in srgb, var(--vice-night-deep) 88%, transparent) 15% 85%, transparent);
+  background: linear-gradient(transparent, color-mix(in srgb, var(--vice-night-deep) 85%, transparent) 30% 70%, transparent);
   color: var(--vice-wasted);
-  font: italic 900 clamp(56px, 19cqi, 230px)/1 var(--font-bodoni-moda), Georgia, serif;
+  font: italic 900 clamp(52px, 14cqi, 170px)/1 var(--font-bodoni-moda), Georgia, serif;
   letter-spacing: -0.02em;
   -webkit-text-stroke: clamp(3px, 0.5cqi, 6px) var(--vice-night-deep);
   paint-order: stroke fill;

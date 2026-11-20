@@ -1630,9 +1630,11 @@ section#sandbox .sandbox-heading {
   font-size: 13px;
   line-height: 1.7;
 }
+/* The knob sits on the row's floor, like the beach girl, right above the sand. */
 #sandbox .sandbox-dial {
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
 }
 /* The status line follows the how-to, a thin rule above it. */
 #sandbox .sandbox-words > .game-status {

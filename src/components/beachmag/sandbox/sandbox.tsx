@@ -248,9 +248,9 @@ export function Sandbox() {
         <div className="sandbox-words">
           <p className="game-kicker">NO DEADLINES. JUST SAND.</p>
           <h2>Leave a little<br /><em>castle.</em></h2>
-          <p>A small patch of coast to make your own. Pick a mold, press the sand, lift the bucket. Five flags. One very good afternoon.</p>
+          <p>Pick a mold, press the sand, lift the bucket. Five flags.</p>
           {/* The how-to lives here; the stage points at it by id. */}
-          <p id="game-help">Tap the sand to build, or hit Build it for me. Choose Flag to plant up to five. Right-click or press and hold for more. Arrow keys move, Enter builds, Delete removes.</p>
+          <p id="game-help">Tap to build. Right-click or hold for more. Keys: arrows, Enter, Delete.</p>
           {/* The line that changes as you play, under the how-to. */}
           <p className="game-status" role="status">{notice || state.message}</p>
         </div>
