@@ -6,7 +6,9 @@ import { useTheme } from "@/lib/theme-store";
 import { ToolArt } from "./tool-art";
 import { ToolKnob } from "./tool-knob";
 import { BeachFigure } from "../beach-figure";
-import { WASH_CLEAR_MS, WASH_END_MS } from "./beach-wash";
+import { WASH_CLEAR_MS, WASH_END_MS, WASH_IN_MS } from "./beach-wash";
+import { useVice } from "@/lib/vice";
+import { Wasted } from "./wasted";
 import { castleReducer, initialCastle, MAX_FLAGS, HALF_X, HALF_Z, pickDesign, settleMs, type CastleTool } from "./sandcastle-model";
 import { BucketLoader } from "./bucket-loader";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuLabel, ContextMenuSeparator, ContextMenuShortcut, ContextMenuTrigger } from "@/components/ui/context-menu";
@@ -59,6 +61,9 @@ export function Sandbox() {
   const [rotated, setRotated] = useState(false);
   const [cursor, setCursor] = useState({ x: 0, z: 2 });
   const [busy, setBusy] = useState(false);
+  // Beach City's "wasted" card over the wave (wasted.tsx).
+  const vice = useVice();
+  const [wasted, setWasted] = useState(false);
   const [notice, setNotice] = useState("");
   const [visible, setVisible] = useState(false);
   const dark = useTheme() === "dark";
@@ -88,9 +93,16 @@ export function Sandbox() {
       setNotice("The wave is heading back out…");
     }, Math.max(0, WASH_CLEAR_MS - elapsed));
     const endTimer = setTimeout(finish, Math.max(0, WASH_END_MS - elapsed));
+    // In Beach City the screen reads "wasted" from when the wave lands until just
+    // after it has gone back out (the card's own fade is in vice.css).
+    const wastedOn = setTimeout(() => setWasted(true), Math.max(0, WASH_IN_MS - elapsed));
+    const wastedOff = setTimeout(() => setWasted(false), Math.max(0, WASH_END_MS + 600 - elapsed));
     return () => {
       clearTimeout(clearTimer);
       clearTimeout(endTimer);
+      clearTimeout(wastedOn);
+      clearTimeout(wastedOff);
+      setWasted(false);
     };
   }, [washStartedAt]);
 
@@ -229,6 +241,7 @@ export function Sandbox() {
 
   return (
     <section id="sandbox" ref={setSection} aria-label="Sandcastle sandbox">
+      <Wasted show={wasted && vice} />
       {/* Top row: the words (with the status line last), then the tool
           knob, then the surfer from the beach line drawing. The beach is
           the next row. */}
