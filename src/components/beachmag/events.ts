@@ -27,6 +27,19 @@ export type HomeEvent = {
 
 export const HOME_EVENTS: HomeEvent[] = [
   {
+    slug: "cscmp-no-pressure-coffee-2026-12-18",
+    start: "2026-12-18T07:30",
+    end: "2026-12-18T09:30",
+    series: "CSCMP Jacksonville Roundtable",
+    name: "No Pressure Coffee",
+    place: "Bitty & Beau's Coffee · San Marco · 7:30–9:30 AM ET",
+    venue: "Bitty & Beau's Coffee, 1965 San Marco Blvd, Jacksonville, FL",
+    description: "No Pressure Coffee is CSCMP Jacksonville's signature monthly networking event designed to connect supply chain, logistics, transportation, and operations professionals in a relaxed and welcoming environment. There are no presentations, sales pitches, or formal agendas, just great coffee and meaningful conversations with industry peers.",
+    organizer: "CSCMP Jacksonville Roundtable · Contact: Mckenzie Ogburn, RT OFF",
+    url: "https://cscmp.org/CSCMP/Roundtables/CSCMP/Roundtables/Event-List.aspx",
+    tags: ["San Marco"],
+  },
+  {
     slug: "roundtable-event-2026-11-20",
     start: "2026-11-20T07:30",
     end: "2026-11-20T09:30",
