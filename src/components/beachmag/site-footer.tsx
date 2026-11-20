@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { BrandLogo } from "./brand-logo";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useFooterNavSections } from "@/components/page/links";
-import { Heart, Waves } from "lucide-react";
+import { Heart } from "lucide-react";
 import { BeachFigure } from "./beach-figure";
 import { useVice } from "@/lib/vice";
 import "./footer.css";
@@ -94,7 +95,7 @@ export function SiteFooter({ offline = false }: { offline?: boolean }) {
       <div className="footer-directory">
         <div className="footer-bio">
           <Link className="footer-name" href="/">
-            <Waves className="footer-wave" size={34} strokeWidth={1.5} aria-hidden="true" />
+            <span className="footer-mark" aria-hidden="true"><BrandLogo className="footer-wave" width={42} height={34} /></span>
             Chris Lane Jones
           </Link>
           <p className="footer-role">Senior web engineer</p>

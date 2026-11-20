@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { BrandLogo } from "./brand-logo";
 import { createElement, useEffect, useRef, useState } from "react";
 import { Anchor, ChevronDown, Fish, Sailboat, Shell, Sun, Sunrise, TreePalm, Umbrella, Volleyball, Waves, type LucideIcon } from "lucide-react";
 import { useHeaderNavItems } from "@/components/page/links";
@@ -192,9 +193,9 @@ export function SiteNav({ offline = false }: { offline?: boolean }) {
     <>
       <header id="site-nav">
         <Link className="nav-brand" href="/" aria-label="Chris Lane Jones — home" inert={open}>
-          {/* The waves mark from the beach site's header. */}
+          {/* The sun-over-the-waves mark (brand-logo.tsx). */}
           <span className="brand-marks" aria-hidden="true">
-            <Waves className="brand-wave" size={38} strokeWidth={1.5} />
+            <BrandLogo className="brand-wave" />
           </span>
           <span className="brand-wordmark">CHRIS LANE JONES</span>
         </Link>
