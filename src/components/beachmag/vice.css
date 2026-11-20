@@ -30,13 +30,6 @@ html.vice #site-nav .brand-marks {
 html.vice #site-nav .brand-marks > * {
   visibility: hidden;
 }
-/* The footer's mark follows. */
-html.vice #coastal-footer .footer-mark {
-  background: url("/art/vice-logo.svg") center / contain no-repeat;
-}
-html.vice #coastal-footer .footer-mark > * {
-  visibility: hidden;
-}
 html.vice #site-nav .nav-brand .brand-wordmark::after {
   content: "THE BEACH CITY EDITION";
   display: block;
@@ -355,6 +348,9 @@ html.vice.dark #coastal-footer h2 em {
   color: var(--vice-pink-pale);
   text-shadow: var(--vice-glow-pink);
 }
+html.vice.dark #coastal-footer .footer-wave {
+  color: var(--vice-cyan);
+}
 
 /* Inner pages */
 html.vice.dark .interior {
@@ -637,6 +633,9 @@ html.vice:not(.dark) #coastal-footer :is(.footer-kicker, h3) {
 html.vice:not(.dark) #coastal-footer h2 em {
   color: var(--vice-flamingo);
   text-shadow: 2px 2px 0 var(--vice-day-white), 5px 5px 0 var(--vice-teal);
+}
+html.vice:not(.dark) #coastal-footer .footer-wave {
+  color: var(--vice-aqua);
 }
 html.vice:not(.dark) #coastal-footer .footer-figures {
   color: var(--vice-flamingo-pale);

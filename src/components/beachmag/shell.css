@@ -173,7 +173,7 @@ body:not(.menu-open) #site-takeover .menu-close { visibility: hidden; }
   gap: 12px;
 }
 #site-nav .brand-wave {
-  width: 54px;
+  width: 44px;
   height: 44px;
 }
 #site-nav .nav-brand .brand-wordmark {
@@ -183,7 +183,7 @@ body:not(.menu-open) #site-takeover .menu-close { visibility: hidden; }
 }
 @media (max-width: 640px) {
   #site-nav .brand-wave {
-    width: 42px;
+    width: 34px;
     height: 34px;
   }
   #site-nav .nav-brand .brand-wordmark {
@@ -1077,38 +1077,10 @@ html.dark .interior {
   gap: 10px;
   white-space: nowrap;
 }
-#coastal-footer .footer-mark {
-  display: inline-flex;
-  flex-shrink: 0;
-}
 #coastal-footer .footer-wave {
-  display: block;
+  flex-shrink: 0;
+  color: var(--footer-accent);
 }
-
-/* The sun-over-the-waves mark (brand-logo.tsx): Sunlit colors, then After dark. */
-.brand-logo {
-  --logo-sun: light-dark(var(--bm-toy-coral), var(--bm-accent-dark));
-  --logo-rays: light-dark(var(--bm-accent), var(--bm-toy-coral));
-  --logo-deep: light-dark(var(--bm-ink-3), var(--bm-toy-teal));
-  --logo-shallow: light-dark(var(--bm-toy-teal), var(--bm-sea-glass));
-  --logo-dune: light-dark(var(--bm-dune), var(--bm-dune-dark));
-  --logo-oats: light-dark(var(--bm-oats), var(--bm-oats-dark));
-}
-/* The footer is dark in both editions, so its mark always uses the night set. */
-#coastal-footer .brand-logo {
-  --logo-sun: var(--bm-accent-dark);
-  --logo-rays: var(--bm-toy-coral);
-  --logo-deep: var(--bm-toy-teal);
-  --logo-shallow: var(--bm-sea-glass);
-  --logo-dune: var(--bm-dune-dark);
-  --logo-oats: var(--bm-oats-dark);
-}
-.brand-logo .logo-sun { fill: var(--logo-sun); }
-.brand-logo .logo-rays { fill: var(--logo-rays); }
-.brand-logo .logo-deep { fill: var(--logo-deep); }
-.brand-logo .logo-shallow { fill: var(--logo-shallow); }
-.brand-logo .logo-dune { fill: var(--logo-dune); }
-.brand-logo .logo-grass { fill: none; stroke: var(--logo-oats); stroke-width: 2.1; stroke-linecap: round; }
 
 /* The postcards gallery drawer. It portals to <body>, outside #coastal-art,
    so it repeats the magazine's paper / ink / orange (light, then After dark). */
