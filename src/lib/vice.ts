@@ -20,6 +20,20 @@ export function useVice(): boolean {
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
+// On because someone opened a ?vice=on link (or the toggle), not because of the date.
+const getPreviewSnapshot = () => {
+  try {
+    return getSnapshot() && sessionStorage.getItem("vice") === "on";
+  } catch {
+    return false;
+  }
+};
+
+/** True while the edition is on as a preview (?vice=on), so the page can offer a way back. */
+export function useVicePreview(): boolean {
+  return useSyncExternalStore(subscribe, getPreviewSnapshot, getServerSnapshot);
+}
+
 /** Turns the Beach City edition on or off for this tab, like ?vice=on / ?vice=off. */
 export function setVice(on: boolean) {
   document.documentElement.classList.toggle("vice", on);

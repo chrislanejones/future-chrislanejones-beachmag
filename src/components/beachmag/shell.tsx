@@ -4,6 +4,7 @@ import { SiteFooter } from "./site-footer";
 import { SiteNav } from "./site-nav";
 import { ViceFavicon } from "./vice-favicon";
 import { ViceFilters } from "./vice-filters";
+import { VicePreviewBar } from "./vice-preview-bar";
 import { ContentBoundary } from "@/components/coastal/live-content";
 import "./beachmag.css";
 import "./shell.css";
@@ -18,6 +19,7 @@ export function BeachmagShell({ children }: { children: ReactNode }) {
       <a className="skip-link" href="#main-content">Skip to content</a>
       <ViceFilters />
       <ViceFavicon />
+      <VicePreviewBar />
       {/* If the live nav or footer throws (a Convex error), the static copy renders instead.
           data-nosnippet keeps Google from quoting the menu and footer as a page's search
           snippet; Google only honors it on div, span and section, hence the wrappers. */}
