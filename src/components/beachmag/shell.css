@@ -606,6 +606,39 @@ body.menu-open #site-takeover nav a {
 #coastal-art .event strong a {
   margin-top: 0;
 }
+/* Each event ends in its own "See event" arrow, like the "See events" link above the list. */
+#coastal-art .event {
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+}
+#coastal-art .event .see-event {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+#coastal-art .event .see-event span {
+  font-size: 20px;
+  transition: transform .2s ease;
+}
+#coastal-art .event .see-event:hover span {
+  transform: translate(2px, -2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  #coastal-art .event .see-event span {
+    transition: none;
+  }
+}
+@media (max-width: 560px) {
+  #coastal-art .event .see-event {
+    gap: 4px;
+    font-size: 10px;
+  }
+}
 
 /* /events: the calendar sits on the torn-paper card, the list beside it. */
 #coastal-art .direction:has(.events-calendar) {
@@ -2522,6 +2555,11 @@ html.dark #coastal-art .map-wrap .map-night {
 #coastal-art .event-detail-heading h1 { margin: 14px 0 0; font: 900 clamp(36px, 5vw, 70px)/1.04 var(--font-bodoni-moda), Georgia, serif; letter-spacing: -.045em; overflow-wrap: anywhere; }
 #coastal-art .event-detail-heading.has-photo { display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: 36px; max-width: none; padding-bottom: 42px; }
 #coastal-art .event-detail-heading.has-photo h1 { font-size: clamp(34px, 4.1vw, 58px); }
+/* Beside the photo, a long title stops at three lines with an ellipsis so the
+   text column doesn't run past the picture. Stacked on phones, it shows in full. */
+@media (min-width: 901px) {
+  #coastal-art .event-detail-heading.has-photo h1 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
+}
 #coastal-art .event-detail-heading > div { min-width: 0; }
 #coastal-art .event-detail-heading .event-detail-intro { margin-top: 24px; max-width: 65ch; font: 400 16px/1.7 var(--font-dm-sans), sans-serif; }
 #coastal-art .event-hero-media { padding: 18px; text-align: center; }

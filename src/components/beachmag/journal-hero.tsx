@@ -11,7 +11,8 @@ import { BeachFigure, artUrl } from "./beach-figure";
 import { EditionButtons } from "./edition-buttons";
 import { Ribbon } from "./ribbon";
 import { SeeAll } from "./see-all";
-import { eventHref, eventTitle, upcomingEvents } from "./events";
+import { upcomingEvents } from "./events";
+import { EventRow } from "./event-row";
 import { WithEventTitles } from "./event-titles";
 
 type Entry = { title: string; excerpt: string; href: string; date?: number };
@@ -106,16 +107,7 @@ export function JournalHero() {
           </div>
           {events.length ? (
             <WithEventTitles>{(titled) => titled(events).map((event) => (
-              <div className={event.secret ? "event is-secret" : "event"} key={event.start + event.name}>
-                <time dateTime={event.start}>{event.month}<b>{event.day}</b></time>
-                <div>
-                  {event.series && <span className="event-series">{event.series}</span>}
-                  <strong>
-                    <Link href={eventHref(event)} aria-label={eventTitle(event)}>{event.name}</Link>
-                  </strong>
-                  <small>{event.place}</small>
-                </div>
-              </div>
+              <EventRow event={event} key={event.slug} />
             ))}</WithEventTitles>
           ) : (
             <p className="copy">Nothing on the calendar yet.</p>

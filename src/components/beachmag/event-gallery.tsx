@@ -38,7 +38,8 @@ function EventHeroContent({ name, series, description, photos }: Pick<EventHeroP
     <div>
       {/* A recurring meetup names itself here; the title is that month's episode. */}
       <p className="label">{series ? series.toUpperCase() : "ON THE CALENDAR"}</p>
-      <h1>{name}</h1>
+      {/* Beside a photo a long title is cut to three lines; the full title shows on hover. */}
+      <h1 title={name}>{name}</h1>
       <p className="event-detail-intro">{description}</p>
     </div>
     {main && <div className="event-hero-media">

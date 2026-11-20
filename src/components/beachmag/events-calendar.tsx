@@ -5,6 +5,7 @@ import Link from "next/link";
 import { EditionButtons } from "./edition-buttons";
 import { calendarEvents, eventHref, eventTitle, localDay, pastEvents, upcomingEvents } from "./events";
 import { WithEventTitles, type Titled } from "./event-titles";
+import { EventRow } from "./event-row";
 import { ScenePolaroid } from "./interior-parts";
 
 const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -98,16 +99,7 @@ function MiniMonth({ year, month, selected, today, events, onSelect }: {
 }
 
 function EventList({ events }: { events: Upcoming[] }) {
-  return events.map((event) => (
-    <div className={event.secret ? "event is-secret" : "event"} key={event.slug}>
-      <time dateTime={event.start}>{event.month}<b>{event.day}</b></time>
-      <div>
-        {event.series && <span className="event-series">{event.series}</span>}
-        <strong><Link href={eventHref(event)} aria-label={eventTitle(event)}>{event.name}</Link></strong>
-        <small>{event.place}</small>
-      </div>
-    </div>
-  ));
+  return events.map((event) => <EventRow event={event} key={event.slug} />);
 }
 
 // Every month from January 2026 through the current/last event year is reachable.
