@@ -12,7 +12,7 @@ const path = (d: string) => (
 
 // Same three lists as the beach site's tech section, in the design's binder.
 const GROUPS: { name: string; tools: Tool[] }[] = [
-  { name: "Tech I love", tools: stack.map(([name, icon]) => ({ name, svg: path(icon.path) })) },
+  { name: "Tech I use", tools: stack.map(([name, icon]) => ({ name, svg: path(icon.path) })) },
   { name: "Learning & tinkering", tools: learning.map(([name, icon]) => ({ name, svg: path(icon.path) })) },
   { name: "Current AI tools", tools: aiTools.map((tool) => ({ name: tool.name, svg: tool.svg ?? path(tool.icon?.path ?? "") })) },
 ];
