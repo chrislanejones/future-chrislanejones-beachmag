@@ -26,6 +26,8 @@ const LIMITS = {
   commentGlobal: hourly(60),
   likePerVisitor: hourly(60),
   likeGlobal: hourly(600),
+  // /audio password tries, all visitors together (no per-key id to go on).
+  audioUnlockGlobal: hourly(60),
 };
 
 type LimitName = keyof typeof LIMITS;

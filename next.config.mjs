@@ -84,8 +84,9 @@ const directives = {
   // Favicons on /browser-tabs and the link page come from whatever site each
   // admin-entered link points at, so images stay open to any https host.
   "img-src": ["'self'", "data:", "blob:", "https:"],
-  // Blog audio streams from UploadThing; the radio's LOAD button uses local blobs.
-  "media-src": ["'self'", "blob:", "https://utfs.io", "https://*.ufs.sh"],
+  // Blog audio streams from UploadThing; the radio's LOAD button uses local blobs;
+  // /audio plays MP3s from Convex storage (the deployment's own origin).
+  "media-src": ["'self'", "blob:", "https://utfs.io", "https://*.ufs.sh", ...convex.filter((origin) => origin.startsWith("https:"))],
   "font-src": ["'self'", ...(isPreview ? ["https://vercel.live", "https://assets.vercel.com"] : [])],
   // /lets-meet embeds a Cal.com booking calendar (Google's schedule is the fallback).
   "frame-src": ["https://fast.wistia.com", "https://app.cal.com", "https://cal.com", "https://calendar.google.com", ...clerkProtect, ...vercelToolbar],

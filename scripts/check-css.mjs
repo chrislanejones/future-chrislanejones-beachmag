@@ -5,10 +5,11 @@ import { readFileSync } from "node:fs";
 
 const FILES = {
   // file: the number of raw hex colors allowed today (only ever lower this).
-  "src/components/beachmag/shell.css": 64,
+  "src/components/beachmag/shell.css": 63,
   "src/components/beachmag/sandbox/sandbox.css": 26,
   "src/components/beachmag/design-system.css": 0,
   "src/components/beachmag/vice.css": 0,
+  "src/app/audio/audio.module.css": 0,
 };
 const HEX = /#(?:[0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})\b/gi;
 let failed = false;

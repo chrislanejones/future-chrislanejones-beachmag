@@ -288,4 +288,18 @@ export default defineSchema({
     .index("by_category", ["category"])
     .index("by_order", ["order"])
     .index("by_created", ["createdAt"]),
+
+  // The password-locked /audio page's playlist. The MP3s live in Convex
+  // storage, never in the (public) repo; privateAudio:unlock hands out their
+  // URLs only for the right password. Added with scripts/upload-private-audio.sh.
+  privateAudio: defineTable({
+    slug: v.string(),
+    title: v.string(),
+    filename: v.string(),
+    storageId: v.id("_storage"),
+    order: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_order", ["order"]),
 });

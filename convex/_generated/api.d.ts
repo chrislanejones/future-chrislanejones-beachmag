@@ -24,6 +24,7 @@ import type * as media from "../media.js";
 import type * as navigation from "../navigation.js";
 import type * as ownerPolicy from "../ownerPolicy.js";
 import type * as pageHeaders from "../pageHeaders.js";
+import type * as privateAudio from "../privateAudio.js";
 import type * as projects from "../projects.js";
 import type * as rateLimits from "../rateLimits.js";
 import type * as redirects from "../redirects.js";
@@ -56,6 +57,7 @@ declare const fullApi: ApiFromModules<{
   navigation: typeof navigation;
   ownerPolicy: typeof ownerPolicy;
   pageHeaders: typeof pageHeaders;
+  privateAudio: typeof privateAudio;
   projects: typeof projects;
   rateLimits: typeof rateLimits;
   redirects: typeof redirects;
