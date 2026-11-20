@@ -26,8 +26,8 @@ test("the edition runs for the whole release day on the Eastern clock", () => {
   expect(run("2026-11-20T04:59:00Z").on).toBe(true); // 11:59 PM Eastern, already the 20th in UTC
   expect(run("2026-11-19T04:59:00Z").on).toBe(false); // 11:59 PM Eastern on the 18th
   expect(run("2026-11-20T05:00:00Z").on).toBe(true); // midnight Eastern, the 20th: held over
-  expect(run("2026-11-20T07:59:00Z").on).toBe(true); // 2:59 AM Eastern
-  expect(run("2026-11-20T08:00:00Z").on).toBe(false); // 3 AM Eastern: off
+  expect(run("2026-11-20T10:59:00Z").on).toBe(true); // 5:59 AM Eastern
+  expect(run("2026-11-20T11:00:00Z").on).toBe(false); // 6 AM Eastern: off
   expect(run("2026-11-21T15:00:00Z").on).toBe(false);
 });
 

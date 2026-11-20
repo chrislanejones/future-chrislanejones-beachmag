@@ -7,8 +7,8 @@
  */
 export const VICE_DAY = "2026-11-19";
 export const VICE_ZONE = "America/New_York";
-/** Held over past midnight: off at 3 AM Eastern on the 20th. */
-export const VICE_END = "2026-11-20T08:00:00Z";
+/** Held over past midnight: off at 6 AM Eastern on the 20th. */
+export const VICE_END = "2026-11-20T11:00:00Z";
 
 /** Runs in <head> before first paint (layout.tsx), so the page never flashes the coastal skin. */
 export const VICE_SCRIPT = `(function(){try{
