@@ -10,8 +10,7 @@ import {
   siReactquery,
   siThreedotjs,
   siDrizzle,
-  siBun,
-  siGnubash,
+  siLinux,
   siShadcnui,
   siConvex,
   siPosthog,
@@ -30,6 +29,15 @@ import {
 import { Reveal } from "./reveal";
 import styles from "./coastal.module.css";
 
+// simple-icons dropped C# (trademark), so this is a hand-drawn hexagon with
+// "C#" inside, on the same 24x24 grid as the others.
+const csharp = {
+  path:
+    "M12 .5 22 6.25v11.5L12 23.5 2 17.75V6.25Zm0 1.8L3.6 7.15v9.7L12 21.7l8.4-4.85v-9.7Z" +
+    "M12.71 8.89A4.4 4.4 0 1 0 12.71 15.11L11.37 13.77A2.5 2.5 0 1 1 11.37 10.23Z" +
+    "M14.9 9.3h1.1v5.4h-1.1ZM17.1 9.3h1.1v5.4h-1.1ZM13.8 10.3h5.5v1.1h-5.5ZM13.8 12.6h5.5v1.1h-5.5Z",
+};
+
 export const stack = [
   ["React", siReact],
   ["Rust", siRust],
@@ -40,14 +48,14 @@ export const stack = [
   ["TanStack", siReactquery],
   ["Three.js", siThreedotjs],
   ["Drizzle ORM", siDrizzle],
-  ["Bun", siBun],
-  ["Shell", siGnubash],
+  ["Linux", siLinux],
   ["ShadUI", siShadcnui],
   ["Convex", siConvex],
   ["PostHog", siPosthog],
   ["Sentry", siSentry],
   ["Stripe", siStripe],
   ["Docker", siDocker],
+  ["C#", csharp],
   ["C++", siCplusplus],
   [".NET", siDotnet],
   ["Tailscale", siTailscale],
