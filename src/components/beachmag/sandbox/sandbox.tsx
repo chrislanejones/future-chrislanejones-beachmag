@@ -251,7 +251,7 @@ export function Sandbox() {
           <h2>Leave a little<br /><em>castle.</em></h2>
           <p>A small patch of coast to make your own. Pick a mold, press the sand, lift the bucket. Five flags. One very good afternoon.</p>
           {/* The how-to lives here; the stage points at it by id. */}
-          <p id="game-help">Build it for me makes one of five castles, a different one each time; Undo brings back your beach. Tap the sand to build. Choose Flag, then tap the sand or a castle to plant up to five. Removing a flag returns it to the box. Right-click the sand, or press and hold on a phone, to build any piece on that spot, turn a wall, or remove the top piece. Dig neighboring spots to join the water channels. Use arrow keys to move the marker, Enter to build, Delete to remove the top piece, or Shift+F10 for the menu.</p>
+          <p id="game-help">Tap the sand to build, or hit Build it for me. Choose Flag to plant up to five. Right-click or press and hold for more. Arrow keys move, Enter builds, Delete removes.</p>
           {/* The line that changes as you play, under the how-to. */}
           <p className="game-status" role="status">{notice || state.message}</p>
         </div>
