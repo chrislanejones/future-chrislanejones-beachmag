@@ -10,14 +10,15 @@ const STATIONS = [
   ["study", "Study", "Chillhop", 76],
 ] as const;
 
-// FM and AM are recordings of static with the call letters breaking through
-// (pnpm audio:static). The dial prints both scales, and the two call frequencies
-// sit close together, so the needle only moves a little between the bands.
+// FM and AM are recorded stations (pnpm audio:static): FM is a DJ over static
+// playing "By the Sea", AM is a preacher down a crackling line. The dial prints
+// both scales, and the two call frequencies sit close together, so the needle
+// only moves a little between the bands.
 const BANDS = ["tape", "fm", "am"] as const;
 type Band = (typeof BANDS)[number];
 const RADIO = {
-  fm: { src: "/audio/fm-static.mp3", label: "WCLJ · FM · 88.7 MHz", needle: "16.7%" },
-  am: { src: "/audio/am-static.mp3", label: "WCLJ · AM · 660 kHz", needle: "24.6%" },
+  fm: { src: "/audio/wclj-fm.mp3", label: "WCLJ · FM · 88.7 · Sea Oat Revival, By the Sea", needle: "16.7%" },
+  am: { src: "/audio/wclj-am.mp3", label: "WCLJ · AM · 660 kHz", needle: "24.6%" },
 };
 
 type Dial = { set: (value: number) => void; get: () => number };
